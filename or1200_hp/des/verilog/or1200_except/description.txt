@@ -138,25 +138,25 @@ Output port:
     - spr_dat_npc[31:0]: SPR read data for the next-program-counter register.
     - abort_ex: Indicates that the current execute-stage instruction must be aborted.
 Internal reg/wire signals:
-    reg [3:0] except_type: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] id_pc: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] ex_pc: Signal that carries intermediate datapath values between logic stages.
-    reg [31:0] wb_pc: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] epcr: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] eear: Sequential register that stores intermediate or output state between cycles.
-    reg [15:0] esr: Sequential register that stores intermediate or output state between cycles.
-    reg [2:0] id_exceptflags: Sequential register that stores intermediate or output state between cycles.
-    reg [2:0] ex_exceptflags: Signal that carries intermediate datapath values between logic stages.
-    reg [2:0] state: Sequential state register that tracks control progress across cycles.
-    reg extend_flush: Sequential register that stores intermediate or output state between cycles.
-    reg extend_flush_last: Sequential register that stores intermediate or output state between cycles.
-    reg ex_dslot: Signal that carries intermediate datapath values between logic stages.
-    reg delayed1_ex_dslot: Signal that carries intermediate datapath values between logic stages.
-    reg delayed2_ex_dslot: Signal that carries intermediate datapath values between logic stages.
-    reg [2:0] delayed_iee: Sequential register that stores intermediate or output state between cycles.
-    reg [2:0] delayed_tee: Sequential register that stores intermediate or output state between cycles.
-    wire except_started: Combinational net that links intermediate expressions across logic blocks.
-    wire [12:0] except_trig: Combinational net that links intermediate expressions across logic blocks.
-    wire except_flushpipe: Combinational net that links intermediate expressions across logic blocks.
-    wire int_pending: Combinational net that links intermediate expressions across logic blocks.
-    wire tick_pending: Combinational net that links intermediate expressions across logic blocks.
+    reg [3:0] except_type: Exception type.
+    reg [31:0] id_pc: Decode-stage program counter.
+    reg [31:0] ex_pc: Execute-stage program counter.
+    reg [31:0] wb_pc: Writeback-stage program counter.
+    reg [31:0] epcr: Exception PC register.
+    reg [31:0] eear: Exception address register.
+    reg [15:0] esr: Exception status register.
+    reg [2:0] id_exceptflags: Decode-stage exceptflags.
+    reg [2:0] ex_exceptflags: Execute-stage exceptflags.
+    reg [2:0] state: State.
+    reg extend_flush: Extended pipeline flush request.
+    reg extend_flush_last: Registered tail of the extended flush sequence.
+    reg ex_dslot: Execute-stage delay slot.
+    reg delayed1_ex_dslot: Delayed 1 execute delay slot.
+    reg delayed2_ex_dslot: Delayed 2 execute delay slot.
+    wire except_started: Registered exception-start state.
+    wire [12:0] except_trig: Exception trig.
+    wire except_flushpipe: Exception flushpipe.
+    reg [2:0] delayed_iee: Delayed iee.
+    reg [2:0] delayed_tee: Delayed tee.
+    wire int_pending: Int pending.
+    wire tick_pending: Tick pending.

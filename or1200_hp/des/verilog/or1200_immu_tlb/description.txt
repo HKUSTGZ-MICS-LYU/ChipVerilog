@@ -65,25 +65,25 @@ Output port:
     - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
     - spr_dat_o[31:0]: Read data returned on the SPR bus.
 Internal reg/wire signals:
-    wire [31:19] vpn: Combinational net that links intermediate expressions across logic blocks.
-    wire v: Combinational net that links intermediate expressions across logic blocks.
-    wire [5:0] tlb_index: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire tlb_mr_en: Combinational net that links intermediate expressions across logic blocks.
-    wire tlb_mr_we: Combinational net that links intermediate expressions across logic blocks.
-    wire [13:0] tlb_mr_ram_in: Combinational net that links intermediate expressions across logic blocks.
-    wire [13:0] tlb_mr_ram_out: Combinational net that links intermediate expressions across logic blocks.
-    wire tlb_tr_en: Combinational net that links intermediate expressions across logic blocks.
-    wire tlb_tr_we: Combinational net that links intermediate expressions across logic blocks.
-    wire [21:0] tlb_tr_ram_in: Combinational net that links intermediate expressions across logic blocks.
-    wire [21:0] tlb_tr_ram_out: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_mr_ram_si: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_mr_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_tr_ram_si: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_tr_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire tlb_tr_en_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [0 : 0] tlb_tr_we_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [5 : 0] tlb_index_wire: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [21 : 0] tlb_tr_ram_in_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire tlb_mr_en_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [0 : 0] tlb_mr_we_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [13 : 0] tlb_mr_ram_in_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:19] vpn: Virtual page number.
+    wire v: Valid.
+    wire [5:0] tlb_index: TLB index.
+    wire tlb_mr_en: TLB mr enable flag.
+    wire tlb_mr_we: TLB mr write-enable.
+    wire [13:0] tlb_mr_ram_in: TLB mr RAM in.
+    wire [13:0] tlb_mr_ram_out: TLB mr RAM output register.
+    wire tlb_tr_en: TLB tr enable flag.
+    wire tlb_tr_we: TLB tr write-enable.
+    wire [21:0] tlb_tr_ram_in: TLB tr RAM in.
+    wire [21:0] tlb_tr_ram_out: TLB tr RAM output register.
+    wire itlb_mr_ram_si: Instruction TLB mr RAM serial input.
+    wire itlb_mr_ram_so: Instruction TLB mr RAM serial output.
+    wire itlb_tr_ram_si: Instruction TLB tr RAM serial input.
+    wire itlb_tr_ram_so: Instruction TLB tr RAM serial output.
+    wire tlb_tr_en_wire: TLB tr enable wire flag.
+    wire [0 : 0] tlb_tr_we_wire: TLB tr write-enable wire.
+    wire [5 : 0] tlb_index_wire: TLB index wire counter.
+    wire [21 : 0] tlb_tr_ram_in_wire: TLB tr RAM in wire.
+    wire tlb_mr_en_wire: TLB mr enable wire flag.
+    wire [0 : 0] tlb_mr_we_wire: TLB mr write-enable wire.
+    wire [13 : 0] tlb_mr_ram_in_wire: TLB mr RAM in wire.

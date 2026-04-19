@@ -64,28 +64,28 @@ Output port:
     - mac_stall_r: Registered MAC stall indication.
     - spr_dat_o[31:0]: Read data returned on the SPR bus.
 Internal reg/wire signals:
-    reg [width-1:0] result: Sequential register that stores intermediate or output state between cycles.
-    reg [2*width-1:0] mul_prod_r: Sequential register that stores intermediate or output state between cycles.
-    reg [1:0] mac_op_r1: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] mac_op_r2: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] mac_op_r3: Control signal that selects operation mode, command, or multiplexed path.
-    reg mac_stall_r: Sequential register that stores intermediate or output state between cycles.
-    reg [2*width-1:0] mac_r: Sequential register that stores intermediate or output state between cycles.
-    reg div_free: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] div_cntr: Sequential state register that tracks control progress across cycles.
-    wire [width-1:0] result: Combinational net that links intermediate expressions across logic blocks.
-    wire [2*width-1:0] mul_prod_r: Combinational net that links intermediate expressions across logic blocks.
-    wire [2*width-1:0] mul_prod: Combinational net that links intermediate expressions across logic blocks.
-    wire [1:0] mac_op: Control signal that selects operation mode, command, or multiplexed path.
-    wire [1:0] mac_op_r1: Control signal that selects operation mode, command, or multiplexed path.
-    wire [1:0] mac_op_r2: Control signal that selects operation mode, command, or multiplexed path.
-    wire [1:0] mac_op_r3: Control signal that selects operation mode, command, or multiplexed path.
-    wire mac_stall_r: Combinational net that links intermediate expressions across logic blocks.
-    wire [2*width-1:0] mac_r: Combinational net that links intermediate expressions across logic blocks.
-    wire [width-1:0] x: Combinational net that links intermediate expressions across logic blocks.
-    wire [width-1:0] y: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_maclo_we: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_machi_we: Combinational net that links intermediate expressions across logic blocks.
-    wire alu_op_div_divu: Control signal that selects operation mode, command, or multiplexed path.
-    wire alu_op_div: Control signal that selects operation mode, command, or multiplexed path.
-    wire [width-1:0] div_tmp: Combinational net that links intermediate expressions across logic blocks.
+    reg [31:0] result: Selected result from the multiply/divide/MAC datapath.
+    reg [63:0] mul_prod_r: Registered multiplier/divider datapath result.
+    wire [31:0] result: Selected result from the multiply/divide/MAC datapath.
+    wire [63:0] mul_prod_r: Registered multiplier/divider datapath result.
+    wire [63:0] mul_prod: Combinational multiplier product.
+    wire [1:0] mac_op: Multiply-accumulate operation select.
+    reg [1:0] mac_op_r1: Stage-1 pipeline copy of the MAC operation.
+    reg [1:0] mac_op_r2: Stage-2 pipeline copy of the MAC operation.
+    reg [1:0] mac_op_r3: Stage-3 pipeline copy of the MAC operation.
+    reg mac_stall_r: Registered MAC stall request.
+    reg [63:0] mac_r: MAC accumulator value.
+    wire [1:0] mac_op_r1: Stage-1 pipeline copy of the MAC operation.
+    wire [1:0] mac_op_r2: Stage-2 pipeline copy of the MAC operation.
+    wire [1:0] mac_op_r3: Stage-3 pipeline copy of the MAC operation.
+    wire mac_stall_r: Registered MAC stall request.
+    wire [63:0] mac_r: MAC accumulator value.
+    wire [31:0] x: Operand A after divide-sign preprocessing.
+    wire [31:0] y: Operand B after divide-sign preprocessing.
+    wire spr_maclo_we: SPR write-enable for the low 32 bits of `mac_r`.
+    wire spr_machi_we: SPR write-enable for the high 32 bits of `mac_r`.
+    wire alu_op_div_divu: Flag that the ALU op is DIV or DIVU.
+    wire alu_op_div: Flag that the ALU op is signed DIV.
+    reg div_free: Divider-idle flag.
+    wire [31:0] div_tmp: Intermediate subtraction term for the divider loop.
+    reg [5:0] div_cntr: Divider iteration counter.

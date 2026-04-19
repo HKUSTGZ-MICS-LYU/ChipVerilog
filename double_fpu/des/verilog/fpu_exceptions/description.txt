@@ -53,71 +53,64 @@ Output port:
     output invalid: Handshake signal that marks transfer validity, readiness, or completion.
 
 Internal reg/wire signals:
-    reg [63:0] out: Sequential register that stores intermediate or output state between cycles.
-    reg ex_enable: Signal that carries intermediate datapath values between logic stages.
-    reg underflow: Sequential register that stores intermediate or output state between cycles.
-    reg overflow: Sequential register that stores intermediate or output state between cycles.
-    reg inexact: Sequential register that stores intermediate or output state between cycles.
-    reg exception: Sequential register that stores intermediate or output state between cycles.
-    reg invalid: Handshake signal that marks transfer validity, readiness, or completion.
-    reg in_et_zero: Sequential register that stores intermediate or output state between cycles.
-    reg opa_et_zero: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_et_zero: Control signal that selects operation mode, command, or multiplexed path.
-    reg input_et_zero: Sequential register that stores intermediate or output state between cycles.
-    reg add: Sequential register that stores intermediate or output state between cycles.
-    reg subtract: Sequential register that stores intermediate or output state between cycles.
-    reg multiply: Sequential register that stores intermediate or output state between cycles.
-    reg divide: Sequential register that stores intermediate or output state between cycles.
-    reg opa_QNaN: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_QNaN: Control signal that selects operation mode, command, or multiplexed path.
-    reg opa_SNaN: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_SNaN: Control signal that selects operation mode, command, or multiplexed path.
-    reg opa_pos_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_pos_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg opa_neg_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_neg_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg opa_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg opb_inf: Control signal that selects operation mode, command, or multiplexed path.
-    reg NaN_input: Sequential register that stores intermediate or output state between cycles.
-    reg SNaN_input: Sequential register that stores intermediate or output state between cycles.
-    reg a_NaN: Sequential register that stores intermediate or output state between cycles.
-    reg div_by_0: Signal that carries intermediate datapath values between logic stages.
-    reg div_0_by_0: Signal that carries intermediate datapath values between logic stages.
-    reg div_inf_by_inf: Signal that carries intermediate datapath values between logic stages.
-    reg div_by_inf: Signal that carries intermediate datapath values between logic stages.
-    reg mul_0_by_inf: Signal that carries intermediate datapath values between logic stages.
-    reg mul_inf: Sequential register that stores intermediate or output state between cycles.
-    reg div_inf: Sequential register that stores intermediate or output state between cycles.
-    reg add_inf: Sequential register that stores intermediate or output state between cycles.
-    reg sub_inf: Sequential register that stores intermediate or output state between cycles.
-    reg addsub_inf_invalid: Handshake signal that marks transfer validity, readiness, or completion.
-    reg addsub_inf: Sequential register that stores intermediate or output state between cycles.
-    reg out_inf_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg out_pos_inf: Sequential register that stores intermediate or output state between cycles.
-    reg out_neg_inf: Sequential register that stores intermediate or output state between cycles.
-    reg round_nearest: Sequential register that stores intermediate or output state between cycles.
-    reg round_to_zero: Sequential register that stores intermediate or output state between cycles.
-    reg round_to_pos_inf: Sequential register that stores intermediate or output state between cycles.
-    reg round_to_neg_inf: Sequential register that stores intermediate or output state between cycles.
-    reg inf_round_down_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg mul_uf: Sequential register that stores intermediate or output state between cycles.
-    reg div_uf: Sequential register that stores intermediate or output state between cycles.
-    reg underflow_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg invalid_trigger: Handshake signal that marks transfer validity, readiness, or completion.
-    reg overflow_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg inexact_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg except_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg enable_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg NaN_out_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg SNaN_trigger: Sequential register that stores intermediate or output state between cycles.
-    reg [62:0] NaN_output_0: Sequential register that stores intermediate or output state between cycles.
-    reg [62:0] NaN_output: Sequential register that stores intermediate or output state between cycles.
-    reg [62:0] inf_round_down: Sequential register that stores intermediate or output state between cycles.
-    reg [62:0] out_inf: Sequential register that stores intermediate or output state between cycles.
-    reg [63:0] out_0: Sequential register that stores intermediate or output state between cycles.
-    reg [63:0] out_1: Sequential register that stores intermediate or output state between cycles.
-    reg [63:0] out_2: Sequential register that stores intermediate or output state between cycles.
-    wire [10:0] exp_2047 = 11'b11111111111: Combinational net that links intermediate expressions across logic blocks.
-    wire [10:0] exp_2046 = 11'b11111111110: Combinational net that links intermediate expressions across logic blocks.
-    wire [51:0] mantissa_max = 52'b1111111111111111111111111111111111111111111111111111: Signal that carries intermediate datapath values between logic stages.
+    reg in_et_zero: In equals-zero flag.
+    reg opa_et_zero: Operand A equals-zero flag.
+    reg opb_et_zero: Operand B equals-zero flag.
+    reg input_et_zero: Input equals-zero flag.
+    reg add: Flag that the current operation is add.
+    reg subtract: Flag that the current operation is subtract.
+    reg multiply: Flag that the current operation is multiply.
+    reg divide: Flag that the current operation is divide.
+    reg opa_QNaN: Operand A quiet-NaN flag.
+    reg opb_QNaN: Operand B quiet-NaN flag.
+    reg opa_SNaN: Operand A signaling-NaN flag.
+    reg opb_SNaN: Operand B signaling-NaN flag.
+    reg opa_pos_inf: Operand A positive-infinity flag.
+    reg opb_pos_inf: Operand B positive-infinity flag.
+    reg opa_neg_inf: Operand A negative-infinity flag.
+    reg opb_neg_inf: Operand B negative-infinity flag.
+    reg opa_inf: Operand A infinity flag.
+    reg opb_inf: Operand B infinity flag.
+    reg NaN_input: Flag that at least one input operand is NaN.
+    reg SNaN_input: Flag that a signaling NaN is present at the input.
+    reg a_NaN: Canonical NaN-selection flag for the output path.
+    reg div_by_0: Flag that the divide operation has a zero divisor.
+    reg div_0_by_0: Flag that the divide operation is 0/0.
+    reg div_inf_by_inf: Div infinity by infinity flag.
+    reg div_by_inf: Div by infinity flag.
+    reg mul_0_by_inf: Multiply 0 by infinity flag.
+    reg mul_inf: Multiply infinity flag.
+    reg div_inf: Div infinity flag.
+    reg add_inf: Add infinity flag.
+    reg sub_inf: Subtract infinity flag.
+    reg addsub_inf_invalid: Addsub infinity invalid flag.
+    reg addsub_inf: Addsub infinity flag.
+    reg out_inf_trigger: Output infinity trigger flag.
+    reg out_pos_inf: Output positive-infinity flag.
+    reg out_neg_inf: Output negative-infinity flag.
+    reg round_nearest: Round nearest.
+    reg round_to_zero: Round to zero flag.
+    reg round_to_pos_inf: Round to positive-infinity flag.
+    reg round_to_neg_inf: Round to negative-infinity flag.
+    reg inf_round_down_trigger: Infinity round down trigger flag.
+    reg mul_uf: Multiply underflow flag.
+    reg div_uf: Div underflow flag.
+    reg underflow_trigger: Underflow trigger.
+    reg invalid_trigger: Invalid trigger.
+    reg overflow_trigger: Overflow trigger.
+    reg inexact_trigger: Inexact trigger.
+    reg except_trigger: Exception trigger.
+    reg enable_trigger: Enable trigger flag.
+    reg NaN_out_trigger: Na n output trigger.
+    reg SNaN_trigger: S na n trigger.
+    wire [10:0] exp_2047 = 11'b11111111111: Stage-2047 pipeline copy of the exp.
+    wire [10:0] exp_2046 = 11'b11111111110: Stage-2046 pipeline copy of the exp.
+    reg [62:0] NaN_output_0: Stage-0 pipeline copy of the na n output.
+    reg [62:0] NaN_output: Na n output.
+    wire [51:0] mantissa_max = 52'b1111111111111111111111111111111111111111111111111111: Mantissa max.
+    reg [62:0] inf_round_down: Infinity round down flag.
+    reg [62:0] out_inf: Output infinity flag.
+    reg [63:0] out_0: Stage-0 pipeline copy of the output.
+    reg [63:0] out_1: Stage-1 pipeline copy of the output.
+    reg [63:0] out_2: Stage-2 pipeline copy of the output.
 

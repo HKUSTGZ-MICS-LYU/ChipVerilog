@@ -27,58 +27,58 @@ Output port:
     output [11:0] exponent_5: Data output that carries computed results or status information.
 
 Internal reg/wire signals:
-    reg [5:0] product_shift: Signal that carries intermediate datapath values between logic stages.
-    reg [5:0] product_shift_2: Signal that carries intermediate datapath values between logic stages.
-    reg sign: Sequential register that stores intermediate or output state between cycles.
-    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
-    reg [10:0] exponent_a: Signal that carries intermediate datapath values between logic stages.
-    reg [10:0] exponent_b: Signal that carries intermediate datapath values between logic stages.
-    reg a_is_norm: Sequential register that stores intermediate or output state between cycles.
-    reg b_is_norm: Sequential register that stores intermediate or output state between cycles.
-    reg a_is_zero: Sequential register that stores intermediate or output state between cycles.
-    reg b_is_zero: Sequential register that stores intermediate or output state between cycles.
-    reg in_zero: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] exponent_terms: Signal that carries intermediate datapath values between logic stages.
-    reg exponent_gt_expoffset: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_under: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_1: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_2: Signal that carries intermediate datapath values between logic stages.
-    reg exponent_gt_prodshift: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_3: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_4: Signal that carries intermediate datapath values between logic stages.
-    reg exponent_et_zero: Signal that carries intermediate datapath values between logic stages.
-    reg [52:0] mul_a: Sequential register that stores intermediate or output state between cycles.
-    reg [52:0] mul_b: Sequential register that stores intermediate or output state between cycles.
-    reg [40:0] product_a: Signal that carries intermediate datapath values between logic stages.
-    reg [40:0] product_b: Signal that carries intermediate datapath values between logic stages.
-    reg [40:0] product_c: Signal that carries intermediate datapath values between logic stages.
-    reg [25:0] product_d: Signal that carries intermediate datapath values between logic stages.
-    reg [33:0] product_e: Signal that carries intermediate datapath values between logic stages.
-    reg [33:0] product_f: Signal that carries intermediate datapath values between logic stages.
-    reg [35:0] product_g: Signal that carries intermediate datapath values between logic stages.
-    reg [28:0] product_h: Signal that carries intermediate datapath values between logic stages.
-    reg [28:0] product_i: Signal that carries intermediate datapath values between logic stages.
-    reg [30:0] product_j: Signal that carries intermediate datapath values between logic stages.
-    reg [41:0] sum_0: Signal that carries intermediate datapath values between logic stages.
-    reg [35:0] sum_1: Signal that carries intermediate datapath values between logic stages.
-    reg [41:0] sum_2: Signal that carries intermediate datapath values between logic stages.
-    reg [35:0] sum_3: Signal that carries intermediate datapath values between logic stages.
-    reg [36:0] sum_4: Signal that carries intermediate datapath values between logic stages.
-    reg [27:0] sum_5: Signal that carries intermediate datapath values between logic stages.
-    reg [29:0] sum_6: Signal that carries intermediate datapath values between logic stages.
-    reg [36:0] sum_7: Signal that carries intermediate datapath values between logic stages.
-    reg [30:0] sum_8: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_1: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_2: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_3: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_4: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_5: Signal that carries intermediate datapath values between logic stages.
-    reg [105:0] product_6: Signal that carries intermediate datapath values between logic stages.
-    reg product_lsb: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_5: Signal that carries intermediate datapath values between logic stages.
-    wire [11:0] exponent = 0: Signal that carries intermediate datapath values between logic stages.
-    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Signal that carries intermediate datapath values between logic stages.
+    reg [5:0] product_shift: Normalization shift flag for the product path.
+    reg [5:0] product_shift_2: Stage-2 pipeline copy of the normalization shift flag for the product path.
+    reg sign: Result sign bit.
+    reg [51:0] mantissa_a: Mantissa A.
+    reg [51:0] mantissa_b: Mantissa B.
+    reg [10:0] exponent_a: Exponent A.
+    reg [10:0] exponent_b: Exponent B.
+    reg a_is_norm: A is normalized flag.
+    reg b_is_norm: B is normalized flag.
+    reg a_is_zero: A is zero flag.
+    reg b_is_zero: B is zero flag.
+    reg in_zero: In zero flag.
+    reg [11:0] exponent_terms: Exponent term.
+    reg exponent_gt_expoffset: Exponent greater-than-exponent offset flag.
+    reg [11:0] exponent_under: Exponent under.
+    reg [11:0] exponent_1: Stage-1 pipeline copy of the exponent.
+    wire [11:0] exponent = 0: Exponent.
+    reg [11:0] exponent_2: Stage-2 pipeline copy of the exponent.
+    reg exponent_gt_prodshift: Exponent greater-than-product-shift flag.
+    reg [11:0] exponent_3: Stage-3 pipeline copy of the exponent.
+    reg [11:0] exponent_4: Stage-4 pipeline copy of the exponent.
+    reg exponent_et_zero: Exponent equals-zero flag.
+    reg [52:0] mul_a: Multiply A.
+    reg [52:0] mul_b: Multiply B.
+    reg [40:0] product_a: Product A.
+    reg [40:0] product_b: Product B.
+    reg [40:0] product_c: Product c.
+    reg [25:0] product_d: Product D.
+    reg [33:0] product_e: Product E.
+    reg [33:0] product_f: Product f.
+    reg [35:0] product_g: Product g.
+    reg [28:0] product_h: Product h.
+    reg [28:0] product_i: Product input.
+    reg [30:0] product_j: Product J.
+    reg [41:0] sum_0: Stage-0 pipeline copy of the sum.
+    reg [35:0] sum_1: Stage-1 pipeline copy of the sum.
+    reg [41:0] sum_2: Stage-2 pipeline copy of the sum.
+    reg [35:0] sum_3: Stage-3 pipeline copy of the sum.
+    reg [36:0] sum_4: Stage-4 pipeline copy of the sum.
+    reg [27:0] sum_5: Stage-5 pipeline copy of the sum.
+    reg [29:0] sum_6: Stage-6 pipeline copy of the sum.
+    reg [36:0] sum_7: Stage-7 pipeline copy of the sum.
+    reg [30:0] sum_8: Stage-8 pipeline copy of the sum.
+    reg [105:0] product: Product.
+    reg [105:0] product_1: Stage-1 pipeline copy of the product.
+    reg [105:0] product_2: Stage-2 pipeline copy of the product.
+    reg [105:0] product_3: Stage-3 pipeline copy of the product.
+    reg [105:0] product_4: Stage-4 pipeline copy of the product.
+    reg [105:0] product_5: Stage-5 pipeline copy of the product.
+    reg [105:0] product_6: Stage-6 pipeline copy of the product.
+    reg product_lsb: LSB of the product.
+    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Stage-7 pipeline copy of the product.
+    reg [11:0] exponent_5: Stage-5 pipeline copy of the exponent.
 
 

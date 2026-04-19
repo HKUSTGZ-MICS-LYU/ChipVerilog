@@ -27,33 +27,32 @@ Output port:
     output [10:0] exponent_2: Data output that carries computed results or status information.
 
 Internal reg/wire signals:
-    reg sign: Sequential register that stores intermediate or output state between cycles.
-    reg [10:0] exponent_a: Signal that carries intermediate datapath values between logic stages.
-    reg [10:0] exponent_b: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
-    reg expa_gt_expb: Sequential register that stores intermediate or output state between cycles.
-    reg [10:0] exponent_small: Signal that carries intermediate datapath values between logic stages.
-    reg [10:0] exponent_large: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_small: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_large: Signal that carries intermediate datapath values between logic stages.
-    reg small_is_denorm: Sequential register that stores intermediate or output state between cycles.
-    reg large_is_denorm: Sequential register that stores intermediate or output state between cycles.
-    reg large_norm_small_denorm: Sequential register that stores intermediate or output state between cycles.
-    reg [10:0] exponent_diff: Signal that carries intermediate datapath values between logic stages.
-    reg [55:0] large_add: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] small_add: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] small_shift: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] small_shift_3: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] sum: Signal that carries intermediate datapath values between logic stages.
-    reg [55:0] sum_2: Signal that carries intermediate datapath values between logic stages.
-    reg [10:0] exponent: Signal that carries intermediate datapath values between logic stages.
-    reg denorm_to_norm: Sequential register that stores intermediate or output state between cycles.
-    reg [10:0] exponent_2: Signal that carries intermediate datapath values between logic stages.
-    wire small_shift_nonzero = |small_shift[55:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire small_is_nonzero = (exponent_small > 0) | |mantissa_small[51:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire small_fraction_enable = small_is_nonzero & !small_shift_nonzero: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] small_shift_2 = { 55'b0, 1'b1 }: Combinational net that links intermediate expressions across logic blocks.
-    wire sum_overflow = sum[55]: Signal that carries intermediate datapath values between logic stages. sum[55] will be 0 if there was no carry from adding the 2 numbers
-    wire sum_leading_one = sum_2[54]: Signal that carries intermediate datapath values between logic stages. This is where the leading one resides, unless denorm
+    reg [10:0] exponent_a: Exponent A.
+    reg [10:0] exponent_b: Exponent B.
+    reg [51:0] mantissa_a: Mantissa A.
+    reg [51:0] mantissa_b: Mantissa B.
+    reg expa_gt_expb: Expa greater-than-expb flag.
+    reg [10:0] exponent_small: Exponent small.
+    reg [10:0] exponent_large: Exponent large.
+    reg [51:0] mantissa_small: Mantissa small.
+    reg [51:0] mantissa_large: Mantissa large.
+    reg small_is_denorm: Small is denormal flag.
+    reg large_is_denorm: Large is denormal flag.
+    reg large_norm_small_denorm: Large normalized small denormal.
+    reg [10:0] exponent_diff: Exponent diff.
+    reg [55:0] large_add: Large add.
+    reg [55:0] small_add: Small add.
+    reg [55:0] small_shift: Small shift control.
+    wire small_shift_nonzero = |small_shift[55:0]: Small shift nonzero flag.
+    wire small_is_nonzero = (exponent_small > 0) | |mantissa_small[51:0]: Small is nonzero flag.
+    wire small_fraction_enable = small_is_nonzero & !small_shift_nonzero: Small fraction enable flag.
+    wire [55:0] small_shift_2 = { 55'b0, 1'b1 }: Stage-2 pipeline copy of the small shift.
+    reg [55:0] small_shift_3: Stage-3 pipeline copy of the small shift.
+    reg [55:0] sum: Sum.
+    wire sum_overflow = sum[55]: Sum overflow flag.
+    reg [55:0] sum_2: Stage-2 pipeline copy of the sum.
+    reg [10:0] exponent: Exponent.
+    wire sum_leading_one = sum_2[54]: Sum leading one flag.
+    reg denorm_to_norm: Denormal to normalized.
+    reg [10:0] exponent_2: Stage-2 pipeline copy of the exponent.
 

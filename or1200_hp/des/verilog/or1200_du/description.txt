@@ -113,96 +113,111 @@ Output port:
     - dbg_dat_o[31:0]: External debug read-data output.
     - dbg_ack_o: External debug acknowledge output.
 Internal reg/wire signals:
-    reg [1:0] dbg_is_o: Sequential register that stores intermediate or output state between cycles.
-    reg dbg_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [24:0] dmr1: Sequential register that stores intermediate or output state between cycles.
-    reg [23:0] dmr2: Sequential register that stores intermediate or output state between cycles.
-    reg [13:0] dsr: Sequential register that stores intermediate or output state between cycles.
-    reg [13:0] drr: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr0: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr1: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr2: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr3: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr4: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr5: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr6: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dvr7: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr0: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr1: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr2: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr3: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr4: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr5: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr6: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] dcr7: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dwcr0: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] dwcr1: Sequential register that stores intermediate or output state between cycles.
-    reg dbg_bp_r: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond0_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond1_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond2_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond3_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond4_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond5_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond6_ct: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] match_cond7_ct: Sequential register that stores intermediate or output state between cycles.
-    reg match_cond0_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond1_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond2_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond3_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond4_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond5_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond6_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match_cond7_stb: Handshake signal that marks transfer validity, readiness, or completion.
-    reg match0: Sequential register that stores intermediate or output state between cycles.
-    reg match1: Sequential register that stores intermediate or output state between cycles.
-    reg match2: Sequential register that stores intermediate or output state between cycles.
-    reg match3: Sequential register that stores intermediate or output state between cycles.
-    reg match4: Sequential register that stores intermediate or output state between cycles.
-    reg match5: Sequential register that stores intermediate or output state between cycles.
-    reg match6: Sequential register that stores intermediate or output state between cycles.
-    reg match7: Sequential register that stores intermediate or output state between cycles.
-    reg wpcntr0_match: Sequential state register that tracks control progress across cycles.
-    reg wpcntr1_match: Sequential state register that tracks control progress across cycles.
-    reg incr_wpcntr0: Sequential state register that tracks control progress across cycles.
-    reg incr_wpcntr1: Sequential state register that tracks control progress across cycles.
-    reg [10:0] wp: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] spr_dat_o: Signal that carries intermediate datapath values between logic stages.
-    reg [13:0] except_stop: Control signal that selects operation mode, command, or multiplexed path.
-    reg [7:0] tb_wadr: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [31:0] tb_timstmp: Sequential register that stores intermediate or output state between cycles.
-    wire [24:0] dmr1: Combinational net that links intermediate expressions across logic blocks.
-    wire [23:0] dmr2: Combinational net that links intermediate expressions across logic blocks.
-    wire [13:0] dsr: Combinational net that links intermediate expressions across logic blocks.
-    wire [13:0] drr: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr0: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr1: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr2: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr3: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr4: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr5: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr6: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dvr7: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr0: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr1: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr2: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr3: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr4: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr5: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr6: Combinational net that links intermediate expressions across logic blocks.
-    wire [7:0] dcr7: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dwcr0: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dwcr1: Combinational net that links intermediate expressions across logic blocks.
-    wire dmr1_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire dmr2_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire dsr_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire drr_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire dvr0_sel, dvr1_sel, dvr2_sel, dvr3_sel, dvr4_sel, dvr5_sel, dvr6_sel, dvr7_sel: Control signals that selects operation mode, command, or multiplexed path.
-    wire dcr0_sel, dcr1_sel, dcr2_sel, dcr3_sel, dcr4_sel, dcr5_sel, dcr6_sel, dcr7_sel: Control signals that selects operation mode, command, or multiplexed path.
-    wire dwcr0_sel, dwcr1_sel: Control signals that selects operation mode, command, or multiplexed path.
-    wire du_hwbkpt: Combinational net that links intermediate expressions across logic blocks.
-    wire tb_enw: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] tbia_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] tbim_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] tbar_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] tbts_dat_o: Signal that carries intermediate datapath values between logic stages.
+    reg [1:0] dbg_is_o: Encoded external instruction-fetch status.
+    reg dbg_ack_o: Debug acknowledge output register.
+    reg [24:0] dmr1: Debug mode register 1.
+    wire [24:0] dmr1: Debug mode register 1.
+    reg [23:0] dmr2: Debug mode register 2.
+    wire [23:0] dmr2: Debug mode register 2.
+    reg [13:0] dsr: Debug stop register.
+    wire [13:0] dsr: Debug stop register.
+    reg [13:0] drr: Debug reason register.
+    wire [13:0] drr: Debug reason register.
+    reg [31:0] dvr0: Debug value register 0.
+    wire [31:0] dvr0: Debug value register 0.
+    reg [31:0] dvr1: Debug value register 1.
+    wire [31:0] dvr1: Debug value register 1.
+    reg [31:0] dvr2: Debug value register 2.
+    wire [31:0] dvr2: Debug value register 2.
+    reg [31:0] dvr3: Debug value register 3.
+    wire [31:0] dvr3: Debug value register 3.
+    reg [31:0] dvr4: Debug value register 4.
+    wire [31:0] dvr4: Debug value register 4.
+    reg [31:0] dvr5: Debug value register 5.
+    wire [31:0] dvr5: Debug value register 5.
+    reg [31:0] dvr6: Debug value register 6.
+    wire [31:0] dvr6: Debug value register 6.
+    reg [31:0] dvr7: Debug value register 7.
+    wire [31:0] dvr7: Debug value register 7.
+    reg [7:0] dcr0: Debug control register 0.
+    wire [7:0] dcr0: Debug control register 0.
+    reg [7:0] dcr1: Debug control register 1.
+    wire [7:0] dcr1: Debug control register 1.
+    reg [7:0] dcr2: Debug control register 2.
+    wire [7:0] dcr2: Debug control register 2.
+    reg [7:0] dcr3: Debug control register 3.
+    wire [7:0] dcr3: Debug control register 3.
+    reg [7:0] dcr4: Debug control register 4.
+    wire [7:0] dcr4: Debug control register 4.
+    reg [7:0] dcr5: Debug control register 5.
+    wire [7:0] dcr5: Debug control register 5.
+    reg [7:0] dcr6: Debug control register 6.
+    wire [7:0] dcr6: Debug control register 6.
+    reg [7:0] dcr7: Debug control register 7.
+    wire [7:0] dcr7: Debug control register 7.
+    reg [31:0] dwcr0: Debug watchpoint control register 0.
+    wire [31:0] dwcr0: Debug watchpoint control register 0.
+    reg [31:0] dwcr1: Debug watchpoint control register 1.
+    wire [31:0] dwcr1: Debug watchpoint control register 1.
+    wire dmr1_sel: Debug mode register 1 select.
+    wire dmr2_sel: Debug mode register 2 select.
+    wire dsr_sel: Dsr select.
+    wire drr_sel: Drr select.
+    wire dvr0_sel: Debug value register 0 select.
+    wire dvr1_sel: Debug value register 1 select.
+    wire dvr2_sel: Debug value register 2 select.
+    wire dvr3_sel: Debug value register 3 select.
+    wire dvr4_sel: Debug value register 4 select.
+    wire dvr5_sel: Debug value register 5 select.
+    wire dvr6_sel: Debug value register 6 select.
+    wire dvr7_sel: Debug value register 7 select.
+    wire dcr0_sel: Dcr 0 select.
+    wire dcr1_sel: Dcr 1 select.
+    wire dcr2_sel: Dcr 2 select.
+    wire dcr3_sel: Dcr 3 select.
+    wire dcr4_sel: Dcr 4 select.
+    wire dcr5_sel: Dcr 5 select.
+    wire dcr6_sel: Dcr 6 select.
+    wire dcr7_sel: Dcr 7 select.
+    wire dwcr0_sel: Debug watchpoint control register 0 select.
+    wire dwcr1_sel: Debug watchpoint control register 1 select.
+    reg dbg_bp_r: One-cycle registered copy of the dbg breakpoint.
+    reg [31:0] match_cond0_ct: Match condition 0 counter.
+    reg [31:0] match_cond1_ct: Match condition 1 counter.
+    reg [31:0] match_cond2_ct: Match condition 2 counter.
+    reg [31:0] match_cond3_ct: Match condition 3 counter.
+    reg [31:0] match_cond4_ct: Match condition 4 counter.
+    reg [31:0] match_cond5_ct: Match condition 5 counter.
+    reg [31:0] match_cond6_ct: Match condition 6 counter.
+    reg [31:0] match_cond7_ct: Match condition 7 counter.
+    reg match_cond0_stb: Match condition 0 strobe.
+    reg match_cond1_stb: Match condition 1 strobe.
+    reg match_cond2_stb: Match condition 2 strobe.
+    reg match_cond3_stb: Match condition 3 strobe.
+    reg match_cond4_stb: Match condition 4 strobe.
+    reg match_cond5_stb: Match condition 5 strobe.
+    reg match_cond6_stb: Match condition 6 strobe.
+    reg match_cond7_stb: Match condition 7 strobe.
+    reg match0: Match 0.
+    reg match1: Match 1.
+    reg match2: Match 2.
+    reg match3: Match 3.
+    reg match4: Match 4.
+    reg match5: Match 5.
+    reg match6: Match 6.
+    reg match7: Match 7.
+    reg wpcntr0_match: Wpcntr 0 match.
+    reg wpcntr1_match: Wpcntr 1 match.
+    reg incr_wpcntr0: Incr wpcntr 0.
+    reg incr_wpcntr1: Incr wpcntr 1.
+    reg [10:0] wp: Wp.
+    wire du_hwbkpt: Debug unit hwbkpt.
+    reg [31:0] spr_dat_o: SPR data output.
+    reg [13:0] except_stop: Exception stop flag.
+    wire tb_enw: Trace-buffer write-enable.
+    reg [7:0] tb_wadr: Trace-buffer write address.
+    reg [31:0] tb_timstmp: Tb timstmp.
+    wire [31:0] tbia_dat_o: Trace-buffer instruction-address RAM data output.
+    wire [31:0] tbim_dat_o: Trace-buffer instruction-memory RAM data output.
+    wire [31:0] tbar_dat_o: Tbar data output.
+    wire [31:0] tbts_dat_o: Tbts data output.

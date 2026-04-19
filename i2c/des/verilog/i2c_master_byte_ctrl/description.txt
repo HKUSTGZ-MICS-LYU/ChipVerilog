@@ -31,17 +31,19 @@ Output port:
     output sda_oen: Output signal driven by the module toward surrounding logic.
 
 Internal reg/wire signals:
-    reg cmd_ack: Handshake signal that marks transfer validity, readiness, or completion.
-    reg ack_out: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [3:0] core_cmd: Control signal that selects operation mode, command, or multiplexed path.
-    reg core_txd: Sequential register that stores intermediate or output state between cycles.
-    reg [7:0] sr: Sequential register that stores intermediate or output state between cycles.
-    reg shift, ld: Sequential register that stores intermediate or output state between cycles.
-    reg [2:0] dcnt: Sequential state register that tracks control progress across cycles.
-    reg [4:0] c_state: Sequential state register that tracks control progress across cycles.
-    wire core_ack, core_rxd: Combinational net that links intermediate expressions across logic blocks.
-    wire go: Combinational net that links intermediate expressions across logic blocks.
-    wire cnt_done: Handshake signal that marks transfer validity, readiness, or completion.
+    reg cmd_ack: Byte-command complete pulse to the host side.
+    reg ack_out: Captured ACK/NACK bit returned from the slave.
+    reg [3:0] core_cmd: Command word sent into the bit controller.
+    reg core_txd: Transmit bit driven into the bit controller.
+    wire core_ack: Command-complete acknowledge from the bit controller.
+    wire core_rxd: Receive bit sampled from the bit controller.
+    reg [7:0] sr: Byte-shift register for transmit and receive data.
+    reg shift: Pulse that shifts the byte register by one bit.
+    reg ld: Pulse that loads a new byte into the shift register.
+    wire go: Start condition for launching a byte-level transfer step.
+    reg [2:0] dcnt: Bit counter for the current byte transfer.
+    wire cnt_done: Flag that the bit counter reached its terminal count.
+    reg [4:0] c_state: Current state of the byte-level transfer FSM.
 
 Implementation:
 

@@ -41,61 +41,61 @@ Output port:
     output invalid: Handshake signal that marks transfer validity, readiness, or completion.
 
 Internal reg/wire signals:
-    reg [63:0] opa_reg: Control signal that selects operation mode, command, or multiplexed path.
-    reg [63:0] opb_reg: Control signal that selects operation mode, command, or multiplexed path.
-    reg [2:0] fpu_op_reg: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] rmode_reg: Control signal that selects operation mode, command, or multiplexed path.
-    reg enable_reg: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_1: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_2: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_3: Sequential register that stores intermediate or output state between cycles.
-    reg op_enable: Control signal that selects operation mode, command, or multiplexed path.
-    reg [63:0] out: Sequential register that stores intermediate or output state between cycles.
-    reg [6:0] count_cycles: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [6:0] count_ready: Handshake signal that marks transfer validity, readiness, or completion.
-    reg ready: Handshake signal that marks transfer validity, readiness, or completion.
-    reg ready_0: Handshake signal that marks transfer validity, readiness, or completion.
-    reg ready_1: Handshake signal that marks transfer validity, readiness, or completion.
-    reg underflow: Sequential register that stores intermediate or output state between cycles.
-    reg overflow: Sequential register that stores intermediate or output state between cycles.
-    reg inexact: Sequential register that stores intermediate or output state between cycles.
-    reg exception: Sequential register that stores intermediate or output state between cycles.
-    reg invalid: Handshake signal that marks transfer validity, readiness, or completion.
-    reg add_enable: Sequential register that stores intermediate or output state between cycles.
-    reg sub_enable: Sequential register that stores intermediate or output state between cycles.
-    reg mul_enable: Sequential register that stores intermediate or output state between cycles.
-    reg div_enable: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] addsub_out: Sequential register that stores intermediate or output state between cycles.
-    reg [55:0] mantissa_round: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_round: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exp_addsub: Sequential register that stores intermediate or output state between cycles.
-    reg addsub_sign: Sequential register that stores intermediate or output state between cycles.
-    reg sign_round: Sequential register that stores intermediate or output state between cycles.
-    wire count_busy = (count_ready <= count_cycles): Combinational net that links intermediate expressions across logic blocks.
-    wire underflow_0: Combinational net that links intermediate expressions across logic blocks.
-    wire overflow_0: Combinational net that links intermediate expressions across logic blocks.
-    wire inexact_0: Combinational net that links intermediate expressions across logic blocks.
-    wire exception_0: Combinational net that links intermediate expressions across logic blocks.
-    wire invalid_0: Handshake signal that marks transfer validity, readiness, or completion.
-    wire add_enable_0 = (fpu_op_reg == 3'b000) & !(opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
-    wire add_enable_1 = (fpu_op_reg == 3'b001 & (opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
-    wire sub_enable_0 = (fpu_op_reg == 3'b000) & (opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
-    wire sub_enable_1 = (fpu_op_reg == 3'b001 & !(opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] sum_out: Signal that carries intermediate datapath values between logic stages.
-    wire [55:0] diff_out: Signal that carries intermediate datapath values between logic stages.
-    wire [55:0] mul_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] div_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [10:0] exp_add_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [10:0] exp_sub_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [11:0] exp_mul_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [11:0] exp_div_out: Combinational net that links intermediate expressions across logic blocks.
-    wire [11:0] exponent_post_round: Signal that carries intermediate datapath values between logic stages.
-    wire add_sign: Combinational net that links intermediate expressions across logic blocks.
-    wire sub_sign: Combinational net that links intermediate expressions across logic blocks.
-    wire mul_sign: Combinational net that links intermediate expressions across logic blocks.
-    wire div_sign: Combinational net that links intermediate expressions across logic blocks.
-    wire [63:0] out_round: Combinational net that links intermediate expressions across logic blocks.
-    wire [63:0] out_except: Combinational net that links intermediate expressions across logic blocks.
+    reg [63:0] opa_reg: Registered operand A.
+    reg [63:0] opb_reg: Registered operand B.
+    reg [2:0] fpu_op_reg: Registered fpu operation.
+    reg [1:0] rmode_reg: Registered rmode.
+    reg enable_reg: Registered enable flag.
+    reg enable_reg_1: Stage-1 pipeline copy of the enable flag.
+    reg enable_reg_2: Stage-2 pipeline copy of the enable flag.
+    reg enable_reg_3: Stage-3 pipeline copy of the enable flag.
+    reg op_enable: Operation enable.
+    reg [63:0] out: Output.
+    reg [6:0] count_cycles: Count cycles counter.
+    reg [6:0] count_ready: Ready flag for the completion counter path.
+    wire count_busy = (count_ready <= count_cycles): Count busy counter.
+    reg ready: Ready flag.
+    reg ready_0: Stage-0 pipeline copy of the ready flag.
+    reg ready_1: Stage-1 pipeline copy of the ready flag.
+    reg underflow: Underflow.
+    reg overflow: Overflow.
+    reg inexact: Inexact.
+    reg exception: Exception.
+    reg invalid: Invalid.
+    wire underflow_0: Stage-0 pipeline copy of the underflow.
+    wire overflow_0: Stage-0 pipeline copy of the overflow.
+    wire inexact_0: Stage-0 pipeline copy of the inexact.
+    wire exception_0: Stage-0 pipeline copy of the exception.
+    wire invalid_0: Stage-0 pipeline copy of the invalid.
+    wire add_enable_0 = (fpu_op_reg == 3'b000) & !(opa_reg[63] ^ opb_reg[63]): Stage-0 pipeline copy of the add enable flag.
+    wire add_enable_1 = (fpu_op_reg == 3'b001) & (opa_reg[63] ^ opb_reg[63]): Stage-1 pipeline copy of the add enable flag.
+    reg add_enable: Add enable flag.
+    wire sub_enable_0 = (fpu_op_reg == 3'b000) & (opa_reg[63] ^ opb_reg[63]): Stage-0 pipeline copy of the subtract enable flag.
+    wire sub_enable_1 = (fpu_op_reg == 3'b001) & !(opa_reg[63] ^ opb_reg[63]): Stage-1 pipeline copy of the subtract enable flag.
+    reg sub_enable: Subtract enable flag.
+    reg mul_enable: Multiply enable flag.
+    reg div_enable: Div enable flag.
+    wire [55:0] sum_out: Sum output register.
+    wire [55:0] diff_out: Diff output register.
+    reg [55:0] addsub_out: Addsub output register.
+    wire [55:0] mul_out: Multiply output register.
+    wire [55:0] div_out: Div output register.
+    reg [55:0] mantissa_round: Mantissa round.
+    wire [10:0] exp_add_out: Exp add output register.
+    wire [10:0] exp_sub_out: Exp subtract output register.
+    wire [11:0] exp_mul_out: Exp multiply output register.
+    wire [11:0] exp_div_out: Exp div output register.
+    reg [11:0] exponent_round: Exponent round.
+    reg [11:0] exp_addsub: Exp addsub.
+    wire [11:0] exponent_post_round: Exponent post round.
+    wire add_sign: Add sign.
+    wire sub_sign: Subtract sign.
+    wire mul_sign: Multiply sign.
+    wire div_sign: Div sign.
+    reg addsub_sign: Addsub sign.
+    reg sign_round: Result sign bit.
+    wire [63:0] out_round: Output round.
+    wire [63:0] out_except: Output exception.
 
 
 

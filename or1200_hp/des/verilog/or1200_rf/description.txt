@@ -71,19 +71,19 @@ Output port:
     - datab[31:0]: Read data returned from register-file port B.
     - spr_dat_o[31:0]: Read data returned on the SPR bus.
 Internal reg/wire signals:
-    reg [dw:0] dataa_saved: Signal that carries intermediate datapath values between logic stages.
-    reg [dw:0] datab_saved: Signal that carries intermediate datapath values between logic stages.
-    reg rf_we_allow: Signal that carries intermediate datapath values between logic stages.
-    reg [4:0] rf_addra_reg: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [4:0] rf_addrb_reg: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [dw-1:0] from_rfa: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] from_rfb: Combinational net that links intermediate expressions across logic blocks.
-    wire [aw-1:0] rf_addra: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [aw-1:0] rf_addrw: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [dw-1:0] rf_dataw: Signal that carries intermediate datapath values between logic stages.
-    wire rf_we: Signal that carries intermediate datapath values between logic stages.
-    wire spr_valid: Handshake signal that marks transfer validity, readiness, or completion.
-    wire rf_ena: Signal that carries intermediate datapath values between logic stages.
-    wire rf_enb: Signal that carries intermediate datapath values between logic stages.
-    wire [dw-1:0] from_rfa_int: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] from_rfb_int: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] from_rfa: From rfa.
+    wire [31:0] from_rfb: From rfb.
+    reg [32:0] dataa_saved: Dataa saved.
+    reg [32:0] datab_saved: Datab saved.
+    wire [4:0] rf_addra: Register-file read address for port A.
+    wire [4:0] rf_addrw: Register-file write address.
+    wire [31:0] rf_dataw: Register-file write data.
+    wire rf_we: Register file write-enable.
+    wire spr_valid: SPR valid flag.
+    wire rf_ena: Register file enable flag.
+    wire rf_enb: Register file enb.
+    reg rf_we_allow: Register file write-enable allow.
+    wire [31:0] from_rfa_int: From rfa int.
+    wire [31:0] from_rfb_int: From rfb int.
+    reg [4:0] rf_addra_reg: Registered register file addra.
+    reg [4:0] rf_addrb_reg: Registered register file addrb.

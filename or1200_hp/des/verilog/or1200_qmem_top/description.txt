@@ -135,16 +135,16 @@ Output port:
     - dcqmem_tag_o[3:0]: Tag field carried on the data-cache/QMEM interface.
     - dcqmem_dat_o[31:0]: Data bus for the data-cache/QMEM interface.
 Internal reg/wire signals:
-    reg [2:0] state: Sequential state register that tracks control progress across cycles.
-    reg qmem_dack: Handshake signal that marks transfer validity, readiness, or completion.
-    reg qmem_iack: Handshake signal that marks transfer validity, readiness, or completion.
-    wire iaddr_qmem_hit: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire daddr_qmem_hit: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [31:0] qmem_di: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] qmem_do: Signal that carries intermediate datapath values between logic stages.
-    wire qmem_en: Signal that carries intermediate datapath values between logic stages.
-    wire qmem_we: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] qmem_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire [31:0] qmem_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire qmem_ack: Handshake signal that marks transfer validity, readiness, or completion.
-    wire qmem_ack = 1'b1: Handshake signal that marks transfer validity, readiness, or completion.
+    wire iaddr_qmem_hit: Iaddr QMEM hit.
+    wire daddr_qmem_hit: Daddr QMEM hit.
+    reg [2:0] state: State.
+    reg qmem_dack: QMEM dack.
+    reg qmem_iack: QMEM iack.
+    wire [31:0] qmem_di: QMEM di.
+    wire [31:0] qmem_do: QMEM do.
+    wire qmem_en: QMEM enable flag.
+    wire qmem_we: QMEM write-enable.
+    wire [3:0] qmem_sel: QMEM select.
+    wire [31:0] qmem_addr: QMEM address.
+    wire qmem_ack: QMEM acknowledge.
+    wire qmem_ack = 1'b1: QMEM acknowledge.

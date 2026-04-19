@@ -61,22 +61,22 @@ Output port:
     - cyforw: Forwarded next value for the SR carry bit.
     - cy_we: Write-enable for the SR carry bit.
 Internal reg/wire signals:
-    reg [width-1:0] result: Sequential register that stores intermediate or output state between cycles.
-    reg [width-1:0] shifted_rotated: Sequential register that stores intermediate or output state between cycles.
-    reg [width-1:0] result_cust5: Sequential register that stores intermediate or output state between cycles.
-    reg flagforw: Sequential register that stores intermediate or output state between cycles.
-    reg flagcomp: Sequential register that stores intermediate or output state between cycles.
-    reg flag_we: Sequential register that stores intermediate or output state between cycles.
-    reg cy_we: Signal that carries intermediate datapath values between logic stages.
-    reg cyforw: Sequential register that stores intermediate or output state between cycles.
-    wire [width-1:0] comp_a: Combinational net that links intermediate expressions across logic blocks.
-    wire [width-1:0] comp_b: Combinational net that links intermediate expressions across logic blocks.
-    wire a_eq_b: Combinational net that links intermediate expressions across logic blocks.
-    wire a_lt_b: Combinational net that links intermediate expressions across logic blocks.
-    wire [width-1:0] result_sum: Signal that carries intermediate datapath values between logic stages.
-    wire [width-1:0] result_csum: Signal that carries intermediate datapath values between logic stages.
-    wire cy_csum: Signal that carries intermediate datapath values between logic stages.
-    wire [width-1:0] result_and: Combinational net that links intermediate expressions across logic blocks.
-    wire cy_sum: Signal that carries intermediate datapath values between logic stages.
-    wire [width:0] cy_sum_result_sum: Signal that carries intermediate datapath values between logic stages.
-    wire [width:0] cy_csum_result_csum: Signal that carries intermediate datapath values between logic stages.
+    reg [31:0] result: Result.
+    reg [31:0] shifted_rotated: Shifted rotated.
+    reg [31:0] result_cust5: Result cust 5.
+    reg flagforw: Forwarded condition-flag value.
+    reg flagcomp: Flagcomp.
+    reg flag_we: Flag write-enable.
+    reg cy_we: Carry write-enable.
+    wire [31:0] comp_a: Compare A.
+    wire [31:0] comp_b: Compare B.
+    wire a_eq_b: A eq B.
+    wire a_lt_b: A lt B.
+    wire [31:0] result_sum: Result sum.
+    wire [31:0] result_csum: Result csum.
+    wire cy_csum: Carry csum.
+    wire [31:0] result_and: Result and.
+    wire cy_sum: Carry sum.
+    reg cyforw: Forwarded carry-flag value.
+    wire [32:0] cy_sum_result_sum: Carry sum result sum.
+    wire [32:0] cy_csum_result_csum: Carry csum result csum.

@@ -49,11 +49,11 @@ Output port:
     - pic_wakeup: Programmable interrupt controller wakeup.
     - intr: Combined interrupt request output.
 Internal reg/wire signals:
-    reg [19:2] picmr: Sequential register that stores intermediate or output state between cycles.
-    reg [19:0] picsr: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] spr_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire [19:2] picmr: Combinational net that links intermediate expressions across logic blocks.
-    wire [19:0] picsr: Combinational net that links intermediate expressions across logic blocks.
-    wire picmr_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire picsr_sel: Control signal that selects operation mode, command, or multiplexed path.
-    wire [19:0] um_ints: Combinational net that links intermediate expressions across logic blocks.
+    reg [19:2] picmr: PIC mask register.
+    wire [19:2] picmr: PIC mask register.
+    reg [19:0] picsr: PIC status register.
+    wire [19:0] picsr: PIC status register.
+    wire picmr_sel: PIC mask register select.
+    wire picsr_sel: PIC status register select.
+    wire [19:0] um_ints: Um ints.
+    reg [31:0] spr_dat_o: SPR data output.

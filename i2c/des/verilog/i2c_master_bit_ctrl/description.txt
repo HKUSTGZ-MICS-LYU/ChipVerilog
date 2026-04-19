@@ -26,21 +26,25 @@ Output port:
     output reg sda_oen: Output signal driven by the module toward surrounding logic.
 
 Internal reg/wire signals:
-    reg [ 1:0] cSCL, cSDA: Sequential register that stores intermediate or output state between cycles.
-    reg [ 2:0] fSCL, fSDA: Sequential register that stores intermediate or output state between cycles.
-    reg sSCL, sSDA: Sequential register that stores intermediate or output state between cycles.
-    reg dSCL, dSDA: Sequential register that stores intermediate or output state between cycles.
-    reg dscl_oen: Sequential register that stores intermediate or output state between cycles.
-    reg sda_chk: Sequential register that stores intermediate or output state between cycles.
-    reg clk_en: Clock signal that defines sequential update timing for this logic.
-    reg slave_wait: Sequential register that stores intermediate or output state between cycles.
-    reg [15:0] cnt: Sequential state register that tracks control progress across cycles.
-    reg [13:0] filter_cnt: Sequential state register that tracks control progress across cycles.
-    reg [17:0] c_state: Sequential state register that tracks control progress across cycles.
-    reg sta_condition: Sequential register that stores intermediate or output state between cycles.
-    reg sto_condition: Sequential register that stores intermediate or output state between cycles.
-    reg cmd_stop: Control signal that selects operation mode, command, or multiplexed path.
-    wire scl_sync = dSCL & ~sSCL & scl_oen: Combinational net that links intermediate expressions across logic blocks.
+    reg [ 1:0] cSCL: Captured SCL samples used by the input filter.
+    reg [ 1:0] cSDA: Captured SDA samples used by the input filter.
+    reg [ 2:0] fSCL: Filtered SCL sample history.
+    reg [ 2:0] fSDA: Filtered SDA sample history.
+    reg sSCL: Filtered and synchronized SCL input.
+    reg sSDA: Filtered and synchronized SDA input.
+    reg dSCL: Delayed copy of the synchronized SCL input.
+    reg dSDA: Delayed copy of the synchronized SDA input.
+    reg dscl_oen: Delayed copy of `scl_oen` for stretch/sync checks.
+    reg sda_chk: Enables SDA arbitration checking during driven bits.
+    reg clk_en: Prescaler tick that advances the bit-level FSM.
+    reg slave_wait: Indicates that a slave is stretching SCL low.
+    reg [15:0] cnt: Clock-divider counter.
+    reg [13:0] filter_cnt: Clock divider that times the input filter.
+    reg [17:0] c_state: Current state of the bit-level command FSM.
+    wire scl_sync = dSCL & ~sSCL & scl_oen: Clock-synchronization pulse when SCL is held low externally.
+    reg sta_condition: Detected I2C START condition.
+    reg sto_condition: Detected I2C STOP condition.
+    reg cmd_stop: Decoded request for a STOP command.
 
 Implementation:
 

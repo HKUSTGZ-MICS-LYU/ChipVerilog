@@ -86,30 +86,30 @@ Output port:
     - biu_ack_o: Acknowledge/transfer-complete indication for the internal BIU interface.
     - biu_err_o: Error termination indication for the internal BIU interface.
 Internal reg/wire signals:
-    reg [1:0] valid_div: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [aw-1:0] wb_adr_o: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg wb_cyc_o: Handshake signal that marks transfer validity, readiness, or completion.
-    reg wb_stb_o: Handshake signal that marks transfer validity, readiness, or completion.
-    reg wb_we_o: Sequential register that stores intermediate or output state between cycles.
-    reg [3:0] wb_sel_o: Control signal that selects operation mode, command, or multiplexed path.
-    reg wb_cab_o: Sequential register that stores intermediate or output state between cycles.
-    reg [1:0] burst_len: Reset signal that initializes state elements to known values.
-    reg [2:0] wb_cti_o: Sequential register that stores intermediate or output state between cycles.
-    reg [dw-1:0] wb_dat_o: Signal that carries intermediate datapath values between logic stages.
-    reg long_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
-    reg long_err_o: Sequential register that stores intermediate or output state between cycles.
-    reg [dw-1:0] biu_dat_o: Signal that carries intermediate datapath values between logic stages.
-    reg aborted_r: Sequential register that stores intermediate or output state between cycles.
-    reg [6:0] retry_cntr: Signal that carries intermediate datapath values between logic stages.
-    reg previous_complete: Sequential register that stores intermediate or output state between cycles.
-    reg repeated_access_ack: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [dw-1:0] wb_dat_r: Signal that carries intermediate datapath values between logic stages.
-    wire long_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
-    wire long_err_o: Combinational net that links intermediate expressions across logic blocks.
-    wire aborted: Combinational net that links intermediate expressions across logic blocks.
-    wire retry: Combinational net that links intermediate expressions across logic blocks.
-    wire same_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire repeated_access: Combinational net that links intermediate expressions across logic blocks.
+    reg [1:0] valid_div: Valid div flag.
+    reg [31:0] wb_adr_o: Writeback-stage address output.
+    reg wb_cyc_o: Writeback-stage cycle output.
+    reg wb_stb_o: Writeback-stage strobe output.
+    reg wb_we_o: Writeback-stage write-enable output.
+    reg [3:0] wb_sel_o: Writeback-stage select output.
+    reg wb_cab_o: Writeback-stage burst cycle output.
+    reg [1:0] burst_len: Burst len.
+    reg [2:0] wb_cti_o: Writeback-stage cti output.
+    reg [31:0] wb_dat_o: Writeback-stage data output.
+    reg long_ack_o: Long acknowledge output flag.
+    reg long_err_o: Long error output flag.
+    reg [31:0] biu_dat_o: Bus interface unit data output.
+    wire long_ack_o: Long acknowledge output flag.
+    wire long_err_o: Long error output flag.
+    wire aborted: Abort flag.
+    reg aborted_r: One-cycle registered copy of the abort flag.
+    wire retry: Retry flag.
+    reg [6:0] retry_cntr: Retry cntr flag.
+    reg previous_complete: Previous complete.
+    wire same_addr: Same address.
+    wire repeated_access: Repeated access.
+    reg repeated_access_ack: Repeated access acknowledge.
+    reg [31:0] wb_dat_r: One-cycle registered copy of the writeback-stage data.
 
 Implementation:
 

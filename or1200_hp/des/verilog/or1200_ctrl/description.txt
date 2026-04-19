@@ -118,33 +118,33 @@ Output port:
     - rfe: Exception-return control indication.
     - except_illegal: Illegal-instruction exception indication exported to exception control.
 Internal reg/wire signals:
-    reg [2:0] pre_branch_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [2:0] branch_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [3:0] alu_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] mac_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg ex_macrc_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] shrot_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [31:0] id_insn: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] ex_insn: Signal that carries intermediate datapath values between logic stages.
-    reg [31:0] wb_insn: Sequential register that stores intermediate or output state between cycles.
-    reg [4:0] rf_addrw: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [4:0] wb_rfaddrw: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [2:0] rfwb_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [31:0] lsu_addrofs: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [1:0] sel_a: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] sel_b: Control signal that selects operation mode, command, or multiplexed path.
-    reg sel_imm: Control signal that selects operation mode, command, or multiplexed path.
-    reg [3:0] lsu_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [3:0] comp_op: Control signal that selects operation mode, command, or multiplexed path.
-    reg [1:0] multicycle: Handshake signal that marks transfer validity, readiness, or completion.
-    reg imm_signextend: Sequential register that stores intermediate or output state between cycles.
-    reg [15:0] spr_addrimm: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg sig_syscall: Sequential register that stores intermediate or output state between cycles.
-    reg sig_trap: Sequential register that stores intermediate or output state between cycles.
-    reg except_illegal: Sequential register that stores intermediate or output state between cycles.
-    wire [1:0] mac_op: Control signal that selects operation mode, command, or multiplexed path.
-    wire ex_macrc_op: Control signal that selects operation mode, command, or multiplexed path.
-    wire id_void: Combinational net that links intermediate expressions across logic blocks.
+    reg [2:0] pre_branch_op: Pre branch operation.
+    reg [2:0] branch_op: Branch operation select.
+    reg [3:0] alu_op: ALU operation select.
+    reg [1:0] mac_op: Multiply-accumulate operation select.
+    reg ex_macrc_op: Execute-stage macrc operation.
+    wire [1:0] mac_op: Multiply-accumulate operation select.
+    wire ex_macrc_op: Execute-stage macrc operation.
+    reg [1:0] shrot_op: Shift/rotate operation select.
+    reg [31:0] id_insn: Decode-stage instruction.
+    reg [31:0] ex_insn: Execute-stage instruction.
+    reg [31:0] wb_insn: Writeback-stage instruction.
+    reg [4:0] rf_addrw: Register-file write address.
+    reg [4:0] wb_rfaddrw: Writeback-stage rfaddrw.
+    reg [2:0] rfwb_op: Register-file writeback operation select.
+    reg [31:0] lsu_addrofs: Load/store unit address offset.
+    reg [1:0] sel_a: Operand-A mux select.
+    reg [1:0] sel_b: Operand-B mux select.
+    reg sel_imm: Select immediate.
+    reg [3:0] lsu_op: Load/store unit operation select.
+    reg [3:0] comp_op: Compare operation select.
+    reg [1:0] multicycle: Multicycle-operation control.
+    reg imm_signextend: Immediate signextend.
+    reg [15:0] spr_addrimm: Immediate SPR address field.
+    reg sig_syscall: Decoded system-call flag.
+    reg sig_trap: Decoded trap flag.
+    reg except_illegal: Exception illegal.
+    wire id_void: Decode-stage void.
 
 Implementation:
 

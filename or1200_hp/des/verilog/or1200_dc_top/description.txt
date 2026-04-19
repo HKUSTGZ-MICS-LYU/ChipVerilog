@@ -103,28 +103,28 @@ Output port:
     - dcqmem_tag_o[3:0]: Tag field carried on the data-cache/QMEM interface.
     - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
 Internal reg/wire signals:
-    reg tagcomp_miss: Sequential register that stores intermediate or output state between cycles.
-    wire tag_v: Combinational net that links intermediate expressions across logic blocks.
-    wire [18:0] tag: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] to_dcram: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] from_dcram: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] saved_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [3:0] dcram_we: Combinational net that links intermediate expressions across logic blocks.
-    wire dctag_we: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dc_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire dcfsm_biu_read: Combinational net that links intermediate expressions across logic blocks.
-    wire dcfsm_biu_write: Combinational net that links intermediate expressions across logic blocks.
-    wire [12:4] dctag_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire dctag_en: Combinational net that links intermediate expressions across logic blocks.
-    wire dctag_v: Combinational net that links intermediate expressions across logic blocks.
-    wire dc_inv: Combinational net that links intermediate expressions across logic blocks.
-    wire dcfsm_first_hit_ack: Reset signal that initializes state elements to known values.
-    wire dcfsm_first_miss_ack: Reset signal that initializes state elements to known values.
-    wire dcfsm_first_miss_err: Reset signal that initializes state elements to known values.
-    wire dcfsm_burst: Reset signal that initializes state elements to known values.
-    wire dcfsm_tag_we: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_tag_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ram_si = mbist_si_i: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_tag_si = mbist_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:12] dc_tag_datain: Signal that carries intermediate datapath values between logic stages.
+    wire tag_v: Cache-tag valid bit.
+    wire [18:0] tag: Cache-tag value read from the data-cache tag RAM.
+    wire [31:0] to_dcram: To dcram.
+    wire [31:0] from_dcram: From dcram.
+    wire [31:0] saved_addr: Saved address.
+    wire [3:0] dcram_we: Dcram write-enable.
+    wire dctag_we: Data-cache tag RAM write-enable.
+    wire [31:0] dc_addr: Data cache address.
+    wire dcfsm_biu_read: Data-cache FSM bus interface unit read.
+    wire dcfsm_biu_write: Data-cache FSM bus interface unit write.
+    reg tagcomp_miss: Tag-compare miss flag.
+    wire [12:4] dctag_addr: Data-cache tag RAM address.
+    wire dctag_en: Data-cache tag RAM enable flag.
+    wire dctag_v: Data-cache tag RAM valid.
+    wire dc_inv: Data-cache invalidate request.
+    wire dcfsm_first_hit_ack: Data-cache FSM first hit acknowledge.
+    wire dcfsm_first_miss_ack: Data-cache FSM first miss acknowledge.
+    wire dcfsm_first_miss_err: Data-cache FSM first miss error flag.
+    wire dcfsm_burst: Data-cache FSM burst.
+    wire dcfsm_tag_we: Data-cache FSM tag write-enable.
+    wire mbist_ram_so: MBIST RAM serial output.
+    wire mbist_tag_so: MBIST tag serial output.
+    wire mbist_ram_si = mbist_si_i: MBIST RAM serial input flag.
+    wire mbist_tag_si = mbist_ram_so: MBIST tag serial input.
+    wire [31:12] dc_tag_datain: Data cache tag datain.

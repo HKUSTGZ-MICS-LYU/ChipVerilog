@@ -73,11 +73,11 @@ Output port:
     - tag_we: Write enable for the tag RAM.
     - dc_addr[31:0]: Address currently driven by the data-cache controller toward RAM/BIU.
 Internal reg/wire signals:
-    reg [31:0] saved_addr_r: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [2:0] state: Sequential state register that tracks control progress across cycles.
-    reg [2:0] cnt: Sequential state register that tracks control progress across cycles.
-    reg hitmiss_eval: Sequential register that stores intermediate or output state between cycles.
-    reg store: Sequential register that stores intermediate or output state between cycles.
-    reg load: Sequential register that stores intermediate or output state between cycles.
-    reg cache_inhibit: Sequential register that stores intermediate or output state between cycles.
-    wire first_store_hit_ack: Reset signal that initializes state elements to known values.
+    reg [31:0] saved_addr_r: One-cycle registered copy of the saved address.
+    reg [2:0] state: State.
+    reg [2:0] cnt: Count counter.
+    reg hitmiss_eval: Hit/miss evaluation flag.
+    reg store: Store.
+    reg load: Load flag.
+    reg cache_inhibit: Cache inhibit.
+    wire first_store_hit_ack: First store hit acknowledge.

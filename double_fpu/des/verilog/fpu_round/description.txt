@@ -29,21 +29,21 @@ Output port:
     output [11:0] exponent_final: Data output that carries computed results or status information. exponent after rounding overflow adjustment.
 
 Internal reg/wire signals:
-    reg [55:0] sum_round: Signal that carries intermediate datapath values between logic stages.
-    reg [55:0] sum_round_2: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_round: Signal that carries intermediate datapath values between logic stages.
-    reg [55:0] sum_final: Signal that carries intermediate datapath values between logic stages.
-    reg [11:0] exponent_final: Signal that carries intermediate datapath values between logic stages.
-    reg [63:0] round_out: Sequential register that stores intermediate or output state between cycles.
-    wire [55:0] rounding_amount = { 53'b0, 1'b1, 2'b0}: Combinational net that links intermediate expressions across logic blocks.
-    wire round_nearest = (round_mode == 2'b00): Combinational net that links intermediate expressions across logic blocks.
-    wire round_to_zero = (round_mode == 2'b01): Combinational net that links intermediate expressions across logic blocks.
-    wire round_to_pos_inf = (round_mode == 2'b10): Combinational net that links intermediate expressions across logic blocks.
-    wire round_to_neg_inf = (round_mode == 2'b11): Combinational net that links intermediate expressions across logic blocks.
-    wire round_nearest_trigger = round_nearest & mantissa_term[1]: Combinational net that links intermediate expressions across logic blocks.
-    wire round_to_pos_inf_trigger = !sign_term & |mantissa_term[1:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire round_to_neg_inf_trigger = sign_term & |mantissa_term[1:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire round_trigger = ( round_nearest & round_nearest_trigger) | (round_to_pos_inf & round_to_pos_inf_trigger) | (round_to_neg_inf & round_to_neg_inf_trigger): Combinational net that links intermediate expressions across logic blocks.
-    wire sum_round_overflow = sum_round[55]: Signal that carries intermediate datapath values between logic stages.
+    wire [55:0] rounding_amount = { 53'b0, 1'b1, 2'b0}: Rounding amount.
+    wire round_nearest = (round_mode == 2'b00): Round nearest flag.
+    wire round_to_zero = (round_mode == 2'b01): Round to zero flag.
+    wire round_to_pos_inf = (round_mode == 2'b10): Round to positive-infinity flag.
+    wire round_to_neg_inf = (round_mode == 2'b11): Round to negative-infinity flag.
+    wire round_nearest_trigger = round_nearest &  mantissa_term[1]: Round nearest trigger flag.
+    wire round_to_pos_inf_trigger = !sign_term & |mantissa_term[1:0]: Round to pos infinity trigger flag.
+    wire round_to_neg_inf_trigger = sign_term & |mantissa_term[1:0]: Round to neg infinity trigger flag.
+    wire round_trigger = ( round_nearest & round_nearest_trigger) | (round_to_pos_inf & round_to_pos_inf_trigger) | (round_to_neg_inf & round_to_neg_inf_trigger): Round trigger flag.
+    reg [55:0] sum_round: Sum round.
+    wire sum_round_overflow = sum_round[55]: Sum round overflow flag.
+    reg [55:0] sum_round_2: Stage-2 pipeline copy of the sum round.
+    reg [11:0] exponent_round: Exponent round.
+    reg [55:0] sum_final: Sum final.
+    reg [11:0] exponent_final: Exponent final.
+    reg [63:0] round_out: Round output register.
 
 

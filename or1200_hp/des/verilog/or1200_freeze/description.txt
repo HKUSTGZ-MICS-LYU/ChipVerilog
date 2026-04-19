@@ -63,6 +63,6 @@ Output port:
     - ex_freeze: Freeze control for the execute stage.
     - wb_freeze: Freeze control for the writeback stage.
 Internal reg/wire signals:
-    reg [1:0] multicycle_cnt: Handshake signal that marks transfer validity, readiness, or completion.
-    reg flushpipe_r: Sequential register that stores intermediate or output state between cycles.
-    wire multicycle_freeze: Handshake signal that marks transfer validity, readiness, or completion.
+    wire multicycle_freeze: Freeze asserted while a multicycle op is active.
+    reg [1:0] multicycle_cnt: Countdown for the remaining multicycle stalls.
+    reg flushpipe_r: One-cycle registered copy of the pipeline flush request.

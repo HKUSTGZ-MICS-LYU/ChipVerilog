@@ -44,10 +44,10 @@ Output port:
     - dataout[31:0]: Read data returned from the local storage block.
     - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
 Internal reg/wire signals:
-    wire en_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [0 : 0] we_wire: Combinational net that links intermediate expressions across logic blocks.
-    wire [10 : 0] addr_wire: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [31 : 0] datain_wire: Signal that carries intermediate datapath values between logic stages.
+    wire en_wire: RAM enable signal.
+    wire [0 : 0] we_wire: RAM write-enable signal.
+    wire [10 : 0] addr_wire: RAM address signal.
+    wire [31 : 0] datain_wire: RAM write-data signal.
 
 Implementation:
 

@@ -160,143 +160,143 @@ Output port:
     - pm_wakeup_o: Wakeup indication exported by the PM block.
     - pm_lvolt_o: Low-voltage request exported by the PM block.
 Internal reg/wire signals:
-    wire iwb_clk_i = clk_i: Clock signal that defines sequential update timing for this logic.
-    wire iwb_rst_i = rst_i: Reset signal that initializes state elements to known values.
-    wire dwb_clk_i = clk_i: Clock signal that defines sequential update timing for this logic.
-    wire dwb_rst_i = rst_i: Reset signal that initializes state elements to known values.
-    wire [dw-1:0] dcsb_dat_dc: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] dcsb_adr_dc: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire dcsb_cyc_dc: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcsb_stb_dc: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcsb_we_dc: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] dcsb_sel_dc: Control signal that selects operation mode, command, or multiplexed path.
-    wire dcsb_cab_dc: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] dcsb_dat_sb: Signal that carries intermediate datapath values between logic stages.
-    wire dcsb_ack_sb: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcsb_err_sb: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] sbbiu_dat_sb: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] sbbiu_adr_sb: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire sbbiu_cyc_sb: Handshake signal that marks transfer validity, readiness, or completion.
-    wire sbbiu_stb_sb: Handshake signal that marks transfer validity, readiness, or completion.
-    wire sbbiu_we_sb: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] sbbiu_sel_sb: Control signal that selects operation mode, command, or multiplexed path.
-    wire sbbiu_cab_sb: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] sbbiu_dat_biu: Signal that carries intermediate datapath values between logic stages.
-    wire sbbiu_ack_biu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire sbbiu_err_biu: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] icbiu_dat_ic: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] icbiu_adr_ic: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire icbiu_cyc_ic: Handshake signal that marks transfer validity, readiness, or completion.
-    wire icbiu_stb_ic: Handshake signal that marks transfer validity, readiness, or completion.
-    wire icbiu_we_ic: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] icbiu_sel_ic: Control signal that selects operation mode, command, or multiplexed path.
-    wire [3:0] icbiu_tag_ic: Combinational net that links intermediate expressions across logic blocks.
-    wire icbiu_cab_ic: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] icbiu_dat_biu: Signal that carries intermediate datapath values between logic stages.
-    wire icbiu_ack_biu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire icbiu_err_biu: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] icbiu_tag_biu: Combinational net that links intermediate expressions across logic blocks.
-    wire supv: Combinational net that links intermediate expressions across logic blocks.
-    wire [aw-1:0] spr_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [dw-1:0] spr_dat_cpu: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] spr_cs: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_we: Combinational net that links intermediate expressions across logic blocks.
-    wire dmmu_en: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] spr_dat_dmmu: Signal that carries intermediate datapath values between logic stages.
-    wire qmemdmmu_err_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] qmemdmmu_tag_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] qmemdmmu_adr_dmmu: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire qmemdmmu_cycstb_dmmu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire qmemdmmu_ci_dmmu: Signal that carries intermediate datapath values between logic stages.
-    wire dc_en: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dcpu_adr_cpu: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire dcpu_cycstb_cpu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcpu_we_cpu: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] dcpu_sel_cpu: Control signal that selects operation mode, command, or multiplexed path.
-    wire [3:0] dcpu_tag_cpu: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dcpu_dat_cpu: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] dcpu_dat_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire dcpu_ack_qmem: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcpu_rty_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire dcpu_err_dmmu: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] dcpu_tag_dmmu: Combinational net that links intermediate expressions across logic blocks.
-    wire immu_en: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] spr_dat_immu: Signal that carries intermediate datapath values between logic stages.
-    wire ic_en: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] icpu_adr_cpu: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire icpu_cycstb_cpu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire [3:0] icpu_sel_cpu: Control signal that selects operation mode, command, or multiplexed path.
-    wire [3:0] icpu_tag_cpu: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] icpu_dat_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire icpu_ack_qmem: Handshake signal that marks transfer validity, readiness, or completion.
-    wire [31:0] icpu_adr_immu: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire icpu_err_immu: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] icpu_tag_immu: Combinational net that links intermediate expressions across logic blocks.
-    wire icpu_rty_immu: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] qmemimmu_adr_immu: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire qmemimmu_rty_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire qmemimmu_err_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] qmemimmu_tag_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire qmemimmu_cycstb_immu: Handshake signal that marks transfer validity, readiness, or completion.
-    wire qmemimmu_ci_immu: Signal that carries intermediate datapath values between logic stages.
-    wire [aw-1:0] icqmem_adr_qmem: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire icqmem_rty_ic: Signal that carries intermediate datapath values between logic stages.
-    wire icqmem_err_ic: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] icqmem_tag_ic: Signal that carries intermediate datapath values between logic stages.
-    wire icqmem_cycstb_qmem: Handshake signal that marks transfer validity, readiness, or completion.
-    wire icqmem_ci_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] icqmem_dat_ic: Signal that carries intermediate datapath values between logic stages.
-    wire icqmem_ack_ic: Handshake signal that marks transfer validity, readiness, or completion.
-    wire [aw-1:0] dcqmem_adr_qmem: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire dcqmem_rty_dc: Signal that carries intermediate datapath values between logic stages.
-    wire dcqmem_err_dc: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] dcqmem_tag_dc: Signal that carries intermediate datapath values between logic stages.
-    wire dcqmem_cycstb_qmem: Handshake signal that marks transfer validity, readiness, or completion.
-    wire dcqmem_ci_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] dcqmem_dat_dc: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] dcqmem_dat_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire dcqmem_we_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] dcqmem_sel_qmem: Control signal that selects operation mode, command, or multiplexed path.
-    wire dcqmem_ack_dc: Handshake signal that marks transfer validity, readiness, or completion.
-    wire [dw-1:0] spr_dat_pic: Signal that carries intermediate datapath values between logic stages.
-    wire pic_wakeup: Combinational net that links intermediate expressions across logic blocks.
-    wire sig_int: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] spr_dat_pm: Signal that carries intermediate datapath values between logic stages.
-    wire [dw-1:0] spr_dat_tt: Signal that carries intermediate datapath values between logic stages.
-    wire sig_tick: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] spr_dat_du: Signal that carries intermediate datapath values between logic stages.
-    wire du_stall: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] du_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [dw-1:0] du_dat_du: Signal that carries intermediate datapath values between logic stages.
-    wire du_read: Combinational net that links intermediate expressions across logic blocks.
-    wire du_write: Combinational net that links intermediate expressions across logic blocks.
-    wire [12:0] du_except: Combinational net that links intermediate expressions across logic blocks.
-    wire [13:0] du_dsr: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] du_dat_cpu: Signal that carries intermediate datapath values between logic stages.
-    wire du_hwbkpt: Combinational net that links intermediate expressions across logic blocks.
-    wire ex_freeze: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] ex_insn: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] id_pc: Combinational net that links intermediate expressions across logic blocks.
-    wire [2:0] branch_op: Control signal that selects operation mode, command, or multiplexed path.
-    wire [31:0] spr_dat_npc: Signal that carries intermediate datapath values between logic stages.
-    wire [31:0] rf_dataw: Signal that carries intermediate datapath values between logic stages.
-    wire mbist_immu_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ic_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_dmmu_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_dc_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_qmem_so: Signal that carries intermediate datapath values between logic stages.
-    wire mbist_immu_si = mbist_si_i: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ic_si = mbist_immu_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_qmem_si = mbist_ic_so: Signal that carries intermediate datapath values between logic stages.
-    wire mbist_dmmu_si = mbist_qmem_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_dc_si = mbist_dmmu_so: Combinational net that links intermediate expressions across logic blocks.
-    wire [3:0] icqmem_sel_qmem: Control signal that selects operation mode, command, or multiplexed path.
-    wire [3:0] icqmem_tag_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire [3:0] dcqmem_tag_qmem: Signal that carries intermediate datapath values between logic stages.
-    wire spr_cs_group_immu: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_ic: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_dmmu: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_dc: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_du: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_pic: Combinational net that links intermediate expressions across logic blocks.
-    wire spr_cs_group_tt: Combinational net that links intermediate expressions across logic blocks.
+    wire iwb_clk_i = clk_i: Instruction Wishbone clock input flag.
+    wire iwb_rst_i = rst_i: Instruction Wishbone reset input flag.
+    wire dwb_clk_i = clk_i: Data Wishbone clock input flag.
+    wire dwb_rst_i = rst_i: Data Wishbone reset input flag.
+    wire [31:0] dcsb_dat_dc: DC-SB data on the DC side.
+    wire [31:0] dcsb_adr_dc: Dcsb address data cache.
+    wire dcsb_cyc_dc: Dcsb cycle data cache.
+    wire dcsb_stb_dc: Dcsb strobe data cache.
+    wire dcsb_we_dc: Dcsb write-enable data cache.
+    wire [3:0] dcsb_sel_dc: Dcsb select data cache.
+    wire dcsb_cab_dc: Dcsb burst cycle data cache.
+    wire [31:0] dcsb_dat_sb: Dcsb data store buffer.
+    wire dcsb_ack_sb: Dcsb acknowledge store buffer flag.
+    wire dcsb_err_sb: Dcsb error store buffer flag.
+    wire [31:0] sbbiu_dat_sb: SB-BIU data on the SB side.
+    wire [31:0] sbbiu_adr_sb: Sbbiu address store buffer.
+    wire sbbiu_cyc_sb: Sbbiu cycle store buffer.
+    wire sbbiu_stb_sb: Sbbiu strobe store buffer.
+    wire sbbiu_we_sb: Sbbiu write-enable store buffer.
+    wire [3:0] sbbiu_sel_sb: Sbbiu select store buffer.
+    wire sbbiu_cab_sb: Sbbiu burst cycle store buffer.
+    wire [31:0] sbbiu_dat_biu: Sbbiu data bus interface unit.
+    wire sbbiu_ack_biu: Sbbiu acknowledge bus interface unit flag.
+    wire sbbiu_err_biu: Sbbiu error bus interface unit flag.
+    wire [31:0] icbiu_dat_ic: IC-BIU data on the IC side.
+    wire [31:0] icbiu_adr_ic: Icbiu address instruction cache.
+    wire icbiu_cyc_ic: Icbiu cycle instruction cache.
+    wire icbiu_stb_ic: Icbiu strobe instruction cache.
+    wire icbiu_we_ic: Icbiu write-enable instruction cache.
+    wire [3:0] icbiu_sel_ic: Icbiu select instruction cache.
+    wire [3:0] icbiu_tag_ic: Icbiu tag instruction cache.
+    wire icbiu_cab_ic: Icbiu burst cycle instruction cache.
+    wire [31:0] icbiu_dat_biu: Icbiu data bus interface unit.
+    wire icbiu_ack_biu: Icbiu acknowledge bus interface unit flag.
+    wire icbiu_err_biu: Icbiu error bus interface unit flag.
+    wire [3:0] icbiu_tag_biu: Icbiu tag bus interface unit.
+    wire supv: Supervisor.
+    wire [31:0] spr_addr: SPR address.
+    wire [31:0] spr_dat_cpu: SPR data CPU.
+    wire [31:0] spr_cs: SPR chip-select.
+    wire spr_we: SPR write-enable.
+    wire dmmu_en: Data MMU enable flag.
+    wire [31:0] spr_dat_dmmu: SPR data data MMU.
+    wire qmemdmmu_err_qmem: DMMU-QMEM error on the QMEM side.
+    wire [3:0] qmemdmmu_tag_qmem: Qmemdmmu tag QMEM.
+    wire [31:0] qmemdmmu_adr_dmmu: Qmemdmmu address data MMU.
+    wire qmemdmmu_cycstb_dmmu: Qmemdmmu cycle/strobe data MMU.
+    wire qmemdmmu_ci_dmmu: Qmemdmmu cache inhibit data MMU.
+    wire dc_en: Data cache enable flag.
+    wire [31:0] dcpu_adr_cpu: Data-side CPU address CPU.
+    wire dcpu_cycstb_cpu: Data-side CPU cycle/strobe CPU.
+    wire dcpu_we_cpu: Data-side CPU write-enable CPU.
+    wire [3:0] dcpu_sel_cpu: Data-side CPU select CPU.
+    wire [3:0] dcpu_tag_cpu: Data-side CPU tag CPU.
+    wire [31:0] dcpu_dat_cpu: Data-side CPU data CPU.
+    wire [31:0] dcpu_dat_qmem: Data-side CPU data QMEM.
+    wire dcpu_ack_qmem: Data-side CPU acknowledge QMEM flag.
+    wire dcpu_rty_qmem: Data-side CPU retry QMEM flag.
+    wire dcpu_err_dmmu: Data-side CPU error data MMU flag.
+    wire [3:0] dcpu_tag_dmmu: Data-side CPU tag data MMU.
+    wire immu_en: Instruction MMU enable flag.
+    wire [31:0] spr_dat_immu: SPR data instruction MMU.
+    wire ic_en: Instruction cache enable flag.
+    wire [31:0] icpu_adr_cpu: Instruction-side CPU address CPU.
+    wire icpu_cycstb_cpu: Instruction-side CPU cycle/strobe CPU.
+    wire [3:0] icpu_sel_cpu: Instruction-side CPU select CPU.
+    wire [3:0] icpu_tag_cpu: Instruction-side CPU tag CPU.
+    wire [31:0] icpu_dat_qmem: Instruction-side CPU data QMEM.
+    wire icpu_ack_qmem: Instruction-side CPU acknowledge QMEM flag.
+    wire [31:0] icpu_adr_immu: Instruction-side CPU address instruction MMU.
+    wire icpu_err_immu: Instruction-side CPU error instruction MMU flag.
+    wire [3:0] icpu_tag_immu: Instruction-side CPU tag instruction MMU.
+    wire icpu_rty_immu: Instruction-side CPU retry instruction MMU flag.
+    wire [31:0] qmemimmu_adr_immu: IMMU-QMEM address on the IMMU side.
+    wire qmemimmu_rty_qmem: Qmemimmu retry QMEM flag.
+    wire qmemimmu_err_qmem: Qmemimmu error QMEM flag.
+    wire [3:0] qmemimmu_tag_qmem: Qmemimmu tag QMEM.
+    wire qmemimmu_cycstb_immu: Qmemimmu cycle/strobe instruction MMU.
+    wire qmemimmu_ci_immu: Qmemimmu cache inhibit instruction MMU.
+    wire [31:0] icqmem_adr_qmem: QMEM-IC address on the QMEM side.
+    wire icqmem_rty_ic: Icqmem retry instruction cache flag.
+    wire icqmem_err_ic: Icqmem error instruction cache flag.
+    wire [3:0] icqmem_tag_ic: Icqmem tag instruction cache.
+    wire icqmem_cycstb_qmem: Icqmem cycle/strobe QMEM.
+    wire icqmem_ci_qmem: Icqmem cache inhibit QMEM.
+    wire [31:0] icqmem_dat_ic: Icqmem data instruction cache.
+    wire icqmem_ack_ic: Icqmem acknowledge instruction cache flag.
+    wire [31:0] dcqmem_adr_qmem: QMEM-DC address on the QMEM side.
+    wire dcqmem_rty_dc: Dcqmem retry data cache flag.
+    wire dcqmem_err_dc: Dcqmem error data cache flag.
+    wire [3:0] dcqmem_tag_dc: Dcqmem tag data cache.
+    wire dcqmem_cycstb_qmem: Dcqmem cycle/strobe QMEM.
+    wire dcqmem_ci_qmem: Dcqmem cache inhibit QMEM.
+    wire [31:0] dcqmem_dat_dc: Dcqmem data data cache.
+    wire [31:0] dcqmem_dat_qmem: Dcqmem data QMEM.
+    wire dcqmem_we_qmem: Dcqmem write-enable QMEM.
+    wire [3:0] dcqmem_sel_qmem: Dcqmem select QMEM.
+    wire dcqmem_ack_dc: Dcqmem acknowledge data cache flag.
+    wire [31:0] spr_dat_pic: Connection between CPU-PIC data on the PIC side.
+    wire pic_wakeup: Interrupt controller wakeup.
+    wire sig_int: Signal int.
+    wire [31:0] spr_dat_pm: Connection between CPU-PM data on the PM side.
+    wire [31:0] spr_dat_tt: CPU-TT data on the TT side.
+    wire sig_tick: Signal tick.
+    wire [31:0] spr_dat_du: SPR data debug unit.
+    wire du_stall: Debug unit stall flag.
+    wire [31:0] du_addr: Debug unit address.
+    wire [31:0] du_dat_du: Debug unit data debug unit.
+    wire du_read: Debug unit read.
+    wire du_write: Debug unit write.
+    wire [12:0] du_except: Debug unit exception.
+    wire [13:0] du_dsr: Debug unit dsr.
+    wire [31:0] du_dat_cpu: Debug unit data CPU.
+    wire du_hwbkpt: Debug unit hwbkpt.
+    wire ex_freeze: Execute-stage freeze.
+    wire [31:0] ex_insn: Execute-stage instruction.
+    wire [31:0] id_pc: Decode-stage program counter.
+    wire [2:0] branch_op: Branch operation select.
+    wire [31:0] spr_dat_npc: SPR data next PC.
+    wire [31:0] rf_dataw: Register-file write data.
+    wire mbist_immu_so: MBIST instruction MMU serial output.
+    wire mbist_ic_so: MBIST instruction cache serial output.
+    wire mbist_dmmu_so: MBIST data MMU serial output.
+    wire mbist_dc_so: MBIST data cache serial output.
+    wire mbist_qmem_so: MBIST QMEM serial output.
+    wire mbist_immu_si = mbist_si_i: MBIST instruction MMU serial input flag.
+    wire mbist_ic_si = mbist_immu_so: MBIST instruction cache serial input flag.
+    wire mbist_qmem_si = mbist_ic_so: MBIST QMEM serial input flag.
+    wire mbist_dmmu_si = mbist_qmem_so: MBIST data MMU serial input flag.
+    wire mbist_dc_si = mbist_dmmu_so: MBIST data cache serial input flag.
+    wire [3:0] icqmem_sel_qmem: Icqmem select QMEM.
+    wire [3:0] icqmem_tag_qmem: Icqmem tag QMEM.
+    wire [3:0] dcqmem_tag_qmem: Dcqmem tag QMEM.
+    wire spr_cs_group_immu: SPR chip-select group instruction MMU.
+    wire spr_cs_group_ic: SPR chip-select group instruction cache.
+    wire spr_cs_group_dmmu: SPR chip-select group data MMU.
+    wire spr_cs_group_dc: SPR chip-select group data cache.
+    wire spr_cs_group_du: SPR chip-select group debug unit.
+    wire spr_cs_group_pic: SPR chip-select group interrupt controller.
+    wire spr_cs_group_tt: SPR chip-select group tick timer.

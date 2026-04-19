@@ -43,82 +43,82 @@ Output port:
     output [11:0] exponent_out: Data output that carries computed results or status information.
 
 Internal reg/wire signals:
-    reg [53:0] dividend_reg: Sequential register that stores intermediate or output state between cycles.
-    reg [53:0] divisor_reg: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_2: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_a: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_b: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_c: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_d: Sequential register that stores intermediate or output state between cycles.
-    reg enable_reg_e: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] dividend_shift: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] dividend_shift_2: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] divisor_shift: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] divisor_shift_2: Sequential register that stores intermediate or output state between cycles.
-    reg [5:0] count_out: Sequential state register that tracks control progress across cycles.
-    reg [11:0] exponent_out: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
-    reg [51:0] dividend_a: Sequential register that stores intermediate or output state between cycles.
-    reg [51:0] dividend_a_shifted: Sequential register that stores intermediate or output state between cycles.
-    reg [51:0] divisor_b: Sequential register that stores intermediate or output state between cycles.
-    reg [51:0] divisor_b_shifted: Sequential register that stores intermediate or output state between cycles.
-    reg [53:0] quotient: Sequential register that stores intermediate or output state between cycles.
-    reg [53:0] quotient_out: Sequential register that stores intermediate or output state between cycles.
-    reg [53:0] remainder: Sequential register that stores intermediate or output state between cycles.
-    reg [53:0] remainder_out: Sequential register that stores intermediate or output state between cycles.
-    reg remainder_msb: Sequential register that stores intermediate or output state between cycles.
-    reg count_nonzero_reg: Sequential state register that tracks control progress across cycles.
-    reg count_nonzero_reg_2: Sequential state register that tracks control progress across cycles.
-    reg [11:0] expon_term: Sequential register that stores intermediate or output state between cycles.
-    reg expon_uf_1: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_uf_term_1: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_final_1: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_final_2: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_shift_a: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_shift_b: Sequential register that stores intermediate or output state between cycles.
-    reg expon_uf_2: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_uf_term_2: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_uf_term_3: Sequential register that stores intermediate or output state between cycles.
-    reg expon_uf_gt_maxshift: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_uf_term_4: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_final_3: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_final_4: Sequential register that stores intermediate or output state between cycles.
-    reg expon_final_4_et0: Sequential register that stores intermediate or output state between cycles.
-    reg expon_final_4_term: Sequential register that stores intermediate or output state between cycles.
-    reg [11:0] expon_final_5: Sequential register that stores intermediate or output state between cycles.
-    reg [51:0] mantissa_1: Signal that carries intermediate datapath values between logic stages.
-    reg [6:0] remainder_shift_term: Sequential register that stores intermediate or output state between cycles.
-    reg [107:0] remainder_b: Sequential register that stores intermediate or output state between cycles.
-    wire sign = opa[63] ^ opb[63]: Combinational net that links intermediate expressions across logic blocks.
-    wire [10:0] expon_a = opa[62:52]: Combinational net that links intermediate expressions across logic blocks.
-    wire [10:0] expon_b = opb[62:52]: Combinational net that links intermediate expressions across logic blocks.
-    wire a_is_norm = |expon_a: Combinational net that links intermediate expressions across logic blocks.
-    wire b_is_norm = |expon_b: Combinational net that links intermediate expressions across logic blocks.
-    wire a_is_zero = !(|opa[62:0]): Combinational net that links intermediate expressions across logic blocks.
-    wire [11:0] exponent_a = { 1'b0, expon_a}: Combinational net that links intermediate expressions across logic blocks.
-    wire [11:0] exponent_b = { 1'b0, expon_b}: Combinational net that links intermediate expressions across logic blocks.
-    wire [52:0] dividend_denorm = { dividend_a_shifted, 1'b0}: Combinational net that links intermediate expressions across logic blocks.
-    wire [53:0] dividend_1 = a_is_norm ? { 2'b01, dividend_a } : { 1'b0, dividend_denorm}: Combinational net that links intermediate expressions across logic blocks.
-    wire [52:0] divisor_denorm = { divisor_b_shifted, 1'b0}: Combinational net that links intermediate expressions across logic blocks.
-    wire [53:0] divisor_1 = b_is_norm ? { 2'b01, divisor_b } : { 1'b0, divisor_denorm}: Combinational net that links intermediate expressions across logic blocks.
-    wire [5:0] count_index = count_out: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire count_nonzero = !(count_index == 0): Combinational net that links intermediate expressions across logic blocks.
-    wire quotient_msb = quotient_out[53]: Combinational net that links intermediate expressions across logic blocks.
-    wire [51:0] mantissa_2 = quotient_out[52:1]: Signal that carries intermediate datapath values between logic stages.
-    wire [51:0] mantissa_3 = quotient_out[51:0]: Signal that carries intermediate datapath values between logic stages.
-    wire [51:0] mantissa_4 = quotient_msb ? mantissa_2 : mantissa_3: Signal that carries intermediate datapath values between logic stages.
-    wire [51:0] mantissa_5 = (expon_final_4 == 1 ? mantissa_2 : mantissa_4: Signal that carries intermediate datapath values between logic stages.
-    wire [51:0] mantissa_6 = expon_final_4_et0 ? mantissa_1 : mantissa_5: Signal that carries intermediate datapath values between logic stages.
-    wire [107:0] remainder_a = { quotient_out[53:0] , remainder_msb, remainder_out[52:0]}: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_1 = remainder_b[107:52]: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_2 = { quotient_out[0] , remainder_msb, remainder_out[52:0], 1'b0 }: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_3 = { remainder_msb , remainder_out[52:0], 2'b0 }: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_4 = quotient_msb ? remainder_2 : remainder_3: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_5 = (expon_final_4 == 1 ? remainder_2 : remainder_4: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] remainder_6 = expon_final_4_et0 ? remainder_1 : remainder_5: Combinational net that links intermediate expressions across logic blocks.
-    wire m_norm = |expon_final_5: Combinational net that links intermediate expressions across logic blocks.
-    wire rem_lsb = |remainder_6[54:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire [55:0] mantissa_7 = { 1'b0, m_norm, mantissa_6, remainder_6[55], rem_lsb }: Combinational net that links intermediate expressions across logic blocks.
+    reg [53:0] dividend_reg: Registered dividend.
+    reg [53:0] divisor_reg: Registered divisor.
+    reg enable_reg: Registered enable flag.
+    reg enable_reg_2: Stage-2 pipeline copy of the enable flag.
+    reg enable_reg_a: Phase-A enable flag.
+    reg enable_reg_b: Phase-B enable flag.
+    reg enable_reg_c: Phase-C enable flag.
+    reg enable_reg_d: Phase-D enable flag.
+    reg enable_reg_e: Phase-E enable flag.
+    reg [5:0] dividend_shift: Dividend shift control.
+    reg [5:0] dividend_shift_2: Stage-2 pipeline copy of the dividend shift.
+    reg [5:0] divisor_shift: Divisor shift control.
+    reg [5:0] divisor_shift_2: Stage-2 pipeline copy of the divisor shift.
+    reg [5:0] count_out: Division-iteration countdown.
+    reg [11:0] exponent_out: Exponent output register.
+    wire sign = opa[63] ^ opb[63]: Result sign bit.
+    reg [51:0] mantissa_a: Mantissa A.
+    reg [51:0] mantissa_b: Mantissa B.
+    wire [10:0] expon_a = opa[62:52]: Operand-A exponent field.
+    wire [10:0] expon_b = opb[62:52]: Operand-B exponent field.
+    wire a_is_norm = |expon_a: A is normalized flag.
+    wire b_is_norm = |expon_b: B is normalized flag.
+    wire a_is_zero = !(|opa[62:0]): A is zero flag.
+    wire [11:0] exponent_a = { 1'b0, expon_a}: Exponent A.
+    wire [11:0] exponent_b = { 1'b0, expon_b}: Exponent B.
+    reg [51:0] dividend_a: Dividend A.
+    reg [51:0] dividend_a_shifted: Shifted dividend A.
+    wire [52:0] dividend_denorm = { dividend_a_shifted, 1'b0}: Dividend denormal.
+    wire [53:0] dividend_1 = a_is_norm ? { 2'b01, dividend_a } : { 1'b0, dividend_denorm}: Stage-1 pipeline copy of the dividend.
+    reg [51:0] divisor_b: Divisor B.
+    reg [51:0] divisor_b_shifted: Shifted divisor B.
+    wire [52:0] divisor_denorm = { divisor_b_shifted, 1'b0}: Divisor denormal.
+    wire [53:0] divisor_1 = b_is_norm ? { 2'b01, divisor_b } : { 1'b0, divisor_denorm}: Stage-1 pipeline copy of the divisor.
+    wire [5:0] count_index = count_out: Count index.
+    wire count_nonzero = !(count_index == 0): Flag that the division count is nonzero.
+    reg [53:0] quotient: Quotient.
+    reg [53:0] quotient_out: Quotient output register.
+    reg [53:0] remainder: Remainder.
+    reg [53:0] remainder_out: Remainder output register.
+    reg remainder_msb: MSB of the remainder.
+    reg count_nonzero_reg: Registered copy of the count-nonzero flag.
+    reg count_nonzero_reg_2: Stage-2 pipeline copy of the copy of the count-nonzero flag.
+    reg [11:0] expon_term: Exponent term.
+    reg expon_uf_1: Stage-1 pipeline copy of the exponent underflow.
+    reg [11:0] expon_uf_term_1: Stage-1 pipeline copy of the exponent underflow term.
+    reg [11:0] expon_final_1: Stage-1 pipeline copy of the exponent final.
+    reg [11:0] expon_final_2: Stage-2 pipeline copy of the exponent final.
+    reg [11:0] expon_shift_a: Exponent shift A.
+    reg [11:0] expon_shift_b: Exponent shift B.
+    reg expon_uf_2: Stage-2 pipeline copy of the exponent underflow.
+    reg [11:0] expon_uf_term_2: Stage-2 pipeline copy of the exponent underflow term.
+    reg [11:0] expon_uf_term_3: Stage-3 pipeline copy of the exponent underflow term.
+    reg expon_uf_gt_maxshift: Exponent underflow greater-than-maxshift flag.
+    reg [11:0] expon_uf_term_4: Stage-4 pipeline copy of the exponent underflow term.
+    reg [11:0] expon_final_3: Stage-3 pipeline copy of the exponent final.
+    reg [11:0] expon_final_4: Stage-4 pipeline copy of the exponent final.
+    wire quotient_msb = quotient_out[53]: MSB of the quotient.
+    reg expon_final_4_et0: Exponent final 4 et 0.
+    reg expon_final_4_term: Exponent final 4 term.
+    reg [11:0] expon_final_5: Stage-5 pipeline copy of the exponent final.
+    reg [51:0] mantissa_1: Stage-1 pipeline copy of the mantissa.
+    wire [51:0] mantissa_2 = quotient_out[52:1]: Stage-2 pipeline copy of the mantissa.
+    wire [51:0] mantissa_3 = quotient_out[51:0]: Stage-3 pipeline copy of the mantissa.
+    wire [51:0] mantissa_4 = quotient_msb ? mantissa_2 : mantissa_3: Stage-4 pipeline copy of the mantissa.
+    wire [51:0] mantissa_5 = (expon_final_4 == 1) ? mantissa_2 : mantissa_4: Stage-5 pipeline copy of the mantissa.
+    wire [51:0] mantissa_6 = expon_final_4_et0 ? mantissa_1 : mantissa_5: Stage-6 pipeline copy of the mantissa.
+    wire [107:0] remainder_a = { quotient_out[53:0] , remainder_msb, remainder_out[52:0]}: Remainder A.
+    reg [6:0] remainder_shift_term: Remainder shift term.
+    reg [107:0] remainder_b: Remainder B.
+    wire [55:0] remainder_1 = remainder_b[107:52]: Stage-1 pipeline copy of the remainder.
+    wire [55:0] remainder_2 = { quotient_out[0] , remainder_msb, remainder_out[52:0], 1'b0 }: Stage-2 pipeline copy of the remainder.
+    wire [55:0] remainder_3 = { remainder_msb , remainder_out[52:0], 2'b0 }: Stage-3 pipeline copy of the remainder.
+    wire [55:0] remainder_4 = quotient_msb ? remainder_2 : remainder_3: Stage-4 pipeline copy of the remainder.
+    wire [55:0] remainder_5 = (expon_final_4 == 1) ? remainder_2 : remainder_4: Stage-5 pipeline copy of the remainder.
+    wire [55:0] remainder_6 = expon_final_4_et0 ? remainder_1 : remainder_5: Stage-6 pipeline copy of the remainder.
+    wire m_norm = |expon_final_5: M normalized flag.
+    wire rem_lsb = |remainder_6[54:0]: LSB of the rem.
+    wire [55:0] mantissa_7 = { 1'b0, m_norm, mantissa_6, remainder_6[55], rem_lsb }: Stage-7 pipeline copy of the mantissa.
 

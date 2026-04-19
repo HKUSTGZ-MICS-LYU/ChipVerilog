@@ -82,22 +82,22 @@ Output port:
     - qmemimmu_cycstb_o: Combined cycle-and-strobe request for the downstream instruction-memory path after IMMU/QMEM arbitration.
     - qmemimmu_ci_o: Cache-inhibit attribute for the downstream instruction-memory path after IMMU/QMEM arbitration.
 Internal reg/wire signals:
-    reg [31:0] icpu_adr_o: Address/control signal that selects registers, memory locations, or byte lanes.
-    reg [31:13] icpu_vpn_r: Sequential register that stores intermediate or output state between cycles.
-    reg itlb_en_r: Sequential register that stores intermediate or output state between cycles.
-    reg dis_spr_access: Sequential register that stores intermediate or output state between cycles.
-    wire itlb_spr_access: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:13] itlb_ppn: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_hit: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_uxe: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_sxe: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] itlb_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire itlb_en: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_ci: Combinational net that links intermediate expressions across logic blocks.
-    wire itlb_done: Handshake signal that marks transfer validity, readiness, or completion.
-    wire fault: Combinational net that links intermediate expressions across logic blocks.
-    wire miss: Combinational net that links intermediate expressions across logic blocks.
-    wire page_cross: Combinational net that links intermediate expressions across logic blocks.
+    wire itlb_spr_access: SPR-access request targeting the instruction TLB.
+    wire [31:13] itlb_ppn: Physical page number returned by the instruction TLB.
+    wire itlb_hit: Instruction-TLB hit flag.
+    wire itlb_uxe: Instruction-TLB user-execute permission bit.
+    wire itlb_sxe: Instruction-TLB supervisor-execute permission bit.
+    wire [31:0] itlb_dat_o: Raw data word read from the instruction TLB.
+    wire itlb_en: Instruction-TLB enable flag.
+    wire itlb_ci: Instruction-TLB cache-inhibit attribute.
+    wire itlb_done: Instruction-TLB lookup-complete flag.
+    wire fault: Instruction address translation-fault flag.
+    wire miss: Instruction-TLB miss flag.
+    wire page_cross: Flag that the fetch crosses a page boundary.
+    reg [31:0] icpu_adr_o: Translated instruction fetch address.
+    reg [31:13] icpu_vpn_r: Registered virtual page number of the fetch address.
+    reg itlb_en_r: Registered copy of the instruction-TLB enable flag.
+    reg dis_spr_access: Flag that disables SPR access for this request.
 
 Implementation:
 

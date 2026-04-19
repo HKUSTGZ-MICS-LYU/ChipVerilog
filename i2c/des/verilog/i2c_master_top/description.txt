@@ -26,33 +26,33 @@ Output port:
     output sda_padoen_o: Output signal driven by the module toward surrounding logic.
 
 Internal reg/wire signals:
-    reg [7:0] wb_dat_o: Signal that carries intermediate datapath values between logic stages.
-    reg wb_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
-    reg wb_inta_o: Sequential register that stores intermediate or output state between cycles.
-    reg [15:0] prer: Sequential register that stores intermediate or output state between cycles.
-    reg [ 7:0] ctr: Sequential register that stores intermediate or output state between cycles.
-    reg [ 7:0] txr: Sequential register that stores intermediate or output state between cycles.
-    reg [ 7:0] cr: Sequential register that stores intermediate or output state between cycles.
-    reg rxack: Handshake signal that marks transfer validity, readiness, or completion.
-    reg tip: Sequential register that stores intermediate or output state between cycles.
-    reg irq_flag: Sequential register that stores intermediate or output state between cycles.
-    reg al: Sequential register that stores intermediate or output state between cycles.
-    wire [ 7:0] rxr: Combinational net that links intermediate expressions across logic blocks.
-    wire [ 7:0] sr: Combinational net that links intermediate expressions across logic blocks.
-    wire done: Handshake signal that marks transfer validity, readiness, or completion.
-    wire core_en: Combinational net that links intermediate expressions across logic blocks.
-    wire ien: Combinational net that links intermediate expressions across logic blocks.
-    wire irxack: Handshake signal that marks transfer validity, readiness, or completion.
-    wire i2c_busy: Combinational net that links intermediate expressions across logic blocks.
-    wire i2c_al: Combinational net that links intermediate expressions across logic blocks.
-    wire rst_i = arst_i ^ ARST_LVL: Reset signal that initializes state elements to known values.
-    wire wb_wacc = wb_we_i & wb_ack_o: Combinational net that links intermediate expressions across logic blocks.
-    wire sta = cr[7]: Combinational net that links intermediate expressions across logic blocks.
-    wire sto = cr[6]: Combinational net that links intermediate expressions across logic blocks.
-    wire rd = cr[5]: Combinational net that links intermediate expressions across logic blocks.
-    wire wr = cr[4]: Combinational net that links intermediate expressions across logic blocks.
-    wire ack = cr[3]: Handshake signal that marks transfer validity, readiness, or completion.
-    wire iack = cr[0]: Handshake signal that marks transfer validity, readiness, or completion.
+    reg [7:0] wb_dat_o: Wishbone read-data register returned to the host.
+    reg wb_ack_o: Wishbone acknowledge pulse back to the host.
+    reg wb_inta_o: Interrupt output presented on the Wishbone side.
+    reg [15:0] prer: Clock-prescale register for the I2C bit timing.
+    reg [ 7:0] ctr: Control register that enables the core and its interrupt.
+    reg [ 7:0] txr: Transmit register that holds the outgoing byte.
+    wire [ 7:0] rxr: Receive register that captures the incoming byte.
+    reg [ 7:0] cr: Command register written by the host.
+    wire [ 7:0] sr: Packed status-register value returned on reads.
+    wire done: Command-complete pulse used to clear command bits.
+    wire core_en: Core-enable bit from the control register.
+    wire ien: Interrupt-enable bit from the control register.
+    wire irxack: Receive-acknowledge status from the byte controller.
+    reg rxack: Latched receive-acknowledge status bit.
+    reg tip: Transfer-in-progress status bit.
+    reg irq_flag: Interrupt-pending status bit.
+    wire i2c_busy: Bus-busy indication from the bit controller.
+    wire i2c_al: Arbitration-lost indication from the bit controller.
+    reg al: Latched arbitration-lost status bit.
+    wire rst_i = arst_i ^ ARST_LVL: Internally normalized reset signal.
+    wire wb_wacc = wb_we_i & wb_ack_o: Wishbone write-access qualifier.
+    wire sta = cr[7]: Decoded START-command bit.
+    wire sto = cr[6]: Decoded STOP-command bit.
+    wire rd = cr[5]: Decoded READ-command bit.
+    wire wr = cr[4]: Decoded WRITE-command bit.
+    wire ack = cr[3]: Decoded ACK-command bit.
+    wire iack = cr[0]: Decoded interrupt-acknowledge bit.
 
 Implementation:
 

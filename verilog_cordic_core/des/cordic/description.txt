@@ -20,12 +20,14 @@ Output port:
     output wire valid_out: Handshake signal that marks transfer validity, readiness, or completion.
 
 Internal reg/wire signals:
-    reg [`ITERATION_BITS:0] iteration: Sequential state register that tracks control progress across cycles.
-    wire signed [`XY_BITS:0] x [`ITERATIONS-1:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire signed [`XY_BITS:0] y [`ITERATIONS-1:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire signed [`THETA_BITS:0] z [`ITERATIONS-1:0]: Combinational net that links intermediate expressions across logic blocks.
-    wire [`ITERATIONS-1:0] v: Combinational net that links intermediate expressions across logic blocks.
-    wire signed [`XY_BITS:0] x,y,z: Combinational net that links intermediate expressions across logic blocks.
+    wire signed [`XY_BITS:0] x [`ITERATIONS-1:0]: Per-stage x datapath values across the CORDIC pipeline.
+    wire signed [`XY_BITS:0] y [`ITERATIONS-1:0]: Per-stage y datapath values across the CORDIC pipeline.
+    wire signed [`THETA_BITS:0] z [`ITERATIONS-1:0]: Per-stage angle accumulator values across the CORDIC pipeline.
+    wire [`ITERATIONS-1:0] v: Per-stage valid bits that track the pipeline payload.
+    reg [`ITERATION_BITS:0] iteration: Current CORDIC iteration index.
+    wire signed [`XY_BITS:0] x: Per-stage x datapath values across the CORDIC pipeline.
+    wire signed [`XY_BITS:0] y: Per-stage y datapath values across the CORDIC pipeline.
+    wire signed [`XY_BITS:0] z: Per-stage angle accumulator values across the CORDIC pipeline.
 
 Implementation:
 

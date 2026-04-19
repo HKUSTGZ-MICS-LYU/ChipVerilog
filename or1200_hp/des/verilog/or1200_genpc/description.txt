@@ -77,7 +77,7 @@ Output port:
     - icpu_tag_o[3:0]: Tag field carried on the CPU-to-instruction-memory interface.
     - taken: Indicates whether the selected branch operation changes control flow.
 Internal reg/wire signals:
-    reg [31:2] pcreg: Sequential register that stores intermediate or output state between cycles.
-    reg [31:0] pc: Sequential register that stores intermediate or output state between cycles.
-    reg taken: Sequential register that stores intermediate or output state between cycles.
-    reg genpc_refetch_r: Sequential register that stores intermediate or output state between cycles.
+    reg [31:2] pcreg: Registered program-counter value in word address form.
+    reg [31:0] pc: Next fetch address selected by the PC-generation logic.
+    reg taken: Branch-taken result for the current control-flow operation.
+    reg genpc_refetch_r: One-cycle registered copy of `genpc_refetch`.

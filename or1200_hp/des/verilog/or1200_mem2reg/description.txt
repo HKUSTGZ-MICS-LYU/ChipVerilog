@@ -30,10 +30,14 @@ Input ports:
 Output port:
     - regdata[31:0]: Register-side aligned data word.
 Internal reg/wire signals:
-    reg [7:0] regdata_hh: Signal that carries intermediate datapath values between logic stages.
-    reg [7:0] regdata_hl: Signal that carries intermediate datapath values between logic stages.
-    reg [7:0] regdata_lh: Signal that carries intermediate datapath values between logic stages.
-    reg [7:0] regdata_ll: Signal that carries intermediate datapath values between logic stages.
-    reg [width-1:0] aligned: Sequential register that stores intermediate or output state between cycles.
-    reg [3:0] sel_byte0, sel_byte1, sel_byte2, sel_byte3: Control signals that selects operation mode, command, or multiplexed path.
-    reg [width-1:0] regdata: Signal that carries intermediate datapath values between logic stages.
+    reg [7:0] regdata_hh: Register-data [31:24] byte.
+    reg [7:0] regdata_hl: Register-data [23:16] byte.
+    reg [7:0] regdata_lh: Register-data [15:8] byte.
+    reg [7:0] regdata_ll: Register-data [7:0] byte.
+    reg [31:0] aligned: Aligned load-data word before byte extraction.
+    reg [3:0] sel_byte0: Byte-selector control for output lane 0.
+    reg [3:0] sel_byte1: Byte-selector control for output lane 1.
+    reg [3:0] sel_byte2: Byte-selector control for output lane 2.
+    reg [3:0] sel_byte3: Byte-selector control for output lane 3.
+    reg [31:0] regdata: Register data.
+    reg [31:0] aligned: Aligned load-data word before byte extraction.

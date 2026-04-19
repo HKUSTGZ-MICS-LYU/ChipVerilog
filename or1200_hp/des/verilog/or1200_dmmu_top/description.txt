@@ -89,17 +89,17 @@ Output port:
     - qmemdmmu_cycstb_o: Combined cycle-and-strobe request for the downstream data-memory path after DMMU/QMEM arbitration.
     - qmemdmmu_ci_o: Cache-inhibit attribute for the downstream data-memory path after DMMU/QMEM arbitration.
 Internal reg/wire signals:
-    reg dtlb_done: Handshake signal that marks transfer validity, readiness, or completion.
-    reg [31:13] dcpu_vpn_r: Sequential register that stores intermediate or output state between cycles.
-    wire dtlb_spr_access: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:13] dtlb_ppn: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_hit: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_uwe: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_ure: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_swe: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_sre: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] dtlb_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire dtlb_en: Combinational net that links intermediate expressions across logic blocks.
-    wire dtlb_ci: Combinational net that links intermediate expressions across logic blocks.
-    wire fault: Combinational net that links intermediate expressions across logic blocks.
-    wire miss: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_spr_access: Dtlb SPR access.
+    wire [31:13] dtlb_ppn: Dtlb physical page number.
+    wire dtlb_hit: Dtlb hit.
+    wire dtlb_uwe: Dtlb uwe.
+    wire dtlb_ure: Dtlb ure.
+    wire dtlb_swe: Dtlb swe.
+    wire dtlb_sre: Dtlb sre.
+    wire [31:0] dtlb_dat_o: Dtlb data output.
+    wire dtlb_en: Dtlb enable flag.
+    wire dtlb_ci: Dtlb cache inhibit.
+    wire fault: Translation-fault flag.
+    wire miss: TLB-miss flag.
+    reg dtlb_done: Dtlb done flag.
+    reg [31:13] dcpu_vpn_r: One-cycle registered copy of the data-side CPU virtual page number.

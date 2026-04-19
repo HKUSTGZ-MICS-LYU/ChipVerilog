@@ -73,12 +73,12 @@ Output port:
     - sbbiu_cab_o: Consecutive-address burst indication for the store-buffer to BIU interface.
     - sbbiu_sel_o[3:0]: Byte-lane select for the store-buffer to BIU interface.
 Internal reg/wire signals:
-    reg outstanding_store: Sequential register that stores intermediate or output state between cycles.
-    reg fifo_wr_ack: Handshake signal that marks transfer validity, readiness, or completion.
-    wire [4+dw+aw-1:0] fifo_dat_i: Signal that carries intermediate datapath values between logic stages.
-    wire [4+dw+aw-1:0] fifo_dat_o: Signal that carries intermediate datapath values between logic stages.
-    wire fifo_wr: Combinational net that links intermediate expressions across logic blocks.
-    wire fifo_rd: Combinational net that links intermediate expressions across logic blocks.
-    wire fifo_full: Combinational net that links intermediate expressions across logic blocks.
-    wire fifo_empty: Combinational net that links intermediate expressions across logic blocks.
-    wire sel_sb: Control signal that selects operation mode, command, or multiplexed path.
+    wire [67:0] fifo_dat_i: Fifo data input.
+    wire [67:0] fifo_dat_o: Fifo data output.
+    wire fifo_wr: Fifo write.
+    wire fifo_rd: Fifo rd.
+    wire fifo_full: Fifo full flag.
+    wire fifo_empty: Fifo empty flag.
+    wire sel_sb: Select store buffer.
+    reg outstanding_store: Outstanding store.
+    reg fifo_wr_ack: Fifo write acknowledge.

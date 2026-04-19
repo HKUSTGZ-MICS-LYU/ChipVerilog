@@ -95,32 +95,32 @@ Output port:
     - icqmem_tag_o[3:0]: Tag field carried on the instruction-cache/QMEM interface.
     - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
 Internal reg/wire signals:
-    reg tagcomp_miss: Sequential register that stores intermediate or output state between cycles.
-    wire tag_v: Combinational net that links intermediate expressions across logic blocks.
-    wire [18:0] tag: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] to_icram: Combinational net that links intermediate expressions across logic blocks.
-    wire [dw-1:0] from_icram: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] saved_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [3:0] icram_we: Combinational net that links intermediate expressions across logic blocks.
-    wire ictag_we: Combinational net that links intermediate expressions across logic blocks.
-    wire [31:0] ic_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire icfsm_biu_read: Combinational net that links intermediate expressions across logic blocks.
-    wire [12:4] ictag_addr: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire ictag_en: Combinational net that links intermediate expressions across logic blocks.
-    wire ictag_v: Combinational net that links intermediate expressions across logic blocks.
-    wire ic_inv: Combinational net that links intermediate expressions across logic blocks.
-    wire icfsm_first_hit_ack: Reset signal that initializes state elements to known values.
-    wire icfsm_first_miss_ack: Reset signal that initializes state elements to known values.
-    wire icfsm_first_miss_err: Reset signal that initializes state elements to known values.
-    wire icfsm_burst: Reset signal that initializes state elements to known values.
-    wire icfsm_tag_we: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_tag_so: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_ram_si = mbist_si_i: Combinational net that links intermediate expressions across logic blocks.
-    wire mbist_tag_si = mbist_ram_so: Combinational net that links intermediate expressions across logic blocks.
-    wire tag_comp_3: Combinational net that links intermediate expressions across logic blocks.
-    wire tag_comp_2: Combinational net that links intermediate expressions across logic blocks.
-    wire tag_comp_1: Combinational net that links intermediate expressions across logic blocks.
-    wire tag_comp_0: Combinational net that links intermediate expressions across logic blocks.
-    wire [12:2] addr_ic_ram: Address/control signal that selects registers, memory locations, or byte lanes.
-    wire [31:12] ic_tag_datain: Signal that carries intermediate datapath values between logic stages.
+    wire tag_v: Cache-tag valid bit.
+    wire [18:0] tag: Cache-tag value read from the instruction-cache tag RAM.
+    wire [31:0] to_icram: To icram.
+    wire [31:0] from_icram: From icram.
+    wire [31:0] saved_addr: Saved address.
+    wire [3:0] icram_we: Icram write-enable.
+    wire ictag_we: Instruction-cache tag RAM write-enable.
+    wire [31:0] ic_addr: Instruction cache address.
+    wire icfsm_biu_read: Instruction-cache FSM bus interface unit read.
+    reg tagcomp_miss: Tag-compare miss flag.
+    wire [12:4] ictag_addr: Instruction-cache tag RAM address.
+    wire ictag_en: Instruction-cache tag RAM enable flag.
+    wire ictag_v: Instruction-cache tag RAM valid.
+    wire ic_inv: Instruction-cache invalidate request.
+    wire icfsm_first_hit_ack: Instruction-cache FSM first hit acknowledge.
+    wire icfsm_first_miss_ack: Instruction-cache FSM first miss acknowledge.
+    wire icfsm_first_miss_err: Instruction-cache FSM first miss error flag.
+    wire icfsm_burst: Instruction-cache FSM burst.
+    wire icfsm_tag_we: Instruction-cache FSM tag write-enable.
+    wire mbist_ram_so: MBIST RAM serial output.
+    wire mbist_tag_so: MBIST tag serial output.
+    wire mbist_ram_si = mbist_si_i: MBIST RAM serial input flag.
+    wire mbist_tag_si = mbist_ram_so: MBIST tag serial input.
+    wire tag_comp_3: Stage-3 pipeline copy of the tag compare.
+    wire tag_comp_2: Stage-2 pipeline copy of the tag compare.
+    wire tag_comp_1: Stage-1 pipeline copy of the tag compare.
+    wire tag_comp_0: Stage-0 pipeline copy of the tag compare.
+    wire [12:2] addr_ic_ram: Address instruction cache RAM.
+    wire [31:12] ic_tag_datain: Instruction cache tag datain.
