@@ -1,0 +1,85 @@
+# i2c_master_bit_ctrl 工业交付实现规格（Delivery Spec）
+
+## 1. 范围与追溯
+- 模块名称: `i2c_master_bit_ctrl`
+- 所属工程: `i2c`
+- 目标目录: `src_dataset/i2c/des/verilog/i2c_master_bit_ctrl`
+- 目标源码: `src_dataset/i2c/rtl/verilog/i2c_master_bit_ctrl.v`
+- 参考 PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- 抽取模式: `keyword`
+- 规格生成时间: `2026-04-17 18:05:08`
+
+## 2. 功能需求（必须）
+- 模块功能定义: Module `i2c_master_bit_ctrl` executes bit-level I2C protocol timing, including START/STOP generation, arbitration checks, and SCL/SDA line control.
+- SHALL: 必须满足 I2C 基本时序：SDA 仅在 SCL 低电平阶段切换，SCL 高电平阶段保持稳定（START/STOP 条件除外）。
+- SHALL: 命令/状态语义必须与寄存器定义一致（如 STA/STO/RD/WR/ACK/IACK、TIP、IF、AL 等）。
+- SHALL: 与 Wishbone 侧交互时，必须保证 `ack` 返回时序可预测且寄存器读写原子一致。
+- SHALL: 位级控制器应覆盖 START/Repeated START/STOP/READ/WRITE 各比特操作序列。
+
+## 3. 接口规范
+### 3.1 输入端口
+- `input clk`: Clock signal that defines sequential update timing for this logic.
+- `input rst`: Reset signal that initializes state elements to known values.
+- `input nReset`: Reset signal that initializes state elements to known values.
+- `input ena`: Input signal consumed by the module control or datapath logic.
+- `input [15:0] clk_cnt`: Clock signal that defines sequential update timing for this logic.
+- `input [ 3:0] cmd`: Control signal that selects operation mode, command, or multiplexed path.
+- `input din`: Input signal consumed by the module control or datapath logic.
+- `input scl_i`: Input signal consumed by the module control or datapath logic.
+- `input sda_i`: Input signal consumed by the module control or datapath logic.
+
+### 3.2 输出/双向端口
+- `output reg cmd_ack`: Handshake signal that marks transfer validity, readiness, or completion.
+- `output reg busy`: Output signal driven by the module toward surrounding logic.
+- `output reg al`: Output signal driven by the module toward surrounding logic.
+- `output reg dout`: Output signal driven by the module toward surrounding logic.
+- `output scl_o`: Output signal driven by the module toward surrounding logic.
+- `output reg scl_oen`: Output signal driven by the module toward surrounding logic.
+- `output sda_o`: Output signal driven by the module toward surrounding logic.
+- `output reg sda_oen`: Output signal driven by the module toward surrounding logic.
+
+- 接口规模: 9 input(s), 8 output/inout port(s)
+- 参数/宏约束: idle, start_a, start_b, start_c, start_d, start_e, stop_a, stop_b, stop_c, stop_d, rd_a, rd_b, rd_c, rd_d, wr_a, wr_b, wr_c, wr_d
+
+## 4. 时序与复位要求
+- 时钟信号: `clk`, `clk_cnt`
+- 复位信号: `nReset`, `rst`
+- 握手/状态信号: `busy`, `cmd_ack`
+- 时序逻辑块要求:
+  - Always block 1: line ~186, sensitivity `(posedge clk)`.
+  - Always block 2: line ~195, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 3: line ~205, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 4: line ~229, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 5: line ~251, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 6: line ~259, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 7: line ~277, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 8: line ~310, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 9: line ~326, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 10: line ~340, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 11: line ~347, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 12: line ~355, sensitivity `(posedge clk)`.
+  - Always block 13: line ~383, sensitivity `(posedge clk or negedge nReset)`.
+- 分支控制规模参考: - Case statement count: 2.
+
+## 5. 实现约束（交付红线）
+- MUST: 端口方向、位宽、符号属性与命名必须与接口定义逐项一致。
+- MUST: 复位行为、状态更新优先级、`if/case` 判定顺序必须与原始设计保持等价。
+- MUST: 组合路径不可引入锁存器；时序路径不可引入额外不可控周期延迟。
+- 子模块关系: 当前模块为独立实现或 description.txt 未识别到子模块。
+- 关键内部信号（建议保留命名以便联调）: `clk_en`, `cmd_stop`, `dSCL`, `dSDA`, `dscl_oen`, `sSCL`, `sSDA`, `scl_sync`, `sda_chk`, `slave_wait`, `sta_condition`, `sto_condition`
+
+## 6. 验收标准（DoD）
+- 接口一致性: lint/编译通过，端口与参数定义与规格一致。
+- 行为一致性: 关键 directed test 覆盖复位、正常路径、边界输入、错误/异常路径。
+- 时序一致性: 核验时钟边沿行为与握手脉冲宽度，避免丢拍和重复响应。
+- 集成一致性: 子模块互连与上层调用时序在系统 testbench 下通过回归。
+
+## 7. PDF 依据摘要（已提炼）
+- 5.3 Bit Command Controller The Bit Command Controller handles the actual transmission of data and the generation of the specific levels for START, Repeated START, and STOP signals by controlling the SCL and SDA lines.
+- A transition on the SDA line while SCL is high is interpreted as a command (see START and STOP signals).
+- Only the slave with an address that matches the one transmitted by the master will respond by returning an acknowledge bit by pulling the SDA low at the 9th SCL clock cycle.
+- If the master, as the receiving device, does not acknowledge the slave, the slave releases the SDA line for the master to generate a STOP or Repeated START signal.
+
+## 8. 实现说明
+- 模块声明参考位置: 142
+- 本规格用于工程实现与代码审查，不替代最终仿真结果；若冲突，以 RTL 行为与回归测试为准。

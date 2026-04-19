@@ -1,0 +1,91 @@
+
+Module `or1200_mult_mac` executes multiply and multiply-accumulate operations and manages associated result/control state.
+
+This module implements the top-level multiplier, divider, and multiply-accumulate datapath. The source file states: “Multiplier is 32x32 however multiply instructions only use lower 32 bits of the result. MAC is 32x32=64+64.” It also exposes the MAC accumulator via SPR access.
+
+Description:
+
+The module executes multiply and multiply-accumulate operations and manages associated result/control state.
+
+- Additionally, the CMLS (core multiplier level selector) signal is routed to the memories.
+
+This module implements the OR1200's multiplication, optional division, and multiply-accumulate/multiply-subtract-accumulate (MAC) datapaths and provides interface access to the MAC accumulation registers through SPR. It not only outputs the current ALU-related result `result` to the execution stage, but also blocks the pipeline through `mac_stall_r` when needed to ensure that multi-cycle MAC read or division operations are synchronized with the processor pipeline.
+
+The core timing status of the module includes multiplication/division result register `mul_prod_r`, MAC accumulation register `mac_r`, MAC operation pipeline register `mac_op_r1/r2/r3`, division busy and idle control `div_free` and optional division counter `div_cntr`. These registers are updated on the rising edge of `clk` with an asynchronous high reset of `rst`. After reset, the multiplication result and MAC register are cleared, the MAC operation pipeline is cleared, `div_free` is set to 1 to indicate that the divider is idle, and `div_cntr` is cleared. If MAC is implemented, `mac_r` can be written to the upper 32 bits or lower 32 bits respectively through `spr_cs & spr_write`, and the read operation returns the upper or lower halfword of `mac_r` according to the address bits in `spr_addr`.
+
+The combining part first forms the multiplier input `x/y` from `alu_op` and `mac_op`. For division, if it is a signed division and the dividend/divisor is negative, the complement absolute value will be taken first; in the low-power option, if the multiplication/division/MAC is not currently executed, the input is pressed to 0 to reduce flipping. The choice of `result` is prioritized by the current ALU operation: if it is division, the quotient result is output, and the sign is restored according to the operand sign in the case of signed division; if it is multiplication, the lower 32 bits of `mul_prod_r` are output; otherwise, the lower 32 bits of the MAC accumulation register are output, or the corresponding shift window is output when `OR1200_MAC_SHIFTBY` is defined.
+
+The multiplier body is instantiated by the external 32x32 multiplication module, outputting `mul_prod`. The update of `mul_prod_r` has a clear priority: if division is enabled and `div_cntr` is non-zero, it is currently in the recovery division iteration phase. Each beat uses `div_tmp = mul_prod_r[63:32] - the sign of y` to determine the quotient and update part of the remainder/quotient; if a new division operation is received and the divider is idle, the initial value `{31'b0, x, 1'b0}`, the counter is set to 32, and `div_free` is cleared; otherwise, when `div_free` is 1 or the execution level is not frozen `!ex_freeze`, the new multiplier output is latched and `div_free` is reset to 1. That is to say, the division iteration has the highest priority, the new division is started second, and the ordinary multiplication result is updated last.
+
+The MAC path only exists when `OR1200_MAC_IMPLEMENTED` is defined. `mac_op` goes through three levels of pipeline registers to align multiplier output delays. `mac_r` is updated according to these pipelined MAC operations at the rising edge of the clock: when receiving a `spr_mac*` write request, the upper/lower 32 bits can be written directly; otherwise, when `mac_op_r3` indicates multiplication and addition or multiplication and subtraction, `+ mul_prod_r` or `- mul_prod_r` is performed on the current accumulator; it remains unchanged when there is no related operation. `mac_stall_r` is set by several conditions. The typical semantics is that when a new MAC result read is performed or the MAC operation has not been completed, a pause is requested from the freeze control unit to avoid reading unprepared accumulated values.
+
+Therefore, this module simultaneously covers a variety of arithmetic back-end behaviors under a single-cycle interface: the multiplication result is registered for use in the next stage; division is completed through internal 32-cycle iteration, and new result coverage is suppressed during busy periods; MAC completes multiplication, addition/multiplication and subtraction through a three-level operation pipeline and a 64-bit accumulation register, and supports SPR to directly read and write the accumulator status. Reset always takes precedence over all operations and SPR accesses.
+
+module or1200_mult_mac(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Multiplier/MAC interface
+    input ex_freeze,
+    input id_macrc_op,
+    input macrc_op,
+    input [31:0] a,
+    input [31:0] b,
+    input [1:0] mac_op,
+    input [3:0] alu_op,
+    output [31:0] result,
+    output mac_stall_r,
+
+    // SPR interface
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - ex_freeze: Freeze control for the execute stage.
+    - id_macrc_op: Decode-stage indication that the current instruction reads the MAC result.
+    - macrc_op: Selects the MAC-result return path used by MOVHI/MACRC handling.
+    - a[31:0]: Primary operand A for the datapath operation.
+    - b[31:0]: Primary operand B for the datapath operation.
+    - mac_op[1:0]: Encoded MAC operation selector.
+    - alu_op[3:0]: Major ALU operation selector.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    - result[31:0]: Final result produced by this module.
+    - mac_stall_r: Registered MAC stall indication.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    reg [width-1:0] result: Sequential register that stores intermediate or output state between cycles.
+    reg [2*width-1:0] mul_prod_r: Sequential register that stores intermediate or output state between cycles.
+    reg [1:0] mac_op_r1: Control signal that selects operation mode, command, or multiplexed path.
+    reg [1:0] mac_op_r2: Control signal that selects operation mode, command, or multiplexed path.
+    reg [1:0] mac_op_r3: Control signal that selects operation mode, command, or multiplexed path.
+    reg mac_stall_r: Sequential register that stores intermediate or output state between cycles.
+    reg [2*width-1:0] mac_r: Sequential register that stores intermediate or output state between cycles.
+    reg div_free: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] div_cntr: Sequential state register that tracks control progress across cycles.
+    wire [width-1:0] result: Combinational net that links intermediate expressions across logic blocks.
+    wire [2*width-1:0] mul_prod_r: Combinational net that links intermediate expressions across logic blocks.
+    wire [2*width-1:0] mul_prod: Combinational net that links intermediate expressions across logic blocks.
+    wire [1:0] mac_op: Control signal that selects operation mode, command, or multiplexed path.
+    wire [1:0] mac_op_r1: Control signal that selects operation mode, command, or multiplexed path.
+    wire [1:0] mac_op_r2: Control signal that selects operation mode, command, or multiplexed path.
+    wire [1:0] mac_op_r3: Control signal that selects operation mode, command, or multiplexed path.
+    wire mac_stall_r: Combinational net that links intermediate expressions across logic blocks.
+    wire [2*width-1:0] mac_r: Combinational net that links intermediate expressions across logic blocks.
+    wire [width-1:0] x: Combinational net that links intermediate expressions across logic blocks.
+    wire [width-1:0] y: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_maclo_we: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_machi_we: Combinational net that links intermediate expressions across logic blocks.
+    wire alu_op_div_divu: Control signal that selects operation mode, command, or multiplexed path.
+    wire alu_op_div: Control signal that selects operation mode, command, or multiplexed path.
+    wire [width-1:0] div_tmp: Combinational net that links intermediate expressions across logic blocks.

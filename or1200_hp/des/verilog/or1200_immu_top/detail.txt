@@ -1,0 +1,48 @@
+1. Registered address behavior
+The implementation keeps icpu_adr_o as a registered copy of icpu_adr_i when OR1200_REGISTERED_OUTPUTS is enabled. Reset initializes icpu_adr_o to 0x0000_0100. This registered output is part of the observable timing contract.
+
+2. Page-cross tracking
+The module keeps icpu_vpn_r, a one-cycle delayed copy of the input VPN. It derives page_cross by comparing the current VPN against icpu_vpn_r. The comment notes that page_cross is “Most of the time it is zero.” This logic is used to avoid incorrect request forwarding across page-boundary timing situations.
+
+3. Disabled-IMMU behavior
+If OR1200_NO_IMMU is defined, the module behaves as a mostly transparent pass-through:
+- qmemimmu_adr_o = icpu_adr_i
+- qmemimmu_cycstb_o = icpu_cycstb_i & ~page_cross
+- icpu_tag_o = qmemimmu_tag_i
+- icpu_rty_o = qmemimmu_rty_i
+- icpu_err_o = qmemimmu_err_i
+- qmemimmu_ci_o = OR1200_IMMU_CI
+- spr_dat_o = 0
+This mode must be preserved for non-MMU builds.
+
+4. ITLB SPR-access masking
+The source implements dis_spr_access, a small state bit that temporarily disables normal ITLB-based exception signaling during the first cycle of an ITLB SPR access. The comment explains that this masks miss/fault exceptions while software is reading or writing the ITLB itself. dis_spr_access is set by spr_cs and cleared when icpu_rty_o deasserts.
+
+5. Translation and retry behavior
+5.1 Request forwarding
+When IMMU is enabled, qmemimmu_cycstb_o must only be asserted when translation state allows it. The original code carefully handles itlb_spr_access, page cross, retry, and translation completion.
+
+5.2 Retry signaling
+icpu_rty_o is asserted either from the downstream retry input or while an ITLB SPR access is in progress with IMMU enabled. This means the CPU front end sees the MMU itself as a retry source when TLB maintenance temporarily blocks fetch progression.
+
+5.3 Address output
+qmemimmu_adr_o is either the translated {ppn, page offset} or the incoming address, depending on whether IMMU is enabled and whether translation results are valid.
+
+6. Error and tag generation
+The top block generates CPU-visible tags for instruction translation failures.
+- miss => TLB miss tag
+- fault => page fault tag
+- otherwise downstream tag passes through
+Similarly, icpu_err_o becomes true for local MMU failures or downstream fetch errors.
+
+7. Permission checking
+Instruction fetch permission depends on current privilege mode:
+- supervisor fetch requires sxe;
+- user fetch requires uxe.
+If the selected execute permission is absent after a valid translation, the module raises a page fault.
+
+8. Cache inhibit propagation
+When translation succeeds, qmemimmu_ci_o must reflect the ci attribute stored in the ITLB entry. This allows instruction-cache logic to bypass cacheable behavior on pages marked cache-inhibited.
+
+9. Summary
+or1200_immu_top.v is the instruction-fetch translation front end. It adds ITLB-based address translation, execute-permission checking, retry management during TLB access, and cache-attribute propagation while still supporting a transparent no-IMMU build mode.

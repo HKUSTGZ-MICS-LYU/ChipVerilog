@@ -1,0 +1,37 @@
+
+Module `or1200_gmultp2_32x32` implements a 32x32 signed multiplier datapath used by OR1200 multiply/MAC operations.
+
+The source describes this module as a “Generic 32x32 multiplier with pipeline stages.” It accepts two 32-bit operands and produces a 64-bit product after a short pipeline delay.
+
+Description:
+
+The module implements a 32x32 signed multiplier datapath used by OR1200 multiply/MAC operations.
+
+- The files or1200_gmultp2_32x32.v in the individual RTL sub-directories are used to verify the hyper pipelining modifications (invalid paths).
+- The manually modified file or1200_gmultp2_32x32_cm[CMF]_pipe.v are used for ISE to enable automatic pipelining of the 32x32-bit multiplier DSP.
+- The passing must follow certain rules, so that the overall functionality of the hyper pipelined core is not broken.
+
+This module implements a two-stage pipelined 32x32 multiplier, which multiplies two 32-bit inputs X and Y and outputs the 64-bit product P after two clock stages. The module uses the rising edge of CLK as the pipeline clock, and RST only asynchronously resets the second-level register p1; the first-level register p0 is not explicitly reset, so the content of the first level during reset/just after reset is determined by the input and clock advancement.
+
+In the combinatorial preprocessing stage, the inputs X and Y are assigned to integer variables xi and yi respectively through two independent always blocks. Since xi and yi are declared as integer, the current implementation actually converts the bitwise input to Verilog integer semantics before using it for multiplication. The first stage pipeline executes p0 <= xi * yi on every rising edge of CLK, forming the original product. The second-stage pipeline registers p0 to p1 at each rising edge of CLK; if RST=1, p1 is cleared. The final output P is always directly equal to p1, so there is a two-beat pipeline delay from the time the input stabilizes and is sampled to the time the result is visible on P.
+
+The module has no enable input and no handshaking or busy-idle control, so it accepts a new X/Y every clock cycle and runs the multiplier as a full throughput pipeline. Reset has higher priority on the output path than the third level result hold because the always block of p1 adopts the structure of "RST first, otherwise load p0".
+
+module or1200_gmultp2_32x32(
+    input [31:0] X,
+    input [31:0] Y,
+    input CLK,
+    input RST,
+    output [63:0] P
+);
+
+Input ports:
+    - X[31:0]: 32-bit multiplier operand X. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - Y[31:0]: 32-bit multiplier operand Y. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - CLK: Multiplier pipeline clock; sequential product stages update on its rising edge. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - RST: Asynchronous reset for the multiplier pipeline output stage. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+Output port:
+    - P[63:0]: 64-bit registered multiplication result after the module pipeline delay. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+Internal reg/wire signals:
+    reg [63:0] p0: Sequential register that stores intermediate or output state between cycles.
+    reg [63:0] p1: Sequential register that stores intermediate or output state between cycles.

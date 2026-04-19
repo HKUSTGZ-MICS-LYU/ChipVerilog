@@ -1,0 +1,48 @@
+# timescale 工业交付实现规格（Delivery Spec）
+
+## 1. 范围与追溯
+- 模块名称: `timescale`
+- 所属工程: `i2c`
+- 目标目录: `src_dataset/i2c/des/verilog/timescale`
+- 目标源码: `src_dataset/i2c/des/verilog/timescale/timescale.v`
+- 参考 PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- 抽取模式: `keyword`
+- 规格生成时间: `2026-04-17 18:05:08`
+
+## 2. 功能需求（必须）
+- 模块功能定义: File `timescale.v` sets the simulation time unit and precision directives used by the I2C RTL.
+- SHALL: 必须定义统一的仿真时间单位与精度，并与工程其余 RTL/测试平台保持一致。
+- SHALL: 该文件不承载功能逻辑，交付时不得混入时序/组合行为实现。
+- SHALL: 若项目含多套 timescale 设定，必须在系统级仿真中验证无时间基准冲突。
+
+## 3. 接口规范
+### 3.1 输入端口
+- 无
+
+### 3.2 输出/双向端口
+- 无
+
+
+## 4. 时序与复位要求
+- 时钟信号: 未显式识别
+- 复位信号: 未显式识别
+- 握手/状态信号: 未显式识别
+- 时序逻辑块要求: description.txt 未提供，需直接核对 RTL。
+
+## 5. 实现约束（交付红线）
+- MUST: 端口方向、位宽、符号属性与命名必须与接口定义逐项一致。
+- MUST: 复位行为、状态更新优先级、`if/case` 判定顺序必须与原始设计保持等价。
+- MUST: 组合路径不可引入锁存器；时序路径不可引入额外不可控周期延迟。
+- 子模块关系: 当前模块为独立实现或 description.txt 未识别到子模块。
+
+## 6. 验收标准（DoD）
+- 接口一致性: lint/编译通过，端口与参数定义与规格一致。
+- 行为一致性: 关键 directed test 覆盖复位、正常路径、边界输入、错误/异常路径。
+- 时序一致性: 核验时钟边沿行为与握手脉冲宽度，避免丢拍和重复响应。
+- 集成一致性: 子模块互连与上层调用时序在系统 testbench 下通过回归。
+
+## 7. PDF 依据摘要（已提炼）
+- 当前模块未抽取到高置信度句子，已以 `description.txt + RTL结构` 生成可实施规格。
+
+## 8. 实现说明
+- 本规格用于工程实现与代码审查，不替代最终仿真结果；若冲突，以 RTL 行为与回归测试为准。

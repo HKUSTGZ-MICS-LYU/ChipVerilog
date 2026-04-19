@@ -1,0 +1,82 @@
+Functional Overview:
+Module `i2c_master_bit_ctrl` executes bit-level I2C protocol timing, including START/STOP generation, arbitration checks, and SCL/SDA line control.
+
+Module name:
+    i2c_master_bit_ctrl
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input nReset: Reset signal that initializes state elements to known values.
+    input ena: Input signal consumed by the module control or datapath logic.
+    input [15:0] clk_cnt: Clock signal that defines sequential update timing for this logic.
+    input [ 3:0] cmd: Control signal that selects operation mode, command, or multiplexed path.
+    input din: Input signal consumed by the module control or datapath logic.
+    input scl_i: Input signal consumed by the module control or datapath logic.
+    input sda_i: Input signal consumed by the module control or datapath logic.
+
+Output port:
+    output reg cmd_ack: Handshake signal that marks transfer validity, readiness, or completion.
+    output reg busy: Output signal driven by the module toward surrounding logic.
+    output reg al: Output signal driven by the module toward surrounding logic.
+    output reg dout: Output signal driven by the module toward surrounding logic.
+    output scl_o: Output signal driven by the module toward surrounding logic.
+    output reg scl_oen: Output signal driven by the module toward surrounding logic.
+    output sda_o: Output signal driven by the module toward surrounding logic.
+    output reg sda_oen: Output signal driven by the module toward surrounding logic.
+
+Internal reg/wire signals:
+    reg [ 1:0] cSCL, cSDA: Sequential register that stores intermediate or output state between cycles.
+    reg [ 2:0] fSCL, fSDA: Sequential register that stores intermediate or output state between cycles.
+    reg sSCL, sSDA: Sequential register that stores intermediate or output state between cycles.
+    reg dSCL, dSDA: Sequential register that stores intermediate or output state between cycles.
+    reg dscl_oen: Sequential register that stores intermediate or output state between cycles.
+    reg sda_chk: Sequential register that stores intermediate or output state between cycles.
+    reg clk_en: Clock signal that defines sequential update timing for this logic.
+    reg slave_wait: Sequential register that stores intermediate or output state between cycles.
+    reg [15:0] cnt: Sequential state register that tracks control progress across cycles.
+    reg [13:0] filter_cnt: Sequential state register that tracks control progress across cycles.
+    reg [17:0] c_state: Sequential state register that tracks control progress across cycles.
+    reg sta_condition: Sequential register that stores intermediate or output state between cycles.
+    reg sto_condition: Sequential register that stores intermediate or output state between cycles.
+    reg cmd_stop: Control signal that selects operation mode, command, or multiplexed path.
+    wire scl_sync = dSCL & ~sSCL & scl_oen: Combinational net that links intermediate expressions across logic blocks.
+
+Implementation:
+
+- The module executes bit-level I2C protocol timing, including START/STOP generation, arbitration checks, and SCL/SDA line control.
+2. Verilog implementation breakdown:
+- Source file: `src_dataset/i2c/rtl/verilog/i2c_master_bit_ctrl.v`.
+- Module declaration line: 142.
+- Interface size: 9 input(s), 8 output/inout port(s).
+- Internal declaration count: 15 reg/wire statement(s).
+- Parameter/localparam symbols: idle, start_a, start_b, start_c, start_d, start_e, stop_a, stop_b, stop_c, stop_d, rd_a, rd_b, rd_c, rd_d, wr_a, wr_b, wr_c, wr_d.
+3. Always blocks:
+- Always block 1: line ~186, sensitivity `(posedge clk)`.
+- Always block 2: line ~195, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 3: line ~205, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 4: line ~229, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 5: line ~251, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 6: line ~259, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 7: line ~277, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 8: line ~310, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 9: line ~326, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 10: line ~340, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 11: line ~347, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 12: line ~355, sensitivity `(posedge clk)`.
+- Always block 13: line ~383, sensitivity `(posedge clk or negedge nReset)`.
+4. Continuous assignments (`assign`):
+- Count: 2.
+- line ~570: drives `scl_o`.
+- line ~574: drives `sda_o`.
+5. Case logic:
+- Case statement count: 2.
+- line ~406: `case(c_state)`.
+- line ~410: `case(cmd)`.
+6. Submodule instantiations:
+- None detected in this module block.
+7. Reconstruction notes:
+- Keep port directions, widths, and signedness identical to the declarations listed above.
+- Preserve register/wire names and update ordering to maintain datapath and control timing behavior.
+- Preserve reset conditions, sensitivity lists, and decode priorities (`if`/`case`) when recreating logic.
+- Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.

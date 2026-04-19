@@ -1,0 +1,123 @@
+Functional Overview:
+Module `fpu_exceptions` generates IEEE-754 exception flags such as invalid, overflow, underflow, divide-by-zero, and inexact conditions.
+This source file implements special-case handling and status-flag generation for the floating-point unit. It checks for NaNs, infinities, divide-by-zero, invalid arithmetic combinations, overflow, underflow, and inexact results. It can override the rounded datapath result with a special IEEE-754 output and drives the final exception-related status signals.
+This module performs all special-case substitution and status-flag generation for the floating-point unit. It receives the rounded normal datapath result, the original operands, the original opcode, the post-round exponent, and the low two remainder bits. It decides whether the normal rounded result should be overridden by NaN, infinity, max-finite, or signed-zero, and it generates underflow, overflow, inexact, exception, and invalid flags.
+
+Main function
+-------------
+The exception block operates after the arithmetic and rounding stages. It receives:
+- the original operands
+- the rounded candidate result
+- the post-round exponent
+- the two low-order remainder bits from the arithmetic path
+- the operation code
+- the rounding mode
+
+It decides whether the rounded datapath result can pass through unchanged or whether a special result such as NaN, infinity, largest finite number, or zero must be returned instead.
+
+Description:
+This module handles all special cases and exception conditions for the floating-point unit. Its inputs include the original operands opa and opb, the normal rounded result in_except, the extended exponent exponent_in, the two rounding-related extra bits mantissa_in, the operation code fpu_op, and the rounding mode rmode. Its outputs are the final result out, the exception override enable ex_enable, and the five status flags underflow, overflow, inexact, exception, and invalid.
+
+The exceptions module checks all of the special cases listed in the documentation, including divide by zero, 0/0, infinity/infinity, divide by infinity, 0 * infinity, arithmetic overflow, arithmetic underflow, +infinity + (-infinity), +infinity - +infinity, -infinity - -infinity, QNaN input, and SNaN input. When any of these cases occurs, the module generates the appropriate special output and asserts the required flags. If either input is a QNaN, the output is a QNaN. If either input is an SNaN, the output is converted to a QNaN and invalid is asserted. For other invalid operations such as 0/0, infinity/infinity, 0 * infinity, or invalid infinity add/subtract combinations, the output is NaN and invalid is asserted .
+
+The module also controls the final representation of overflow and underflow results. If the arithmetic result overflows, the default output is positive or negative infinity and overflow is asserted. However, if the rounding mode requires infinity to be rounded down to the largest finite number, the module outputs the largest positive or negative finite value instead of infinity. Specifically, if the result is positive infinity and the rounding mode is round to zero or round to negative infinity, the output becomes the largest positive number; if the result is negative infinity and the rounding mode is round to zero or round to positive infinity, the output becomes the largest negative number. The document explicitly states that this infinity rounding behavior is performed in the exceptions module, not in the rounding module .
+
+For underflow, the module forces the result to signed zero when the appropriate conditions exist and asserts underflow. For inexact, the flag is asserted if either of the two extra remainder bits is 1, or if the result is modified due to overflow or underflow. The exception output is a summary flag that is asserted whenever any exception condition occurs. If the module determines that the normal rounded result must be overridden, it asserts ex_enable, and the top level selects this module’s out as the final output.
+
+All detections, flags, and outputs are registered on the rising edge of the clock. Reset clears all flags and outputs. This module is the final authority for special-value propagation, invalid-operation handling, infinity replacement, and exception reporting in the FPU.
+
+
+module fpu_exceptions( clk, rst, enable, rmode, opa, opb, in_except,
+exponent_in, mantissa_in, fpu_op, out, ex_enable, underflow, overflow, 
+inexact, exception, invalid);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
+    input [63:0] opa: Control signal that selects operation mode, command, or multiplexed path.
+    input [63:0] opb: Control signal that selects operation mode, command, or multiplexed path.
+    input [63:0] in_except: Input signal consumed by the module control or datapath logic.
+    input [11:0] exponent_in: Data input that provides operand or payload values to the datapath.
+    input [1:0] mantissa_in: Data input that provides operand or payload values to the datapath.
+    input [2:0] fpu_op: Control signal that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output [63:0] out: Output signal driven by the module toward surrounding logic.
+    output ex_enable: Data output that carries computed results or status information.
+    output underflow: Output signal driven by the module toward surrounding logic.
+    output overflow: Output signal driven by the module toward surrounding logic.
+    output inexact: Output signal driven by the module toward surrounding logic.
+    output exception: Output signal driven by the module toward surrounding logic.
+    output invalid: Handshake signal that marks transfer validity, readiness, or completion.
+
+Internal reg/wire signals:
+    reg [63:0] out: Sequential register that stores intermediate or output state between cycles.
+    reg ex_enable: Signal that carries intermediate datapath values between logic stages.
+    reg underflow: Sequential register that stores intermediate or output state between cycles.
+    reg overflow: Sequential register that stores intermediate or output state between cycles.
+    reg inexact: Sequential register that stores intermediate or output state between cycles.
+    reg exception: Sequential register that stores intermediate or output state between cycles.
+    reg invalid: Handshake signal that marks transfer validity, readiness, or completion.
+    reg in_et_zero: Sequential register that stores intermediate or output state between cycles.
+    reg opa_et_zero: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_et_zero: Control signal that selects operation mode, command, or multiplexed path.
+    reg input_et_zero: Sequential register that stores intermediate or output state between cycles.
+    reg add: Sequential register that stores intermediate or output state between cycles.
+    reg subtract: Sequential register that stores intermediate or output state between cycles.
+    reg multiply: Sequential register that stores intermediate or output state between cycles.
+    reg divide: Sequential register that stores intermediate or output state between cycles.
+    reg opa_QNaN: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_QNaN: Control signal that selects operation mode, command, or multiplexed path.
+    reg opa_SNaN: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_SNaN: Control signal that selects operation mode, command, or multiplexed path.
+    reg opa_pos_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_pos_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg opa_neg_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_neg_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg opa_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg opb_inf: Control signal that selects operation mode, command, or multiplexed path.
+    reg NaN_input: Sequential register that stores intermediate or output state between cycles.
+    reg SNaN_input: Sequential register that stores intermediate or output state between cycles.
+    reg a_NaN: Sequential register that stores intermediate or output state between cycles.
+    reg div_by_0: Signal that carries intermediate datapath values between logic stages.
+    reg div_0_by_0: Signal that carries intermediate datapath values between logic stages.
+    reg div_inf_by_inf: Signal that carries intermediate datapath values between logic stages.
+    reg div_by_inf: Signal that carries intermediate datapath values between logic stages.
+    reg mul_0_by_inf: Signal that carries intermediate datapath values between logic stages.
+    reg mul_inf: Sequential register that stores intermediate or output state between cycles.
+    reg div_inf: Sequential register that stores intermediate or output state between cycles.
+    reg add_inf: Sequential register that stores intermediate or output state between cycles.
+    reg sub_inf: Sequential register that stores intermediate or output state between cycles.
+    reg addsub_inf_invalid: Handshake signal that marks transfer validity, readiness, or completion.
+    reg addsub_inf: Sequential register that stores intermediate or output state between cycles.
+    reg out_inf_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg out_pos_inf: Sequential register that stores intermediate or output state between cycles.
+    reg out_neg_inf: Sequential register that stores intermediate or output state between cycles.
+    reg round_nearest: Sequential register that stores intermediate or output state between cycles.
+    reg round_to_zero: Sequential register that stores intermediate or output state between cycles.
+    reg round_to_pos_inf: Sequential register that stores intermediate or output state between cycles.
+    reg round_to_neg_inf: Sequential register that stores intermediate or output state between cycles.
+    reg inf_round_down_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg mul_uf: Sequential register that stores intermediate or output state between cycles.
+    reg div_uf: Sequential register that stores intermediate or output state between cycles.
+    reg underflow_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg invalid_trigger: Handshake signal that marks transfer validity, readiness, or completion.
+    reg overflow_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg inexact_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg except_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg enable_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg NaN_out_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg SNaN_trigger: Sequential register that stores intermediate or output state between cycles.
+    reg [62:0] NaN_output_0: Sequential register that stores intermediate or output state between cycles.
+    reg [62:0] NaN_output: Sequential register that stores intermediate or output state between cycles.
+    reg [62:0] inf_round_down: Sequential register that stores intermediate or output state between cycles.
+    reg [62:0] out_inf: Sequential register that stores intermediate or output state between cycles.
+    reg [63:0] out_0: Sequential register that stores intermediate or output state between cycles.
+    reg [63:0] out_1: Sequential register that stores intermediate or output state between cycles.
+    reg [63:0] out_2: Sequential register that stores intermediate or output state between cycles.
+    wire [10:0] exp_2047 = 11'b11111111111: Combinational net that links intermediate expressions across logic blocks.
+    wire [10:0] exp_2046 = 11'b11111111110: Combinational net that links intermediate expressions across logic blocks.
+    wire [51:0] mantissa_max = 52'b1111111111111111111111111111111111111111111111111111: Signal that carries intermediate datapath values between logic stages.
+

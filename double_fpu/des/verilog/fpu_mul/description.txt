@@ -1,0 +1,84 @@
+Functional Overview:
+Module `fpu_mul` computes double-precision floating-point multiplication by forming the significand product, adjusting exponent/sign, and normalizing the result path.
+This module performs the multiplication datapath for two IEEE-754 double-precision operands. It computes the product sign, forms a 106-bit mantissa product using a decomposed partial-product structure, computes the corresponding exponent, handles normalization and denormalization, and emits a 56-bit mantissa bundle plus a 12-bit exponent for later rounding and exception handling.
+
+Description:
+
+This module performs double-precision floating-point multiplication. The inputs opa and opb are 64-bit IEEE-754 operands. The outputs are the result sign sign, an extended exponent exponent_5, and a 56-bit extended mantissa product_7. The sign is the XOR of the operand sign bits. product_7 is an intermediate result used by the rounding stage rather than the final encoded output.
+
+The multiplication stage extracts the mantissas of the inputs and includes the hidden leading 1 for normalized numbers, forming two 53-bit values mul_a and mul_b. A direct 53-by-53 multiply would produce a 106-bit product, but the implementation does not rely on a single large multiplier. Instead, as described in the documentation, the multiplication is broken into several smaller partial products, roughly 24-bit by 17-bit multiplies, and those products are summed with the proper offsets to form the final 106-bit product. This is done to map more efficiently onto FPGA DSP resources rather than relying on synthesis to infer an arbitrary decomposition .
+
+In the exponent path, the exponents of operands A and B are combined with the appropriate bias correction to produce the candidate output exponent. If the result exponent is too small, the output becomes denormalized; the implementation computes exponent_under and right-shifts the product accordingly. If the underflow amount is greater than 52, the mantissa is shifted out entirely and the result becomes zero, with underflow later asserted by the exceptions stage. On the other hand, if the most significant 1 of the product is not already in the expected position, the number of leading zeros is counted by product_shift, the product is left-shifted, and the exponent is reduced to normalize the result .
+
+The output product_7 is 56 bits wide: the MSB is a reserved 0, followed by the leading 1 for normalized results or 0 for denormalized results, then the 52-bit mantissa, and finally two extra bits for rounding. The first extra bit is the next bit below the mantissa, and the second extra bit is the OR of the lower discarded bits, serving as a sticky bit. All state and outputs are clocked on the rising edge, and reset clears the module. NaN, infinity, and special invalid cases such as 0 * infinity are not resolved here; they are handled later by the exceptions stage.
+
+
+module fpu_mul( clk, rst, enable, opa, opb, sign, product_7, exponent_5);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output sign: Output signal driven by the module toward surrounding logic.
+    output [55:0] product_7: Data output that carries computed results or status information.
+    output [11:0] exponent_5: Data output that carries computed results or status information.
+
+Internal reg/wire signals:
+    reg [5:0] product_shift: Signal that carries intermediate datapath values between logic stages.
+    reg [5:0] product_shift_2: Signal that carries intermediate datapath values between logic stages.
+    reg sign: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_a: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_b: Signal that carries intermediate datapath values between logic stages.
+    reg a_is_norm: Sequential register that stores intermediate or output state between cycles.
+    reg b_is_norm: Sequential register that stores intermediate or output state between cycles.
+    reg a_is_zero: Sequential register that stores intermediate or output state between cycles.
+    reg b_is_zero: Sequential register that stores intermediate or output state between cycles.
+    reg in_zero: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] exponent_terms: Signal that carries intermediate datapath values between logic stages.
+    reg exponent_gt_expoffset: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_under: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_1: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_2: Signal that carries intermediate datapath values between logic stages.
+    reg exponent_gt_prodshift: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_3: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_4: Signal that carries intermediate datapath values between logic stages.
+    reg exponent_et_zero: Signal that carries intermediate datapath values between logic stages.
+    reg [52:0] mul_a: Sequential register that stores intermediate or output state between cycles.
+    reg [52:0] mul_b: Sequential register that stores intermediate or output state between cycles.
+    reg [40:0] product_a: Signal that carries intermediate datapath values between logic stages.
+    reg [40:0] product_b: Signal that carries intermediate datapath values between logic stages.
+    reg [40:0] product_c: Signal that carries intermediate datapath values between logic stages.
+    reg [25:0] product_d: Signal that carries intermediate datapath values between logic stages.
+    reg [33:0] product_e: Signal that carries intermediate datapath values between logic stages.
+    reg [33:0] product_f: Signal that carries intermediate datapath values between logic stages.
+    reg [35:0] product_g: Signal that carries intermediate datapath values between logic stages.
+    reg [28:0] product_h: Signal that carries intermediate datapath values between logic stages.
+    reg [28:0] product_i: Signal that carries intermediate datapath values between logic stages.
+    reg [30:0] product_j: Signal that carries intermediate datapath values between logic stages.
+    reg [41:0] sum_0: Signal that carries intermediate datapath values between logic stages.
+    reg [35:0] sum_1: Signal that carries intermediate datapath values between logic stages.
+    reg [41:0] sum_2: Signal that carries intermediate datapath values between logic stages.
+    reg [35:0] sum_3: Signal that carries intermediate datapath values between logic stages.
+    reg [36:0] sum_4: Signal that carries intermediate datapath values between logic stages.
+    reg [27:0] sum_5: Signal that carries intermediate datapath values between logic stages.
+    reg [29:0] sum_6: Signal that carries intermediate datapath values between logic stages.
+    reg [36:0] sum_7: Signal that carries intermediate datapath values between logic stages.
+    reg [30:0] sum_8: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_1: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_2: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_3: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_4: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_5: Signal that carries intermediate datapath values between logic stages.
+    reg [105:0] product_6: Signal that carries intermediate datapath values between logic stages.
+    reg product_lsb: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_5: Signal that carries intermediate datapath values between logic stages.
+    wire [11:0] exponent = 0: Signal that carries intermediate datapath values between logic stages.
+    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Signal that carries intermediate datapath values between logic stages.
+
+

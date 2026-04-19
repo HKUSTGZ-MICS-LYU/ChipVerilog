@@ -1,0 +1,174 @@
+# i2c_master_byte_ctrl Delivery Implementation Spec (English)
+
+## 1. Scope and Traceability
+- Module: `i2c_master_byte_ctrl`
+- Project: `i2c`
+- Target Directory: `src_dataset/i2c/des/verilog/i2c_master_byte_ctrl`
+- Target Verilog: `src_dataset/i2c/rtl/verilog/i2c_master_byte_ctrl.v`
+- Source PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- Extraction Mode: `keyword`
+- Spec Generated At: `2026-04-17 18:05:08`
+
+## 2. Functional Requirements
+- Functional intent: Module `i2c_master_byte_ctrl` sequences byte-level I2C transfers by issuing bit-controller commands, shifting data, and handling ACK/NACK phases.
+- SHALL: The implementation SHALL preserve fundamental I2C timing: SDA transitions only while SCL is low, except START/STOP conditions.
+- SHALL: Command/status semantics SHALL remain consistent with register definitions (e.g., STA/STO/RD/WR/ACK/IACK, TIP, IF, AL).
+- SHALL: Wishbone-side interaction SHALL keep deterministic `ack` timing and atomic register read/write behavior.
+- SHALL: The byte-level controller SHOULD orchestrate 8-bit transfers, ACK sampling, and command-complete handshake.
+
+## 3. Interface Specification
+### 3.1 Inputs
+- `input clk`: Clock signal that defines sequential update timing for this logic.
+- `input rst`: Reset signal that initializes state elements to known values.
+- `input nReset`: Reset signal that initializes state elements to known values.
+- `input ena`: Input signal consumed by the module control or datapath logic.
+- `input [15:0] clk_cnt`: Clock signal that defines sequential update timing for this logic.
+- `input start`: Input signal consumed by the module control or datapath logic.
+- `input stop`: Control signal that selects operation mode, command, or multiplexed path.
+- `input read`: Input signal consumed by the module control or datapath logic.
+- `input write`: Input signal consumed by the module control or datapath logic.
+- `input ack_in`: Handshake signal that marks transfer validity, readiness, or completion.
+- `input [7:0] din`: Input signal consumed by the module control or datapath logic.
+- `input scl_i`: Input signal consumed by the module control or datapath logic.
+- `input sda_i`: Input signal consumed by the module control or datapath logic.
+
+### 3.2 Outputs/Inouts
+- `output cmd_ack`: Handshake signal that marks transfer validity, readiness, or completion.
+- `output ack_out`: Handshake signal that marks transfer validity, readiness, or completion.
+- `output i2c_busy`: Output signal driven by the module toward surrounding logic.
+- `output i2c_al`: Output signal driven by the module toward surrounding logic.
+- `output [7:0] dout`: Output signal driven by the module toward surrounding logic.
+- `output scl_o`: Output signal driven by the module toward surrounding logic.
+- `output scl_oen`: Output signal driven by the module toward surrounding logic.
+- `output sda_o`: Output signal driven by the module toward surrounding logic.
+- `output sda_oen`: Output signal driven by the module toward surrounding logic.
+
+- Interface size: 13 input(s), 9 output/inout port(s)
+- Parameter/Macro constraints: ST_IDLE, ST_START, ST_READ, ST_WRITE, ST_ACK, ST_STOP
+
+## 4. Timing and Reset Requirements
+- Clock signals: `clk`, `clk_cnt`
+- Reset signals: `nReset`, `rst`
+- Handshake/status signals: `ack_in`, `ack_out`, `cmd_ack`, `i2c_busy`
+- Sequential block references:
+  - Always block 1: line ~171, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 2: line ~182, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 3: line ~200, sensitivity `(posedge clk or negedge nReset)`.
+- Case-logic reference: - Case statement count: 1.
+
+## 5. Implementation Constraints (Delivery Gates)
+- MUST: Port direction, width, signedness, and naming must remain interface-equivalent.
+- MUST: Reset behavior and `if/case` priority/order must remain behavior-equivalent.
+- MUST: Do not introduce latch inference or uncontrolled extra cycle latency.
+- MUST: Preserve submodule instantiation relationship and connection semantics:
+  - line ~146: instance `bit_controller` of `i2c_master_bit_ctrl`.
+- Key internal signals (recommended to keep for debug continuity): `ack_out`, `cmd_ack`, `cnt_done`, `core_ack`, `core_rxd`, `core_txd`, `go`, `ld`, `shift`
+
+## 6. Acceptance Criteria (DoD)
+- Interface consistency: build/lint passes with matching port and parameter definitions.
+- Behavioral consistency: directed tests cover reset, nominal path, boundary inputs, and error/exception paths.
+- Timing consistency: edge behavior and handshake pulse widths are stable (no missed/double responses).
+- Integration consistency: hierarchy connection and system testbench regression pass.
+
+## 7. Key Points Aligned to Source PDF
+- By setting the START, STOP, and READ bit in the Command Register, for example, the Byte Command Controller generates a sequence that results in the
+- 5.3 Bit Command Controller The Bit Command Controller handles the actual transmission of data and the generation of the specific levels for START, Repeated START, and STOP signals by controlling the SCL and SDA lines.
+- -- wait for interrupt or TIP flag to negate -- 2) read RxACK bit from Status Register, should be '0'.
+- -- wait for interrupt or TIP flag to negate -- 3) read RxACK bit from Status Register, should be '0'.
+- 5.2 Byte Command Controller The Byte Command Controller handles I2C traffic at the byte level.
+
+## 8. Raw PDF Excerpt (Closest Source Content)
+```text
+[PDF pages 13-14]
+5.1 Clock Generator
+The Clock Generator generates an internal 4*Fscl clock enable signal that triggers all
+synchronous elements in the Bit Command Controller. It also handles clock stretching
+needed by some slaves.
+
+5.2 Byte Command Controller
+The Byte Command Controller handles I2C traffic at the byte level. It takes data from the
+Command Register and translates it into sequences based on the transmission of a single
+byte. By setting the START, STOP, and READ bit in the Command Register, for
+example, the Byte Command Controller generates a sequence that results in the
+
+OpenCores                               I2C-Master core                         7/3/2003
+
+generation of a START signal, the reading of a byte from the slave device, and the
+generation of a STOP signal. It does this by dividing each byte operation into separate
+bit-operations, which are then sent to the Bit Command Controller.
+
+Idle state
+
+Read / Write          No
+bit set ?
+
+Yes
+
+START
+bit set ?
+No
+
+---
+
+[PDF pages 14-15]
+OpenCores                          I2C-Master core                             7/3/2003
+
+5.3 Bit Command Controller
+The Bit Command Controller handles the actual transmission of data and the generation
+of the specific levels for START, Repeated START, and STOP signals by controlling the
+SCL and SDA lines. The Byte Command Controller tells the Bit Command Controller
+which operation has to be performed. For a single byte read, the Bit Command Controller
+receives 8 separate read commands. Each bit-operation is divided into 5 pieces (idle and
+A, B, C, and D), except for a STOP operation which is divided into 4 pieces (idle and A,
+B, and C).
+
+A    B    C   D
+Start          SCL
+
+SDA
+
+---
+
+[PDF pages 16-17]
+OpenCores                                  I2C-Master core                                        7/3/2003
+
+Example 2
+Read a byte of data from an I2C memory device.
+
+Slave address = 0x4E
+Memory location to read from = 0x20
+
+I2C sequence:
+1) generate start signal
+2) write slave address + write bit
+3) receive acknowledge from slave
+4) write memory location
+5) receive acknowledge from slave
+6) generate repeated start signal
+7) write slave address + read bit
+8) receive acknowledge from slave
+9) read byte from slave
+10) write no acknowledge (NACK) to slave, indicating end of transfer
+11) generate stop signal
+
+Commands:
+1) write 0x9C (address + write bit) to Transmit Register, set STA bit, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+2) read RxACK bit from Status Register, should be '0'.
+write 0x20 to Transmit register, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+3) read RxACK bit from Status Register, should be '0'.
+write 0x9D (address + read bit) to Transmit Register, set STA bit, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+4) set RD bit, set ACK to '1' (NACK), set STO bit
+
+First command sequence                    Second command sequence
+
+SCL
+
+SDA       S                                Wr ack                                      ack
+```
+
+## 9. Notes
+- Module declaration reference: 74
+- This specification supports implementation/review and does not replace final simulation evidence.

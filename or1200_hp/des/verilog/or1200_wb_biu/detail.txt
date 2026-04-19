@@ -1,0 +1,37 @@
+1. Core translation behavior
+- Internal request fields biu_adr_i, biu_dat_i, biu_cyc_i, biu_stb_i, biu_we_i, biu_sel_i, and optional biu_cab_i are presented to the external WISHBONE bus.
+- Returned wb_dat_i, wb_ack_i, wb_err_i, and wb_rty_i are translated back to biu_dat_o, biu_ack_o, and biu_err_o.
+- Optional registered-input and registered-output modes insert storage on the WISHBONE-facing side without changing the architecture-visible protocol.
+
+2. Clock-division synchronization
+- valid_div is a modulo-4 counter in the RISC clock domain.
+- biu_ack_o and biu_err_o are qualified by valid_div and clmode so that a WISHBONE response lasting multiple RISC cycles collapses to the proper RISC-visible pulse width for the selected clock ratio.
+
+3. Retry handling
+- If OR1200_WB_RETRY is enabled, wb_rty_i loads a retry counter.
+- retry remains asserted while the counter is nonzero.
+- wb_cyc_o is suppressed while retry is active, temporarily backing off new requests.
+
+4. Graceful abort handling
+- aborted is asserted when an external transfer is already in progress but the internal request disappears before a normal termination arrives.
+- aborted_r extends this condition until the pending transfer is eventually terminated by wb_ack_i or wb_err_i.
+- This prevents the interface from losing track of an externally visible transfer that must still be completed on the bus.
+
+5. Output generation
+- wb_adr_o, wb_dat_o, wb_we_o, wb_sel_o, wb_stb_o, and wb_cyc_o are either direct combinational mappings or registered outputs depending on synthesis configuration.
+- wb_cab_o is optionally supported for burst transactions.
+- wb_cti_o and wb_bte_o provide burst-type information when enabled.
+
+6. Acknowledge/error semantics
+- long_ack_o and long_err_o reflect the raw WISHBONE-side termination after abort qualification.
+- biu_ack_o and biu_err_o are the clock-ratio-qualified forms seen by the RISC side.
+- Returned read data comes from wb_dat_i, optionally through an input register.
+
+7. Required functional guarantees
+An implementation conforming to this spec shall:
+- Correctly adapt one OR1200 BIU request stream to a WISHBONE master port.
+- Support read and write cycles with byte-select outputs.
+- Correctly return acknowledge, error, and read data to the internal side.
+- Support configurable registered I/O without changing the visible transaction meaning.
+- Support retry/backoff and graceful abort completion semantics.
+- Support burst-related outputs when those options are enabled.

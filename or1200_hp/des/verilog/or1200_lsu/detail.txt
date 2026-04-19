@@ -1,0 +1,50 @@
+1. Effective address and request generation
+The effective address is always dcpu_adr_o = addrbase + addrofs.
+A data cycle is started when lsu_op is nonzero and none of the following suppressions apply:
+- du_stall
+- lsu_unstall (ack just arrived)
+- except_align
+Thus dcpu_cycstb_o is the LSU operation-valid bit gated by debug, completion, and alignment exception conditions.
+
+2. Operation type decoding
+- dcpu_we_o is taken from lsu_op[3], so stores are distinguished from loads by the top operation bit.
+- dcpu_tag_o is OR1200_DTAG_ND when a cycle is active, otherwise OR1200_DTAG_IDLE.
+The LSU therefore labels all normal accesses uniformly; special tags are injected later by the DMMU or bus fabric on error.
+
+3. Byte-enable generation
+The module generates dcpu_sel_o from the operation and effective-address low bits.
+Required behavior:
+- byte stores/loads select exactly one byte lane based on address[1:0]
+- halfword stores/loads select either upper or lower two-byte pair, requiring address[0]=0
+- word stores/loads select all four lanes, requiring address[1:0]=00
+This byte-enable mapping must be preserved exactly because the companion reg2mem and mem2reg blocks assume the same byte ordering.
+
+4. Exception generation
+4.1 Alignment exception
+except_align is asserted when:
+- SH/LHZ/LHS use an odd address, or
+- SW/LWZ/LWS use a non-word-aligned address.
+Misaligned accesses are blocked before they are issued on the bus.
+
+4.2 MMU/bus exceptions
+The LSU decodes dcpu_err_i together with dcpu_tag_i into:
+- except_dtlbmiss when tag == OR1200_DTAG_TE
+- except_dmmufault when tag == OR1200_DTAG_PE
+- except_dbuserr when tag == OR1200_DTAG_BE
+These are classification outputs only; the actual error originates downstream.
+
+5. Stall semantics
+- lsu_stall = dcpu_rty_i & dcpu_cycstb_o
+  This indicates the LSU is waiting because the data interface requested retry.
+- lsu_unstall = dcpu_ack_i
+  This indicates the data access completed and pipeline hold can be released.
+These signals are consumed by the freeze logic.
+
+6. Data formatting submodules
+The module instantiates:
+- or1200_mem2reg to convert raw returned memory data into the correctly aligned register value for loads;
+- or1200_reg2mem to arrange store data into the bus byte lanes expected by memory.
+A compatible rewrite may inline these functions, but the LSU-level visible behavior must stay identical.
+
+7. Summary
+or1200_lsu.v is the complete data-access execution block. It forms the effective address, issues the memory request, chooses byte lanes, blocks misaligned accesses, classifies downstream errors, and formats data both to memory and back to the register file.

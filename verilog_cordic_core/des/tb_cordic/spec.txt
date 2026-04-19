@@ -1,0 +1,56 @@
+# tb 工业交付实现规格（Delivery Spec）
+
+## 1. 范围与追溯
+- 模块名称: `tb`
+- 所属工程: `verilog_cordic_core`
+- 目标目录: `src_dataset/verilog_cordic_core/des/tb_cordic`
+- 目标源码: `src_dataset/verilog_cordic_core/rtl/tb_cordic.v`
+- 参考 PDF: `src_dataset/verilog_cordic_core/manual.pdf`
+- 抽取模式: `fallback_overview`
+- 规格生成时间: `2026-04-17 18:05:08`
+
+## 2. 功能需求（必须）
+- 模块功能定义: Module `tb` provides simulation stimulus and result observation for functional verification of the CORDIC core.
+- SHALL: 必须保持 CORDIC 迭代微旋转流程与角度表驱动关系，确保结果与迭代次数一致。
+- SHALL: 输入输出有效信号语义必须稳定，支持按既定模式进行旋转/向量化计算。
+- SHALL: 固定点位宽与符号位扩展规则必须显式、可复现，并与接口定义保持一致。
+
+## 3. 接口规范
+### 3.1 输入端口
+- 无
+
+### 3.2 输出/双向端口
+- 无
+
+- 接口规模: 0 input(s), 0 output/inout port(s)
+- 参数/宏约束: none declared in this module block
+
+## 4. 时序与复位要求
+- 时钟信号: 未显式识别
+- 复位信号: 未显式识别
+- 握手/状态信号: 未显式识别
+- 时序逻辑块要求: description.txt 未提供，需直接核对 RTL。
+
+## 5. 实现约束（交付红线）
+- MUST: 端口方向、位宽、符号属性与命名必须与接口定义逐项一致。
+- MUST: 复位行为、状态更新优先级、`if/case` 判定顺序必须与原始设计保持等价。
+- MUST: 组合路径不可引入锁存器；时序路径不可引入额外不可控周期延迟。
+- MUST: 保持子模块实例化关系与连接语义不变：
+  - line ~23: instance `UUT` of `cordic`.
+- 关键内部信号（建议保留命名以便联调）: `clock`, `init`, `reset`
+
+## 6. 验收标准（DoD）
+- 接口一致性: lint/编译通过，端口与参数定义与规格一致。
+- 行为一致性: 关键 directed test 覆盖复位、正常路径、边界输入、错误/异常路径。
+- 时序一致性: 核验时钟边沿行为与握手脉冲宽度，避免丢拍和重复响应。
+- 集成一致性: 子模块互连与上层调用时序在系统 testbench 下通过回归。
+
+## 7. PDF 依据摘要（已提炼）
+- CORDIC (Coordinate Rotation Digital Computer) is an algorithm for computing transcendental functions like sine, cosine and arctangent.
+- A highly configurable 1st quadrant CORDIC core in verilog
+- To rotate the coordinate ( X i , Y i ) to the point ( X j , Y j ) We use the following matrix calculation.
+- The algorithm works by reducing the calculation into a number of micro-rotations for which the arctangent value is precomputed and loaded in a table.
+
+## 8. 实现说明
+- 模块声明参考位置: 14
+- 本规格用于工程实现与代码审查，不替代最终仿真结果；若冲突，以 RTL 行为与回归测试为准。

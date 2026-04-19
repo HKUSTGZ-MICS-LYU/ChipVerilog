@@ -1,0 +1,161 @@
+# tb Delivery Implementation Spec (English)
+
+## 1. Scope and Traceability
+- Module: `tb`
+- Project: `verilog_cordic_core`
+- Target Directory: `src_dataset/verilog_cordic_core/des/tb_cordic`
+- Target Verilog: `src_dataset/verilog_cordic_core/rtl/tb_cordic.v`
+- Source PDF: `src_dataset/verilog_cordic_core/manual.pdf`
+- Extraction Mode: `fallback_overview`
+- Spec Generated At: `2026-04-17 18:05:08`
+
+## 2. Functional Requirements
+- Functional intent: Module `tb` provides simulation stimulus and result observation for functional verification of the CORDIC core.
+- SHALL: The CORDIC iterative micro-rotation flow and angle-table relationship SHALL be preserved for iteration-consistent results.
+- SHALL: Input/output valid semantics SHALL remain stable for rotate/vector modes.
+- SHALL: Fixed-point width and sign-extension rules SHALL be explicit, reproducible, and interface-consistent.
+
+## 3. Interface Specification
+### 3.1 Inputs
+- None
+
+### 3.2 Outputs/Inouts
+- None
+
+- Interface size: 0 input(s), 0 output/inout port(s)
+- Parameter/Macro constraints: none declared in this module block
+
+## 4. Timing and Reset Requirements
+- Clock signals: not explicitly identified
+- Reset signals: not explicitly identified
+- Handshake/status signals: not explicitly identified
+- Sequential block references: not provided in description.txt; verify directly from RTL.
+
+## 5. Implementation Constraints (Delivery Gates)
+- MUST: Port direction, width, signedness, and naming must remain interface-equivalent.
+- MUST: Reset behavior and `if/case` priority/order must remain behavior-equivalent.
+- MUST: Do not introduce latch inference or uncontrolled extra cycle latency.
+- MUST: Preserve submodule instantiation relationship and connection semantics:
+  - line ~23: instance `UUT` of `cordic`.
+- Key internal signals (recommended to keep for debug continuity): `clock`, `init`, `reset`
+
+## 6. Acceptance Criteria (DoD)
+- Interface consistency: build/lint passes with matching port and parameter definitions.
+- Behavioral consistency: directed tests cover reset, nominal path, boundary inputs, and error/exception paths.
+- Timing consistency: edge behavior and handshake pulse widths are stable (no missed/double responses).
+- Integration consistency: hierarchy connection and system testbench regression pass.
+
+## 7. Key Points Aligned to Source PDF
+- CORDIC (Coordinate Rotation Digital Computer) is an algorithm for computing transcendental functions like sine, cosine and arctangent.
+- A highly configurable 1st quadrant CORDIC core in verilog
+- To rotate the coordinate ( X i , Y i ) to the point ( X j , Y j ) We use the following matrix calculation.
+- The algorithm works by reducing the calculation into a number of micro-rotations for which the arctangent value is precomputed and loaded in a table.
+- For example, the angle 0 is computed by letting S_i in equation (3) be simply S i=0,0,0,0...
+
+## 8. Raw PDF Excerpt (Closest Source Content)
+```text
+A highly configurable 1st quadrant CORDIC core
+in verilog
+
+Author: Dale Drinkard
+dale@fpgadesigner.com
+
+Rev .0.1
+September 13, 2008
+
+REVISION HISTORY
+
+Revision   Date     Author          Description
+0.1        09/13/08 Dale Drinkard   First Draft
+
+Table of Contents
+1CORDIC Overview..................................................................................................................................4
+2CORDIC Theory......................................................................................................................................4
+3Core Description......................................................................................................................................5
+4Core Implementation................................................................................................................................6
+
+1 CORDIC Overview
+
+CORDIC (Coordinate Rotation Digital Computer) is an algorithm for computing transcendental
+functions like sine, cosine and arctangent. The method can also be easily extended to compute square
+roots as well as hyperbolic functions.
+
+The algorithm works by reducing the calculation into a number of micro-rotations for which the
+arctangent value is precomputed and loaded in a table. This method reduces the computation to
+addition, subtraction, compares, and shifts. All functions easily performed by FPGAs.
+
+2 CORDIC Theory
+
+To rotate the coordinate ( X i , Y i ) to the point ( X j , Y j ) We use the following matrix calculation.
+
+[ ][
+X j = cos  −sin  ∗ X i
+Yj    sin  cos     Yi  ][ ]         (1)
+
+Equation 1 can be modified by factoring a cos  leading to the following:
+
+[ ]
+Xj
+Yj
+=cos ∗
+
+tan [
+−tan
+
+X
+∗ i
+Yi           ][ ]    (2)
+
+Any angle  in the first quadrant can be represented by the following equation.
+∞
+n=∑ S i∗arctan  1/ 2n        (3)
+n=0
+
+where       S i = 0 or 1
+
+For example, the angle 0 is computed by letting S_i in equation (3) be simply S i=0,0,0,0... . The
+angle =/2 is computed by letting S i=1,1,1,1. .. . /4 would be 1,0,0,0... , and so on.
+In practice, due to the accuracy limits of the digital representation, the summation can be limited to the
+number of bits representing the value, or fewer. The arctan 1/2 n quickly approaches 0.
+
+Note that equation 3 can also be constructed such that S_i = -1 or 1. For example, the angle /4
+would be computed with the sequence 1,1,−1,−1,−1,... . The advantage of this method will
+become apparent.
+
+This results in the following equation for tan n
+
+tan n=S n∗1/2n         (4)
+
+Turning our attention back to equation (2), and given that the angle  can be represented as a
+weighted sum (3), we can represent the rotation from  X i ,Y i  to  X j , Y j  as a sequence of
+smaller rotations where the n1 rotational coordinate is derived from the n th coordinate using
+the following equation
+
+[ ]
+X n1 =cos  ∗ 1
+Y n1
+n
+[
+tan n
+−tan n
+
+∗ Xn
+Yn ][ ]        (5)
+
+By substituting equation (4) into equation (5) we replace the tangent function with a divide by 2^n ,
+which is a simple shift operation
+
+[                           ][ ]
+n
+1      −S n∗1/ 2 
+[ ]
+X n1
+Y n1
+=cos n∗          n
+S n∗1/ 2       1
+X
+```
+
+## 9. Notes
+- Module declaration reference: 14
+- This specification supports implementation/review and does not replace final simulation evidence.

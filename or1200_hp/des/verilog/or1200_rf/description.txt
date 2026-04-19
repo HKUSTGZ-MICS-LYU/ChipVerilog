@@ -1,0 +1,89 @@
+
+Module `or1200_rf` implements the OR1200 general-purpose register file with dual-read and write-back behavior.
+
+This module implements the CPU general-purpose register file and its SPR-visible access path. The source comments describe it as “Instantiation of register file memories.” The block provides two read operands for the decode stage, one write-back port, optional SPR-based access to GPRs, and freeze-safe operand retention.
+
+Description:
+
+The module implements the OR1200 general-purpose register file with dual-read and write-back behavior.
+
+
+This module implements the top level of general register file access of OR1200, and is responsible for uniformly mapping ordinary pipeline read and write requests and debugging SPR access to register file storage banks, and saving read operands when the ID level is frozen to prevent the loss of operands caused by changes in the read port address during pipeline pauses. The module supports the normal execution path and debugging path to share the same register file resource.
+
+On the write path, the normal writeback interface is provided by `addrw/dataw/we`, and the debugging path is provided by `spr_cs/spr_write/spr_addr/spr_dat_i`. `spr_valid` holds when `spr_cs` is valid and the address belongs to the GPR SPR range. At this time, if it is a write operation, the write address `rf_addrw` takes `spr_addr[4:0]`, and the write data `rf_dataw` takes `spr_dat_i`; otherwise, the ordinary pipeline address and data are used. The actual write enable `rf_we` is determined by three types of conditions: one is "debug write" or "normal writeback and the writeback level is not frozen"; the other is `rf_we_allow` is 1; the third is that the write protection rule of register 0 is met, that is, writing address 0 is not allowed when `supv=0` in user mode, but this restriction can be relaxed in privileged mode. `rf_we_allow` is a timing register control bit that is updated on the rising edge of `clk` and reset asynchronously: it is 1 after reset; after that, as long as the writeback stage is not frozen, it is updated to `~flushpipe`, thereby blocking writebacks that should not be submitted during the flush pipeline.
+
+On the read path, the address `rf_addra` of port A takes `spr_addr[4:0]` when "debugging read and not writing", otherwise it takes `addra` of ordinary instructions; port B always takes `addrb`. The read port chip selects `rf_ena` and `rf_enb` are determined by `rda/rdb` and `~id_freeze` respectively, and are forced to be enabled as long as there is debugging access to `spr_valid`. `spr_dat_o` always returns port A read data, so debug register reading is done through port A.
+
+In order to keep the operands stable when the ID level is frozen, the module introduces two 33-bit registers, `dataa_saved` and `datab_saved`, with the highest bit as the "saved valid" flag. They are updated on the rising edge of `clk` and reset asynchronously. Cleared after reset; when `id_freeze` is valid and the corresponding save flag has not been set, the current read port value `from_rfa/from_rfb` is latched in and the flag is set; when `id_freeze` is released, the save register is cleared. External output `dataa/datab` returns the saved value when the save is valid, otherwise it directly returns the real-time reading data. Therefore, even if the register file address is changed by subsequent logic during the stall, the current frozen instruction still sees the original operands.
+
+The register file memory itself can be instantiated into different structures such as dual dual-port RAM, dual dual-port RAM, and flip-flop arrays according to macro configuration, but the interface semantics are consistent: two read ports A/B read in parallel, and a shared write port is responsible for writing back. The end also explicitly guarantees that constant 0 is returned when the read address is 0: `from_rfa` and `from_rfb` are directly overwritten to 0 when the address is `5'h00`, without relying on whether register 0 is actually saved inside the memory bank. The timing status of the entire module only includes `rf_we_allow` and two save registers. Reset takes precedence over read, write and save logic.
+
+module or1200_rf(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Write i/f
+    input supv,
+    input wb_freeze,
+    input [4:0] addrw,
+    input [31:0] dataw,
+    input we,
+    input flushpipe,
+
+    // Read i/f
+    input id_freeze,
+    input [4:0] addra,
+    input [4:0] addrb,
+    output [31:0] dataa,
+    output [31:0] datab,
+    input rda,
+    input rdb,
+
+    // Debug
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - supv: Current supervisor-mode status used for privileged behavior and permission checks.
+    - wb_freeze: Freeze control for the writeback stage.
+    - addrw[4:0]: Register-file write address.
+    - dataw[31:0]: Writeback data word written into the register file.
+    - we: Write-enable for the local storage block.
+    - flushpipe: Pipeline flush request.
+    - id_freeze: Freeze control for the decode stage.
+    - addra[4:0]: Register-file read address for source port A.
+    - addrb[4:0]: Register-file read address for source port B.
+    - rda: Read-enable for register-file source port A.
+    - rdb: Read-enable for register-file source port B.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    - dataa[31:0]: Read data returned from register-file port A.
+    - datab[31:0]: Read data returned from register-file port B.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    reg [dw:0] dataa_saved: Signal that carries intermediate datapath values between logic stages.
+    reg [dw:0] datab_saved: Signal that carries intermediate datapath values between logic stages.
+    reg rf_we_allow: Signal that carries intermediate datapath values between logic stages.
+    reg [4:0] rf_addra_reg: Address/control signal that selects registers, memory locations, or byte lanes.
+    reg [4:0] rf_addrb_reg: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [dw-1:0] from_rfa: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] from_rfb: Combinational net that links intermediate expressions across logic blocks.
+    wire [aw-1:0] rf_addra: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [aw-1:0] rf_addrw: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [dw-1:0] rf_dataw: Signal that carries intermediate datapath values between logic stages.
+    wire rf_we: Signal that carries intermediate datapath values between logic stages.
+    wire spr_valid: Handshake signal that marks transfer validity, readiness, or completion.
+    wire rf_ena: Signal that carries intermediate datapath values between logic stages.
+    wire rf_enb: Signal that carries intermediate datapath values between logic stages.
+    wire [dw-1:0] from_rfa_int: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] from_rfb_int: Combinational net that links intermediate expressions across logic blocks.

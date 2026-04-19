@@ -1,0 +1,28 @@
+1. Details
+- The module implements double-precision floating-point addition through exponent alignment, significand accumulation, and post-add normalization.
+- `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations (add, subtract, multiply, divide), the rounding module, and the exceptions module.
+- The inputs to `fpu_round` from the previous stage are `sign` (1 bit), `mantissa_term` (56 bits), and `exponent_term` (12 bits).
+- The module `fpu_add` outputs an intermediate floating-point representation because the result of the addition operation still needs to go through the rounding stage and then the exceptions stage.
+- The implementation is written as a single clocked pipeline block. Each step is stored in registers rather than being purely combinational. Because nonblocking assignments are used throughout, the internal operations form a staged pipeline over successive enabled clock cycles.
+
+2. Interpretation of Inputs
+- Each operand is interpreted as:
+- `sign`: bit 63.
+- `exponent`: bits 62:52.
+- `mantissa`: bits 51:0.
+
+3. Normalization and Special-Case Handling
+- For normalized numbers, an implied leading 1 is added internally.
+- For denormalized numbers, the hidden bit is 0.
+- The module does not directly handle NaN and infinity as top-level exceptions; those are resolved later by the exception block.
+
+4. Output Encoding
+- The module outputs a 56-bit mantissa bundle with this structure:
+- bit 55: overflow guard bit reserved for a possible carry from addition.
+- bit 54: leading integer bit after normalization.
+- bits 53:2: 52-bit mantissa field candidate.
+- bits 1:0: two low-order remainder bits passed to the rounding and inexact-detection logic.
+
+5. Sign Output
+- The sign output is simply `opa[63]`.
+- This is correct because this module is only used in cases where the effective result sign equals the sign of operand A after top-level routing.

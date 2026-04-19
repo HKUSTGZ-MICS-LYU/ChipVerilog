@@ -1,0 +1,30 @@
+1. Match logic
+- match is asserted when TTMR[TP] equals TTCR[27:0].
+- restart is asserted when match is true and mode M == restart-on-match.
+- stop is asserted when mode indicates stop, when mode is disabled, or when the debug unit stalls the core.
+
+2. TTMR behavior
+- On reset TTMR is cleared, or defaults to a constant architectural value if TTMR storage is compiled out.
+- On an SPR write to TTMR, the register is loaded from spr_dat_i.
+- If interrupts are enabled, TTMR[IP] is set when a match occurs.
+
+3. TTCR behavior
+- On reset TTCR is cleared.
+- On restart, TTCR is reset to zero.
+- On an SPR write to TTCR, the register is loaded from spr_dat_i.
+- Otherwise, if not stopped, TTCR increments every clock.
+
+4. Interrupt behavior
+- intr is simply the TTMR interrupt-pending bit.
+- Software or reset may clear TTMR[IP] by rewriting TTMR according to the architecture.
+
+5. Read behavior
+- SPR offset decoding returns either TTMR or TTCR.
+- If the timer feature is compiled out, reads return zero when readback is enabled and intr remains low.
+
+6. Required functional guarantees
+An implementation conforming to this spec shall:
+- Implement counter/mode registers with programmable match behavior.
+- Support restart, stop, and free-run style behavior using the mode field.
+- Assert interrupt pending when a match occurs and interrupts are enabled.
+- Stop counter progress while the debug unit stalls the processor.

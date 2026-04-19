@@ -1,0 +1,67 @@
+# timescale Delivery Implementation Spec (English)
+
+## 1. Scope and Traceability
+- Module: `timescale`
+- Project: `i2c`
+- Target Directory: `src_dataset/i2c/des/verilog/timescale`
+- Target Verilog: `src_dataset/i2c/des/verilog/timescale/timescale.v`
+- Source PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- Extraction Mode: `keyword`
+- Spec Generated At: `2026-04-17 18:05:08`
+
+## 2. Functional Requirements
+- Functional intent: File `timescale.v` sets the simulation time unit and precision directives used by the I2C RTL.
+- SHALL: A unified simulation time unit and precision SHALL be defined and kept consistent with the rest of the project RTL/testbench.
+- SHALL: This file SHALL not carry functional RTL behavior; avoid introducing sequential/combinational logic here.
+- SHALL: If multiple timescale definitions exist in the project, system-level simulation SHALL verify that no time-base conflicts remain.
+
+## 3. Interface Specification
+### 3.1 Inputs
+- None
+
+### 3.2 Outputs/Inouts
+- None
+
+
+## 4. Timing and Reset Requirements
+- Clock signals: not explicitly identified
+- Reset signals: not explicitly identified
+- Handshake/status signals: not explicitly identified
+- Sequential block references: not provided in description.txt; verify directly from RTL.
+
+## 5. Implementation Constraints (Delivery Gates)
+- MUST: Port direction, width, signedness, and naming must remain interface-equivalent.
+- MUST: Reset behavior and `if/case` priority/order must remain behavior-equivalent.
+- MUST: Do not introduce latch inference or uncontrolled extra cycle latency.
+- Submodule relation: standalone implementation or not identified in description.txt.
+
+## 6. Acceptance Criteria (DoD)
+- Interface consistency: build/lint passes with matching port and parameter definitions.
+- Behavioral consistency: directed tests cover reset, nominal path, boundary inputs, and error/exception paths.
+- Timing consistency: edge behavior and handshake pulse widths are stable (no missed/double responses).
+- Integration consistency: hierarchy connection and system testbench regression pass.
+
+## 7. Key Points Aligned to Source PDF
+- No high-confidence sentence extracted; implementation guidance is primarily from description.txt + RTL structure.
+
+## 8. Raw PDF Excerpt (Closest Source Content)
+```text
+[PDF pages 4-4]
+FEATURES
+•    Compatible with Philips I2C standard
+•    Multi Master Operation
+•    Software programmable clock frequency
+•    Clock Stretching and Wait state generation
+•    Software programmable acknowledge bit
+•    Interrupt or bit-polling driven byte-by-byte data-transfers
+•    Arbitration lost interrupt, with automatic transfer cancelation
+•    Start/Stop/Repeated Start/Acknowledge generation
+•    Start/Stop/Repeated Start detection
+•    Bus busy detection
+•    Supports 7 and 10bit addressing mode
+•    Operates from a wide range of input clock frequencies
+•    Static synchronous design
+```
+
+## 9. Notes
+- This specification supports implementation/review and does not replace final simulation evidence.

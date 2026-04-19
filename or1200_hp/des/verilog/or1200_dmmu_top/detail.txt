@@ -1,0 +1,61 @@
+1. Data structures and address format
+The code documents the DTLB storage model explicitly.
+- Match register format: vpn plus valid bit.
+- Translate register format: ppn plus permission bits swe/sre/uwe/ure and cache-inhibit.
+The translated physical address is formed by concatenating the translated physical page number with the original page offset.
+
+2. Functional behavior
+2.1 Disabled-DMMU behavior
+If OR1200_NO_DMMU is set, the module behaves like a transparent pass-through.
+- Output address equals input address.
+- cyc/stb passes through unchanged.
+- tags and errors come directly from downstream.
+- cache inhibit defaults from address bit 31 in this implementation.
+- SPR output is zero.
+This is an important compatibility mode and should be preserved.
+
+2.2 DTLB access through SPR
+When spr_cs is asserted, the module routes the SPR operation to the DTLB block. The source comments document the address ranges for dtlb match and translate entries. spr_dat_o returns DTLB readback data during such accesses.
+
+2.3 Tag and error generation
+The module classifies translation failures locally.
+- On miss, dcpu_tag_o becomes OR1200_DTAG_TE.
+- On protection fault, dcpu_tag_o becomes OR1200_DTAG_PE.
+- Otherwise the downstream tag is passed through.
+- dcpu_err_o is asserted for miss, fault, or downstream error.
+This means the DMMU is logically upstream of the data-cache/bus error path.
+
+2.4 Translation timing and dtlb_done
+The code contains a one-cycle delayed flag dtlb_done. It is asserted one clock after a new address when dtlb_en is active. This delay models the DTLB lookup timing. A reimplementation must preserve the functional effect: request forwarding and some permission/tag decisions are delayed until translation results are valid.
+
+2.5 Request gating
+qmemdmmu_cycstb_o is cut off when translation fails. The module comments say: “Cut transfer if something goes wrong with translation.” When dc_en is low but dmmu_en is high, forwarding explicitly waits for dtlb_done. Otherwise request gating still prevents forwarding on miss or fault.
+
+2.6 Cache inhibit propagation
+When DMMU is enabled, qmemdmmu_ci_o comes from the translated TLB entry and is qualified with dtlb_done. When DMMU is disabled, the implementation falls back to address bit 31.
+
+2.7 VPN register and bypass path
+The source stores the current VPN in dcpu_vpn_r. The comment explains that this is needed “for use when DMMU is not enabled but PPN is expected to come one clock cycle after offset part.” The current implementation ultimately uses either translated {ppn, offset} or raw dcpu_adr_i at the output.
+
+2.8 Permission checking and page fault logic
+A page fault occurs only after DTLB lookup completes. The logic checks the access type and current privilege:
+- load in user mode requires ure;
+- load in supervisor mode requires sre;
+- store in user mode requires uwe;
+- store in supervisor mode requires swe.
+If the relevant permission bit is not set, fault is asserted.
+
+2.9 Miss detection
+A miss occurs when the DTLB is enabled and the lookup is complete but the selected entry does not hit. The downstream transfer is suppressed and the CPU sees a DTLB miss tag/error.
+
+3. Required submodule behavior
+The implementation depends on a DTLB submodule that must provide:
+- hit flag;
+- translated ppn;
+- permission bits;
+- cache inhibit bit;
+- SPR read/write access.
+Any rewrite can inline this behavior or keep it as a separate module, but the top-level contract must stay the same.
+
+4. Summary
+or1200_dmmu_top.v is the data-side translation and protection front-end. It either transparently passes data accesses through or turns them into translated physical accesses with miss/fault handling, cache-attribute propagation, and SPR-visible TLB state.

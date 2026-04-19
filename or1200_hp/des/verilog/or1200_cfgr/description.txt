@@ -1,0 +1,29 @@
+
+Module `or1200_cfgr` returns OR1200 configuration register values for SPR reads, including implemented-unit and cache/MMU capability fields.
+
+This module implements the read-only architectural configuration register space for the OR1200 core. The file header states that it implements “VR, UPR and Configuration Registers” and that it is “According to OR1K architectural and OR1200 specifications.”
+Its job is to decode SPR addresses and return the corresponding 32-bit configuration word.
+
+Description:
+
+The module returns OR1200 configuration register values for SPR reads, including implemented-unit and cache/MMU capability fields.
+
+
+This module implements the read-only SPR access interface to the version register, unit presence register and configuration register of the OR1200. The module has no clock and reset inputs, and does not save runtime state; spr_dat_o is completely decoded from the spr_addr combination, so any address changes are immediately reflected in the read data output.
+
+When the configuration register function is turned on, the module returns fixed information registers such as VR, UPR, CPUCFGR, DMMUCFGR, IMMUCFGR, DCCFGR, ICCFGR and DCFGR based on the low-order selection of spr_addr. The value of each field comes directly from the compile-time macro definition, indicating static capability information such as the processor version, implementation features, MMU/cache size and organization, debugging capabilities, etc. If the system group full address decoding is enabled, the access is considered valid only when spr_addr[31:4] is all 0; otherwise, 0 is output. Also output 0 if the address does not hit any implemented register.
+
+When the complete configuration register function is not implemented, the module only retains two read-only registers VR and UPR, which are also output in the combined decoding mode; all other addresses return 0. Since this module has no write path, there are no write priorities, timing update rules, or reset initialization procedures. It is essentially a constant ROM/lookup table logic driven by the SPR address.
+
+module or1200_cfgr(
+    // RISC Internal Interface
+    input [31:0] spr_addr,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - spr_addr[31:0]: SPR address used for register decode.
+Output port:
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    reg [31:0] spr_dat_o: Signal that carries intermediate datapath values between logic stages.

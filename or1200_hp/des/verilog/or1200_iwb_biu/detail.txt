@@ -1,0 +1,44 @@
+1. Required function
+A conforming implementation must:
+- launch Wishbone cycles from internal BIU requests;
+- hold/clear cycle and strobe according to completion, retry, and abort behavior;
+- return read data on biu_dat_o;
+- generate biu_ack_o and biu_err_o in the RISC clock domain;
+- support repeated-access optimization present in the original design.
+
+2. Output-side behavior
+2.1 Address/data/control forwarding
+When OR1200_REGISTERED_OUTPUTS is enabled, wb_adr_o, wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o, wb_dat_o and optional burst signals are registered on wb_clk_i. Otherwise they may be combinationally tied to the BIU inputs.
+
+2.2 Starting a transfer
+A transfer begins when biu_cyc_i and biu_stb_i are asserted and there is no completion/abort conflict. The module copies the current address, data, select, and write-enable values to the Wishbone side and raises wb_cyc_o/wb_stb_o.
+
+3. Input-side behavior
+3.1 Read data return
+- If OR1200_REGISTERED_INPUTS is enabled, biu_dat_o captures wb_dat_i on wb_ack_i.
+- Otherwise biu_dat_o is normally wb_dat_i, except that repeated_access_ack can cause the previously saved read data wb_dat_r to be returned.
+
+3.2 Acknowledge timing
+The module distinguishes long_ack_o from biu_ack_o.
+- long_ack_o is aligned with the Wishbone-side completion and may remain asserted for multiple RISC cycles depending on the clock ratio.
+- biu_ack_o is a one-RISC-cycle pulse derived from long_ack_o (or repeated_access_ack) and masked by aborted_r plus clock-divider qualification using valid_div.
+This timing detail is central to compatibility.
+
+4. Repeated-access optimization
+The module detects same_addr = (wb_adr_o == biu_adr_i) and repeated_access = same_addr & previous_complete. If the core requests the same address again immediately after a completed read, repeated_access_ack can acknowledge the request and return the saved wb_dat_r without waiting for a new external transfer. This is a performance optimization and must be preserved if cycle-accurate behavior is desired.
+
+5. Previous-complete tracking
+previous_complete becomes true after wb_ack_i on an active request and false when a new request starts and has not yet completed. This state is used by the repeated-access path and by burst/CAB sequencing logic.
+
+6. Retry and abort handling
+The source includes retry and graceful-abort logic with optional retry counters. A faithful reimplementation must ensure:
+- retry responses do not look like successful acknowledgments;
+- aborted transactions suppress biu_ack_o;
+- internal state returns to idle cleanly after abort/retry.
+The exact details may depend on feature macros, but the observable contract is that the BIU never falsely reports success for a canceled cycle.
+
+7. Burst/CAB support
+When OR1200_WB_CAB and/or OR1200_WB_B3 are enabled, the module forwards consecutive-address-burst intent and may generate CTI/BTE signals. These are optional extensions but must remain functionally consistent with the internal biu_cab_i request semantics.
+
+8. Summary
+or1200_iwb_biu.v is the protocol bridge between OR1200 internal bus cycles and Wishbone. It is responsible for launch, completion, retry/error handling, clock-ratio alignment, and a small but important repeated-read optimization.

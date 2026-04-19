@@ -1,0 +1,76 @@
+Functional Overview:
+Module `fpu_addsub` performs pipelined double-precision floating-point add/sub by aligning exponents, combining significands, and forwarding staged normalized results.
+
+Module name:
+    fpu_addsub
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input fpu_op: Control signal that selects operation mode, command, or multiplexed path.
+    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
+    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output [63:0] out: Output signal driven by the module toward surrounding logic.
+    output ready: Handshake signal that marks transfer validity, readiness, or completion.
+
+Internal reg/wire signals:
+    reg [63:0] outfp, out: Sequential register that stores intermediate or output state between cycles.
+    reg [1:0] rm_1, rm_2, rm_3, rm_4, rm_5, rm_6, rm_7, rm_8, rm_9: Sequential register that stores intermediate or output state between cycles.
+    reg [1:0] rm_10, rm_11, rm_12, rm_13, rm_14, rm_15, rm_16: Sequential register that stores intermediate or output state between cycles.
+    reg sign, sign_a, sign_b, fpu_op_1, fpu_op_2, fpu_op_3, fpu_op_final: Control signals that selects operation mode, command, or multiplexed path.
+    reg fpuf_2, fpuf_3, fpuf_4, fpuf_5, fpuf_6, fpuf_7, fpuf_8, fpuf_9, fpuf_10: Sequential register that stores intermediate or output state between cycles.
+    reg fpuf_11, fpuf_12, fpuf_13, fpuf_14, fpuf_15, fpuf_16: Sequential register that stores intermediate or output state between cycles.
+    reg fpuf_17, fpuf_18, fpuf_19, fpuf_20, fpuf_21: Sequential register that stores intermediate or output state between cycles.
+    reg sign_a2, sign_a3, sign_b2, sign_b3, sign_2, sign_3, sign_4, sign_5, sign_6: Sequential register that stores intermediate or output state between cycles.
+    reg sign_7, sign_8, sign_9, sign_10, sign_11, sign_12: Sequential register that stores intermediate or output state between cycles.
+    reg sign_13, sign_14, sign_15, sign_16, sign_17, sign_18, sign_19: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_a, exponent_b, expa_2, expb_2, expa_3, expb_3: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] mantissa_a, mantissa_b, mana_2, mana_3, manb_2, manb_3: Sequential register that stores intermediate or output state between cycles.
+    reg expa_et_inf, expb_et_inf, input_is_inf, in_inf2, in_inf3, in_inf4, in_inf5: Sequential register that stores intermediate or output state between cycles.
+    reg in_inf6, in_inf7, in_inf8, in_inf9, in_inf10, in_inf11, in_inf12, in_inf13: Sequential register that stores intermediate or output state between cycles.
+    reg in_inf14, in_inf15, in_inf16, in_inf17, in_inf18, in_inf19, in_inf20: Sequential register that stores intermediate or output state between cycles.
+    reg in_inf21, expa_gt_expb, expa_et_expb, mana_gtet_manb, a_gtet_b: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_small, exponent_large, expl_2, expl_3, expl_4: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] expl_5, expl_6, expl_7, expl_8, expl_9, expl_10, expl_11: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] mantissa_small, mantissa_large: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_small_2, mantissa_large_2: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_small_3, mantissa_large_3: Signal that carries intermediate datapath values between logic stages.
+    reg exp_small_et0, exp_large_et0, exp_small_et0_2, exp_large_et0_2: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_diff, exponent_diff_2, exponent_diff_3: Signal that carries intermediate datapath values between logic stages.
+    reg [107:0] bits_shifted_out, bits_shifted_out_2: Sequential register that stores intermediate or output state between cycles.
+    reg bits_shifted: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] large_add, large_add_2, large_add_3, small_add: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] small_shift, small_shift_2, small_shift_3, small_shift_4: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] large_add_4, large_add_5: Sequential register that stores intermediate or output state between cycles.
+    reg small_shift_nonzero: Sequential register that stores intermediate or output state between cycles.
+    reg small_is_nonzero, small_is_nonzero_2, small_is_nonzero_3: Sequential register that stores intermediate or output state between cycles.
+    reg small_fraction_enable: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] sum, sum_2, sum_3, sum_4, sum_5: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] sum_6, sum_7, sum_8, sum_9, sum_10, sum_11: Signal that carries intermediate datapath values between logic stages.
+    reg sum_overflow, sumround_overflow, sum_lsb, sum_lsb_2: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_add, exp_add_2, exponent_sub, exp_sub_2: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exp_sub_3, exp_sub_4, exp_sub_5, exp_sub_6, exp_sub_7: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exp_sub_8, exp_add_3, exp_add_4, exp_add_5, exp_add_6: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exp_add_7, exp_add_8, exp_add_9: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] diff_shift, diff_shift_2: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] diff, diff_2, diff_3, diff_4, diff_5: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] diff_6, diff_7, diff_8, diff_9, diff_10, diff_11: Signal that carries intermediate datapath values between logic stages.
+    reg diffshift_gt_exponent, diffshift_et_55, diffround_overflow: Signal that carries intermediate datapath values between logic stages.
+    reg round_nearest_mode, round_posinf_mode, round_neginf_mode: Control signals that selects operation mode, command, or multiplexed path.
+    reg round_nearest_trigger, round_nearest_exception: Sequential register that stores intermediate or output state between cycles.
+    reg round_nearest_enable, round_posinf_trigger, round_posinf_enable: Sequential register that stores intermediate or output state between cycles.
+    reg round_neginf_trigger, round_neginf_enable, round_enable: Sequential register that stores intermediate or output state between cycles.
+    reg ready, count_ready, count_ready_0: Handshake signals that mark transfer validity, readiness, or completion.
+    reg [4:0] count: Sequential state register that tracks control progress across cycles.
+    wire [55:0] small_shift_LSB = { 55'b0, 1'b1 }: Combinational net that links intermediate expressions across logic blocks.
+
+Implementation:
+
+- The module performs pipelined double-precision floating-point add/sub by aligning exponents, combining significands, and forwarding staged normalized results.
+- There is a leading '1' that is not included in the mantissa, but it is part of the value of the number for all double precision floating point numbers with a value in the exponent field greater than 0.
+- The Verilog version of the code is in folder "fpu_double", and the VHDL version is in folder "double_fpu".
+- These cores are designed to meet the IEEE 754 standard for double precision floating point arithmetic.
+- The IEEE 754 standard defines how double precision floating point number are represented.

@@ -1,0 +1,98 @@
+1. Details
+- The module implements double-precision floating-point subtraction using operand ordering, alignment shifting, significand subtraction, and normalization.
+- `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations, the rounding module, and the exceptions module.
+- `fpu_sub` is used both for true subtraction and for sign-converted addition cases that the top level routes into the subtraction datapath.
+- Subtraction is similar to addition in that the module calculates the exponent difference between the two operands and then shifts the mantissa of the smaller exponent to the right before subtracting.
+- If the FPU operation is addition and one operand is positive while the other is negative, `fpu_double` routes the operation to the subtraction module.
+
+2. Input Decomposition
+- For each operand, the sign is bit 63, the exponent is bits 62:52, and the mantissa is bits 51:0.
+
+3. Hidden-Bit Handling
+- A hidden leading 1 is used only for normalized numbers.
+- Denormals use hidden bit 0.
+
+4. Output Encoding
+- The output mantissa bundle `diff_2[55:0]` is formatted as follows:
+- bit 55: reserved leading zero for the later rounding stage.
+- bits 54:0: normalized or denormalized subtraction result, including two low remainder bits.
+- The later rounding stage interprets bit 54 as the leading integer position for normalized results, bits 53:2 as the 52-bit mantissa candidate, and bits 1:0 as low remainder information.
+
+5. Required Functional Algorithm
+5.1 Magnitude comparison
+- The module compares the operands by magnitude, not by sign.
+- Compute `expa_gt_expb = exponent_a > exponent_b`.
+- Compute `expa_et_expb = exponent_a == exponent_b`.
+- Compute `mana_gtet_manb = mantissa_a >= mantissa_b`.
+- Compute `a_gtet_b = expa_gt_expb or (expa_et_expb and mana_gtet_manb)`.
+- This means operand A is treated as greater-or-equal when its exponent is larger, or when the exponents are equal and its mantissa is greater-or-equal.
+
+5.2 Sign selection
+- The module always subtracts the smaller magnitude from the larger magnitude, then assigns the correct sign.
+- If A has greater-or-equal magnitude, `sign = opa[63]`.
+- Otherwise, `sign = (!opb[63]) XOR (fpu_op == 3'b000)`.
+- This rule is necessary because the subtract module is used both for subtraction and for addition-with-opposite-signs.
+
+5.3 Equivalent interpretation
+- In the true subtraction case, if `|A| < |B|`, the result sign is the opposite of operand B's sign.
+- In the routed-addition case (`fpu_op == 000`), if `|A| < |B|`, the result sign equals operand B's sign.
+
+5.4 Large and small selection
+- Using magnitude comparison, select `exponent_large`, `mantissa_large`, `exponent_small`, and `mantissa_small`, where the large operand is the one with greater-or-equal magnitude.
+
+5.5 Denormal detection and exponent difference
+- Compute `small_is_denorm = (exponent_small == 0)`.
+- Compute `large_is_denorm = (exponent_large == 0)`.
+- Compute `large_norm_small_denorm = (small_is_denorm == 1) and (large_is_denorm == 0)`.
+- Compute `exponent_diff = exponent_large - exponent_small - large_norm_small_denorm`.
+
+5.6 Build subtraction operands
+- Construct `minuend = {hidden_large, mantissa_large, 2'b00}`.
+- Construct `subtrahend = {hidden_small, mantissa_small, 2'b00}`.
+- Here, `hidden_large = not large_is_denorm` and `hidden_small = not small_is_denorm`.
+- The values are 55 bits wide because subtraction cannot produce a carry above the top integer position.
+
+5.7 Alignment and sticky preservation
+- Right-shift the smaller operand: `subtra_shift = subtrahend >> exponent_diff`.
+- Determine whether the smaller operand is nonzero: `small_is_nonzero = (exponent_small > 0) or any mantissa_small bit is 1`.
+- Determine whether the shifted value is entirely zero: `subtra_shift_nonzero = OR` of all bits in `subtra_shift`.
+- If the smaller operand is nonzero but the shifted value becomes zero, replace it with a 1 in the least significant bit.
+- Otherwise, use `subtra_shift` directly.
+- This preserves lost information for later rounding and inexact handling.
+
+5.8 Subtraction
+- Compute `diff = minuend - subtra_shift_3`.
+
+5.9 Leading-zero count
+- A combinational priority encoder counts leading zeros in `diff` and produces `diff_shift`.
+- The implementation maps every possible leading-one position in the 55-bit `diff` bus to a shift count from 0 to 54.
+- If `diff` is exactly zero, `diff_shift` is set to 55.
+
+5.10 Renormalization
+- Register `diff_shift` into `diff_shift_2`.
+- Then compute `diffshift_gt_exponent = diff_shift_2 > exponent_large`.
+- Compute `diffshift_et_55 = diff_shift_2 == 55`.
+- If `diffshift_gt_exponent` is false, `diff_1 = diff << diff_shift_2` and `exponent = exponent_large - diff_shift_2`.
+- If `diffshift_gt_exponent` is true, `diff_1 = diff << exponent_large` and `exponent = 0`.
+
+5.11 Exponent update
+- If `diffshift_et_55` is true, `exponent_2 = 0`.
+- Otherwise, `exponent_2 = exponent`.
+
+5.12 Normal-to-denormal final adjustment
+- Compute `in_norm_out_denorm = (exponent_large > 0) and (exponent == 0)`.
+- If true, shift `diff_1` right by one more bit before placing it into the 56-bit output bundle: `diff_2 = {1'b0, diff_1 >> 1}`.
+- Otherwise, `diff_2 = {1'b0, diff_1}`.
+- This preserves correct encoding when a normalized input pair produces a denormal result.
+
+6. Required Sequential Behavior
+- All state updates occur on the rising edge of `clk`.
+- Reset clears all pipeline registers and outputs.
+- Subtraction, sign selection, leading-zero processing, exponent update, and output formatting occur only when `enable` is asserted.
+- `diff_shift` is generated combinationally from `diff` by the explicit priority-style `casex` logic.
+
+7. Functional Corner Cases
+- Exact cancellation produces `diff = 0`, `diff_shift = 55`, `exponent_2 = 0`, and a zero mantissa bundle.
+- If the smaller operand is nonzero but shifts away entirely before subtraction, the implementation must preserve a sticky 1.
+- If the renormalization shift would drive the exponent below zero, the exponent is clamped at zero.
+- If a normalized input result becomes denormal, the output bundle is shifted right one additional bit before being passed onward.

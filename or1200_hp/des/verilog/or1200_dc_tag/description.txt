@@ -1,0 +1,56 @@
+
+Module `or1200_dc_tag` implements data-cache tag storage with valid/dirty status handling for hit/miss evaluation.
+
+This module implements the tag array of the OR1200 data cache. It stores, per cache index:
+- the address tag bits
+- the valid bit
+
+The cache top module uses this information to decide whether the current access is a hit or a miss.
+
+Description:
+
+The module implements data-cache tag storage with valid/dirty status handling for hit/miss evaluation.
+
+
+This module is the tag RAM wrapper of the OR1200 data cache and is used to save and read out the tag value and valid bit of each cache line by index. The interface includes clock clk, reset rst, index address addr, access enable en, single-bit write enable we, write data datain, and read tag and tag_v; it also provides test chain signals when BIST is enabled. The module itself has no state machine, and the timing and read and write rules of tag/tag_v are completely implemented by the underlying RAM macro.
+
+When OR1200_NO_DC is defined, the data cache tag storage is turned off, the tag output by the module is always all 0, and tag_v is always 0; at this time, all cache lines are considered invalid, and the BIST output is directly transparently input when needed. If data cache is enabled, the module selects a specific storage implementation based on the target platform. Under the Virtex path, the module instantiates the FPGA-specific tag RAM, reads the lowest bit in the vector doutb as the valid bit tag_v, and the remaining high bits as tag. Under the common path, the module instantiates a single-port RAM macro corresponding to the cache size, and the read data is returned in the form of {tag, tag_v}, so the tag and valid bits must be packed when writing to datain.
+
+This module only saves two pieces of information: "the address tag of the current cache line under the index and whether it is valid." It does not compare tags, generate hits, or explain the system semantics of invalid operations. When the upper layer needs to write a new line or the software fails, it updates the RAM content through en and we at the valid edge of the clock; the upper layer reads tag and tag_v before completing the comparison. rst is only transparently passed down to the storage macro. This layer does not separately define the register behavior after reset except for macro implementation.
+
+module or1200_dc_tag(
+    // Clock and reset
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [8:0] addr,
+    input en,
+    input we,
+    input [19:0] datain,
+    output tag_v,
+    output [18:0] tag
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - addr[8:0]: Array index/address input.
+    - en: Access enable for the local storage block.
+    - we: Write-enable for the local storage block.
+    - datain[19:0]: Write data presented to the local storage block.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+Output port:
+    - tag_v: Valid bit read from the tag storage.
+    - tag[18:0]: Tag bits read from the cache/TLB tag storage.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+Internal reg/wire signals:
+    wire [19:0] doutb: Combinational net that links intermediate expressions across logic blocks.

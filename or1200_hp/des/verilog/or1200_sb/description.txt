@@ -1,0 +1,84 @@
+
+Module `or1200_sb` implements store-buffer tracking and forwarding control to decouple store issue from external bus completion.
+
+This module implements the store buffer between the data-cache side and the BIU side. The source file describes it as “Implements store buffer.” Its main purpose is to decouple posted stores from the rest of the data path by queueing write transactions in a FIFO and acknowledging them early to the upstream side.
+
+Description:
+
+The module implements store-buffer tracking and forwarding control to decouple store issue from external bus completion.
+
+
+This module implements Store Buffer, which is used to decouple the write transactions issued by the data Cache/LSU from the main execution path, and cache the store requests to be sent when possible, and then send them to the bus asynchronously by the back-end BIU. Read transactions or unbuffered transactions are directly transmitted transparently. This reduces processor stalls caused by waiting for the bus to complete after writing.
+
+In a Store Buffer-enabled implementation, the module classifies requests from the DC `dcsb_*`. `fifo_wr` is set when a valid write request occurs (`dcsb_cyc_i & dcsb_stb_i & dcsb_we_i`) and the FIFO is not full and the local write acknowledgment `~fifo_wr_ack` has not been given, and is used to write `{sel, data, addr}` to the FIFO. `sel_sb` is valid when the FIFO is not empty, or the FIFO is empty but there is still an "in-transit store" that has not been actually completed; as long as `sel_sb` is 1, the address, data and byte enable sent to the BIU come from the FIFO header, otherwise the current DC request is directly transparently transmitted. At the same time, `sbbiu_we_o` is forced to 1 when `sel_sb` is valid, and `sbbiu_cab_o` is forced to 0, indicating that the buffer path only handles ordinary write transactions.
+
+In terms of timing status, the module saves at least two key states: `outstanding_store` indicates whether there is already a buffered store waiting for a BIU response; `fifo_wr_ack` is used to immediately confirm to the upstream when receiving a new store locally. They are updated on the rising edge of `clk` with an asynchronous high reset of `rst`. All cleared after reset. `outstanding_store` is cleared when the backend `sbbiu_ack_i` arrives; otherwise it will be set as long as the Store Buffer channel is currently selected or a new write FIFO is written to the current beat, indicating that there are buffer writes to be completed in the backend. `fifo_wr_ack` is cleared after reset and is set when `fifo_wr` is used to tell the upstream that this store has been buffered and will be automatically released in subsequent timings.
+
+The response returned to the upstream DC has priority distinction: if the Store Buffer path `sel_sb` is currently used, then `dcsb_ack_o` takes the local `fifo_wr_ack`, which means that the upstream only needs to wait until the write request successfully enters the buffer to continue without having to wait for the bus to actually complete; `dcsb_err_o` is always 0 under this path because the buffer store does not report errors to the front end. If the Store Buffer is not currently used, data returns, responses and errors all come directly from the BIU. `fifo_rd = ~outstanding_store`, indicating that only when there is currently no store in transit, the next write request is allowed to be taken out of the FIFO and sent to the BIU, thereby ensuring that the buffer is submitted one by one in order.
+
+If the Store Buffer is not enabled, the module completely degrades to pass-through: all `sbbiu_*` signals are directly equal to `dcsb_*`, and all return signals are directly transparently transmitted by the BIU. Regardless of the configuration, this module does not change the read transaction semantics; its main role is only for store requests, prioritizing their local acknowledgment and queuing for sequential sending.
+
+module or1200_sb(
+    // RISC clock, reset
+    input clk,
+    input rst,
+
+    // Internal RISC bus (DC<->SB)
+    input [31:0] dcsb_dat_i,
+    input [31:0] dcsb_adr_i,
+    input dcsb_cyc_i,
+    input dcsb_stb_i,
+    input dcsb_we_i,
+    input [3:0] dcsb_sel_i,
+    input dcsb_cab_i,
+    output [31:0] dcsb_dat_o,
+    output dcsb_ack_o,
+    output dcsb_err_o,
+
+    // BIU bus
+    output [31:0] sbbiu_dat_o,
+    output [31:0] sbbiu_adr_o,
+    output sbbiu_cyc_o,
+    output sbbiu_stb_o,
+    output sbbiu_we_o,
+    output [3:0] sbbiu_sel_o,
+    output sbbiu_cab_o,
+    input [31:0] sbbiu_dat_i,
+    input sbbiu_ack_i,
+    input sbbiu_err_i
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - dcsb_dat_i[31:0]: Data bus for the data-cache to store-buffer interface.
+    - dcsb_adr_i[31:0]: Address bus for the data-cache to store-buffer interface.
+    - dcsb_cyc_i: Cycle-valid request for the data-cache to store-buffer interface.
+    - dcsb_stb_i: Strobe/request-valid qualifier for the data-cache to store-buffer interface.
+    - dcsb_we_i: Write-enable / write-versus-read qualifier for the data-cache to store-buffer interface.
+    - dcsb_cab_i: Consecutive-address burst indication for the data-cache to store-buffer interface.
+    - dcsb_sel_i[3:0]: Byte-lane select for the data-cache to store-buffer interface.
+    - sbbiu_dat_i[31:0]: Data bus for the store-buffer to BIU interface.
+    - sbbiu_ack_i: Acknowledge/transfer-complete indication for the store-buffer to BIU interface.
+    - sbbiu_err_i: Error termination indication for the store-buffer to BIU interface.
+Output port:
+    - dcsb_dat_o[31:0]: Data bus for the data-cache to store-buffer interface.
+    - dcsb_ack_o: Acknowledge/transfer-complete indication for the data-cache to store-buffer interface.
+    - dcsb_err_o: Error termination indication for the data-cache to store-buffer interface.
+    - sbbiu_dat_o[31:0]: Data bus for the store-buffer to BIU interface.
+    - sbbiu_adr_o[31:0]: Address bus for the store-buffer to BIU interface.
+    - sbbiu_cyc_o: Cycle-valid request for the store-buffer to BIU interface.
+    - sbbiu_stb_o: Strobe/request-valid qualifier for the store-buffer to BIU interface.
+    - sbbiu_we_o: Write-enable / write-versus-read qualifier for the store-buffer to BIU interface.
+    - sbbiu_cab_o: Consecutive-address burst indication for the store-buffer to BIU interface.
+    - sbbiu_sel_o[3:0]: Byte-lane select for the store-buffer to BIU interface.
+Internal reg/wire signals:
+    reg outstanding_store: Sequential register that stores intermediate or output state between cycles.
+    reg fifo_wr_ack: Handshake signal that marks transfer validity, readiness, or completion.
+    wire [4+dw+aw-1:0] fifo_dat_i: Signal that carries intermediate datapath values between logic stages.
+    wire [4+dw+aw-1:0] fifo_dat_o: Signal that carries intermediate datapath values between logic stages.
+    wire fifo_wr: Combinational net that links intermediate expressions across logic blocks.
+    wire fifo_rd: Combinational net that links intermediate expressions across logic blocks.
+    wire fifo_full: Combinational net that links intermediate expressions across logic blocks.
+    wire fifo_empty: Combinational net that links intermediate expressions across logic blocks.
+    wire sel_sb: Control signal that selects operation mode, command, or multiplexed path.

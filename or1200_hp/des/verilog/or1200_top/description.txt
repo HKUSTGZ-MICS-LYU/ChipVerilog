@@ -1,0 +1,302 @@
+
+Module `or1200_top` is the top-level OR1200 wrapper that connects CPU core, caches/MMUs, debug, and external Wishbone interfaces.
+
+This module is the top-level integration point of the OR1200 processor subsystem. It combines the CPU core with the instruction-side and data-side WISHBONE bus interfaces, MMUs, caches, embedded QMEM support, store buffer, debug unit, interrupt controller, tick timer, and power-management block. In the hyper-pipelined project, this is the module that preserves the system-level OR1200 interface while the internal core may be transformed to use additional clock domains and memory steering. The PDF states that the resulting hyper pipelined OR1200 core keeps “the same inputs and outputs plus the new clk_i_cml_* clocks”, and that “the CMLS (core multiplier level selector) signal is routed to the memories.”
+
+Description:
+
+The module is the top-level OR1200 wrapper that connects CPU core, caches/MMUs, debug, and external Wishbone interfaces.
+
+- Using this file as top level, the timing of this single clock indicates the performance of the hyper pipelined OR1200 core.
+- If no false path is reported, the individual clocks can be merged with the original clock when the hyper pipelined OR1200 core is instantiated.
+- For that an OR1200_core_cm[CMF]_top.vhd file is delivered.
+
+This module is the top-level integrated module of the OR1200 processor system and is used to connect the CPU core, instruction and data storage access paths, IMMU/DMMU, instruction Cache, on-chip fast memory, Store Buffer, Wishbone BIU, debug unit, PIC, Tick Timer and power management unit into a complete system. The module itself does not undertake complex local control algorithms. Its main responsibility is to instantiate each sub-module and complete the connection and distribution of clock, reset, bus and SPR access paths.
+
+The system works under the main clock `clk_i`, and the reset input is `rst_i`. In this implementation, the Wishbone clock and reset do not run independently, but are merged directly with the main processor clock/reset, so the instruction and data bus interfaces are in the same clock domain as the CPU, which is consistent with the description in the specification that "the Wishbone clock input is merged with the processor clock for simplicity." The top level itself has no explicit local registers or state machines, and all timing states are updated by its lower-level modules on the rising edge of their respective `clk_i`; the top level only distributes reset and control signals, so the reset priority is reflected within each instance, rather than being processed twice by the top level.
+
+From the perspective of the data path, the CPU's instruction access request first enters the IMMU, then enters the top level of QMEM for on-chip storage hit determination, then enters the instruction Cache, and finally accesses the external bus through the instruction Wishbone BIU. The CPU's data memory access request first passes through DMMU, then enters QMEM, then to the data cache, and is sent to the external bus through the Store Buffer and data Wishbone BIU. In this way, the top layer clearly distinguishes the instruction path and the data path, and adds a store buffer to the data path to improve write transaction throughput.
+
+The top level is also responsible for group-level distribution of SPR access. The CPU uniformly generates `spr_addr`, `spr_dat_cpu`, `spr_cs` and `spr_we`, and the top layer is sent to the IMMU, IC, DMMU, DC, debugging unit, PIC, Tick Timer and power management unit respectively according to the one-hot group bit of `spr_cs`. The `spr_dat_*` returned by the corresponding submodule is then sent back to the SPR control unit or CPU for use. This route is completely combined decoding and has no local storage, so the access path switches in real time as `spr_cs` and `spr_addr` change.
+
+Interrupts and debugging are also uniformly accessed at the top level. The external interrupt input `pic_ints_i` is sent to the PIC, and the PIC outputs the total interrupt request `sig_int` and the wake-up signal `pic_wakeup`; the Tick Timer generates `sig_tick`; both are sent to the CPU. The debug interfaces `dbg_*` are connected to the debug unit, which can impose shutdown, read and write registers/memory, and exception control on the CPU. The power management unit receives `pic_wakeup` and CPU-related controls, and outputs various gate control and wake-up signals. If BIST is enabled, the top layer also connects the MBIST chains of IMMU, IC, QMEM, DMMU, and DC in series.
+
+For external Wishbone ports, `iwb_*` carries instruction access and `dwb_*` carries data access; `ack/err/rty` and other handshake signals are interpreted by the corresponding BIU and fed back to the internal storage path. There is no arbitration or caching done here at the top level, so the timing behavior of these interfaces depends entirely on the individual BIUs and downstream modules. In general, this module implements a "purely connected" top layer: responsible for fully connecting all core subsystems of the OR1200, but without adding additional protocol semantics, state machines or data caches.
+
+module or1200_top(
+    // System
+    input clk_i,
+    input rst_i,
+    input [ppic_ints-1:0] pic_ints_i,
+    input [1:0] clmode_i,
+
+    // Instruction WISHBONE INTERFACE
+    //iwb_clk_i, iwb_rst_i,
+    input iwb_ack_i,
+    input iwb_err_i,
+    input iwb_rty_i,
+    input [31:0] iwb_dat_i,
+    output iwb_cyc_o,
+    output [31:0] iwb_adr_o,
+    output iwb_stb_o,
+    output iwb_we_o,
+    output [3:0] iwb_sel_o,
+    output [31:0] iwb_dat_o,
+`ifdef OR1200_WB_CAB
+    output iwb_cab_o,
+`endif
+`ifdef OR1200_WB_B3
+    output [2:0] iwb_cti_o,
+    output [1:0] iwb_bte_o,
+`endif
+    // Data WISHBONE INTERFACE
+    //dwb_clk_i, dwb_rst_i,
+    input dwb_ack_i,
+    input dwb_err_i,
+    input dwb_rty_i,
+    input [31:0] dwb_dat_i,
+    output dwb_cyc_o,
+    output [31:0] dwb_adr_o,
+    output dwb_stb_o,
+    output dwb_we_o,
+    output [3:0] dwb_sel_o,
+    output [31:0] dwb_dat_o,
+`ifdef OR1200_WB_CAB
+    output dwb_cab_o,
+`endif
+`ifdef OR1200_WB_B3
+    output [2:0] dwb_cti_o,
+    output [1:0] dwb_bte_o,
+`endif
+
+    // External Debug Interface
+    input dbg_stall_i,
+    input dbg_ewt_i,
+    output [3:0] dbg_lss_o,
+    output [1:0] dbg_is_o,
+    output [10:0] dbg_wp_o,
+    output dbg_bp_o,
+    input dbg_stb_i,
+    input dbg_we_i,
+    input [31:0] dbg_adr_i,
+    input [31:0] dbg_dat_i,
+    output [31:0] dbg_dat_o,
+    output dbg_ack_o,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+    // Power Management
+    input pm_cpustall_i,
+    output [3:0] pm_clksd_o,
+    output pm_dc_gate_o,
+    output pm_ic_gate_o,
+    output pm_dmmu_gate_o,
+    output pm_immu_gate_o,
+    output pm_tt_gate_o,
+    output pm_cpu_gate_o,
+    output pm_wakeup_o,
+    output pm_lvolt_o
+);
+
+Input ports:
+    - clk_i: Top-level system clock input for the OR1200 subsystem.
+    - rst_i: Top-level system reset input for the OR1200 subsystem.
+    - clmode_i[1:0]: Clock-division mode presented to the top-level Wishbone BIUs.
+    - pic_ints_i[ppic_ints-1:0]: External interrupt vector delivered to the programmable interrupt controller.
+    - iwb_ack_i: Acknowledge/transfer-complete indication for the instruction Wishbone bus.
+    - iwb_err_i: Error termination indication for the instruction Wishbone bus.
+    - iwb_rty_i: Retry/wait indication for the instruction Wishbone bus.
+    - iwb_dat_i[31:0]: Data bus for the instruction Wishbone bus.
+    - dwb_ack_i: Acknowledge/transfer-complete indication for the data Wishbone bus.
+    - dwb_err_i: Error termination indication for the data Wishbone bus.
+    - dwb_rty_i: Retry/wait indication for the data Wishbone bus.
+    - dwb_dat_i[31:0]: Data bus for the data Wishbone bus.
+    - dbg_stall_i: External debugger request to stall the CPU.
+    - dbg_ewt_i: External watchpoint-trigger input.
+    - dbg_stb_i: External debug strobe for address/data accesses.
+    - dbg_we_i: External debug write-enable.
+    - dbg_adr_i[31:0]: External debug address input.
+    - dbg_dat_i[31:0]: External debug write-data input.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - pm_cpustall_i: CPU-stall indication provided to the power-management block.
+Output port:
+    - iwb_cyc_o: Cycle-valid request for the instruction Wishbone bus.
+    - iwb_adr_o[31:0]: Address bus for the instruction Wishbone bus.
+    - iwb_stb_o: Strobe/request-valid qualifier for the instruction Wishbone bus.
+    - iwb_we_o: Write-enable / write-versus-read qualifier for the instruction Wishbone bus.
+    - iwb_sel_o[3:0]: Byte-lane select for the instruction Wishbone bus.
+    - iwb_dat_o[31:0]: Data bus for the instruction Wishbone bus.
+    - iwb_cab_o: Consecutive-address burst indication for the instruction Wishbone bus. Present only when `OR1200_WB_CAB` is enabled.
+    - iwb_cti_o[2:0]: Cycle-type identifier for the instruction Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    - iwb_bte_o[1:0]: Burst-type extension for the instruction Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    - dwb_cyc_o: Cycle-valid request for the data Wishbone bus.
+    - dwb_adr_o[31:0]: Address bus for the data Wishbone bus.
+    - dwb_stb_o: Strobe/request-valid qualifier for the data Wishbone bus.
+    - dwb_we_o: Write-enable / write-versus-read qualifier for the data Wishbone bus.
+    - dwb_sel_o[3:0]: Byte-lane select for the data Wishbone bus.
+    - dwb_dat_o[31:0]: Data bus for the data Wishbone bus.
+    - dwb_cab_o: Consecutive-address burst indication for the data Wishbone bus. Present only when `OR1200_WB_CAB` is enabled.
+    - dwb_cti_o[2:0]: Cycle-type identifier for the data Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    - dwb_bte_o[1:0]: Burst-type extension for the data Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    - dbg_lss_o[3:0]: Debug load/store-status export.
+    - dbg_is_o[1:0]: Debug instruction-fetch-status export.
+    - dbg_wp_o[10:0]: Debug watchpoint-hit vector.
+    - dbg_bp_o: Debug breakpoint indication.
+    - dbg_dat_o[31:0]: External debug read-data output.
+    - dbg_ack_o: External debug acknowledge output.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - pm_clksd_o[3:0]: Programmable clock-slowdown factor exported by the PM block.
+    - pm_dc_gate_o: Data-cache clock-gate request output.
+    - pm_ic_gate_o: Instruction-cache clock-gate request output.
+    - pm_dmmu_gate_o: DMMU clock-gate request output.
+    - pm_immu_gate_o: IMMU clock-gate request output.
+    - pm_tt_gate_o: Tick-timer clock-gate request output.
+    - pm_cpu_gate_o: CPU clock-gate request output.
+    - pm_wakeup_o: Wakeup indication exported by the PM block.
+    - pm_lvolt_o: Low-voltage request exported by the PM block.
+Internal reg/wire signals:
+    wire iwb_clk_i = clk_i: Clock signal that defines sequential update timing for this logic.
+    wire iwb_rst_i = rst_i: Reset signal that initializes state elements to known values.
+    wire dwb_clk_i = clk_i: Clock signal that defines sequential update timing for this logic.
+    wire dwb_rst_i = rst_i: Reset signal that initializes state elements to known values.
+    wire [dw-1:0] dcsb_dat_dc: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] dcsb_adr_dc: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire dcsb_cyc_dc: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcsb_stb_dc: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcsb_we_dc: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] dcsb_sel_dc: Control signal that selects operation mode, command, or multiplexed path.
+    wire dcsb_cab_dc: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] dcsb_dat_sb: Signal that carries intermediate datapath values between logic stages.
+    wire dcsb_ack_sb: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcsb_err_sb: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] sbbiu_dat_sb: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] sbbiu_adr_sb: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire sbbiu_cyc_sb: Handshake signal that marks transfer validity, readiness, or completion.
+    wire sbbiu_stb_sb: Handshake signal that marks transfer validity, readiness, or completion.
+    wire sbbiu_we_sb: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] sbbiu_sel_sb: Control signal that selects operation mode, command, or multiplexed path.
+    wire sbbiu_cab_sb: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] sbbiu_dat_biu: Signal that carries intermediate datapath values between logic stages.
+    wire sbbiu_ack_biu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire sbbiu_err_biu: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] icbiu_dat_ic: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] icbiu_adr_ic: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire icbiu_cyc_ic: Handshake signal that marks transfer validity, readiness, or completion.
+    wire icbiu_stb_ic: Handshake signal that marks transfer validity, readiness, or completion.
+    wire icbiu_we_ic: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] icbiu_sel_ic: Control signal that selects operation mode, command, or multiplexed path.
+    wire [3:0] icbiu_tag_ic: Combinational net that links intermediate expressions across logic blocks.
+    wire icbiu_cab_ic: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] icbiu_dat_biu: Signal that carries intermediate datapath values between logic stages.
+    wire icbiu_ack_biu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire icbiu_err_biu: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] icbiu_tag_biu: Combinational net that links intermediate expressions across logic blocks.
+    wire supv: Combinational net that links intermediate expressions across logic blocks.
+    wire [aw-1:0] spr_addr: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [dw-1:0] spr_dat_cpu: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] spr_cs: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_we: Combinational net that links intermediate expressions across logic blocks.
+    wire dmmu_en: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] spr_dat_dmmu: Signal that carries intermediate datapath values between logic stages.
+    wire qmemdmmu_err_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] qmemdmmu_tag_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] qmemdmmu_adr_dmmu: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire qmemdmmu_cycstb_dmmu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire qmemdmmu_ci_dmmu: Signal that carries intermediate datapath values between logic stages.
+    wire dc_en: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] dcpu_adr_cpu: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire dcpu_cycstb_cpu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcpu_we_cpu: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] dcpu_sel_cpu: Control signal that selects operation mode, command, or multiplexed path.
+    wire [3:0] dcpu_tag_cpu: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] dcpu_dat_cpu: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] dcpu_dat_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire dcpu_ack_qmem: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcpu_rty_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire dcpu_err_dmmu: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] dcpu_tag_dmmu: Combinational net that links intermediate expressions across logic blocks.
+    wire immu_en: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] spr_dat_immu: Signal that carries intermediate datapath values between logic stages.
+    wire ic_en: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] icpu_adr_cpu: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire icpu_cycstb_cpu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire [3:0] icpu_sel_cpu: Control signal that selects operation mode, command, or multiplexed path.
+    wire [3:0] icpu_tag_cpu: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] icpu_dat_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire icpu_ack_qmem: Handshake signal that marks transfer validity, readiness, or completion.
+    wire [31:0] icpu_adr_immu: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire icpu_err_immu: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] icpu_tag_immu: Combinational net that links intermediate expressions across logic blocks.
+    wire icpu_rty_immu: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] qmemimmu_adr_immu: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire qmemimmu_rty_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire qmemimmu_err_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] qmemimmu_tag_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire qmemimmu_cycstb_immu: Handshake signal that marks transfer validity, readiness, or completion.
+    wire qmemimmu_ci_immu: Signal that carries intermediate datapath values between logic stages.
+    wire [aw-1:0] icqmem_adr_qmem: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire icqmem_rty_ic: Signal that carries intermediate datapath values between logic stages.
+    wire icqmem_err_ic: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] icqmem_tag_ic: Signal that carries intermediate datapath values between logic stages.
+    wire icqmem_cycstb_qmem: Handshake signal that marks transfer validity, readiness, or completion.
+    wire icqmem_ci_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] icqmem_dat_ic: Signal that carries intermediate datapath values between logic stages.
+    wire icqmem_ack_ic: Handshake signal that marks transfer validity, readiness, or completion.
+    wire [aw-1:0] dcqmem_adr_qmem: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire dcqmem_rty_dc: Signal that carries intermediate datapath values between logic stages.
+    wire dcqmem_err_dc: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] dcqmem_tag_dc: Signal that carries intermediate datapath values between logic stages.
+    wire dcqmem_cycstb_qmem: Handshake signal that marks transfer validity, readiness, or completion.
+    wire dcqmem_ci_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] dcqmem_dat_dc: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] dcqmem_dat_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire dcqmem_we_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] dcqmem_sel_qmem: Control signal that selects operation mode, command, or multiplexed path.
+    wire dcqmem_ack_dc: Handshake signal that marks transfer validity, readiness, or completion.
+    wire [dw-1:0] spr_dat_pic: Signal that carries intermediate datapath values between logic stages.
+    wire pic_wakeup: Combinational net that links intermediate expressions across logic blocks.
+    wire sig_int: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] spr_dat_pm: Signal that carries intermediate datapath values between logic stages.
+    wire [dw-1:0] spr_dat_tt: Signal that carries intermediate datapath values between logic stages.
+    wire sig_tick: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] spr_dat_du: Signal that carries intermediate datapath values between logic stages.
+    wire du_stall: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] du_addr: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [dw-1:0] du_dat_du: Signal that carries intermediate datapath values between logic stages.
+    wire du_read: Combinational net that links intermediate expressions across logic blocks.
+    wire du_write: Combinational net that links intermediate expressions across logic blocks.
+    wire [12:0] du_except: Combinational net that links intermediate expressions across logic blocks.
+    wire [13:0] du_dsr: Combinational net that links intermediate expressions across logic blocks.
+    wire [dw-1:0] du_dat_cpu: Signal that carries intermediate datapath values between logic stages.
+    wire du_hwbkpt: Combinational net that links intermediate expressions across logic blocks.
+    wire ex_freeze: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] ex_insn: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] id_pc: Combinational net that links intermediate expressions across logic blocks.
+    wire [2:0] branch_op: Control signal that selects operation mode, command, or multiplexed path.
+    wire [31:0] spr_dat_npc: Signal that carries intermediate datapath values between logic stages.
+    wire [31:0] rf_dataw: Signal that carries intermediate datapath values between logic stages.
+    wire mbist_immu_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_ic_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_dmmu_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_dc_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_qmem_so: Signal that carries intermediate datapath values between logic stages.
+    wire mbist_immu_si = mbist_si_i: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_ic_si = mbist_immu_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_qmem_si = mbist_ic_so: Signal that carries intermediate datapath values between logic stages.
+    wire mbist_dmmu_si = mbist_qmem_so: Combinational net that links intermediate expressions across logic blocks.
+    wire mbist_dc_si = mbist_dmmu_so: Combinational net that links intermediate expressions across logic blocks.
+    wire [3:0] icqmem_sel_qmem: Control signal that selects operation mode, command, or multiplexed path.
+    wire [3:0] icqmem_tag_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire [3:0] dcqmem_tag_qmem: Signal that carries intermediate datapath values between logic stages.
+    wire spr_cs_group_immu: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_ic: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_dmmu: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_dc: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_du: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_pic: Combinational net that links intermediate expressions across logic blocks.
+    wire spr_cs_group_tt: Combinational net that links intermediate expressions across logic blocks.

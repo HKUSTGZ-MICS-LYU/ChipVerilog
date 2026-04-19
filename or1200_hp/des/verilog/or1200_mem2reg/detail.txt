@@ -1,0 +1,45 @@
+1. Required supported operations
+The module must handle at least:
+- LBZ: load byte, zero extend
+- LBS: load byte, sign extend
+- LHZ: load halfword, zero extend
+- LHS: load halfword, sign extend
+- LWZ/LWS: load full word
+The implementation may support additional encodings, but these behaviors are mandatory.
+
+2. Alignment and byte ordering
+The original design assumes a fixed byte-lane ordering consistent with dcpu_sel_o generation in the LSU and with OR1200 memory organization. The selection cases show that addr = 2'b00 maps the returned most-significant byte memdata[31:24] to the addressed byte, addr = 2'b01 maps memdata[23:16], and so on. A rewrite must preserve this mapping.
+
+3. Byte-load behavior
+3.1 LBZ
+Select the addressed byte and zero extend it to 32 bits.
+Examples:
+- addr 00 -> {24'h0, memdata[31:24]}
+- addr 01 -> {24'h0, memdata[23:16]}
+- addr 10 -> {24'h0, memdata[15:8]}
+- addr 11 -> {24'h0, memdata[7:0]}
+
+3.2 LBS
+Select the addressed byte and sign extend from its MSB.
+Examples:
+- addr 00 -> {{24{memdata[31]}}, memdata[31:24]}
+- addr 01 -> {{24{memdata[23]}}, memdata[23:16]}
+- etc.
+
+4. Halfword-load behavior
+4.1 LHZ
+- addr 00 -> {16'h0, memdata[31:16]}
+- addr 10 -> {16'h0, memdata[15:0]}
+Other alignments are illegal at the LSU level and should not normally reach this block.
+
+4.2 LHS
+Same selection as LHZ but sign-extended from bit 31 or bit 15 respectively.
+
+5. Word-load behavior
+LWZ/LWS return the full 32-bit memdata unchanged.
+
+6. Implementation variants
+The source supports at least one optimized implementation style controlled by defines such as OR1200_IMPL_MEM2REG2. That version decomposes the result into four selected output bytes and uses selector codes like BYTE0/BYTE1/EXTB0/EXTB1/ZERO. A new implementation does not need to preserve the microstructure, but it must preserve the exact mapping and extension semantics.
+
+7. Summary
+or1200_mem2reg.v is a pure combinational aligner and extender for load results. Given the address offset and load type, it extracts the addressed byte/halfword/word from the returned 32-bit memory word and produces the architecturally correct register value.

@@ -1,0 +1,83 @@
+
+Module `or1200_genpc` computes next program-counter values for sequential flow, branches, jumps, and exception vectors.
+
+This module implements the program-counter generation block and the processor-side interface toward instruction fetch. The source description says “PC, interface to IC.” It computes the next fetch address, controls icpu_cycstb_o, tracks whether a branch/jump is taken, and handles exception and SPR-directed redirection.
+
+This block is the only place in the provided file set that decides the next instruction address. It receives branch/decode/exception information from later pipeline stages and turns that into the address sent to the instruction-side subsystem.
+
+Description:
+
+The module computes next program-counter values for sequential flow, branches, jumps, and exception vectors.
+
+
+This module is the program counter generation and instruction fetch address initiating unit of OR1200. It is responsible for generating the next instruction address based on sequential execution, branch/jump, abnormal start, abnormal return and software write PC request, and updating the internal PC register pcreg at the appropriate time. The module uses the rising edge of clk to update pcreg and a single-shot genpc_refetch_r, rst asynchronous reset; after reset, pcreg is initialized to the value of "reset exception vector address minus 4" and then shifted right by 2, so the next normal update cycle will push the PC to the real reset entry. except_prefix affects the selection of high address prefixes for this reset vector and subsequent exception vectors.
+
+The priority of the combined output pc is determined jointly by {spr_pc_we, except_start, branch_op}. The highest priority is that the software writes to the PC through spr_pc_we. At this time, the pc directly takes spr_dat_i. Followed by except_start, at this time pc takes the exception entry address composed of except_prefix, except_type and the low bit of the fixed vector. If there is no software to write to the PC or it starts abnormally, press branch_op to select: NOP goes to the sequential address pcreg+1; J jumps directly to branch_addrofs; JR jumps to lr_restor; BAL jumps to binsn_addr+branch_addrofs; BF/BNF decides whether it is the branch target or the sequential address according to the flag; RFE jumps to epcr. taken is also generated based on the same combination of decision rules, indicating whether the current branch_op will eventually change the control flow. For BF/BNF, taken is only set when the condition is true.
+
+The external address icpu_adr_o sent to the fetching side is not simply equal to pc. When there are no_more_dslot, except_start and spr_pc_we, and the current instruction fetch interface reports retry or the upper level IF requests a re-fetch genpc_refetch, icpu_adr_o remains the last returned icpu_adr_i in order to resend the same address; otherwise, the newly calculated pc is output. icpu_cycstb_o is equal to !genpc_freeze in the current implementation, so as long as it is not frozen, the request to the fetch side will continue to be valid; several more strict historical implementations are retained in the comments, but are not used in the final code. icpu_sel_o is fixed to 4'b1111, icpu_tag_o is fixed to a normal fetch tag.
+
+In terms of timing update, genpc_refetch_r only registers genpc_refetch for one beat, and is currently mainly used to retain historical control paths. The real PC register pcreg is updated with the following priority: reset is the highest; then if spr_pc_we=1, spr_dat_i[31:2] is loaded immediately; otherwise when no_more_dslot or except_start is valid, or the system is not frozen and there is currently no icpu_rty_i and no genpc_refetch, the new combined address pc[31:2] is written to pcreg. That is, normal sequential instruction fetches will only advance when there is no freeze, no bus retry, and no refetch request; while abnormal start and no_more_dslot can force the PC to advance even if normal freeze conditions may exist. The module itself does not determine whether an exception should occur, nor does it save instructions. It only focuses on the semantics of "what is the next fetch address and when to submit it as a new PC".
+
+module or1200_genpc(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // External i/f to IC
+    output [31:0] icpu_adr_o,
+    output icpu_cycstb_o,
+    output [3:0] icpu_sel_o,
+    output [3:0] icpu_tag_o,
+    input icpu_rty_i,
+    input [31:0] icpu_adr_i,
+
+    // Internal i/f
+    input [2:0] branch_op,
+    input [3:0] except_type,
+    input except_prefix,
+    input [31:2] branch_addrofs,
+    input [31:0] lr_restor,
+    input flag,
+    output taken,
+    input except_start,
+    input [31:2] binsn_addr,
+    input [31:0] epcr,
+    input [31:0] spr_dat_i,
+    input spr_pc_we,
+    input genpc_refetch,
+    input genpc_freeze,
+    input genpc_stop_prefetch,
+    input no_more_dslot
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - icpu_rty_i: Retry/wait indication for the CPU-to-instruction-memory interface.
+    - icpu_adr_i[31:0]: Address bus for the CPU-to-instruction-memory interface.
+    - branch_op[2:0]: Encoded branch/jump operation selector.
+    - except_type[3:0]: Encoded exception type driven by the exception controller.
+    - except_prefix: Exception-vector prefix selection from the status register.
+    - branch_addrofs[31:2]: Branch target offset produced by the decode/control path.
+    - lr_restor[31:0]: Link-register value restored for JR/RFE or other control-flow operations.
+    - flag: Incoming flag bit used by compare and conditional-move logic.
+    - except_start: Start pulse for transferring control to an exception vector.
+    - binsn_addr[31:2]: Base instruction address used for branch-and-link calculations.
+    - epcr[31:0]: Exception PC register value.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+    - spr_pc_we: Software PC-write request derived from SPR access decoding.
+    - genpc_refetch: Request for the PC-generation logic to refetch the current address.
+    - genpc_stop_prefetch: Control that suppresses further prefetch requests.
+    - genpc_freeze: Freeze control for the program-counter generation stage.
+    - no_more_dslot: Indicates that no further delay-slot instruction should be executed.
+Output port:
+    - icpu_adr_o[31:0]: Address bus for the CPU-to-instruction-memory interface.
+    - icpu_cycstb_o: Combined cycle-and-strobe request for the CPU-to-instruction-memory interface.
+    - icpu_sel_o[3:0]: Byte-lane select for the CPU-to-instruction-memory interface.
+    - icpu_tag_o[3:0]: Tag field carried on the CPU-to-instruction-memory interface.
+    - taken: Indicates whether the selected branch operation changes control flow.
+Internal reg/wire signals:
+    reg [31:2] pcreg: Sequential register that stores intermediate or output state between cycles.
+    reg [31:0] pc: Sequential register that stores intermediate or output state between cycles.
+    reg taken: Sequential register that stores intermediate or output state between cycles.
+    reg genpc_refetch_r: Sequential register that stores intermediate or output state between cycles.

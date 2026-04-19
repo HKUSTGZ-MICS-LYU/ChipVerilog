@@ -1,0 +1,42 @@
+1. Design rules documented in the source
+The source comments describe two critical correctness rules.
+Rule 1: do not overwrite downstream pipeline stages. A later stage freeze must never be asserted unless all earlier required freezes are also asserted. For example, wb_freeze must never be asserted when ex_freeze is not.
+Rule 2: only insert NOPs in supported places. In this design, ex_freeze (and wb_freeze) may be deasserted while id_freeze (and if_freeze) remain asserted, allowing a NOP to be inserted from ID into EX.
+Any rewrite must preserve these ordering rules.
+
+2. Core behavior
+2.1 Multicycle counter
+The module maintains a multicycle counter derived from the multicycle input. This counter keeps EX frozen for the required number of cycles when a multicycle instruction begins.
+
+2.2 Flush tracking
+flushpipe_r tracks flush state for at least one cycle so that control-flow flushes interact correctly with waiting conditions and do not accidentally reissue stale operations.
+
+2.3 Freeze generation hierarchy
+A correct implementation should generate freeze signals from front to back in hierarchical order:
+- genpc_freeze freezes PC generation when the pipeline cannot accept a new fetch.
+- if_freeze freezes IF when fetch is stalled or downstream stages are blocked.
+- id_freeze extends the stall into decode when EX/WB cannot accept work.
+- ex_freeze covers LSU wait, multicycle execution, debug stop, MAC stall, and related hazards.
+- wb_freeze tracks the latest stage and must be a subset of ex_freeze by rule.
+The exact Boolean formulas in the original source embody these constraints and should be matched.
+
+3. LSU and IF interactions
+- if_stall naturally freezes the front of the pipeline because no new instruction is ready.
+- lsu_stall freezes execution and all earlier stages while a data access waits.
+- lsu_unstall and instruction-side ack/error inputs release certain wait states.
+This module is therefore the point where instruction-side and data-side latency are unified into one stall policy.
+
+4. Debug and MAC interactions
+- du_stall freezes the machine for debugging.
+- mac_stall freezes when the MAC unit cannot complete.
+These signals are treated as high-priority global blocking conditions.
+
+5. Implementation requirements
+A faithful rewrite must preserve:
+- relative stage-freeze ordering constraints;
+- multicycle instruction hold time;
+- ability to insert a NOP from ID into EX under the supported condition;
+- correct interaction among flushes, LSU waits, IF waits, and debug stalls.
+
+6. Summary
+or1200_freeze.v is the central back-pressure arbiter of the OR1200 pipeline. It ensures every stage freezes or advances in a legal combination so instructions are neither overwritten nor lost.

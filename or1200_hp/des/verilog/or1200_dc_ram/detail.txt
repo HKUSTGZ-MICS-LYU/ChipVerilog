@@ -1,0 +1,39 @@
+1. Functional Requirements
+1.1 Storage function
+The module shall provide one word of storage per indexed location in the data cache array and return the addressed word on reads.
+
+1.2 Byte-write support
+The 4-bit we bus shall independently control byte writes inside the 32-bit word, allowing byte, halfword, and word stores to update only the selected lanes.
+
+1.3 Enable behavior
+When en is deasserted, the RAM shall not perform an active write. Read-output behavior may follow the underlying RAM primitive convention, but the architectural wrapper assumes correct data when enabled.
+
+1.4 Parameterization
+The width parameter dw defaults to OR1200_OPERAND_WIDTH.
+The address width aw defaults to OR1200_DCINDX.
+A compatible implementation shall preserve these architectural meanings.
+
+2. Physical Implementation Variants
+The RTL selects among implementation-specific single-port RAM macros depending on synthesis configuration, including Xilinx-oriented and generic OR1200 RAM models.
+A reimplementation may change the underlying memory primitive, but must preserve:
+- 32-bit data width
+- 4-byte write-enable semantics
+- synchronous write behavior compatible with the cache controller
+
+3. BIST Support
+When OR1200_BIST is enabled, the RAM shall expose scan/test connectivity through mbist ports and chain the output as required by the system test architecture.
+
+4. Interaction with Cache Top
+This module does not perform tag compare or miss handling. It only stores/retrieves line data.
+Write sources include:
+- refill data coming from the BIU
+- store data coming from the LSU path
+Read data is consumed by the cache top module and selected as the returned load value on hits.
+
+5. Implementation Constraints
+A compatible implementation shall:
+- store 32-bit data words
+- honor per-byte write enables
+- integrate with the dc_top index mapping
+- remain compatible with cache refill/store timing expected by or1200_dc_fsm
+- preserve optional BIST hooks

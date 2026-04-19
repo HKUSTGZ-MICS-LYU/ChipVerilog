@@ -1,0 +1,106 @@
+1. External Interfaces
+1.1 Instruction side
+Outputs:
+- ic_en
+- icpu_adr_o, icpu_cycstb_o, icpu_sel_o, icpu_tag_o
+Inputs:
+- icpu_dat_i, icpu_ack_i, icpu_rty_i, icpu_err_i, icpu_adr_i, icpu_tag_i
+Output:
+- immu_en
+
+1.2 Data side
+Outputs:
+- dc_en
+- dcpu_adr_o, dcpu_cycstb_o, dcpu_we_o, dcpu_sel_o, dcpu_tag_o, dcpu_dat_o
+Inputs:
+- dcpu_dat_i, dcpu_ack_i, dcpu_rty_i, dcpu_err_i, dcpu_tag_i
+Output:
+- dmmu_en
+
+1.3 Debug interface
+Inputs:
+- du_stall, du_addr, du_dat_du, du_read, du_write, du_dsr, du_hwbkpt
+Outputs:
+- ex_insn, ex_freeze, id_pc, branch_op
+- du_except, du_dat_cpu, rf_dataw
+- spr_dat_npc
+
+1.4 SPR interface
+Outputs:
+- supv
+- spr_addr, spr_dat_cpu, spr_cs, spr_we
+Inputs:
+- spr_dat_pic, spr_dat_tt, spr_dat_pm, spr_dat_dmmu, spr_dat_immu, spr_dat_du
+
+1.5 Interrupt/tick
+Inputs:
+- sig_int
+- sig_tick
+
+2. Internal Composition
+The RTL instantiates at least the following blocks:
+- or1200_genpc
+- or1200_if
+- or1200_ctrl
+- or1200_rf
+- or1200_operandmuxes
+- or1200_alu
+- or1200_mult_mac
+- or1200_sprs
+- or1200_wbmux
+- or1200_freeze
+- or1200_except
+- or1200_lsu
+- or1200_cfgr
+
+A compatible implementation shall preserve this functional partitioning even if the exact internal organization changes.
+
+3. Functional Specification
+3.1 Status-derived enables
+The module shall derive:
+- dc_en from SR[DCE]
+- ic_en from SR[ICE]
+- dmmu_en from SR[DME]
+- immu_en from SR[IME]
+- supv from SR[SM]
+- exception-prefix information from SR[EPH]
+
+3.2 Fetch and next-PC control
+The module shall connect branch_op, branch offsets, exception type/start, and refetch/flush control into the PC generation and instruction-fetch path.
+
+3.3 Decode and operand selection
+The module shall route the fetched instruction into the control decoder and route the decoder outputs into:
+- register file read addresses
+- operand muxes
+- ALU/shift/compare selection
+- LSU control
+- write-back select logic
+
+3.4 Execution
+The module shall feed operand_a and operand_b into the ALU, route multiply/MAC results back into the ALU or write-back path when needed, and preserve flag/carry/status interactions.
+
+3.5 Load/store path
+The module shall connect the LSU to the data bus and to the exception logic, and shall provide write-back data from loads.
+
+3.6 Exception and debug interaction
+The module shall:
+- forward exception stop bits to the debug unit through du_except
+- expose selected internal state to the debug interface
+- ensure stalls/freezes from debug are honored
+- connect exception outputs to the SPRS and PC logic
+
+3.7 SPR read-data multiplexing
+The module shall integrate local SPR providers such as configuration registers, RF access, NPC/PPC, MAC, DU, MMUs, PIC, TT, PM, etc., into the central SPR system block.
+
+4. Architectural Behavior
+This module does not define a standalone ISA by itself; instead it preserves the ISA-visible behavior of the OR1200 by correctly composing all submodules and forwarding the right state/control among them.
+
+5. Implementation Constraints
+A compatible top-level CPU implementation shall:
+- expose the same top-level ports and semantics
+- preserve external bus handshake behavior
+- preserve debug, exception, and SPR interactions
+- preserve the internal functional flow fetch -> decode -> execute -> memory -> write-back
+- preserve status-bit-driven enable behavior for cache and MMU blocks
+- preserve the meaning of du_except = except_stop
+

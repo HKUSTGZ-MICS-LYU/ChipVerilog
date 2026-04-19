@@ -1,0 +1,59 @@
+Module `fpu_add` implements double-precision floating-point addition through exponent alignment, significand accumulation, and post-add normalization.
+The module aligned floating-point addition for the case where the effective operation is the addition of two magnitudes with the same sign. It extracts exponent and mantissa fields, aligns the smaller operand to the larger exponent, performs the mantissa addition, normalizes the result if a carry is generated, and forwards a 56-bit mantissa bundle plus exponent to the next stage.
+The module adds the significands of two IEEE-754 double-precision operands after exponent alignment. The sign is passed through from operand A because this block is only used when the effective add/sub routing has already determined that the result sign is known.
+fpu_add.v performs exponent-based operand alignment, inserts the hidden leading bit for normalized operands, preserves sticky information when low-order bits are shifted away, adds the aligned significands, normalizes a carry-out result, and emits an intermediate floating-point representation suitable for the downstream rounding and exception logic.
+This module performs the aligned mantissa addition stage for double-precision floating-point operands that must be added with the same effective sign. The module does not emit a final IEEE-754 64-bit result. Instead, it emits an intermediate sign, exponent, and 56-bit mantissa bundle that is intended for the later rounding and exception stages.
+
+Description:
+This module performs the floating-point addition datapath for double-precision operands. It is used for same-sign addition, or for cases that the top level has already transformed into an equivalent magnitude addition. The inputs are two 64-bit floating-point operands, opa and opb. The outputs are an intermediate sign sign, a normalized exponent exponent_2, and a 56-bit extended mantissa sum_2 that is passed to the rounding stage. The module does not generate the final IEEE-754 encoding directly.
+
+The operands are separated into sign, exponent, and mantissa fields. The module compares the exponents and assigns the operand with the larger exponent to mantissa_large / exponent_large, while the smaller-exponent operand populates mantissa_small / exponent_small. The comparison is used to determine which mantissa must be right-shifted before addition. If the exponents are equal, the mantissas are added without shifting .
+
+For normalized numbers, the implied leading 1 is included in the mantissa; for denormalized numbers it is not. The smaller mantissa is right-shifted by the exponent difference and then added to the larger mantissa. If the addition produces an overflow bit, the result is shifted right by one and the exponent is incremented. The output sum_2 contains an extra MSB for possible rounding overflow, the leading 1, the 52-bit mantissa, and 2 extra low-order bits used for rounding and inexact detection. The least significant extra bit includes the OR of leftover shifted-out bits, so sticky information is preserved for the rounding stage .
+
+All state and outputs are updated on the rising edge of the clock. A new addition operation is started when enable is asserted. On reset, internal registers and all outputs are cleared. This module does not make final decisions for NaN, infinity, overflow, or underflow; those are handled later by the rounding and exceptions stages.
+
+module fpu_add( clk, rst, enable, opa, opb, sign, sum_2, exponent_2);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output sign: Output signal driven by the module toward surrounding logic.
+    output [55:0] sum_2: Data output that carries computed results or status information.
+    output [10:0] exponent_2: Data output that carries computed results or status information.
+
+Internal reg/wire signals:
+    reg sign: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_a: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_b: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
+    reg expa_gt_expb: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_small: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_large: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_small: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_large: Signal that carries intermediate datapath values between logic stages.
+    reg small_is_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg large_is_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg large_norm_small_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_diff: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] large_add: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] small_add: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] small_shift: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] small_shift_3: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] sum: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] sum_2: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent: Signal that carries intermediate datapath values between logic stages.
+    reg denorm_to_norm: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_2: Signal that carries intermediate datapath values between logic stages.
+    wire small_shift_nonzero = |small_shift[55:0]: Combinational net that links intermediate expressions across logic blocks.
+    wire small_is_nonzero = (exponent_small > 0) | |mantissa_small[51:0]: Combinational net that links intermediate expressions across logic blocks.
+    wire small_fraction_enable = small_is_nonzero & !small_shift_nonzero: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] small_shift_2 = { 55'b0, 1'b1 }: Combinational net that links intermediate expressions across logic blocks.
+    wire sum_overflow = sum[55]: Signal that carries intermediate datapath values between logic stages. sum[55] will be 0 if there was no carry from adding the 2 numbers
+    wire sum_leading_one = sum_2[54]: Signal that carries intermediate datapath values between logic stages. This is where the leading one resides, unless denorm
+

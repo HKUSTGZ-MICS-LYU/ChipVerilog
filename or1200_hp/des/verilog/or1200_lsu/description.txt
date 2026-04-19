@@ -1,0 +1,79 @@
+
+Module `or1200_lsu` handles load/store address generation, transfer type control, byte enables, and memory-side exception signaling.
+
+This module is the load/store unit. The source comment identifies it as the interface between the CPU and the data-cache/data-memory side. It computes addresses, issues data bus transactions, generates byte enables, reports load/store exceptions, and formats data to and from memory.
+
+Description:
+
+The module handles load/store address generation, transfer type control, byte enables, and memory-side exception signaling.
+
+
+This module implements the top-level combination control of the load/store unit (LSU), and is responsible for forming the data access address based on the base address and offset, generating read and write control signals for the data Cache/bus side, detecting access alignment exceptions, and converting the returned bus data into a write-back register format through the aligner. At the same time, it also converts the data to be written in the register into the bus write data format according to the target byte position.
+
+The module itself has no local timing register, all outputs are combinational logic, and the update timing changes immediately as the input changes. `dcpu_adr_o` is always equal to `addrbase + addrofs`, indicating the LSU's direct addition to the byte address. `dcpu_we_o` is determined by `lsu_op[3]`, so write operations are directly related to the specific load/store type encoding. `dcpu_tag_o` outputs the normal data access tag `DTAG_ND` when a valid request is made, otherwise it outputs the idle tag `DTAG_IDLE`.
+
+Request initiation conditions reflect clear blocking priorities. `dcpu_cycstb_o` may only be effective when there is a non-zero `lsu_op`, but if the debug unit requests a shutdown `du_stall`, this access has just received a normal response `lsu_unstall`, or an address alignment exception `except_align` is detected, the request will be suppressed directly and will not be sent to the data side. `lsu_stall` is valid when the subsequent stage returns `dcpu_rty_i` and this module still maintains `dcpu_cycstb_o`, indicating that the current memory access is still waiting; `lsu_unstall` is directly equal to `dcpu_ack_i`, which is used to notify the pipeline that the current memory access has been completed.
+
+Anomaly detection is divided into two categories. One is the local alignment exception `except_align`: half-word access (`SH`, `LHZ`, `LHS`) requires address bit0 to be 0; word access (`SW`, `LWZ`, `LWS`) requires address bit[1:0] to be all 0. The second is an exception obtained by decoding the error label returned by the data side: `dcpu_err_i` and the label is `DTAG_TE`, which means DTLB miss, the label is `DTAG_PE`, which means DMMU fault, and the label `DTAG_BE`, which means a bus error. The module does not register or retime these external exceptions, but directly reports them to `except_dtlbmiss`, `except_dmmufault` and `except_dbuserr` in combination.
+
+Byte strobe `dcpu_sel_o` is determined by the combination of `lsu_op` and the low two bits of the address. Byte access only enables the corresponding single byte lane; half-word access only allows two alignment positions of `00` and `10`, selecting the upper halfword or lower halfword respectively; word access only selects all four bytes when the lower two bits of the address are `00`. Illegal combinations uniformly output 0. The read data path is completed by instantiating `or1200_mem2reg`: using the low two bits of the address and `lsu_op` to convert `dcpu_dat_i` into an extended register to write back the data `lsu_dataout`. The write data path is accomplished by instantiating `or1200_reg2mem`: rearranging the register data `lsu_datain` into `dcpu_dat_o` aligned by bus byte lane.
+
+Therefore, the core function of this module is to convert LSU operation type encoding into address, write enable, byte select, exception conditions, and read and write data alignment control; all behaviors are purely combined, and the priority of "debug shutdown/received response/alignment exception" will precede ordinary memory access requests.
+
+module or1200_lsu(
+    // Internal i/f
+    input [31:0] addrbase,
+    input [31:0] addrofs,
+    input [3:0] lsu_op,
+    input [31:0] lsu_datain,
+    output [31:0] lsu_dataout,
+    output lsu_stall,
+    output lsu_unstall,
+    input du_stall,
+    output except_align,
+    output except_dtlbmiss,
+    output except_dmmufault,
+    output except_dbuserr,
+
+    // External i/f to DC
+    output [31:0] dcpu_adr_o,
+    output dcpu_cycstb_o,
+    output dcpu_we_o,
+    output [3:0] dcpu_sel_o,
+    output [3:0] dcpu_tag_o,
+    output [31:0] dcpu_dat_o,
+    input [31:0] dcpu_dat_i,
+    input dcpu_ack_i,
+    input dcpu_rty_i,
+    input dcpu_err_i,
+    input [3:0] dcpu_tag_i
+);
+
+Input ports:
+    - addrbase[31:0]: Base address operand used to form an effective address or SPR address.
+    - addrofs[31:0]: Offset operand added to the base address.
+    - lsu_op[3:0]: Encoded load/store operation selector.
+    - lsu_datain[31:0]: Register-side store data entering the LSU alignment logic.
+    - du_stall: Debug-unit stall request into the pipeline.
+    - dcpu_dat_i[31:0]: Data bus for the CPU-to-data-memory interface.
+    - dcpu_ack_i: Acknowledge/transfer-complete indication for the CPU-to-data-memory interface.
+    - dcpu_rty_i: Retry/wait indication for the CPU-to-data-memory interface.
+    - dcpu_err_i: Error termination indication for the CPU-to-data-memory interface.
+    - dcpu_tag_i[3:0]: Tag field carried on the CPU-to-data-memory interface.
+Output port:
+    - lsu_dataout[31:0]: Load data returned by the LSU after alignment and sign/zero extension.
+    - lsu_stall: Load/store-unit stall indication.
+    - lsu_unstall: Load/store completion indication that releases the pipeline stall.
+    - except_align: Alignment-exception indication exported to exception control.
+    - except_dtlbmiss: Data-TLB-miss exception indication exported to exception control.
+    - except_dmmufault: Data-MMU-fault exception indication exported to exception control.
+    - except_dbuserr: Data-bus-error exception indication exported to exception control.
+    - dcpu_adr_o[31:0]: Address bus for the CPU-to-data-memory interface.
+    - dcpu_cycstb_o: Combined cycle-and-strobe request for the CPU-to-data-memory interface.
+    - dcpu_we_o: Write-enable / write-versus-read qualifier for the CPU-to-data-memory interface.
+    - dcpu_sel_o[3:0]: Byte-lane select for the CPU-to-data-memory interface.
+    - dcpu_tag_o[3:0]: Tag field carried on the CPU-to-data-memory interface.
+    - dcpu_dat_o[31:0]: Data bus for the CPU-to-data-memory interface.
+Internal reg/wire signals:
+    reg [3:0] dcpu_sel_o: Control signal that selects operation mode, command, or multiplexed path.
+    wire [1:0] mem2reg_addr: Address/control signal that selects registers, memory locations, or byte lanes.

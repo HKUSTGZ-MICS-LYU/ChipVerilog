@@ -1,0 +1,89 @@
+
+Module `or1200_immu_tlb` performs instruction-side TLB translation and protection checking for virtual instruction fetches.
+
+This module is the instruction-side translation lookaside buffer (ITLB). It stores and retrieves virtual-to-physical page translations together with execute permissions and cache-inhibit information.
+
+Description:
+
+The module performs instruction-side TLB translation and protection checking for virtual instruction fetches.
+
+
+This module implements the ITLB storage and hit decoding logic of the OR1200 instruction MMU. It receives the virtual instruction address vaddr and enable tlb_en, and outputs the hit flag hit, physical page number ppn, user mode/supervisor mode execution permission bit uxe/sxe, and cache inhibit bit ci; it also supports reading and writing TLB entries through the SPR interface. The module does not explicitly control the state machine, the hit and output fields are combined results, the contents of the table entries are saved in the clock-driven underlying RAM, and rst is only passed to these RAM instances.
+
+ITLB is also divided into two sets of table entry storage: match RAM stores vpn and valid bit v, and translate RAM stores ppn, uxe, sxe and ci. tlb_mr_en/tlb_tr_en is pulled high during normal translation or corresponding SPR access. tlb_mr_we/tlb_tr_we is only pulled high when spr_cs and spr_write are valid at the same time and the address points to the corresponding area. The index tlb_index takes the ITLB index bit of vaddr during normal translation, and takes the low index bit of spr_addr during SPR access. vpn, v, ppn, uxe, sxe and ci are all split directly from RAM readout data. The hit logic is "vpn is equal to vaddr tag and v=1".
+
+SPR read data spr_dat_o returns the packed table entry content according to whether the access is to the match area or the translate area; if it is not a read access, 0 is output. When SPR is written, the relevant bits of spr_dat_i are repacked into tlb_mr_ram_in or tlb_tr_ram_in, and the corresponding table entries are written at the clock edge. Since this module is only responsible for outputting hit and permission fields and does not perform higher-level exception classification, the actual processing of "misses", "insufficient execution permissions" and cache inhibit is continued by the top layer of the upper IMMU.
+
+Therefore, the main difference between this module and the DTLB version is that the permission field is execution permission uxe/sxe instead of read and write permissions; its essence is still an ITLB storage array that can be configured by software and read by address index.
+
+module or1200_immu_tlb(
+    // Rst and clk
+    input clk,
+    input rst,
+
+    // I/F for translation
+    input tlb_en,
+    input [31:0] vaddr,
+    output hit,
+    output [31:13] ppn,
+    output uxe,
+    output sxe,
+    output ci,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // SPR access
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - tlb_en: Enables the TLB lookup for the current access.
+    - vaddr[31:0]: Virtual address presented to the TLB.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    - hit: Hit indication for the current TLB/cache lookup.
+    - ppn[31:13]: Physical page number returned by the TLB.
+    - uxe: User-mode execute permission bit returned by the ITLB.
+    - sxe: Supervisor-mode execute permission bit returned by the ITLB.
+    - ci: Cache-inhibit attribute returned by the TLB or memory-mapping logic.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    wire [31:19] vpn: Combinational net that links intermediate expressions across logic blocks.
+    wire v: Combinational net that links intermediate expressions across logic blocks.
+    wire [5:0] tlb_index: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire tlb_mr_en: Combinational net that links intermediate expressions across logic blocks.
+    wire tlb_mr_we: Combinational net that links intermediate expressions across logic blocks.
+    wire [13:0] tlb_mr_ram_in: Combinational net that links intermediate expressions across logic blocks.
+    wire [13:0] tlb_mr_ram_out: Combinational net that links intermediate expressions across logic blocks.
+    wire tlb_tr_en: Combinational net that links intermediate expressions across logic blocks.
+    wire tlb_tr_we: Combinational net that links intermediate expressions across logic blocks.
+    wire [21:0] tlb_tr_ram_in: Combinational net that links intermediate expressions across logic blocks.
+    wire [21:0] tlb_tr_ram_out: Combinational net that links intermediate expressions across logic blocks.
+    wire itlb_mr_ram_si: Combinational net that links intermediate expressions across logic blocks.
+    wire itlb_mr_ram_so: Combinational net that links intermediate expressions across logic blocks.
+    wire itlb_tr_ram_si: Combinational net that links intermediate expressions across logic blocks.
+    wire itlb_tr_ram_so: Combinational net that links intermediate expressions across logic blocks.
+    wire tlb_tr_en_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire [0 : 0] tlb_tr_we_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire [5 : 0] tlb_index_wire: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire [21 : 0] tlb_tr_ram_in_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire tlb_mr_en_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire [0 : 0] tlb_mr_we_wire: Combinational net that links intermediate expressions across logic blocks.
+    wire [13 : 0] tlb_mr_ram_in_wire: Combinational net that links intermediate expressions across logic blocks.

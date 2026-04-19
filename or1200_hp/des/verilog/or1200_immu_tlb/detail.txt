@@ -1,0 +1,66 @@
+This module is the instruction-side translation lookaside buffer (ITLB). It stores and retrieves virtual-to-physical page translations together with execute permissions and cache-inhibit information.
+
+1. Stored entry format
+The source explicitly documents the entry layout.
+- Match register (MR): vpn plus valid bit.
+- Translate register (TR): ppn plus uxe, sxe, and ci bits.
+Thus each logical ITLB entry contains:
+- VPN tag
+- valid bit
+- PPN result
+- user execute permission
+- supervisor execute permission
+- cache inhibit attribute
+
+2. Interface contract
+Translation inputs/outputs:
+- tlb_en: perform translation lookup
+- vaddr: virtual address to translate
+- hit: entry hit result
+- ppn: physical page number from matching entry
+- uxe/sxe: execute permission bits
+- ci: cache inhibit bit
+SPR interface:
+- spr_cs, spr_write, spr_addr, spr_dat_i, spr_dat_o
+Optional BIST interface is also supported.
+
+3. Addressing/indexing scheme
+The selected ITLB entry index is:
+- spr_addr[index bits] during SPR access
+- vaddr[index bits] during translation
+This means the TLB is directly indexed rather than associative in this implementation.
+
+4. Array organization
+The module contains two RAM-like arrays:
+- match-register RAM (MR RAM)
+- translate-register RAM (TR RAM)
+Each array has separate enable and write-enable generation. The enables are active either during translation or during SPR access to the corresponding half of the TLB address space.
+
+5. SPR semantics
+The module supports direct software access to both arrays.
+- If spr_cs and spr_write target the MR region, tlb_mr_ram_in is written.
+- If spr_cs and spr_write target the TR region, tlb_tr_ram_in is written.
+- On read, spr_dat_o returns either the packed MR contents or the packed TR contents.
+The source comments list the implemented readback packing explicitly, including zero padding and placement of valid/permission/cache bits.
+
+6. Translation behavior
+6.1 Hit generation
+hit is asserted when the stored vpn equals vaddr[VPN bits] and the valid bit v is set.
+
+6.2 Translation outputs
+When read from the TR RAM, the entry provides:
+- ppn = tlb_tr_ram_out[21:3]
+- uxe = tlb_tr_ram_out[2]
+- sxe = tlb_tr_ram_out[1]
+- ci = tlb_tr_ram_out[0]
+These outputs are continuously visible and consumed by the IMMU top block.
+
+7. Technology mapping
+The original module instantiates small synchronous RAM macros depending on configuration. A replacement implementation may infer memories or use explicit register arrays, but it must preserve:
+- direct indexing;
+- two logically separate arrays for MR and TR information;
+- exact SPR read/write packing semantics;
+- hit computation from vpn comparison plus valid bit.
+
+8. Summary
+or1200_immu_tlb.v is a simple direct-mapped instruction TLB. It stores VPN/PPN translations and execute/cache attributes, supports SPR access, and reports hit plus translation metadata to the IMMU top block.

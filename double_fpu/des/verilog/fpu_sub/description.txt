@@ -1,0 +1,76 @@
+Module `fpu_sub` implements double-precision floating-point subtraction using operand ordering, alignment shifting, significand subtraction, and normalization.
+This module performs the aligned mantissa subtraction stage for double-precision floating-point operations whose effective arithmetic is subtraction. It produces an intermediate sign, exponent, and 56-bit mantissa bundle for later rounding and exception handling.
+fpu_sub.v compares operand magnitudes, selects the larger magnitude as the minuend, aligns the smaller operand to the larger exponent, preserves sticky information when alignment discards all lower bits, subtracts the significands, counts leading zeros to renormalize the difference, handles exact zero and denormal underflow cases, computes the final sign, and produces an intermediate result for rounding and exception processing.
+This source file implements aligned floating-point subtraction of magnitudes. It compares the two operands, subtracts the smaller magnitude from the larger magnitude, determines the correct sign of the result, normalizes the difference by counting leading zeros, and forwards an extended mantissa/exponent representation to the next stage.
+
+Main function
+-------------
+The module supports two logical use cases:
+- true subtraction, when the effective operation is A - B with same-sign operands
+- sign-converted addition cases, when the top level redirects opposite-sign addition into the subtraction datapath
+
+To keep the arithmetic simple, the module always subtracts the smaller magnitude from the larger magnitude and then derives the final sign according to which operand had greater magnitude and which logical operation is being performed.
+
+Description:
+This module performs the floating-point subtraction datapath for double-precision operands. It is used for same-sign subtraction and also for cases that the top level converts from opposite-sign addition into a magnitude subtraction. The outputs are the intermediate result sign sign, normalized exponent exponent_2, and 56-bit extended mantissa diff_2, which is passed to the rounding stage rather than directly encoded as the final IEEE-754 result.
+
+The mathematical operation is A - B, but for implementation efficiency the module always subtracts the smaller magnitude from the larger magnitude. If A is smaller than B, the hardware computes B - A and then inverts or adjusts the sign so that the final result is mathematically correct. The document explicitly describes this behavior as a way to simplify the subtraction datapath into a larger-minus-smaller operation followed by sign correction .
+
+As in addition, the operands are aligned before subtraction. The smaller-exponent mantissa is right-shifted so both operands are represented at the same exponent. Normalized numbers include the hidden leading 1, while denormalized numbers do not. After subtraction, the difference is stored in diff, and the number of leading zeros is counted by diff_shift. The result is then left-shifted by that amount, and the exponent is reduced by the same amount, thereby normalizing the output. If the difference is zero, the exponent and mantissa are both driven to zero .
+
+Like the adder, this module outputs two extra low-order remainder bits in addition to the leading bit and 52-bit mantissa. These extra bits determine whether rounding will be performed in the next stage. The least significant remainder bit is formed by OR-ing all bits shifted out during alignment, so sticky information is preserved. All outputs update on the rising edge of the clock, and reset clears all internal registers. NaN, infinity, and invalid-operation cases are not resolved here; they are handled by the exceptions stage.
+
+module fpu_sub( clk, rst, enable, opa, opb, fpu_op, sign, diff_2, exponent_2);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+    input [2:0] fpu_op: Control signal that selects operation mode, command, or multiplexed path.original top-level opcode. This is needed because the subtract module is used in two different logical situations:
+        - a true subtraction request,
+        - an addition request whose operands have opposite signs.
+
+Output port:
+    output sign: Output signal driven by the module toward surrounding logic.
+    output [55:0] diff_2: intermediate mantissa bundle.
+    output [10:0] exponent_2: intermediate exponent field.
+
+Internal reg/wire signals:
+    reg [6:0] diff_shift: Signal that carries intermediate datapath values between logic stages.
+    reg [6:0] diff_shift_2: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_a: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_b: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
+    reg expa_gt_expb: Sequential register that stores intermediate or output state between cycles.
+    reg expa_et_expb: Sequential register that stores intermediate or output state between cycles.
+    reg mana_gtet_manb: Sequential register that stores intermediate or output state between cycles.
+    reg a_gtet_b: Sequential register that stores intermediate or output state between cycles.
+    reg sign: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_small: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_large: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_small: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_large: Signal that carries intermediate datapath values between logic stages.
+    reg small_is_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg large_is_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg large_norm_small_denorm: Sequential register that stores intermediate or output state between cycles.
+    reg small_is_nonzero: Sequential register that stores intermediate or output state between cycles.
+    reg [10:0] exponent_diff: Signal that carries intermediate datapath values between logic stages.
+    reg [54:0] minuend: Sequential register that stores intermediate or output state between cycles.
+    reg [54:0] subtrahend: Sequential register that stores intermediate or output state between cycles.
+    reg [54:0] subtra_shift: Sequential register that stores intermediate or output state between cycles.
+    reg [54:0] subtra_shift_3: Sequential register that stores intermediate or output state between cycles.
+    reg [54:0] diff: Signal that carries intermediate datapath values between logic stages.
+    reg diffshift_gt_exponent: Signal that carries intermediate datapath values between logic stages.
+    reg diffshift_et_55: Signal that carries intermediate datapath values between logic stages.
+    reg [54:0] diff_1: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent: Signal that carries intermediate datapath values between logic stages.
+    reg [10:0] exponent_2: Signal that carries intermediate datapath values between logic stages.
+    reg [55:0] diff_2: Signal that carries intermediate datapath values between logic stages.
+    wire subtra_shift_nonzero = |subtra_shift[54:0]: Combinational net that links intermediate expressions across logic blocks.
+    wire subtra_fraction_enable = small_is_nonzero & !subtra_shift_nonzero: Combinational net that links intermediate expressions across logic blocks.
+    wire [54:0] subtra_shift_2 = { 54'b0, 1'b1 }: Combinational net that links intermediate expressions across logic blocks.
+    wire in_norm_out_denorm = (exponent_large > 0) & (exponent== 0): Combinational net that links intermediate expressions across logic blocks.
+
+

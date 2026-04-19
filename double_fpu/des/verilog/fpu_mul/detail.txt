@@ -1,0 +1,102 @@
+1. Details
+- The module computes double-precision floating-point multiplication by forming the significand product, adjusting exponent and sign, and normalizing the result path.
+- `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations, the rounding module, and the exceptions module.
+- As with the `fpu_add` module, the `fpu_sub` module passes the sign, exponent, and mantissa signals to the rounding module.
+- If the FPU operation is addition and one operand is positive while the other is negative, `fpu_double` routes the operation to the subtraction module.
+
+2. Sign and Operand Classification
+2.1 Sign
+- The result sign is `sign = opa[63] XOR opb[63]`.
+
+2.2 Operand analysis
+- On enable, extract `mantissa_a = opa[51:0]`, `mantissa_b = opb[51:0]`, `exponent_a = opa[62:52]`, and `exponent_b = opb[62:52]`.
+
+2.3 Normal and zero detection
+- Compute `a_is_norm = exponent_a != 0` and `b_is_norm = exponent_b != 0`.
+- Compute `a_is_zero` when all bits `opa[62:0]` are zero.
+- Compute `b_is_zero` when all bits `opb[62:0]` are zero.
+- `in_zero = a_is_zero or b_is_zero`.
+
+2.4 Mantissa preparation
+- Construct 53-bit multiplicand values with hidden-bit insertion.
+- `mul_a = {a_is_norm, mantissa_a}`.
+- `mul_b = {b_is_norm, mantissa_b}`.
+- For normalized operands, the hidden bit is 1. For denormals, the hidden bit is 0.
+
+3. Partial-Product Decomposition
+- The 53x53 mantissa multiply is decomposed into ten smaller unsigned multiplies.
+- `product_a = mul_a[23:0] * mul_b[16:0]`.
+- `product_b = mul_a[23:0] * mul_b[33:17]`.
+- `product_c = mul_a[23:0] * mul_b[50:34]`.
+- `product_d = mul_a[23:0] * mul_b[52:51]`.
+- `product_e = mul_a[40:24] * mul_b[16:0]`.
+- `product_f = mul_a[40:24] * mul_b[33:17]`.
+- `product_g = mul_a[40:24] * mul_b[52:34]`.
+- `product_h = mul_a[52:41] * mul_b[16:0]`.
+- `product_i = mul_a[52:41] * mul_b[33:17]`.
+- `product_j = mul_a[52:41] * mul_b[52:34]`.
+- This decomposition is chosen so the multiplication can map efficiently into FPGA DSP resources instead of relying on a monolithic 53x53 multiply.
+
+4. Partial-Product Accumulation
+- The module does not sum all ten products in one expression.
+- It forms staged sums and places each partial product at the appropriate bit offset.
+- The functional requirement is that the final 106-bit product is mathematically identical to `product = mul_a * mul_b`.
+- The implementation places the products with these effective shifts: `product_a` at offset 0, `product_b` at offset 17, `product_c` at offset 34, `product_d` at offset 51, `product_e` at offset 24, `product_f` at offset 41, `product_g` at offset 58, `product_h` at offset 41, `product_i` at offset 58, and `product_j` at offset 75.
+- A recreated implementation may use a different adder tree as long as the final 106-bit product matches exactly.
+
+5. Exponent Computation
+5.1 Base exponent term
+- Compute `exponent_terms = exponent_a + exponent_b`.
+
+5.2 Bias removal
+- The module subtracts 1022 rather than 1023 because the mantissa product may span `[1,4)` before final normalization.
+- Compute `exponent_gt_expoffset = exponent_terms > 1022`.
+- Compute `exponent_under = 1022 - exponent_terms` when `exponent_terms <= 1022`, else 0.
+- Compute `exponent_1 = exponent_terms - 1022` when `exponent_terms > 1022`, else 0.
+
+5.3 Left-normalization compensation
+- The module counts the leading-zero distance in the 106-bit product using `product_shift`.
+- Then compute `exponent_gt_prodshift = exponent_1 > product_shift_2`.
+- `exponent_2 = exponent_1 - product_shift_2` when `exponent_gt_prodshift` is true, else 0.
+
+5.4 Denormal underflow compensation
+- If the exponent is too small, the product must be right-shifted to form a denormal result.
+- The amount is derived from `exponent_under` and the normalization state.
+- If the required right shift exceeds 52, the mantissa is shifted out and the result becomes zero. Later exception logic identifies this as underflow.
+
+6. Product Normalization and Denormal Handling
+6.1 Leading-zero count
+- A combinational `casex` priority encoder computes `product_shift` from the 106-bit product.
+- Only shifts up to 53 are needed. A larger count implies a case that necessarily underflows in this design space.
+
+6.2 Normalize left when possible
+- If the product does not already have its leading 1 at the expected top position, shift left by `product_shift_2` to create `product_1`.
+
+6.3 Shift right for denormal underflow
+- If `exponent_under` is nonzero, right-shift the product path by the required amount to form denormalized intermediate values such as `product_2` and `product_3`.
+
+6.4 Zero handling
+- If either input is zero, the mantissa and exponent path collapses to zero.
+
+7. Output Mantissa Bundle
+- The final mantissa bundle is `product_7 = {1'b0, product_6[105:52], product_lsb}`.
+- Bit 55 is a reserved leading zero for possible overflow in the rounding stage.
+- Bits 54:1 contain the leading integer bit, 52 mantissa bits, and the first rounding bit.
+- Bit 0 is a sticky bit that is the OR of discarded low product bits.
+- The low sticky information is captured by `product_lsb = OR` of the discarded remainder region after the final product alignment and denormal adjustment.
+
+8. Output Exponent
+- `exponent_5` is the final 12-bit exponent associated with `product_7`.
+- `exponent_5` is zero for zero results and denormals after all underflow adjustments.
+- `exponent_5` may exceed 2046 temporarily; the later exception module interprets this as overflow.
+
+9. Required Sequential Behavior
+- A functionally equivalent implementation must preserve the following staged behavior: register all extracted fields and classification signals, register the partial products, register the staged sums, register the 106-bit product, register the leading-zero count and exponent corrections, and register the final normalized or denormalized product bundle and exponent.
+- The exact register naming need not match, but the cycle-by-cycle arithmetic meaning must match.
+
+10. Functional Corner Cases
+- Normalized x normalized produces hidden-bit 1 on both operands.
+- Denormal x normalized or denormal x denormal uses hidden-bit 0 on the denormal input.
+- Zero times anything produces a zero mantissa and exponent datapath.
+- Very small products produce `exponent_5 = 0` and a right-shifted denormal mantissa bundle.
+- Products with exponent above the finite range are not saturated here; they are passed onward for exception handling.

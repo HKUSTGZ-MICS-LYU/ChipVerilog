@@ -1,0 +1,52 @@
+
+Module `or1200_wbmux` selects and pipelines the correct write-back data source before register-file commit.
+
+This module implements the CPU write-back stage multiplexer. The source comment describes it as “CPU’s write-back stage of the pipeline.” It selects the value that will be written back into the register file and optionally stores a registered copy for the write-back stage.
+
+Description:
+
+The module selects and pipelines the correct write-back data source before register-file commit.
+
+
+This module implements the writeback stage multiplexer and its output registers. It selects the result `muxout` that should be sent to the register file from the four candidate writeback sources `muxin_a`, `muxin_b`, `muxin_c`, `muxin_d`, and registers the result and the flag of "whether the writeback is valid" to `muxreg` and `muxreg_valid` when the writeback stage is not frozen.
+
+The combination selection part is controlled by `rfwb_op`, where the high-order field determines the source selection, and the lowest bit `rfwb_op[0]` indicates whether the current beat writeback result is valid. When `rfwb_op[WIDTH-1:1]` is `00`, `muxin_a` is selected, when `01` is selected, `muxin_b` is selected, when `10` is selected, `muxin_c` is selected, when `11` is selected, `muxin_d + 8` is selected. The last case is usually used for link address or PC related writebacks, so instead of returning `muxin_d` directly, a constant 8 is added. This combinational logic has no default priority chain and is completely uniquely determined by the encoding value.
+
+The timing part is updated on the rising edge of `clk` with an asynchronous high reset of `rst`. After reset, `muxreg` is cleared and `muxreg_valid` is cleared. During normal operation, register updates are only allowed when `wb_freeze` is 0: at this time, the current combination result `muxout` is latched into `muxreg`, and `rfwb_op[0]` is latched into `muxreg_valid`. If the writeback stage is frozen, the two registers retain their original values ​​and will not be overwritten by new combined inputs. This ensures that writeback results and valid bits remain stable during pipeline stalls.
+
+The module itself does not detect exceptions, nor does it determine the write-back target register number; it is only responsible for choosing between multiple potential results and timing it to the write-back stage. In terms of priority, reset is the highest, followed by normal latching during `!wb_freeze`; maintaining the original state when freezing.
+
+module or1200_wbmux(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f
+    input wb_freeze,
+    input [2:0] rfwb_op,
+    input [31:0] muxin_a,
+    input [31:0] muxin_b,
+    input [31:0] muxin_c,
+    input [31:0] muxin_d,
+    output [31:0] muxout,
+    output [31:0] muxreg,
+    output muxreg_valid
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - wb_freeze: Freeze control for the writeback stage.
+    - rfwb_op[2:0]: Encoded writeback-source selector and valid bit.
+    - muxin_a[31:0]: Writeback-multiplexer input A.
+    - muxin_b[31:0]: Writeback-multiplexer input B.
+    - muxin_c[31:0]: Writeback-multiplexer input C.
+    - muxin_d[31:0]: Writeback-multiplexer input D.
+Output port:
+    - muxout[31:0]: Combinational output of the writeback multiplexer.
+    - muxreg[31:0]: Registered writeback data output.
+    - muxreg_valid: Registered writeback-valid indication.
+Internal reg/wire signals:
+    reg [width-1:0] muxout: Sequential register that stores intermediate or output state between cycles.
+    reg [width-1:0] muxreg: Sequential register that stores intermediate or output state between cycles.
+    reg muxreg_valid: Handshake signal that marks transfer validity, readiness, or completion.

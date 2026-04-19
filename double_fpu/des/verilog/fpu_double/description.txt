@@ -1,0 +1,105 @@
+Functional Overview:
+Module `fpu` integrates add/sub/mul/div, rounding, and exception blocks to produce final IEEE-754 double-precision results.
+This module is the top-level controller of the double-precision floating-point unit. It accepts a requested floating-point operation, captures the operands and rounding mode at the start of an operation, routes the request to the appropriate arithmetic submodule, applies rounding, applies exception handling, and presents the final result and status flags when the result becomes valid.
+fpu_double.v is the orchestration layer of the core. It latches a command, maps the request into the correct arithmetic engine, tracks the fixed execution latency, sends the arithmetic result through rounding and exception handling, and finally publishes a fully qualified IEEE-754 double-precision result together with all status indicators.
+
+Description:
+This module is the top-level double-precision floating-point unit. It accepts two 64-bit IEEE-754 double-precision operands and performs addition, subtraction, multiplication, or division, producing a 64-bit floating-point result together with ready, underflow, overflow, inexact, exception, and invalid. The enable input starts an operation. The rounding mode is selected by rmode (00 = nearest, 01 = zero, 10 = positive infinity, 11 = negative infinity), and the operation is selected by fpu_op (000 = add, 001 = subtract, 010 = multiply, 011 = divide) .
+The top level instantiates the add, subtract, multiply, divide, rounding, and exceptions modules. For add/subtract operations, the top level does not always use the arithmetic unit named by fpu_op directly. If the requested operation is addition and the operands have opposite signs, the operation is routed to the subtraction module. Likewise, if the requested operation is subtraction and the operand signs imply magnitude addition, the operation is routed to the addition module. This separates sign handling from magnitude arithmetic and ensures the correct final sign. Multiplication and division are sent directly to their corresponding modules .
+A fixed-latency ready counter is maintained in the top-level controller. The counter starts one clock cycle after enable goes high and counts to the cycle budget required by the selected operation: 20 cycles for addition, 21 for subtraction, 24 for multiplication, and 71 for division. When the counter reaches the final count, ready goes high and the output becomes valid. The module therefore behaves as a fixed-latency control wrapper rather than a variable-latency handshake datapath .
+The arithmetic submodules do not directly produce the final 64-bit IEEE-754 result. Instead, they generate an intermediate sign, extended exponent, and extended mantissa. The top level selects the proper intermediate result according to fpu_op, sends it to the rounding stage, and then chooses between the rounded result and the exception-handled result. If the exceptions module indicates a special case, the final output is overridden by the exception result; otherwise the normal rounded result is used. Reset has highest priority: when rst is asserted, internal operand registers, control registers, counters, outputs, and flags are cleared, and ready is deasserted.
+
+
+
+module fpu( clk, rst, enable, rmode, fpu_op, opa, opb, out, ready, underflow,
+overflow, inexact, exception, invalid);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
+        - 2'b00 = round to nearest.
+        - 2'b01 = round to zero.
+        - 2'b10 = round toward positive infinity.
+        - 2'b11 = round toward negative infinity.
+    input [2:0] fpu_op: Control signal that selects operation mode, command, or multiplexed path.
+        - 3'b000 = addition.
+        - 3'b001 = subtraction.
+        - 3'b010 = multiplication.
+        - 3'b011 = division.
+        - other codes are treated as unused.
+    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output [63:0] out: Output signal driven by the module toward surrounding logic.
+    output ready: Handshake signal that marks transfer validity, readiness, or completion.
+    output underflow: Output signal driven by the module toward surrounding logic.
+    output overflow: Output signal driven by the module toward surrounding logic.
+    output inexact: Output signal driven by the module toward surrounding logic.
+    output exception: Output signal driven by the module toward surrounding logic.
+    output invalid: Handshake signal that marks transfer validity, readiness, or completion.
+
+Internal reg/wire signals:
+    reg [63:0] opa_reg: Control signal that selects operation mode, command, or multiplexed path.
+    reg [63:0] opb_reg: Control signal that selects operation mode, command, or multiplexed path.
+    reg [2:0] fpu_op_reg: Control signal that selects operation mode, command, or multiplexed path.
+    reg [1:0] rmode_reg: Control signal that selects operation mode, command, or multiplexed path.
+    reg enable_reg: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_1: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_2: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_3: Sequential register that stores intermediate or output state between cycles.
+    reg op_enable: Control signal that selects operation mode, command, or multiplexed path.
+    reg [63:0] out: Sequential register that stores intermediate or output state between cycles.
+    reg [6:0] count_cycles: Handshake signal that marks transfer validity, readiness, or completion.
+    reg [6:0] count_ready: Handshake signal that marks transfer validity, readiness, or completion.
+    reg ready: Handshake signal that marks transfer validity, readiness, or completion.
+    reg ready_0: Handshake signal that marks transfer validity, readiness, or completion.
+    reg ready_1: Handshake signal that marks transfer validity, readiness, or completion.
+    reg underflow: Sequential register that stores intermediate or output state between cycles.
+    reg overflow: Sequential register that stores intermediate or output state between cycles.
+    reg inexact: Sequential register that stores intermediate or output state between cycles.
+    reg exception: Sequential register that stores intermediate or output state between cycles.
+    reg invalid: Handshake signal that marks transfer validity, readiness, or completion.
+    reg add_enable: Sequential register that stores intermediate or output state between cycles.
+    reg sub_enable: Sequential register that stores intermediate or output state between cycles.
+    reg mul_enable: Sequential register that stores intermediate or output state between cycles.
+    reg div_enable: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] addsub_out: Sequential register that stores intermediate or output state between cycles.
+    reg [55:0] mantissa_round: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exponent_round: Signal that carries intermediate datapath values between logic stages.
+    reg [11:0] exp_addsub: Sequential register that stores intermediate or output state between cycles.
+    reg addsub_sign: Sequential register that stores intermediate or output state between cycles.
+    reg sign_round: Sequential register that stores intermediate or output state between cycles.
+    wire count_busy = (count_ready <= count_cycles): Combinational net that links intermediate expressions across logic blocks.
+    wire underflow_0: Combinational net that links intermediate expressions across logic blocks.
+    wire overflow_0: Combinational net that links intermediate expressions across logic blocks.
+    wire inexact_0: Combinational net that links intermediate expressions across logic blocks.
+    wire exception_0: Combinational net that links intermediate expressions across logic blocks.
+    wire invalid_0: Handshake signal that marks transfer validity, readiness, or completion.
+    wire add_enable_0 = (fpu_op_reg == 3'b000) & !(opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
+    wire add_enable_1 = (fpu_op_reg == 3'b001 & (opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
+    wire sub_enable_0 = (fpu_op_reg == 3'b000) & (opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
+    wire sub_enable_1 = (fpu_op_reg == 3'b001 & !(opa_reg[63] ^ opb_reg[63]): Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] sum_out: Signal that carries intermediate datapath values between logic stages.
+    wire [55:0] diff_out: Signal that carries intermediate datapath values between logic stages.
+    wire [55:0] mul_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] div_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [10:0] exp_add_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [10:0] exp_sub_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [11:0] exp_mul_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [11:0] exp_div_out: Combinational net that links intermediate expressions across logic blocks.
+    wire [11:0] exponent_post_round: Signal that carries intermediate datapath values between logic stages.
+    wire add_sign: Combinational net that links intermediate expressions across logic blocks.
+    wire sub_sign: Combinational net that links intermediate expressions across logic blocks.
+    wire mul_sign: Combinational net that links intermediate expressions across logic blocks.
+    wire div_sign: Combinational net that links intermediate expressions across logic blocks.
+    wire [63:0] out_round: Combinational net that links intermediate expressions across logic blocks.
+    wire [63:0] out_except: Combinational net that links intermediate expressions across logic blocks.
+
+
+
+
+
+
+

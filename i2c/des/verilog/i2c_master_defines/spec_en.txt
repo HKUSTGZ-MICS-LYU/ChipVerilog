@@ -1,0 +1,167 @@
+# i2c_master_defines Delivery Implementation Spec (English)
+
+## 1. Scope and Traceability
+- Module: `i2c_master_defines`
+- Project: `i2c`
+- Target Directory: `src_dataset/i2c/des/verilog/i2c_master_defines`
+- Target Verilog: `src_dataset/i2c/des/verilog/i2c_master_defines/i2c_master_defines.v`
+- Source PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- Extraction Mode: `exact_or_keyword`
+- Spec Generated At: `2026-04-17 18:05:08`
+
+## 2. Functional Requirements
+- Functional intent: File `i2c_master_defines.v` defines I2C register-bit masks, command encodings, and compile-time options used by the master RTL.
+- SHALL: The implementation SHALL preserve fundamental I2C timing: SDA transitions only while SCL is low, except START/STOP conditions.
+- SHALL: Command/status semantics SHALL remain consistent with register definitions (e.g., STA/STO/RD/WR/ACK/IACK, TIP, IF, AL).
+- SHALL: Wishbone-side interaction SHALL keep deterministic `ack` timing and atomic register read/write behavior.
+
+## 3. Interface Specification
+### 3.1 Inputs
+- None
+
+### 3.2 Outputs/Inouts
+- None
+
+
+## 4. Timing and Reset Requirements
+- Clock signals: not explicitly identified
+- Reset signals: not explicitly identified
+- Handshake/status signals: not explicitly identified
+- Sequential block references: not provided in description.txt; verify directly from RTL.
+
+## 5. Implementation Constraints (Delivery Gates)
+- MUST: Port direction, width, signedness, and naming must remain interface-equivalent.
+- MUST: Reset behavior and `if/case` priority/order must remain behavior-equivalent.
+- MUST: Do not introduce latch inference or uncontrolled extra cycle latency.
+- Submodule relation: standalone implementation or not identified in description.txt.
+
+## 6. Acceptance Criteria (DoD)
+- Interface consistency: build/lint passes with matching port and parameter definitions.
+- Behavioral consistency: directed tests cover reset, nominal path, boundary inputs, and error/exception paths.
+- Timing consistency: edge behavior and handshake pulse widths are stable (no missed/double responses).
+- Integration consistency: hierarchy connection and system testbench regression pass.
+
+## 7. Key Points Aligned to Source PDF
+- WISHBONE Interface Command Register Byte Bit SCL Command Command Controller Controller SDA Status Register
+- By setting the START, STOP, and READ bit in the Command Register, for example, the Byte Command Controller generates a sequence that results in the
+- Architecture The I2C core is built around four primary blocks; the Clock Generator, the Byte Command Controller, the Bit Command Controller and the DataIO Shift Register.
+- -- wait for interrupt or TIP flag to negate -- 2) read RxACK bit from Status Register, should be '0'.
+- -- wait for interrupt or TIP flag to negate -- 3) read RxACK bit from Status Register, should be '0'.
+
+## 8. Raw PDF Excerpt (Closest Source Content)
+```text
+[PDF pages 13-14]
+Architecture
+The I2C core is built around four primary blocks; the Clock Generator, the Byte
+Command Controller, the Bit Command Controller and the DataIO Shift Register.
+All other blocks are used for interfacing or for storing temporary values.
+
+Prescale                          clock
+Register                          generator
+
+WISHBONE
+Interface                          Command
+Register           Byte           Bit           SCL
+Command        Command
+Controller     Controller    SDA
+Status
+Register
+
+Transmit
+Register           DataIO
+Shift
+Receive            Register
+Register
+
+Fig. 5.1 Internal structure I2C Master Core
+
+5.1 Clock Generator
+The Clock Generator generates an internal 4*Fscl clock enable signal that triggers all
+synchronous elements in the Bit Command Controller. It also handles clock stretching
+needed by some slaves.
+
+5.2 Byte Command Controller
+The Byte Command Controller handles I2C traffic at the byte level. It takes data from the
+Command Register and translates it into sequences based on the transmission of a single
+byte. By setting the START, STOP, and READ bit in the Command Register, for
+example, the Byte Command Controller generates a sequence that results in the
+
+OpenCores                               I2C-Master core                         7/3/2003
+
+generation of a START signal, the reading of a byte from the slave device, and the
+generation of a STOP signal. It does this by dividing each byte operation into separate
+bit-operations, which are then sent to the Bit Command Controller.
+
+Idle state
+
+Read / Write          No
+bit set ?
+
+---
+
+[PDF pages 17-17]
+10) write no acknowledge (NACK) to slave, indicating end of transfer
+11) generate stop signal
+
+Commands:
+1) write 0x9C (address + write bit) to Transmit Register, set STA bit, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+2) read RxACK bit from Status Register, should be '0'.
+write 0x20 to Transmit register, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+3) read RxACK bit from Status Register, should be '0'.
+write 0x9D (address + read bit) to Transmit Register, set STA bit, set WR bit.
+-- wait for interrupt or TIP flag to negate --
+4) set RD bit, set ACK to '1' (NACK), set STO bit
+
+First command sequence                    Second command sequence
+
+SCL
+
+SDA       S                                Wr ack                                      ack
+
+---
+
+[PDF pages 3-4]
+Rev.   Date       Author              Description
+0.1    17/02/01   Richard Herveille   First draft release
+0.2    01/03/01   Richard Herveille   Some cleaning up throughout the document
+Added 'Programming Examples' section
+0.3               Richard Herveille   Added some comments after core-changes
+- added BUSY bit (status register)
+- changed I2C IO for ASIC support
+- added comment for FGPA IO
+0.4    10/19/01   Richard Herveille   Changed core's databus size to 8bit.
+Changed documentation to reflect changes.
+Changed port names to new naming convention.
+0.5    18/02/02   Richard Herveille   Changed table headers.
+Added OpenCores logo.
+0.5a   05/02/02   Richard Herveille   Reviewed entire document.
+0.6    21/03/02   Richard Herveille   Added Appendix A, Synthesis Results
+0.7    25/06/02   Richard Herveille   Changed Prescale Register formula
+0.8    30/12/02   Richard Herveille   Added Multi-Master capabilities.
+New timing diagrams.
+0.9    03/07/03   Richard Herveille   Changed '0x5C' to '0xAC' in Example1.
+Changed 'RW' to 'W' in Command Register.
+Changed 'RW' to 'W' in Transmit Register.
+
+OpenCores                         I2C-Master core                              7/3/2003
+
+Introduction
+I2C is a two-wire, bi-directional serial bus that provides a simple and efficient method of
+data exchange between devices. It is most suitable for applications requiring occasional
+communication over a short distance between many devices. The I2C standard is a true
+multi-master bus including collision detection and arbitration that prevents data
+corruption if two or more masters attempt to control the bus simultaneously.
+
+The interface defines 3 transmission speeds:
+- Normal: 100Kbps
+- Fast: 400Kbps
+- High speed: 3.5Mbps
+
+Only 100Kbps and 400Kbps modes are supported directly. For High speed special IOs
+are needed. If these IOs are available and used, then High speed is also supported.
+```
+
+## 9. Notes
+- This specification supports implementation/review and does not replace final simulation evidence.

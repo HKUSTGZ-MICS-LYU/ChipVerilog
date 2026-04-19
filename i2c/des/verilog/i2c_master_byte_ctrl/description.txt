@@ -1,0 +1,73 @@
+Functional Overview:
+Module `i2c_master_byte_ctrl` sequences byte-level I2C transfers by issuing bit-controller commands, shifting data, and handling ACK/NACK phases.
+
+Module name:
+    i2c_master_byte_ctrl
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input nReset: Reset signal that initializes state elements to known values.
+    input ena: Input signal consumed by the module control or datapath logic.
+    input [15:0] clk_cnt: Clock signal that defines sequential update timing for this logic.
+    input start: Input signal consumed by the module control or datapath logic.
+    input stop: Control signal that selects operation mode, command, or multiplexed path.
+    input read: Input signal consumed by the module control or datapath logic.
+    input write: Input signal consumed by the module control or datapath logic.
+    input ack_in: Handshake signal that marks transfer validity, readiness, or completion.
+    input [7:0] din: Input signal consumed by the module control or datapath logic.
+    input scl_i: Input signal consumed by the module control or datapath logic.
+    input sda_i: Input signal consumed by the module control or datapath logic.
+
+Output port:
+    output cmd_ack: Handshake signal that marks transfer validity, readiness, or completion.
+    output ack_out: Handshake signal that marks transfer validity, readiness, or completion.
+    output i2c_busy: Output signal driven by the module toward surrounding logic.
+    output i2c_al: Output signal driven by the module toward surrounding logic.
+    output [7:0] dout: Output signal driven by the module toward surrounding logic.
+    output scl_o: Output signal driven by the module toward surrounding logic.
+    output scl_oen: Output signal driven by the module toward surrounding logic.
+    output sda_o: Output signal driven by the module toward surrounding logic.
+    output sda_oen: Output signal driven by the module toward surrounding logic.
+
+Internal reg/wire signals:
+    reg cmd_ack: Handshake signal that marks transfer validity, readiness, or completion.
+    reg ack_out: Handshake signal that marks transfer validity, readiness, or completion.
+    reg [3:0] core_cmd: Control signal that selects operation mode, command, or multiplexed path.
+    reg core_txd: Sequential register that stores intermediate or output state between cycles.
+    reg [7:0] sr: Sequential register that stores intermediate or output state between cycles.
+    reg shift, ld: Sequential register that stores intermediate or output state between cycles.
+    reg [2:0] dcnt: Sequential state register that tracks control progress across cycles.
+    reg [4:0] c_state: Sequential state register that tracks control progress across cycles.
+    wire core_ack, core_rxd: Combinational net that links intermediate expressions across logic blocks.
+    wire go: Combinational net that links intermediate expressions across logic blocks.
+    wire cnt_done: Handshake signal that marks transfer validity, readiness, or completion.
+
+Implementation:
+
+- The module sequences byte-level I2C transfers by issuing bit-controller commands, shifting data, and handling ACK/NACK phases.
+2. Verilog implementation breakdown:
+- Source file: `src_dataset/i2c/rtl/verilog/i2c_master_byte_ctrl.v`.
+- Module declaration line: 74.
+- Interface size: 13 input(s), 9 output/inout port(s).
+- Internal declaration count: 11 reg/wire statement(s).
+- Parameter/localparam symbols: ST_IDLE, ST_START, ST_READ, ST_WRITE, ST_ACK, ST_STOP.
+3. Always blocks:
+- Always block 1: line ~171, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 2: line ~182, sensitivity `(posedge clk or negedge nReset)`.
+- Always block 3: line ~200, sensitivity `(posedge clk or negedge nReset)`.
+4. Continuous assignments (`assign`):
+- Count: 3.
+- line ~165: drives `go`.
+- line ~168: drives `dout`.
+- line ~193: drives `cnt_done`.
+5. Case logic:
+- Case statement count: 1.
+- line ~229: `case(c_state)`.
+6. Submodule instantiations:
+- line ~146: instance `bit_controller` of `i2c_master_bit_ctrl`.
+7. Reconstruction notes:
+- Keep port directions, widths, and signedness identical to the declarations listed above.
+- Preserve register/wire names and update ordering to maintain datapath and control timing behavior.
+- Preserve reset conditions, sensitivity lists, and decode priorities (`if`/`case`) when recreating logic.
+- Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.

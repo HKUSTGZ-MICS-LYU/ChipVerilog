@@ -1,0 +1,41 @@
+1. Select semantics
+1.1 Operand A
+sel_a chooses between:
+- register file data A (default)
+- EX forwarding value
+- WB forwarding value
+Immediate selection is not used for operand A in the shown implementation.
+
+1.2 Operand B
+sel_b chooses between:
+- register file data B (default)
+- immediate value simm
+- EX forwarding value
+- WB forwarding value
+
+2. Combinational mux layer
+The module computes muxed_a and muxed_b combinationally from sel_a/sel_b and the input sources. These muxes are straightforward priority-free case statements based on the encoded select values defined in or1200_defines.v.
+
+3. Registered operand layer
+The outputs operand_a and operand_b are registers updated on the clock edge. This means the execution stage consumes stable registered operands rather than purely combinational mux outputs.
+
+4. Freeze-related save behavior
+The subtle feature of this module is the saved_a/saved_b logic.
+- On reset, operands are cleared and saved flags are cleared.
+- If EX is not frozen but ID is frozen and the corresponding saved flag is not yet set, the module captures the current muxed operand into operand_a/operand_b and sets saved_a/saved_b.
+- If EX is not frozen and the saved flag is not set, the module simply updates the operand register from the mux output.
+- When EX is not frozen and ID is no longer frozen, the saved flag clears.
+This ensures that if decode is frozen while execute is still allowed to advance, the operand presented to EX is captured exactly once and not overwritten by changing upstream sources.
+
+5. Required observable behavior
+A reimplementation must preserve:
+- exact select-source mapping for A and B;
+- registered outputs rather than direct wires;
+- one-time capture behavior during the special (!ex_freeze && id_freeze && !saved_x) condition;
+- clearing of saved flags once normal flow resumes.
+
+6. Why the save logic matters
+Without saved_a/saved_b, forwarding or register-file outputs could change while ID remains frozen, causing the EX stage to see inconsistent operands across cycles. The module therefore acts as both a mux and a small operand latch with hazard-aware hold behavior.
+
+7. Summary
+or1200_operandmuxes.v selects operand sources for execution and preserves them through tricky freeze interactions. It is a small but essential correctness block for forwarding and stall behavior.

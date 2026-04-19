@@ -1,0 +1,68 @@
+
+Module `or1200_if` drives instruction fetch requests, aligns fetched instructions, and manages fetch-stage pipeline handshakes.
+
+This module is the instruction-fetch pipeline stage register/control block. It receives instruction words and status from the instruction-side memory/cache interface and converts them into IF-stage outputs for the rest of the pipeline.
+
+Description:
+
+The module drives instruction fetch requests, aligns fetched instructions, and manages fetch-stage pipeline handshakes.
+
+
+This module is the instruction retrieval/IF level buffer unit of OR1200. It is located between the instruction fetch bus return path and the subsequent decoding stage. It is responsible for converting the instructions and addresses returned by the bus into if_insn/if_pc that can be consumed by the pipeline. At the same time, when the IF stage is frozen, it caches the instruction fetch results that have arrived, and translates the instruction fetch error into the corresponding exception indication. The module uses the rising edge of clk to update the internal cache registers insn_saved, addr_saved, and saved flags, and rst to reset these states asynchronously.
+
+Under normal circumstances, if the current fetch finger returns icpu_ack_i=1 and the IF level is not frozen, then if_insn directly takes icpu_dat_i, and if_pc directly takes icpu_adr_i. If the IF level is frozen and the module receives icpu_ack_i for the first time, the module saves the instruction and address to insn_saved/addr_saved at the clock edge, and sets saved to 1; even if the bus interface continues to change, if_insn/if_pc will give priority to outputting the saved value until the freeze is lifted. The update priority of saved is: reset is the highest, then flushpipe is cleared; again it is set to 1 when "a new command is received and if_freeze=1 and has not been saved before"; finally, it is cleared to 0 as long as if_freeze is released. The writing conditions for insn_saved and addr_saved are consistent with this and are cleared to NOP and 0 respectively on reset or flushpipe.
+
+The combined priority of if_insn is relatively clear: if icpu_err_i=1, or no_more_dslot=1, or rfe=1, a specific NOP code is forced to be output, instead of continuing to send errors or instructions that should not be executed to decoding; otherwise, if saved=1, output cache instructions; otherwise, if there is icpu_ack_i in this shot, output real-time return instructions; otherwise, output another default NOP code. if_pc takes the cache address when saved=1, otherwise it takes the current bus return address icpu_adr_i. if_stall is defined in the current implementation as "no error has been received, no ack has been received, and no instructions have been saved", so as long as the bus has not returned and there is no cache locally, the IF stage is considered still waiting.
+
+genpc_refetch is 1 when saved=1 and a new icpu_ack_i is received at the same time, which is used to notify the upstream PC to generate logic to re-fetch the current address. Exception output except_itlbmiss, except_immufault and except_ibuserr are all obtained by combining the tag encoding of icpu_err_i and icpu_tag_i, and are suppressed when no_more_dslot=1 to avoid delay slot paths that should not be executed from continuing to report exceptions. Overall, this module ensures that "the instruction fetch results will not be lost even when the pipeline is frozen" and organizes the fetch bus return semantics into instructions, PCs, stalls and exception signals that can be directly used by subsequent pipeline levels.
+
+module or1200_if(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // External i/f to IC
+    input [31:0] icpu_dat_i,
+    input icpu_ack_i,
+    input icpu_err_i,
+    input [31:0] icpu_adr_i,
+    input [3:0] icpu_tag_i,
+
+    // Internal i/f
+    input if_freeze,
+    output [31:0] if_insn,
+    output [31:0] if_pc,
+    input flushpipe,
+    output if_stall,
+    input no_more_dslot,
+    output genpc_refetch,
+    input rfe,
+    output except_itlbmiss,
+    output except_immufault,
+    output except_ibuserr
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - icpu_dat_i[31:0]: Data bus for the CPU-to-instruction-memory interface.
+    - icpu_ack_i: Acknowledge/transfer-complete indication for the CPU-to-instruction-memory interface.
+    - icpu_err_i: Error termination indication for the CPU-to-instruction-memory interface.
+    - icpu_adr_i[31:0]: Address bus for the CPU-to-instruction-memory interface.
+    - icpu_tag_i[3:0]: Tag field carried on the CPU-to-instruction-memory interface.
+    - if_freeze: Freeze control for the fetch stage.
+    - flushpipe: Pipeline flush request.
+    - no_more_dslot: Indicates that no further delay-slot instruction should be executed.
+    - rfe: Exception-return control indication.
+Output port:
+    - if_insn[31:0]: Instruction word presented to the decode stage.
+    - if_pc[31:0]: Program-counter value accompanying the fetched instruction.
+    - if_stall: Fetch-stage stall indication.
+    - genpc_refetch: Request for the PC-generation logic to refetch the current address.
+    - except_itlbmiss: Instruction-TLB-miss exception indication exported to exception control.
+    - except_immufault: Instruction-MMU-fault exception indication exported to exception control.
+    - except_ibuserr: Instruction-bus-error exception indication exported to exception control.
+Internal reg/wire signals:
+    reg [31:0] insn_saved: Sequential register that stores intermediate or output state between cycles.
+    reg [31:0] addr_saved: Address/control signal that selects registers, memory locations, or byte lanes.
+    reg saved: Sequential register that stores intermediate or output state between cycles.

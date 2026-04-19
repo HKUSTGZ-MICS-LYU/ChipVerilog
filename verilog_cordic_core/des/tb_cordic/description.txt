@@ -1,0 +1,46 @@
+Functional Overview:
+Module `tb` provides simulation stimulus and result observation for functional verification of the CORDIC core.
+
+Module name:
+    tb
+
+Input ports:
+    none: No input ports are declared for this module.
+
+Output port:
+    none: No output/inout ports are declared for this module.
+
+Internal reg/wire signals:
+    reg [`XY_BITS:0] x_i,y_i: Signal that carries intermediate datapath values between logic stages.
+    reg [`THETA_BITS:0] theta_i: Signal that carries intermediate datapath values between logic stages.
+    reg clock,reset: Reset signals that initializes state elements to known values.
+    reg init: Sequential register that stores intermediate or output state between cycles.
+    reg signed [`XY_BITS:0] ex,ey: Sequential register that stores intermediate or output state between cycles.
+    reg signed [16:0] x [90:0]: Sequential register that stores intermediate or output state between cycles.
+    reg signed [16:0] y [90:0]: Sequential register that stores intermediate or output state between cycles.
+    reg signed [16:0] z [90:0]: Sequential register that stores intermediate or output state between cycles.
+    wire [`XY_BITS:0] x_o,y_o: Signal that carries intermediate datapath values between logic stages.
+    wire [`THETA_BITS:0] theta_o: Signal that carries intermediate datapath values between logic stages.
+
+Implementation:
+
+- The module provides simulation stimulus and result observation for functional verification of the CORDIC core.
+2. Verilog implementation breakdown:
+- Source file: `src_dataset/verilog_cordic_core/rtl/tb_cordic.v`.
+- Module declaration line: 14.
+- Interface size: 0 input(s), 0 output/inout port(s).
+- Internal declaration count: 10 reg/wire statement(s).
+- Parameter/localparam symbols: none declared in this module block.
+3. Always blocks:
+- None detected in this module block.
+4. Continuous assignments (`assign`):
+- None detected.
+5. Case logic:
+- None detected.
+6. Submodule instantiations:
+- line ~23: instance `UUT` of `cordic`.
+7. Reconstruction notes:
+- Keep port directions, widths, and signedness identical to the declarations listed above.
+- Preserve register/wire names and update ordering to maintain datapath and control timing behavior.
+- Preserve reset conditions, sensitivity lists, and decode priorities (`if`/`case`) when recreating logic.
+- Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.

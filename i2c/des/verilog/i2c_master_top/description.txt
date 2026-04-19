@@ -1,0 +1,93 @@
+Functional Overview:
+Module `i2c_master_top` provides the Wishbone register interface for configuring, commanding, and monitoring the I2C master core.
+
+Module name:
+    i2c_master_top
+
+Input ports:
+    input wb_clk_i: Clock signal that defines sequential update timing for this logic.
+    input wb_rst_i: Reset signal that initializes state elements to known values.
+    input arst_i: Reset signal that initializes state elements to known values.
+    input [2:0] wb_adr_i: Address/control signal that selects registers, memory locations, or byte lanes.
+    input [7:0] wb_dat_i: Data input that provides operand or payload values to the datapath.
+    input wb_we_i: Input signal consumed by the module control or datapath logic.
+    input wb_stb_i: Handshake signal that marks transfer validity, readiness, or completion.
+    input wb_cyc_i: Handshake signal that marks transfer validity, readiness, or completion.
+    input scl_pad_i: Input signal consumed by the module control or datapath logic.
+    input sda_pad_i: Input signal consumed by the module control or datapath logic.
+
+Output port:
+    output [7:0] wb_dat_o: Data output that carries computed results or status information.
+    output wb_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
+    output wb_inta_o: Output signal driven by the module toward surrounding logic.
+    output scl_pad_o: Output signal driven by the module toward surrounding logic.
+    output scl_padoen_o: Output signal driven by the module toward surrounding logic.
+    output sda_pad_o: Output signal driven by the module toward surrounding logic.
+    output sda_padoen_o: Output signal driven by the module toward surrounding logic.
+
+Internal reg/wire signals:
+    reg [7:0] wb_dat_o: Signal that carries intermediate datapath values between logic stages.
+    reg wb_ack_o: Handshake signal that marks transfer validity, readiness, or completion.
+    reg wb_inta_o: Sequential register that stores intermediate or output state between cycles.
+    reg [15:0] prer: Sequential register that stores intermediate or output state between cycles.
+    reg [ 7:0] ctr: Sequential register that stores intermediate or output state between cycles.
+    reg [ 7:0] txr: Sequential register that stores intermediate or output state between cycles.
+    reg [ 7:0] cr: Sequential register that stores intermediate or output state between cycles.
+    reg rxack: Handshake signal that marks transfer validity, readiness, or completion.
+    reg tip: Sequential register that stores intermediate or output state between cycles.
+    reg irq_flag: Sequential register that stores intermediate or output state between cycles.
+    reg al: Sequential register that stores intermediate or output state between cycles.
+    wire [ 7:0] rxr: Combinational net that links intermediate expressions across logic blocks.
+    wire [ 7:0] sr: Combinational net that links intermediate expressions across logic blocks.
+    wire done: Handshake signal that marks transfer validity, readiness, or completion.
+    wire core_en: Combinational net that links intermediate expressions across logic blocks.
+    wire ien: Combinational net that links intermediate expressions across logic blocks.
+    wire irxack: Handshake signal that marks transfer validity, readiness, or completion.
+    wire i2c_busy: Combinational net that links intermediate expressions across logic blocks.
+    wire i2c_al: Combinational net that links intermediate expressions across logic blocks.
+    wire rst_i = arst_i ^ ARST_LVL: Reset signal that initializes state elements to known values.
+    wire wb_wacc = wb_we_i & wb_ack_o: Combinational net that links intermediate expressions across logic blocks.
+    wire sta = cr[7]: Combinational net that links intermediate expressions across logic blocks.
+    wire sto = cr[6]: Combinational net that links intermediate expressions across logic blocks.
+    wire rd = cr[5]: Combinational net that links intermediate expressions across logic blocks.
+    wire wr = cr[4]: Combinational net that links intermediate expressions across logic blocks.
+    wire ack = cr[3]: Handshake signal that marks transfer validity, readiness, or completion.
+    wire iack = cr[0]: Handshake signal that marks transfer validity, readiness, or completion.
+
+Implementation:
+
+- The module provides the Wishbone register interface for configuring, commanding, and monitoring the I2C master core.
+2. Verilog implementation breakdown:
+- Source file: `src_dataset/i2c/rtl/verilog/i2c_master_top.v`.
+- Module declaration line: 77.
+- Interface size: 10 input(s), 7 output/inout port(s).
+- Internal declaration count: 27 reg/wire statement(s).
+- Parameter/localparam symbols: ARST_LVL.
+3. Always blocks:
+- Always block 1: line ~156, sensitivity `(posedge wb_clk_i)`.
+- Always block 2: line ~160, sensitivity `(posedge wb_clk_i)`.
+- Always block 3: line ~175, sensitivity `(posedge wb_clk_i or negedge rst_i)`.
+- Always block 4: line ~199, sensitivity `(posedge wb_clk_i or negedge rst_i)`.
+- Always block 5: line ~258, sensitivity `(posedge wb_clk_i or negedge rst_i)`.
+- Always block 6: line ~282, sensitivity `(posedge wb_clk_i or negedge rst_i)`.
+4. Continuous assignments (`assign`):
+- Count: 8.
+- line ~228: drives `core_en`.
+- line ~231: drives `ien`.
+- line ~291: drives `sr[7]`.
+- line ~294: drives `sr[6]`.
+- line ~295: drives `sr[5]`.
+- line ~296: drives `sr[4:2]`.
+- line ~297: drives `sr[1]`.
+- line ~298: drives `sr[0]`.
+5. Case logic:
+- Case statement count: 2.
+- line ~164: `case(wb_adr_i)`.
+- line ~192: `case(wb_adr_i)`.
+6. Submodule instantiations:
+- line ~234: instance `byte_controller` of `i2c_master_byte_ctrl`.
+7. Reconstruction notes:
+- Keep port directions, widths, and signedness identical to the declarations listed above.
+- Preserve register/wire names and update ordering to maintain datapath and control timing behavior.
+- Preserve reset conditions, sensitivity lists, and decode priorities (`if`/`case`) when recreating logic.
+- Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.

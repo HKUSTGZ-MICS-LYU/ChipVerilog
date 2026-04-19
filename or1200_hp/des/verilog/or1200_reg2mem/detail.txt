@@ -1,0 +1,19 @@
+1. Supported operation classes
+- Store byte (SB)
+- Store halfword (SH)
+- Store word (SW)
+Other LSU operations default to a pass-through-like mapping consistent with the source logic.
+
+2. Byte-lane mapping behavior
+The output is built from four independently selected byte lanes:
+- memdata[31:24] chooses among regdata[7:0], regdata[15:8], or regdata[31:24] depending on operation and address.
+- memdata[23:16] chooses between regdata[23:16] and regdata[7:0].
+- memdata[15:8] chooses between regdata[7:0] and regdata[15:8].
+- memdata[7:0] is always regdata[7:0].
+This realizes the endian/alignment behavior required by the OR1200 LSU for partial-width stores.
+
+3. Required functional guarantees
+An implementation conforming to this spec shall:
+- Rearrange bytes of regdata so that store-byte and store-halfword operations place the intended source byte(s) onto the targeted memory byte lanes selected by addr[1:0].
+- Preserve straightforward mapping for full-word stores.
+- Be purely combinational.

@@ -1,0 +1,105 @@
+
+Module `or1200_dmmu_top` integrates data-side MMU translation, TLB access, and fault signaling into the load/store path.
+
+This module is the top-level Data MMU wrapper. The source comments identify it as “Data MMU” and the design instantiates the DTLB and the surrounding permission/exception logic. Its job is to translate CPU data addresses, apply page permissions, generate DMMU-related errors/tags, and forward successful accesses to the downstream data-memory/data-cache interface.
+
+The CPU presents a virtual data address and a data cycle request. The DMMU may be disabled entirely, bypassed for some accesses, or enabled for normal translation. When enabled, this module performs:
+- DTLB lookup;
+- translated physical address generation;
+- user/supervisor permission checking for loads and stores;
+- cache-inhibit propagation;
+- generation of TLB miss and page fault indications;
+- SPR access to the DTLB arrays.
+
+Description:
+
+The module integrates data-side MMU translation, TLB access, and fault signaling into the load/store path.
+
+
+This module is the top layer of the OR1200 data MMU. It is located between the CPU data access end and the data cache/external data path. It is responsible for TLB translation, permission checking and cache-inhibit attribute generation of the data address when needed, and converts the access into a DTLB miss or page fault error when the translation fails or permissions are not allowed. The module uses the rising edge of clk to update a small number of timing states, and rst to reset these states asynchronously.
+
+When OR1200_NO_DMMU is defined, the module completely bypasses the MMU: qmemdmmu_adr_o is directly equal to dcpu_adr_i, qmemdmmu_cycstb_o is equal to dcpu_cycstb_i, dcpu_tag_o is directly transmitted through qmemdmmu_tag_i, dcpu_err_o is directly transmitted through qmemdmmu_err_i, qmemdmmu_ci_o are given by the highest bit of the address. The SPR read data is fixed to 0, and the BIST test chain is directly transparently transmitted. There are no TLB, miss or fault semantics at this time.
+
+When DMMU is enabled, the module first treats spr_cs as the SPR access chip select of DTLB, so that software can read and write TLB entries through SPR. For ordinary data access, dtlb_en is pulled high when dmmu_en and dcpu_cycstb_i are both 1, and the driver or1200_dmmu_tlb uses the current virtual address dcpu_adr_i to perform a translation. In order to cooperate with the TLB access delay, the module internally uses dtlb_done to record "the translation result of this request is available" on the clock; dtlb_done is 0 when reset, and dcpu_cycstb_i is sampled in the next cycle when dtlb_en is valid, otherwise it is cleared to 0. Both fault and miss are based on the premise that dtlb_done is 1: miss means that the TLB has not hit; fault means that the TLB has been hit, but based on whether the current access is read or write, whether the current supervision state is supv, and the uwe/ure/swe/sre permission bit returned by the TLB, this access is not allowed. In the fault judgment, the user mode read requirement is ure=1, the supervisory mode read requirement is sre=1, the user mode write requirement is uwe=1, and the supervisory mode write requirement is swe=1.
+
+On the output priority level, dcpu_err_o is set when either miss, fault, or downstream qmemdmmu_err_i is 1. dcpu_tag_o is rewritten to the DTLB miss tag in case of a miss and to the page fault tag in case of fault. Otherwise, the downstream tag is transparently transmitted. qmemdmmu_cycstb_o is only allowed to continue to be sent downstream when no miss/fault occurs during this access; if dc_en=0 and dmmu_en=1, the allow signal will be delayed by dtlb_done for one beat to ensure that the address translation is completed first. The physical address qmemdmmu_adr_o consists of {dtlb_ppn, offset within the original page} when dmmu_en=1; if DMMU is turned off, the original address is directly transparently transmitted. The cache inhibit attribute qmemdmmu_ci_o is given by the ci returned by the TLB when DMMU is enabled, and is aligned with dtlb_done in the current implementation; when DMMU is turned off, it falls back to the highest bit address convention.
+
+The module also saves a register, dcpu_vpn_r, which was used in historical versions to handle VPN/PPN timing alignment; the current implementation of the physical address bypass path already uses dcpu_adr_i directly. spr_dat_o returns the read data of the underlying dmmu_tlb only on TLB SPR access, otherwise 0. In summary, this module completes data address translation, permission checking and exception label generation, but is not responsible for the actual data access itself.
+
+module or1200_dmmu_top(
+    // Rst and clk
+    input clk,
+    input rst,
+
+    // CPU i/f
+    input dc_en,
+    input dmmu_en,
+    input supv,
+    input [31:0] dcpu_adr_i,
+    input dcpu_cycstb_i,
+    input dcpu_we_i,
+    output [3:0] dcpu_tag_o,
+    output dcpu_err_o,
+
+    // SPR access
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // DC i/f
+    input qmemdmmu_err_i,
+    input [3:0] qmemdmmu_tag_i,
+    output [31:0] qmemdmmu_adr_o,
+    output qmemdmmu_cycstb_o,
+    output qmemdmmu_ci_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - dc_en: Data-cache enable control.
+    - dmmu_en: Data-MMU enable control.
+    - supv: Current supervisor-mode status used for privileged behavior and permission checks.
+    - dcpu_adr_i[31:0]: Address bus for the CPU-to-data-memory interface.
+    - dcpu_cycstb_i: Combined cycle-and-strobe request for the CPU-to-data-memory interface.
+    - dcpu_we_i: Write-enable / write-versus-read qualifier for the CPU-to-data-memory interface.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - qmemdmmu_err_i: Error termination indication for the downstream data-memory path after DMMU/QMEM arbitration.
+    - qmemdmmu_tag_i[3:0]: Tag field carried on the downstream data-memory path after DMMU/QMEM arbitration.
+Output port:
+    - dcpu_tag_o[3:0]: Tag field carried on the CPU-to-data-memory interface.
+    - dcpu_err_o: Error termination indication for the CPU-to-data-memory interface.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - qmemdmmu_adr_o[31:0]: Address bus for the downstream data-memory path after DMMU/QMEM arbitration.
+    - qmemdmmu_cycstb_o: Combined cycle-and-strobe request for the downstream data-memory path after DMMU/QMEM arbitration.
+    - qmemdmmu_ci_o: Cache-inhibit attribute for the downstream data-memory path after DMMU/QMEM arbitration.
+Internal reg/wire signals:
+    reg dtlb_done: Handshake signal that marks transfer validity, readiness, or completion.
+    reg [31:13] dcpu_vpn_r: Sequential register that stores intermediate or output state between cycles.
+    wire dtlb_spr_access: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:13] dtlb_ppn: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_hit: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_uwe: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_ure: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_swe: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_sre: Combinational net that links intermediate expressions across logic blocks.
+    wire [31:0] dtlb_dat_o: Signal that carries intermediate datapath values between logic stages.
+    wire dtlb_en: Combinational net that links intermediate expressions across logic blocks.
+    wire dtlb_ci: Combinational net that links intermediate expressions across logic blocks.
+    wire fault: Combinational net that links intermediate expressions across logic blocks.
+    wire miss: Combinational net that links intermediate expressions across logic blocks.

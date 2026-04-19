@@ -1,0 +1,81 @@
+# i2c_master_byte_ctrl 工业交付实现规格（Delivery Spec）
+
+## 1. 范围与追溯
+- 模块名称: `i2c_master_byte_ctrl`
+- 所属工程: `i2c`
+- 目标目录: `src_dataset/i2c/des/verilog/i2c_master_byte_ctrl`
+- 目标源码: `src_dataset/i2c/rtl/verilog/i2c_master_byte_ctrl.v`
+- 参考 PDF: `src_dataset/i2c/doc/i2c_specs.pdf`
+- 抽取模式: `keyword`
+- 规格生成时间: `2026-04-17 18:05:08`
+
+## 2. 功能需求（必须）
+- 模块功能定义: Module `i2c_master_byte_ctrl` sequences byte-level I2C transfers by issuing bit-controller commands, shifting data, and handling ACK/NACK phases.
+- SHALL: 必须满足 I2C 基本时序：SDA 仅在 SCL 低电平阶段切换，SCL 高电平阶段保持稳定（START/STOP 条件除外）。
+- SHALL: 命令/状态语义必须与寄存器定义一致（如 STA/STO/RD/WR/ACK/IACK、TIP、IF、AL 等）。
+- SHALL: 与 Wishbone 侧交互时，必须保证 `ack` 返回时序可预测且寄存器读写原子一致。
+- SHALL: 字节级控制器应负责 8bit 传输编排、ACK 采样与命令完成握手。
+
+## 3. 接口规范
+### 3.1 输入端口
+- `input clk`: Clock signal that defines sequential update timing for this logic.
+- `input rst`: Reset signal that initializes state elements to known values.
+- `input nReset`: Reset signal that initializes state elements to known values.
+- `input ena`: Input signal consumed by the module control or datapath logic.
+- `input [15:0] clk_cnt`: Clock signal that defines sequential update timing for this logic.
+- `input start`: Input signal consumed by the module control or datapath logic.
+- `input stop`: Control signal that selects operation mode, command, or multiplexed path.
+- `input read`: Input signal consumed by the module control or datapath logic.
+- `input write`: Input signal consumed by the module control or datapath logic.
+- `input ack_in`: Handshake signal that marks transfer validity, readiness, or completion.
+- `input [7:0] din`: Input signal consumed by the module control or datapath logic.
+- `input scl_i`: Input signal consumed by the module control or datapath logic.
+- `input sda_i`: Input signal consumed by the module control or datapath logic.
+
+### 3.2 输出/双向端口
+- `output cmd_ack`: Handshake signal that marks transfer validity, readiness, or completion.
+- `output ack_out`: Handshake signal that marks transfer validity, readiness, or completion.
+- `output i2c_busy`: Output signal driven by the module toward surrounding logic.
+- `output i2c_al`: Output signal driven by the module toward surrounding logic.
+- `output [7:0] dout`: Output signal driven by the module toward surrounding logic.
+- `output scl_o`: Output signal driven by the module toward surrounding logic.
+- `output scl_oen`: Output signal driven by the module toward surrounding logic.
+- `output sda_o`: Output signal driven by the module toward surrounding logic.
+- `output sda_oen`: Output signal driven by the module toward surrounding logic.
+
+- 接口规模: 13 input(s), 9 output/inout port(s)
+- 参数/宏约束: ST_IDLE, ST_START, ST_READ, ST_WRITE, ST_ACK, ST_STOP
+
+## 4. 时序与复位要求
+- 时钟信号: `clk`, `clk_cnt`
+- 复位信号: `nReset`, `rst`
+- 握手/状态信号: `ack_in`, `ack_out`, `cmd_ack`, `i2c_busy`
+- 时序逻辑块要求:
+  - Always block 1: line ~171, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 2: line ~182, sensitivity `(posedge clk or negedge nReset)`.
+  - Always block 3: line ~200, sensitivity `(posedge clk or negedge nReset)`.
+- 分支控制规模参考: - Case statement count: 1.
+
+## 5. 实现约束（交付红线）
+- MUST: 端口方向、位宽、符号属性与命名必须与接口定义逐项一致。
+- MUST: 复位行为、状态更新优先级、`if/case` 判定顺序必须与原始设计保持等价。
+- MUST: 组合路径不可引入锁存器；时序路径不可引入额外不可控周期延迟。
+- MUST: 保持子模块实例化关系与连接语义不变：
+  - line ~146: instance `bit_controller` of `i2c_master_bit_ctrl`.
+- 关键内部信号（建议保留命名以便联调）: `ack_out`, `cmd_ack`, `cnt_done`, `core_ack`, `core_rxd`, `core_txd`, `go`, `ld`, `shift`
+
+## 6. 验收标准（DoD）
+- 接口一致性: lint/编译通过，端口与参数定义与规格一致。
+- 行为一致性: 关键 directed test 覆盖复位、正常路径、边界输入、错误/异常路径。
+- 时序一致性: 核验时钟边沿行为与握手脉冲宽度，避免丢拍和重复响应。
+- 集成一致性: 子模块互连与上层调用时序在系统 testbench 下通过回归。
+
+## 7. PDF 依据摘要（已提炼）
+- By setting the START, STOP, and READ bit in the Command Register, for example, the Byte Command Controller generates a sequence that results in the
+- 5.3 Bit Command Controller The Bit Command Controller handles the actual transmission of data and the generation of the specific levels for START, Repeated START, and STOP signals by controlling the SCL and SDA lines.
+- -- wait for interrupt or TIP flag to negate -- 2) read RxACK bit from Status Register, should be '0'.
+- -- wait for interrupt or TIP flag to negate -- 3) read RxACK bit from Status Register, should be '0'.
+
+## 8. 实现说明
+- 模块声明参考位置: 74
+- 本规格用于工程实现与代码审查，不替代最终仿真结果；若冲突，以 RTL 行为与回归测试为准。

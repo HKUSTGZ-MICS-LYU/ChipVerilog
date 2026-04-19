@@ -1,0 +1,22 @@
+1. Selection behavior
+- rfwb_op encodes both source selection and validity.
+- The upper selection bits choose among four source inputs.
+- Mapping:
+  - 00 -> muxin_a
+  - 01 -> muxin_b
+  - 10 -> muxin_c
+  - 11 -> muxin_d + 8
+- The +8 adjustment on muxin_d is architecturally significant; it is used for a PC-related writeback path that must return the appropriate link/return value instead of the raw source word.
+
+2. Registered stage behavior
+- muxreg stores the currently selected muxout when wb_freeze is deasserted.
+- muxreg_valid stores rfwb_op[0] when wb_freeze is deasserted.
+- On reset, muxreg is zero and muxreg_valid is cleared.
+- When wb_freeze is asserted, the previously registered value and valid bit are retained.
+
+3. Required functional guarantees
+An implementation conforming to this spec shall:
+- Produce a purely combinational selected output from the four input sources.
+- Add 8 to the fourth input selection path.
+- Register the selected result and validity bit only when writeback is not frozen.
+- Clear registered state on reset.

@@ -1,0 +1,193 @@
+1. Details
+- The module integrates add, subtract, multiply, divide, rounding, and exception blocks to produce final IEEE-754 double-precision results.
+- The arithmetic datapath is organized in three stages: arithmetic, rounding, and exception handling.
+
+2. Internal Submodule Connections
+2.1 `fpu_add`
+- Instantiated for magnitude-aligned addition of equal-sign operands, or subtraction requests whose operands have opposite signs.
+
+2.2 `fpu_sub`
+- Instantiated for magnitude-aligned subtraction of equal-sign subtraction requests, or addition requests whose operands have opposite signs.
+
+2.3 `fpu_mul`
+- Instantiated for multiplication.
+
+2.4 `fpu_div`
+- Instantiated for division.
+
+2.5 `fpu_round`
+- Receives `sign_round`, `mantissa_round[55:0]`, `exponent_round[11:0]`, and `rmode_reg`.
+- Returns `out_round[63:0]` and `exponent_post_round[11:0]`.
+
+2.6 `fpu_exceptions`
+- Receives the original operands, the original opcode, the rounded result, the post-round exponent, and the low two remainder bits from `mantissa_round`.
+- Returns `out_except[63:0]`, `except_enable`, and status flags.
+
+3. Datapath Stages
+3.1 Arithmetic stage
+- Add, subtract, multiply, or divide creates an intermediate sign, exponent, and mantissa bundle.
+
+3.2 Rounding stage
+- The intermediate result is rounded according to the selected rounding mode.
+
+3.3 Exception stage
+- Special IEEE-754 conditions are checked and the final output and flags are generated.
+
+4. Reconstruction Constraints
+- Keep port directions, widths, and signedness identical to the declarations listed above.
+- Preserve register and wire names and update ordering to maintain datapath and control timing behavior.
+- Preserve reset conditions, sensitivity lists, and decode priorities (`if` and `case`) when recreating logic.
+- Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.
+
+5. High-Level Notes
+- `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations, the rounding module, and the exceptions module.
+- There is a leading 1 that is not included in the mantissa, but it is part of the value of the number for all double-precision floating-point numbers with a value in the exponent field greater than 0.
+- If the FPU operation is addition and one operand is positive while the other is negative, the module routes the operation to the subtraction module.
+- Likewise, if the operation is subtraction and the operand signs imply magnitude addition, the module routes the operation to the addition module.
+
+6. High-Level Behavior
+6.1 Operation start
+- A new operation begins on the rising edge at which `enable` rises from 0 to 1.
+- The module detects this edge using `enable_reg` and `enable_reg_1`.
+- At that time, `opa`, `opb`, `fpu_op`, and `rmode` are captured into internal registers.
+- `op_enable` is asserted to initiate the arithmetic datapath, and `count_ready` is reset.
+
+6.2 Arithmetic routing
+- The module decides whether the add datapath or subtract datapath must be used based on both the requested opcode and the operand signs.
+
+6.3 Addition request
+- If `fpu_op = 000` and `opa` and `opb` have the same sign, the request is sent to `fpu_add`.
+- If `fpu_op = 000` and `opa` and `opb` have different signs, the request is sent to `fpu_sub`.
+
+6.4 Subtraction request
+- If `fpu_op = 001` and `opa` and `opb` have the same sign, the request is sent to `fpu_sub`.
+- If `fpu_op = 001` and `opa` and `opb` have different signs, the request is sent to `fpu_add`.
+
+6.5 Multiplication request
+- If `fpu_op = 010`, the request is sent to `fpu_mul`.
+
+6.6 Division request
+- If `fpu_op = 011`, the request is sent to `fpu_div`.
+- `div_enable` is asserted for two consecutive clock cycles because the divider requires a two-cycle launch condition.
+
+6.7 Datapath selection
+- The top-level module receives intermediate outputs from four arithmetic submodules.
+- Addition path: sign, mantissa bundle, and exponent from `fpu_add`.
+- Subtraction path: sign, mantissa bundle, and exponent from `fpu_sub`.
+- Multiplication path: sign, mantissa bundle, and exponent from `fpu_mul`.
+- Division path: sign, mantissa bundle, and exponent from `fpu_div`.
+
+6.8 Add/sub shared tuple
+- For add/sub operations, the top level first selects between the add and subtract path and forms a common tuple of `addsub_out[55:0]`, `addsub_sign`, and `exp_addsub[11:0]`.
+
+6.9 Rounding and exceptions
+- The top level then selects `mantissa_round[55:0]`, `exponent_round[11:0]`, and `sign_round` according to `fpu_op_reg`.
+- The selected arithmetic result is always passed through `fpu_round` first.
+- The rounded 64-bit result and the post-round exponent are then passed into `fpu_exceptions` together with the original operands, the original opcode, the rounding mode, and the two low remainder bits `mantissa_round[1:0]`.
+
+6.10 Exception override
+- The exception block may either allow the rounded datapath result to pass through unchanged, or override it with a NaN, infinity, max-finite, or signed-zero result.
+
+6.11 Output timing
+- The module maintains a per-operation latency counter.
+- It asserts `ready` only after the selected operation has completed.
+- The programmed operation latencies are add = 20 cycles, sub = 21 cycles, mul = 24 cycles, and div = 71 cycles.
+
+6.12 Busy and ready pipeline
+- `count_ready` is cleared when a new operation starts.
+- While `count_ready <= count_cycles`, the operation is considered busy.
+- When the busy condition clears, `ready` is generated after a two-register delay chain: `ready_0`, `ready_1`, and `ready`.
+
+6.13 Final result latching
+- When `ready_1` is asserted, the module latches `underflow_0`, `overflow_0`, `inexact_0`, `exception_0`, `invalid_0`, and the final result into the output registers.
+- The final result is `out_except` when `except_enable` is asserted, otherwise `out_round`.
+
+7. Input Registration and Launch Control
+7.1 Input capture
+- When `enable` rises, the module captures `opa` into `opa_reg`, `opb` into `opb_reg`, `fpu_op` into `fpu_op_reg`, and `rmode` into `rmode_reg`.
+
+7.2 Internal enable pulses
+- The enable path is expanded into several internal pulses.
+- `enable_reg_1` is a one-cycle start pulse generated from the `enable` rising edge.
+- `enable_reg_2` is a delayed version of `enable_reg_1`.
+- `enable_reg_3` is a two-cycle-wide pulse used by the divider path.
+- `op_enable` is the operation-active flag used to launch the arithmetic submodules and the post-processing stages.
+
+7.3 Edge-triggered interface
+- This design makes the interface edge-triggered.
+- The top level only latches a new request on the `enable` rising edge, rather than treating `enable` as a level-sensitive busy signal.
+
+8. Operation Routing Rationale
+8.1 Sign-aware routing
+- The top level performs sign-aware routing for add and subtract so that only same-sign addition and same-sign subtraction reach the corresponding arithmetic blocks.
+
+8.2 Routed addition
+- If `opa` and `opb` have opposite signs during an addition request, the request is converted into a subtraction-magnitude operation and sent to `fpu_sub`.
+
+8.3 Routed subtraction
+- If `opa` and `opb` have opposite signs during a subtraction request, the request is converted into an addition-magnitude operation and sent to `fpu_add`.
+
+8.4 Reason for this structure
+- This allows the add and subtract blocks to focus on aligned mantissa addition and subtraction, while the top level handles the sign-based transformation between `A + B` and `A - B` cases.
+
+9. Submodule Enable Generation
+9.1 Enable signals
+- The top level generates dedicated enable signals: `add_enable`, `sub_enable`, `mul_enable`, and `div_enable`.
+
+9.2 Behavior
+- `add_enable` is asserted when the operation is logically an addition after sign interpretation.
+- `sub_enable` is asserted when the operation is logically a subtraction after sign interpretation.
+- `mul_enable` is asserted for multiplication.
+- `div_enable` is asserted for division and is intentionally held high for two clock cycles.
+
+9.3 Divider launch
+- The divider launch is special: the implementation comment explicitly notes that `div_enable` needs to be high for two clock cycles.
+
+10. Arithmetic Result Selection
+10.1 Shared add/sub channel
+- The add and subtract blocks are grouped into a shared add/sub result channel.
+- `addsub_out` selects between `sum_out` and `diff_out`.
+- `addsub_sign` selects between `add_sign` and `sub_sign`.
+- `exp_addsub` selects between `exp_add_out` and `exp_sub_out`.
+
+10.2 Final arithmetic mux
+- A second layer of multiplexing then selects the active arithmetic result based on `fpu_op_reg`.
+- `mantissa_round` receives the add/sub, multiply, or divide mantissa bundle.
+- `exponent_round` receives the add/sub, multiply, or divide exponent.
+- `sign_round` receives the add/sub, multiply, or divide sign.
+
+10.3 Forward to rounding
+- This selected tuple is forwarded to the rounding stage.
+
+11. Operation Latency Control
+11.1 Fixed latencies
+- The implementation uses a fixed latency model.
+- For each request, `count_cycles` is loaded with the expected completion count: add -> 20, sub -> 21, mul -> 24, div -> 71.
+
+11.2 `count_ready` behavior
+- `count_ready` is reset to zero on the launch pulse and then increments while `count_ready <= count_cycles`.
+
+11.3 Busy indicator
+- The internal signal `count_busy = (count_ready <= count_cycles)` is used to determine when the operation is still in progress.
+
+11.4 Ready generation
+- The ready signal is generated through a small pipeline: `ready_0 <= !count_busy`, `ready_1 <= ready_0`, and `ready <= ready_1`.
+- This delays the ready assertion slightly after the internal busy condition clears and helps align final result capture with the outputs of the rounding and exception stages.
+
+12. Rounding and Exception Integration
+12.1 Stage connections
+- The selected intermediate result is sent to `fpu_round`, which returns `out_round` and `exponent_post_round`.
+- It is also sent to `fpu_exceptions`, which receives the original operands, the rounded value, the post-round exponent, the two low-order remainder bits from `mantissa_round[1:0]`, the original operation code, and the rounding mode.
+
+12.2 Exception outputs
+- The exception block returns `out_except`, `except_enable`, and status flags.
+
+13. Final Output Selection
+13.1 Latch on `ready_1`
+- When `ready_1` is asserted, the top level latches `underflow <= underflow_0`, `overflow <= overflow_0`, `inexact <= inexact_0`, `exception <= exception_0`, and `invalid <= invalid_0`.
+
+13.2 Final result source
+- The final result is selected as `out_except` if `except_enable` is asserted, and `out_round` otherwise.
+
+13.3 Overall meaning
+- This means normal finite results come from the rounding stage, while NaN, infinity, overflow, underflow, divide-by-zero, and other special cases may override the rounded datapath result in the exception stage.

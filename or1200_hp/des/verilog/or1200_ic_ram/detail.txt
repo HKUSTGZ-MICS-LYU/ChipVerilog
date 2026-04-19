@@ -1,0 +1,40 @@
+1. Functional modes
+1.1 No instruction cache implemented
+If OR1200_NO_IC is defined, the module must behave as a stub:
+- dataout is all zero;
+- if BIST is enabled, the BIST serial output simply passes through the serial input.
+No actual storage is instantiated.
+
+1.2 Vendor-specific FPGA RAM mode
+If OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates a pre-generated FPGA RAM block called ic_ram_sub. In this mode:
+- en is mapped to ena;
+- we[0] is used as the write-enable bit;
+- addr is driven to both the write and read ports;
+- clk is used on both RAM ports;
+- datain writes through port A;
+- dataout is read from port B.
+This is effectively a same-clock simple dual-port arrangement used as instruction-cache data storage.
+
+1.3 Generic RAM mode
+Otherwise the module selects one of several generic RAM macros based on cache size:
+- 128x32 for 512B I-cache
+- 1024x32 for 4KB I-cache
+- 2048x32 for 8KB I-cache
+The RAM is instantiated with clk, rst, ce, we, oe, addr, di, and doq.
+The implementation uses we[0] as the actual macro write enable, meaning writes occur on word granularity in this wrapper.
+
+2. Observable behavior
+The module itself contains almost no control logic. The observable contract is:
+- when enabled and written, the word at addr updates with datain;
+- when enabled/read, dataout returns the stored 32-bit word for addr;
+- actual read-during-write semantics depend on the underlying RAM macro and should match the selected platform implementation.
+The cache controller is responsible for generating correct addresses and write enables during line refill.
+
+3. Address and size interpretation
+The address width parameter aw derives from OR1200_ICINDX. A correct reimplementation must choose the storage depth so that the address space matches the configured cache size and line organization expected by the surrounding IC controller.
+
+4. BIST chaining
+When BIST is enabled, the wrapper must expose mbist_si_i, mbist_so_o, and mbist_ctrl_i and connect them through the instantiated RAM or pass them through in stub mode.
+
+5. Summary
+or1200_ic_ram.v is a technology-selection wrapper around the instruction-cache data store. Its job is to present a stable logical RAM interface regardless of whether the build uses no cache, generic RAMs, or vendor-specific FPGA memory blocks.

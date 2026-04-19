@@ -1,0 +1,52 @@
+
+Module `or1200_ic_tag` implements instruction-cache tag storage and valid-bit handling for fetch hit/miss determination.
+
+This module is the instruction-cache tag RAM wrapper. It stores the tag and valid bit for each cache line entry. The source describes it as the instruction-cache TAG RAM instantiation.
+
+Description:
+
+The module implements instruction-cache tag storage and valid-bit handling for fetch hit/miss determination.
+
+
+This module is the tag RAM wrapper of the OR1200 instruction cache and is used to save the address tag and valid bit of each instruction cache line by index. Interfaces include clk, rst, addr, en, we, datain, tag_v and tag, as well as optional MBIST test chain signals. The module itself has no state machine and does not perform tag comparison; the read and write semantics completely rely on the underlying RAM macros.
+
+When OR1200_NO_IC is defined, the module outputs tag=0 and tag_v=0, which is equivalent to all instruction cache lines being invalid; the BIST output is directly transparently input when enabled. If the instruction cache is enabled, the module selects a specific implementation based on the target platform. In the Virtex path, the low bit of the read vector doutb of the FPGA-specific tag RAM is used as the valid bit tag_v, and the high bit is used as tag. In the common path, the single-port RAM macro corresponding to the cache capacity is instantiated, and the read vector is packed by {tag, tag_v}, so the upper layer must also use the same format when writing datain.
+
+This module only assumes the static storage role of "saving tag and valid". The upper layer writes a new tag line or performs an invalidation operation through en/we on the clock edge, and then subsequently reads tag and tag_v and compares it with the high bit of the current fetch address. The hit determination is completed by the upper layer. rst only acts on the underlying storage macro, and there is no additional storage state in this layer.
+
+module or1200_ic_tag(
+    // Clock and reset
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [8:0] addr,
+    input en,
+    input we,
+    input [19:0] datain,
+    output tag_v,
+    output [18:0] tag
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - addr[8:0]: Array index/address input.
+    - en: Access enable for the local storage block.
+    - we: Write-enable for the local storage block.
+    - datain[19:0]: Write data presented to the local storage block.
+Output port:
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - tag_v: Valid bit read from the tag storage.
+    - tag[18:0]: Tag bits read from the cache/TLB tag storage.
+Internal reg/wire signals:
+    wire [19:0] doutb: Combinational net that links intermediate expressions across logic blocks.

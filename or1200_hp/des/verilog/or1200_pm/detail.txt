@@ -1,0 +1,38 @@
+1. Architectural state
+The PMR contains at least:
+- SDF: slowdown factor.
+- DME: doze-mode enable.
+- SME: sleep-mode enable.
+- DCGE: dynamic clock-gating enable indicator.
+
+2. Write behavior
+- PMR is selected by the PM SPR group and PMR offset.
+- On an SPR write to PMR, SDF, DME, SME, and DCGE are loaded from spr_dat_i.
+- If pic_wakeup is asserted, DME and SME are automatically cleared so the processor exits doze/sleep.
+
+3. Read behavior
+- spr_dat_o returns the PMR fields in their architectural bit positions.
+- Unused bits are zero when enabled by compile-time options.
+
+4. Output behavior
+- pm_clksd directly reflects SDF.
+- pm_cpu_gate is asserted when doze or sleep is active and no wakeup is pending.
+- pm_dc_gate, pm_ic_gate, pm_dmmu_gate, and pm_immu_gate track pm_cpu_gate.
+- pm_tt_gate is asserted only for sleep mode and no wakeup pending.
+- pm_wakeup mirrors pic_wakeup.
+- pm_lvolt is asserted when the CPU is clock-gated or the external pm_cpustall request is active.
+
+5. Disabled-feature behavior
+If PM is not implemented:
+- slowdown factor is zero,
+- all clock gates are inactive,
+- pm_wakeup is asserted high,
+- pm_lvolt is low,
+- PM register reads return zero fields when enabled.
+
+6. Required functional guarantees
+An implementation conforming to this spec shall:
+- Implement PMR storage for slowdown/doze/sleep/gating-control bits.
+- Generate static gate outputs exactly from PMR and wakeup inputs.
+- Clear low-power mode enables on interrupt wakeup.
+- Reflect PMR state through the SPR interface.

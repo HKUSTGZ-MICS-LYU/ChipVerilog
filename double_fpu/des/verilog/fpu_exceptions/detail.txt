@@ -1,0 +1,116 @@
+1. Details
+- The module generates IEEE-754 exception flags such as invalid, overflow, underflow, divide-by-zero, and inexact conditions.
+- `fpu_exceptions.v` is the final IEEE-754 control stage of the design. It classifies operands and the candidate rounded result, detects NaN, infinity, invalid arithmetic combinations, divide-by-zero, overflow, underflow, and inexact conditions, chooses whether the final answer should be zero, infinity, largest finite value, propagated NaN, generated quiet NaN, or the ordinary rounded datapath result, and drives the final status flags used by the top level.
+
+2. Operation Decode
+- The module recognizes add when `fpu_op == 3'b000`, subtract when `fpu_op == 3'b001`, multiply when `fpu_op == 3'b010`, and divide when `fpu_op == 3'b011`.
+
+3. Input Classification
+3.1 Zero detection
+- `opa_et_zero`: all bits `opa[62:0]` are zero.
+- `opb_et_zero`: all bits `opb[62:0]` are zero.
+- `in_et_zero`: all bits `in_except[62:0]` are zero.
+
+3.2 NaN detection
+- QNaN input condition: exponent is 2047, mantissa is nonzero, and mantissa MSB bit 51 is 1.
+- SNaN input condition: exponent is 2047, mantissa is nonzero, and mantissa MSB bit 51 is 0.
+
+3.3 Computed NaN flags
+- The module computes `opa_QNaN`, `opb_QNaN`, `opa_SNaN`, `opb_SNaN`, `NaN_input`, `SNaN_input`, and `a_NaN`.
+
+3.4 Infinity detection
+- Positive infinity means sign = 0, exponent = 2047, and mantissa = 0.
+- Negative infinity means sign = 1, exponent = 2047, and mantissa = 0.
+- The module computes `opa_pos_inf`, `opb_pos_inf`, `opa_neg_inf`, `opb_neg_inf`, `opa_inf`, and `opb_inf`.
+
+4. Exception Trigger Rules
+4.1 Divide-by-zero class
+- `div_by_0` = divide and `opb` is zero and `opa` is nonzero.
+- `div_0_by_0` = divide and `opa` is zero and `opb` is zero.
+- `div_inf_by_inf` = divide and both operands are infinity.
+- `div_by_inf` = divide and operand B is infinity while operand A is not infinity.
+
+4.2 Multiply invalid and special cases
+- `mul_0_by_inf` = multiply and (`A` is infinity and `B` is zero) or (`A` is zero and `B` is infinity).
+- `mul_inf` = multiply and at least one operand is infinity and not `mul_0_by_inf`.
+
+4.3 Add and subtract infinity cases
+- `add_inf` = add and at least one operand is infinity.
+- `sub_inf` = subtract and at least one operand is infinity.
+- `addsub_inf_invalid` is true for `+inf + -inf`, `-inf + +inf`, `+inf - +inf`, and `-inf - -inf`.
+- `addsub_inf = (add_inf or sub_inf) and not addsub_inf_invalid`.
+
+4.4 Overflow from normal datapath
+- `out_inf_trigger` is asserted when any of the following are true: `addsub_inf`, `mul_inf`, `div_inf`, `div_by_0`, or `exponent_in > 2046`.
+- This means the final result should be treated as infinity or a max-finite substitute depending on rounding mode.
+
+4.5 Underflow from normal datapath
+- `mul_uf` = multiply and neither input is zero and `in_except` is zero.
+- `div_uf` = divide and operand A is nonzero and `in_except` is zero.
+- `underflow_trigger = div_by_inf or mul_uf or div_uf`.
+
+4.6 Invalid operation
+- `invalid_trigger = SNaN_input or addsub_inf_invalid or mul_0_by_inf or div_0_by_0 or div_inf_by_inf`.
+
+4.7 Inexact
+- `inexact_trigger = (mantissa_in contains any 1) or out_inf_trigger or underflow_trigger`.
+- `inexact` is suppressed if `NaN_input` is present.
+
+4.8 Aggregate exception
+- `except_trigger = invalid_trigger or overflow_trigger or underflow_trigger or inexact_trigger`.
+- `overflow_trigger = out_inf_trigger and not NaN_input`.
+
+5. Rounding-Mode-Dependent Infinity Substitution
+- The module decodes `round_nearest` when `rmode == 00`, `round_to_zero` when `rmode == 01`, `round_to_pos_inf` when `rmode == 10`, and `round_to_neg_inf` when `rmode == 11`.
+- If the result would otherwise be infinity, the module may substitute the largest finite value instead.
+- This occurs for positive infinity under round-to-negative-infinity, negative infinity under round-to-positive-infinity, and any infinity under round-to-zero.
+- This condition is `inf_round_down_trigger`.
+
+6. Largest Finite Encoding
+- The largest finite magnitude is encoded as exponent = 2046 and mantissa = all ones.
+- The sign comes from `in_except[63]`.
+
+7. NaN Output Rules
+7.1 Propagated NaN
+- If operand A is any NaN, choose A's NaN payload; otherwise choose B's.
+- Construct `NaN_output_0 = {exp_2047, 1'b1, chosen_payload[50:0]}`.
+- This converts any input NaN into a quiet NaN.
+
+7.2 Invalid-operation generated NaN
+- When `invalid_trigger` is asserted without an SNaN input, generate `NaN_output = {exp_2047, 2'b01, opa[49:0]}`.
+- This is an explicit signaling-pattern style payload converted into the module's chosen output encoding.
+
+7.3 Final NaN trigger
+- `NaN_out_trigger = NaN_input or invalid_trigger`.
+- `SNaN_trigger = invalid_trigger and not SNaN_input`.
+- The final NaN output is `NaN_output` when `SNaN_trigger` is true, otherwise `NaN_output_0`.
+
+8. Result Selection Priority
+8.1 `out_0`
+- If `underflow_trigger`, output signed zero using `in_except[63]`; else output `in_except`.
+
+8.2 `out_1`
+- If `out_inf_trigger`, output signed infinity or max-finite substitute using `in_except[63]`; else output `out_0`.
+
+8.3 `out_2`
+- If `NaN_out_trigger`, output signed NaN using `in_except[63]`; else output `out_1`.
+
+8.4 Final registered output
+- `out <= out_2`.
+
+8.5 Priority summary
+- Priority is NaN or invalid highest, then infinity or max-finite, then underflow-to-zero, and finally the normal rounded result.
+
+9. `ex_enable` Behavior
+- `enable_trigger = except_trigger or out_inf_trigger or NaN_input`.
+- `ex_enable <= enable_trigger`.
+- This means the top level should use the exception-module output whenever a special-case replacement or flag-bearing exceptional condition has been detected.
+
+10. Functional Corner Cases
+- Any SNaN input makes the operation invalid.
+- Any QNaN input propagates a quiet NaN output without executing the normal arithmetic result.
+- Divide by zero creates an infinity path, not a zero path.
+- Divide by infinity creates a signed-zero path and underflow flag.
+- Multiplication of zero by infinity creates an invalid NaN path.
+- Overflow from `exponent_in > 2046` becomes an infinity path unless the rounding mode requires max-finite substitution.
+- Underflow in multiply or divide is detected by observing a zero datapath result with nonzero inputs.

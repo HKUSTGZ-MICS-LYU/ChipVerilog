@@ -1,0 +1,57 @@
+1. Functional Specification
+1.1 Instruction field extraction
+The module shall extract opcode, register specifiers, immediate fields, and extension fields from the instruction words and use them to form the decode outputs.
+
+1.2 Register-file control
+The module shall:
+- choose source register addresses for port A and port B
+- choose destination register address
+- assert read enables only when the instruction actually needs the source operand (dynamic RF enable)
+- choose the write-back destination source according to rfwb_op
+
+1.3 Immediate generation
+The module shall generate sign-extended or zero-extended immediates as required by the instruction form.
+This includes immediate forms used by arithmetic instructions, load/store instructions, and compare-immediate instructions.
+The revision history explicitly notes correction of “sign/zero extension for l.sfxxi instructions,” so a compatible reimplementation must preserve the correct immediate polarity for compare-immediate forms.
+
+1.4 ALU/compare/shift decode
+The decoder shall map instruction opcodes and sub-opcodes to:
+- alu_op for major ALU function selection
+- shrot_op for shift subtype
+- comp_op for compare subtype
+- cust5_op / cust5_limm for custom instruction dispatch
+
+1.5 Branch decode
+The module shall produce branch_op and any branch-related sideband used by the PC generation logic.
+Conditional branch decode shall be consistent with the ALU flag model and delay-slot behavior of the OR1200 pipeline.
+
+1.6 Load/store decode
+The module shall generate lsu_op and byte-lane/extension semantics required by the LSU for:
+- byte/halfword/word loads and stores
+- signed vs unsigned loads
+- alignment-sensitive accesses
+
+1.7 Multicycle decode
+The module shall identify instructions requiring multicycle execution or special handling and drive the multicycle output accordingly.
+This includes multiply/MAC/divide-related execution classes depending on the enabled OR1200 feature set.
+
+1.8 System and special instructions
+The module shall decode:
+- SPR read/write instructions
+- system call
+- trap
+- return-from-exception and related control patterns as required by surrounding blocks
+- MACRC and custom instruction cases when implemented
+
+2. Timing / State Behavior
+- This block is primarily combinational decode plus registered decode state where needed by the pipeline.
+- Outputs must remain consistent under freeze and flush conditions.
+- A flush must suppress stale decode state and prevent incorrect control propagation into later stages.
+
+3. Implementation Constraints
+A compatible implementation shall:
+- preserve the instruction-to-control mapping used by the OR1200 execution units
+- preserve the immediate generation rules
+- preserve dynamic register read-enable behavior
+- preserve branch, load/store, and system instruction decode semantics
+- interoperate with or1200_alu, or1200_operandmuxes, or1200_sprs, or1200_mult_mac, and the exception logic exactly as the original module does

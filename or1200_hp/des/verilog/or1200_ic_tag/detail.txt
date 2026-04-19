@@ -1,0 +1,34 @@
+1. Functional modes
+1.1 No instruction cache
+If OR1200_NO_IC is defined, the wrapper returns tag = 0 and tag_v = 0, with optional BIST pass-through.
+
+1.2 Virtex/vendor RAM mode
+If OR1200_RAM_MODELS_VIRTEX is selected, the module instantiates ic_tag_sub. The RAM output width is 20 bits in the shown configuration. The wrapper unpacks doutb as:
+- tag = doutb[19:1]
+- tag_v = doutb[0]
+Thus the least significant stored bit is the valid bit.
+
+1.3 Generic RAM mode
+Otherwise the wrapper selects one of several generic RAM macros depending on I-cache size:
+- 32x24 for 512B cache
+- 256x21 for 4KB cache
+- 512x20 for 8KB cache
+The RAM returns a packed word that the wrapper unpacks as {tag, tag_v}.
+
+2. Required logical behavior
+A correct reimplementation must preserve the logical meaning of every entry:
+- one valid bit indicating whether the line contains usable data;
+- a tag field containing the high address bits needed for hit/miss comparison.
+On write, both tag and valid are loaded from datain. On read, the selected entry is returned as separate tag and tag_v signals.
+
+3. Interaction with the cache controller
+The wrapper itself does not perform tag comparison. The surrounding cache top/fsm logic computes the index, enables the array, decides when to write, and compares the returned tag against the current fetch address. The wrapper must therefore be timing-clean and purely storage-oriented.
+
+4. Technology abstraction requirement
+The essential purpose of this file is abstraction. A replacement implementation may use inferred RAMs, register arrays, foundry SRAMs, or FPGA block RAMs, provided the external behavior remains:
+- synchronous access timing compatible with the existing controller;
+- valid bit stored with the tag;
+- configurable depth/width based on cache size.
+
+5. Summary
+or1200_ic_tag.v is the cache-line metadata store for the instruction cache. It contains no hit logic of its own; it simply holds tag and valid bits in a technology-dependent memory macro behind a stable interface.

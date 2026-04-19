@@ -1,0 +1,114 @@
+1. Details
+- The divider is a sequential iterative design rather than a fully parallel combinational divider.
+- It uses multiple clock cycles to produce the quotient, with additional registered control and exponent formatting stages around the divide loop.
+- The module implements double-precision floating-point division with iterative quotient generation, exponent correction, and normalized output formatting.
+- `fpu_div.v` implements floating-point division through long division. It normalizes denormal inputs into internal dividend/divisor forms, generates one quotient bit per cycle, captures the remainder after the final comparison, computes the exponent with corrections for input normalization and output denormalization, selects the correct mantissa slice depending on quotient normalization, derives round/sticky information from the remainder, and outputs an intermediate significand/exponent representation for later rounding and exception handling.
+
+2. Interface Context
+- The inputs to `fpu_round` from the previous stage are `sign` (1 bit), `mantissa_term` (56 bits), and `exponent_term` (12 bits).
+- Add, subtract, multiply, or divide overflow produces infinity and asserts the overflow signal.
+- Add, subtract, multiply, or divide underflow produces 0 and asserts the underflow signal.
+- The exponent of operand A is added to 1023, and then the exponent of operand B is subtracted from this sum.
+
+3. Launch Requirement
+- This divider is intended to receive `enable` asserted for two cycles by the top-level module.
+- The internal enable pipeline uses multiple delayed registers.
+- A functionally equivalent implementation must preserve a two-cycle launch behavior that causes operand preparation, divisor/dividend loading, count initialization, and quotient iteration in the same functional order.
+
+4. Dividend and Divisor Construction
+4.1 Normalized inputs
+- For a normalized operand, construct `{2'b01, mantissa}`.
+- This creates a 54-bit unsigned fixed-point value with an explicit leading 1.
+
+4.2 Denormalized inputs
+- For a denormal operand, first count leading zeros in the 52-bit mantissa using a priority encoder.
+- `dividend_shift` is used for operand A's mantissa.
+- `divisor_shift` is used for operand B's mantissa.
+- Then left-shift the mantissa by that amount and append one zero bit.
+- `dividend_denorm = {dividend_a_shifted, 1'b0}`.
+- `divisor_denorm = {divisor_b_shifted, 1'b0}`.
+- The resulting 54-bit values become `dividend_1 = {1'b0, dividend_denorm}` and `divisor_1 = {1'b0, divisor_denorm}`.
+- This normalizes the effective fixed-point significand used by the long-division engine.
+
+5. Quotient Generation Algorithm
+5.1 Counter
+- The divider uses `preset = 53`.
+- `count_out` is loaded with 53 at operation start.
+- `count_out` is decremented once per quotient-generation cycle until zero.
+- This yields 54 quotient bits, indexed 53 down to 0.
+
+5.2 Long-division step
+- At each active quotient cycle, compare `dividend_reg` with `divisor_reg`.
+- If `dividend_reg >= divisor_reg`, write `quotient[count_index] = 1` and set `dividend_reg = (dividend_reg - divisor_reg) << 1`.
+- Otherwise, write `quotient[count_index] = 0` and set `dividend_reg = dividend_reg << 1`.
+- The divisor register remains constant during the division.
+
+5.3 Final remainder capture
+- When the quotient iteration finishes, `remainder <= dividend_reg`.
+- `remainder_msb <= 1` if `dividend_reg >= divisor_reg`, else `0`.
+- This records whether one more quotient bit would have been set and preserves the final remainder information for rounding.
+
+6. Exponent Computation
+6.1 Base divide exponent
+- The exponent path begins with `expon_term = exponent_a + 1023`.
+- `expon_final_1 = expon_term - exponent_b`.
+- If `exponent_b > expon_term`, then underflow has already occurred and the design records `expon_uf_1 = 1` and `expon_uf_term_1 = exponent_b - expon_term`.
+- Otherwise, `expon_uf_1 = 0` and `expon_uf_term_1 = 0`.
+
+6.2 Denormal operand corrections
+- For denormal inputs, the effective exponent must be corrected by the number of leading-zero shifts used to normalize the dividend and divisor significands.
+- `expon_shift_a = 0` for normalized A, else `dividend_shift_2`.
+- `expon_shift_b = 0` for normalized B, else `divisor_shift_2`.
+- If `expon_shift_a > expon_final_2`, additional underflow is recorded in `expon_uf_2` and `expon_uf_term_2`.
+- The combined underflow shift is `expon_uf_term_3 = expon_uf_term_2 + expon_uf_term_1`.
+- If this combined shift exceeds 51, clamp it to 52 using `expon_uf_term_4`.
+
+6.3 Quotient normalization correction
+- The raw quotient may have its leading 1 either at `quotient_out[53]` or one bit lower.
+- `quotient_msb = quotient_out[53]`.
+- `expon_final_5 = expon_final_4` when `quotient_msb` is 1.
+- Otherwise, `expon_final_5 = expon_final_4 - 1`, except when `expon_final_4` is already 0.
+- This makes the exponent consistent with the chosen mantissa slice.
+
+6.4 Zero dividend handling
+- If operand A is zero, `exponent_out` is forced to zero.
+- Otherwise, `exponent_out = expon_final_5`.
+
+7. Mantissa and Remainder Formatting
+7.1 Quotient slicing
+- Possible mantissa windows are formed from `quotient_out`.
+- `mantissa_2 = quotient_out[52:1]`.
+- `mantissa_3 = quotient_out[51:0]`.
+- Select between them depending on `quotient_msb` and exponent state.
+- If exponent underflow requires a denormal output, the quotient is additionally right-shifted using `mantissa_1 = quotient_out[53:2] >> expon_uf_term_4`.
+
+7.2 Remainder formatting
+- Construct a wide remainder vector `remainder_a = {quotient_out[53:0], remainder_msb, remainder_out[52:0]}`.
+- Shift it left by `remainder_shift_term = 52 - expon_uf_term_4`.
+- `remainder_b = remainder_a << remainder_shift_term`.
+- This aligns remainder information with the denormalized mantissa path.
+
+7.3 Additional remainder windows
+- `remainder_2 = {quotient_out[0], remainder_msb, remainder_out[52:0], 1'b0}`.
+- `remainder_3 = {remainder_msb, remainder_out[52:0], 2'b0}`.
+- The design chooses among these based on `quotient_msb` and exponent state to preserve the first discarded bit and the sticky information.
+
+7.4 Final bundle
+- The final mantissa bundle is `mantissa_7 = {1'b0, m_norm, mantissa_6, remainder_6[55], rem_lsb}`.
+- `m_norm` is the OR of all bits in `expon_final_5`.
+- `remainder_6[55]` is the first discarded bit used as a rounding bit.
+- `rem_lsb` is the OR of `remainder_6[54:0]`, acting as a sticky bit.
+- Thus the 56-bit output contains a reserved leading zero, a normalized or denormal leading bit, 52 mantissa bits, a round bit, and a sticky bit.
+
+8. Required Sequential Behavior
+- A functionally equivalent implementation must preserve these major sequential phases: decode and classify operands, compute denormal leading-zero shifts, delay enable through the launch pipeline, load `dividend_reg` and `divisor_reg`, initialize `count_out` to 53, generate one quotient bit per cycle, capture final remainder, compute exponent corrections, and assemble `mantissa_7` and `exponent_out`.
+
+9. Functional Corner Cases
+- Zero dividend forces `exponent_out` to zero.
+- Denormal dividend and/or divisor require leading-zero normalization before division.
+- Severe exponent underflow clamps the right-shift amount to 52.
+- Quotient normalization may reduce the exponent by one if `quotient_out[53]` is 0.
+- This module does not itself generate divide-by-zero or infinity results; those are handled later by the exception stage.
+
+10. Functional Equivalence Criteria
+- A recreated implementation is functionally equivalent if it reproduces the same two-cycle launch behavior, 54-step quotient generation, final quotient and remainder values, exponent correction for normalization and denormals, mantissa slice selection, round-bit and sticky-bit formation, and `mantissa_7` and `exponent_out` outputs.

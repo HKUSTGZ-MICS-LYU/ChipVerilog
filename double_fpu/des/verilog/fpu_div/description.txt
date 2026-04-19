@@ -1,0 +1,124 @@
+
+Module `fpu_div` implements double-precision floating-point division with iterative quotient generation, exponent correction, and normalized output formatting.
+This source file implements double-precision floating-point division using an iterative long-division style quotient generator. It prepares normalized internal dividend and divisor values, computes one quotient bit per cycle, tracks the remainder, adjusts the exponent for normalization and denormal cases, and emits an extended mantissa bundle for the rounding stage.
+This module performs the division datapath for two IEEE-754 double-precision operands. It creates a quotient by iterative long division, computes the corresponding exponent, adjusts for normalized and denormalized operands, builds sticky and remainder information for later rounding, and outputs an intermediate mantissa bundle plus exponent.
+
+
+Main function
+The module divides operand A by operand B and returns:
+- sign
+- exponent_out[11:0]
+- mantissa_7[55:0]
+
+The significand output is not the final 64-bit IEEE-754 word. It is an intermediate package containing:
+- one spare MSB
+- one leading significand bit
+- the 52-bit mantissa field
+- two low-order rounding bits
+
+Description:
+This module performs double-precision floating-point division. The inputs are two 64-bit IEEE-754 operands, and the outputs are the intermediate sign sign, extended exponent exponent_out, and 56-bit extended mantissa mantissa_7. The sign is the XOR of the operand signs. The output mantissa includes extra rounding information and is therefore not the final 64-bit encoded result.
+
+The divide operation is performed long-hand style. The dividend is formed from the leading 1 (if normalized) and mantissa of operand A, and the divisor is formed from the leading 1 (if normalized) and mantissa of operand B. One quotient bit is calculated per clock cycle by comparing dividend_reg and divisor_reg. If the dividend is greater than or equal to the divisor, the quotient bit is 1, the divisor is subtracted from the dividend, and the difference is shifted left for the next cycle. If the dividend is less than the divisor, the quotient bit is 0, and the dividend is simply shifted left for the next cycle. This process takes 54 clock cycles, with count_out counting down from 53 to 0; when the count reaches 0, the 54-bit quotient has its final value .
+
+The exponent for division is calculated from the exponents of operands A and B. The exponent of operand A is added to 1023, and then the exponent of operand B is subtracted from this sum to produce the output exponent. If the result is less than 0, the quotient is right-shifted by that amount, producing a denormalized result with exponent 0. For denormalized inputs, additional normalization and leading-zero compensation are applied internally.
+
+The value passed to the rounding stage in mantissa_7 consists of a reserved MSB, the leading bit, the 52-bit mantissa, and 2 extra bits. The first extra bit is the last quotient bit that does not fit into the standard 53-bit significant, and the second extra bit is the OR of the remaining remainder bits after the final compare. In this way, the module explicitly preserves truncation and nonzero remainder information for later rounding and inexact detection .
+
+This is a multi-cycle sequential implementation. Division is not performed in a single combinational step; instead it proceeds through load, compare, subtract/shift, and counter-update phases across many clocks after enable is asserted. On reset, the counters, quotient register, remainder datapath, exponent state, and outputs are cleared. Divide-by-zero, 0/0, infinity/infinity, and finite-divided-by-infinity cases are not finally resolved here; they are handled by the exceptions module.
+
+
+module fpu_div( clk, rst, enable, opa, opb, sign, mantissa_7,exponent_out);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Input signal consumed by the module control or datapath logic.
+    input [63:0] opa: Control signal that selects operation mode, command, or multiplexed path.
+    input [63:0] opb: Control signal that selects operation mode, command, or multiplexed path.
+
+Output port:
+    output sign: Output signal driven by the module toward surrounding logic.
+    output [55:0] mantissa_7: Data output that carries computed results or status information.
+    output [11:0] exponent_out: Data output that carries computed results or status information.
+
+Internal reg/wire signals:
+    reg [53:0] dividend_reg: Sequential register that stores intermediate or output state between cycles.
+    reg [53:0] divisor_reg: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_2: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_a: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_b: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_c: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_d: Sequential register that stores intermediate or output state between cycles.
+    reg enable_reg_e: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] dividend_shift: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] dividend_shift_2: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] divisor_shift: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] divisor_shift_2: Sequential register that stores intermediate or output state between cycles.
+    reg [5:0] count_out: Sequential state register that tracks control progress across cycles.
+    reg [11:0] exponent_out: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_a: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] mantissa_b: Signal that carries intermediate datapath values between logic stages.
+    reg [51:0] dividend_a: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] dividend_a_shifted: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] divisor_b: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] divisor_b_shifted: Sequential register that stores intermediate or output state between cycles.
+    reg [53:0] quotient: Sequential register that stores intermediate or output state between cycles.
+    reg [53:0] quotient_out: Sequential register that stores intermediate or output state between cycles.
+    reg [53:0] remainder: Sequential register that stores intermediate or output state between cycles.
+    reg [53:0] remainder_out: Sequential register that stores intermediate or output state between cycles.
+    reg remainder_msb: Sequential register that stores intermediate or output state between cycles.
+    reg count_nonzero_reg: Sequential state register that tracks control progress across cycles.
+    reg count_nonzero_reg_2: Sequential state register that tracks control progress across cycles.
+    reg [11:0] expon_term: Sequential register that stores intermediate or output state between cycles.
+    reg expon_uf_1: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_uf_term_1: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_final_1: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_final_2: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_shift_a: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_shift_b: Sequential register that stores intermediate or output state between cycles.
+    reg expon_uf_2: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_uf_term_2: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_uf_term_3: Sequential register that stores intermediate or output state between cycles.
+    reg expon_uf_gt_maxshift: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_uf_term_4: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_final_3: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_final_4: Sequential register that stores intermediate or output state between cycles.
+    reg expon_final_4_et0: Sequential register that stores intermediate or output state between cycles.
+    reg expon_final_4_term: Sequential register that stores intermediate or output state between cycles.
+    reg [11:0] expon_final_5: Sequential register that stores intermediate or output state between cycles.
+    reg [51:0] mantissa_1: Signal that carries intermediate datapath values between logic stages.
+    reg [6:0] remainder_shift_term: Sequential register that stores intermediate or output state between cycles.
+    reg [107:0] remainder_b: Sequential register that stores intermediate or output state between cycles.
+    wire sign = opa[63] ^ opb[63]: Combinational net that links intermediate expressions across logic blocks.
+    wire [10:0] expon_a = opa[62:52]: Combinational net that links intermediate expressions across logic blocks.
+    wire [10:0] expon_b = opb[62:52]: Combinational net that links intermediate expressions across logic blocks.
+    wire a_is_norm = |expon_a: Combinational net that links intermediate expressions across logic blocks.
+    wire b_is_norm = |expon_b: Combinational net that links intermediate expressions across logic blocks.
+    wire a_is_zero = !(|opa[62:0]): Combinational net that links intermediate expressions across logic blocks.
+    wire [11:0] exponent_a = { 1'b0, expon_a}: Combinational net that links intermediate expressions across logic blocks.
+    wire [11:0] exponent_b = { 1'b0, expon_b}: Combinational net that links intermediate expressions across logic blocks.
+    wire [52:0] dividend_denorm = { dividend_a_shifted, 1'b0}: Combinational net that links intermediate expressions across logic blocks.
+    wire [53:0] dividend_1 = a_is_norm ? { 2'b01, dividend_a } : { 1'b0, dividend_denorm}: Combinational net that links intermediate expressions across logic blocks.
+    wire [52:0] divisor_denorm = { divisor_b_shifted, 1'b0}: Combinational net that links intermediate expressions across logic blocks.
+    wire [53:0] divisor_1 = b_is_norm ? { 2'b01, divisor_b } : { 1'b0, divisor_denorm}: Combinational net that links intermediate expressions across logic blocks.
+    wire [5:0] count_index = count_out: Address/control signal that selects registers, memory locations, or byte lanes.
+    wire count_nonzero = !(count_index == 0): Combinational net that links intermediate expressions across logic blocks.
+    wire quotient_msb = quotient_out[53]: Combinational net that links intermediate expressions across logic blocks.
+    wire [51:0] mantissa_2 = quotient_out[52:1]: Signal that carries intermediate datapath values between logic stages.
+    wire [51:0] mantissa_3 = quotient_out[51:0]: Signal that carries intermediate datapath values between logic stages.
+    wire [51:0] mantissa_4 = quotient_msb ? mantissa_2 : mantissa_3: Signal that carries intermediate datapath values between logic stages.
+    wire [51:0] mantissa_5 = (expon_final_4 == 1 ? mantissa_2 : mantissa_4: Signal that carries intermediate datapath values between logic stages.
+    wire [51:0] mantissa_6 = expon_final_4_et0 ? mantissa_1 : mantissa_5: Signal that carries intermediate datapath values between logic stages.
+    wire [107:0] remainder_a = { quotient_out[53:0] , remainder_msb, remainder_out[52:0]}: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_1 = remainder_b[107:52]: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_2 = { quotient_out[0] , remainder_msb, remainder_out[52:0], 1'b0 }: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_3 = { remainder_msb , remainder_out[52:0], 2'b0 }: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_4 = quotient_msb ? remainder_2 : remainder_3: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_5 = (expon_final_4 == 1 ? remainder_2 : remainder_4: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] remainder_6 = expon_final_4_et0 ? remainder_1 : remainder_5: Combinational net that links intermediate expressions across logic blocks.
+    wire m_norm = |expon_final_5: Combinational net that links intermediate expressions across logic blocks.
+    wire rem_lsb = |remainder_6[54:0]: Combinational net that links intermediate expressions across logic blocks.
+    wire [55:0] mantissa_7 = { 1'b0, m_norm, mantissa_6, remainder_6[55], rem_lsb }: Combinational net that links intermediate expressions across logic blocks.
+

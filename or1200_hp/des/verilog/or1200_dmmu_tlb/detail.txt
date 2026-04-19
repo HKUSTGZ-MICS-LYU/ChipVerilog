@@ -1,0 +1,64 @@
+1. Internal Data Model
+The RTL explicitly documents the packed storage:
+- Match register (dtlbwYmrX): VPN bits 31:19 plus valid bit
+- Translate register (dtlbwYtrX): PPN bits 31:13 plus protection bits and cache-inhibit
+Memory widths:
+- 19 bits for ppn
+- 13 bits for vpn
+- 1 bit for valid
+- 4 bits for protection
+- 1 bit for cache inhibit
+
+2. Functional Specification
+2.1 Match and translate arrays
+The module shall maintain two indexed arrays:
+- Match RAM: stores VPN and valid bit
+- Translate RAM: stores PPN and attributes
+
+2.2 Addressing / index selection
+The TLB index shall be:
+- vaddr[DTLB index bits] for normal translation
+- spr_addr low index bits for SPR access
+
+2.3 Enable and write controls
+The RTL defines:
+- tlb_mr_en = tlb_en or SPR access to match registers
+- tlb_mr_we = SPR write to match registers
+- tlb_tr_en = tlb_en or SPR access to translate registers
+- tlb_tr_we = SPR write to translate registers
+A compatible implementation shall preserve this behavior.
+
+2.4 Translation result
+The module shall decode array outputs into:
+- vpn and valid bit from match RAM
+- ppn, swe, sre, uwe, ure, ci from translate RAM
+Hit generation is:
+- hit = (vpn == vaddr[DTLB tag bits]) & valid
+
+2.5 SPR readback format
+For SPR reads, the module shall return either:
+- match-register format containing VPN, index, and valid bit
+or
+- translate-register format containing PPN, permission bits, and cache-inhibit
+according to spr_addr[OR1200_DTLB_TM_ADDR].
+
+2.6 Protection information
+The outputs encode whether user/supervisor read/write accesses are permitted:
+- uwe: user write enable
+- ure: user read enable
+- swe: supervisor write enable
+- sre: supervisor read enable
+
+3. Physical Implementation
+The RTL supports:
+- FPGA-specific RAM instantiations under OR1200_RAM_MODELS_VIRTEX
+- generic OR1200 single-port RAM models otherwise
+A compatible implementation may choose different memories as long as the lookup contract is preserved.
+
+4. Implementation Constraints
+A compatible implementation shall:
+- preserve the split between match and translate arrays
+- preserve packed data formats
+- preserve hit generation semantics
+- preserve SPR software-visible layout
+- preserve all permission and cache-inhibit outputs
