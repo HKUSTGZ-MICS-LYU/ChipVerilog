@@ -1,5 +1,5 @@
 1. Address formation and access-source selection
-- A normal CPU SPR access uses addrbase combined with addrofs.
+- A normal CPU SPR access uses spr_addr = du_access ? du_addr : (addrbase | {16'h0, addrofs}).
 - A debug-unit SPR access overrides the normal address and uses du_addr.
 - A debug-unit write overrides normal write data and uses du_dat_du.
 - du_read or du_write marks a debug-unit transaction.
@@ -8,7 +8,7 @@
 - If the active operation is l.mtspr, the block asserts write_spr and deasserts read_spr.
 - If the active operation is l.mfspr, the block asserts read_spr and deasserts write_spr.
 - For debug access, du_write behaves like l.mtspr and du_read behaves like l.mfspr.
-- spr_we is asserted for any valid write from either the debug unit or CPU instruction stream.
+- spr_we = du_write | write_spr.
 
 3. Group decoding
 - The SPR address group field is decoded into a 32-bit one-hot unqualified chip-select vector.
@@ -24,7 +24,7 @@ The module directly handles system-group registers including:
 - EPCR, EEAR, ESR read/write.
 
 5. Status register semantics
-- SR is a state-holding register updated on reset, exception entry, branch return-from-exception, explicit SPR writes, and flag/carry forwarding.
+- SR update follows strict priority: if (rst), SR is initialized to the architectural reset value; else if (except_started), SR forces supervisor mode and clears TEE/IEE/DME/IME; else if (sr_we), SR is updated with to_sr. sr_we itself is asserted by any of: direct SPR write to SR, RFE branch, flag_we, or cy_we.
 - On reset, SR is initialized with supervision enabled and the default exception-prefix bit value.
 - On exception start, SR forces supervisor mode and disables TEE, IEE, DME, and IME.
 - On RFE, selected fields are restored from ESR.
@@ -43,16 +43,7 @@ When reading an SPR:
 - Unimplemented or unmatched groups return zero.
 
 7. sys_data composition
-sys_data is the OR-combination of individually masked readback sources for:
-- configuration register data,
-- register-file view,
-- next PC,
-- previous PC,
-- SR,
-- EPCR,
-- EEAR,
-- ESR.
-Exactly one source should be active for a well-formed system-group read.
+sys_data is the bitwise OR of all system-group readback sources, where each source is individually gated as (source_data & {32{read_spr & sel}}). Only the selected source produces nonzero bits; all others are masked to zero. This means the implementation uses OR-reduction across all masked sources rather than a case/mux structure.
 
 8. Required functional guarantees
 An implementation conforming to this spec shall:

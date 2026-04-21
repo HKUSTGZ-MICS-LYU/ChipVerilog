@@ -2,8 +2,8 @@
 1.1 Stored format
 The tag RAM shall store a packed word whose LSB is the valid bit and whose upper bits are the cache tag.
 The RTL outputs:
-- tag_v = datout[0]
-- tag = datout[dw-1:1] (logical interpretation)
+- tag_v corresponds to bit 0 of the stored word
+- tag corresponds to the upper bits of the stored word
 
 1.2 Access behavior
 When enabled, the RAM shall return the tag entry indexed by addr.
@@ -29,4 +29,4 @@ A compatible implementation shall:
 - preserve packed tag+valid storage format
 - preserve single-bit write-enable semantics
 - preserve the width implied by OR1200_DCTAG_W and OR1200_DCTAG
-- interoperate with or1200_dc_top hit/miss logic exactly
+- interoperate consistently with or1200_dc_top hit/miss logic

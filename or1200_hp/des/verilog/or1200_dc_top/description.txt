@@ -11,7 +11,6 @@ The file header states simply “Data cache.” This module is the complete data
 
 Description:
 
-The module integrates OR1200 data-cache datapath/control with CPU-side requests and external memory bus signaling.
 
 
 This module is the top layer of the OR1200 data cache, located between the LSU/data side internal interface and the external data bus. It is responsible for combining address, write data, tag RAM, data RAM and data cache state machine to implement hit return, miss first word pass-through, full row backfill, software failure and bypass access when the cache is closed. The module uses clk/rst to drive the internal state machine and memory bank. The external interface includes dcsb_* bus signals. The internal interface includes dcqmem_* request and return signals from LSU/MMU, and a set of control ports used to perform cache line invalidation through SPR.
@@ -105,8 +104,8 @@ Output port:
 Internal reg/wire signals:
     wire tag_v: Cache-tag valid bit.
     wire [18:0] tag: Cache-tag value read from the data-cache tag RAM.
-    wire [31:0] to_dcram: To dcram.
-    wire [31:0] from_dcram: From dcram.
+    wire [31:0] to_dcram: Write data selected between BIU refill data and LSU store data.
+    wire [31:0] from_dcram: Read data returned from the data cache RAM.
     wire [31:0] saved_addr: Saved address.
     wire [3:0] dcram_we: Dcram write-enable.
     wire dctag_we: Data-cache tag RAM write-enable.

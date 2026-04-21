@@ -1,5 +1,5 @@
 
-Module `or1200_lsu` handles load/store address generation, transfer type control, byte enables, and memory-side exception signaling.
+Module `or1200_lsu` handles load/store address generation, request control, byte enables, data alignment, and memory-side exception signaling.
 
 This module is the load/store unit. The source comment identifies it as the interface between the CPU and the data-cache/data-memory side. It computes addresses, issues data bus transactions, generates byte enables, reports load/store exceptions, and formats data to and from memory.
 
@@ -12,7 +12,7 @@ This module implements the top-level combination control of the load/store unit 
 
 The module itself has no local timing register, all outputs are combinational logic, and the update timing changes immediately as the input changes. `dcpu_adr_o` is always equal to `addrbase + addrofs`, indicating the LSU's direct addition to the byte address. `dcpu_we_o` is determined by `lsu_op[3]`, so write operations are directly related to the specific load/store type encoding. `dcpu_tag_o` outputs the normal data access tag `DTAG_ND` when a valid request is made, otherwise it outputs the idle tag `DTAG_IDLE`.
 
-Request initiation conditions reflect clear blocking priorities. `dcpu_cycstb_o` may only be effective when there is a non-zero `lsu_op`, but if the debug unit requests a shutdown `du_stall`, this access has just received a normal response `lsu_unstall`, or an address alignment exception `except_align` is detected, the request will be suppressed directly and will not be sent to the data side. `lsu_stall` is valid when the subsequent stage returns `dcpu_rty_i` and this module still maintains `dcpu_cycstb_o`, indicating that the current memory access is still waiting; `lsu_unstall` is directly equal to `dcpu_ack_i`, which is used to notify the pipeline that the current memory access has been completed.
+Request initiation conditions reflect clear blocking priorities. `dcpu_cycstb_o` may only be effective when there is a non-zero `lsu_op`, but if `du_stall` is asserted, the LSU suppresses the outgoing data request, this access has just received a normal response `lsu_unstall`, or an address alignment exception `except_align` is detected, the request will be suppressed directly and will not be sent to the data side. `lsu_stall` is valid when the subsequent stage returns `dcpu_rty_i` and this module still maintains `dcpu_cycstb_o`, indicating that the current memory access is still waiting; `lsu_unstall` is directly equal to `dcpu_ack_i`, which reflects dcpu_ack_i and is used by pipeline control to release the LSU stall.
 
 Anomaly detection is divided into two categories. One is the local alignment exception `except_align`: half-word access (`SH`, `LHZ`, `LHS`) requires address bit0 to be 0; word access (`SW`, `LWZ`, `LWS`) requires address bit[1:0] to be all 0. The second is an exception obtained by decoding the error label returned by the data side: `dcpu_err_i` and the label is `DTAG_TE`, which means DTLB miss, the label is `DTAG_PE`, which means DMMU fault, and the label `DTAG_BE`, which means a bus error. The module does not register or retime these external exceptions, but directly reports them to `except_dtlbmiss`, `except_dmmufault` and `except_dbuserr` in combination.
 
@@ -50,7 +50,7 @@ module or1200_lsu(
 );
 
 Input ports:
-    - addrbase[31:0]: Base address operand used to form an effective address or SPR address.
+    - addrbase[31:0]: Base address operand used to form the effective data access address.
     - addrofs[31:0]: Offset operand added to the base address.
     - lsu_op[3:0]: Encoded load/store operation selector.
     - lsu_datain[31:0]: Register-side store data entering the LSU alignment logic.

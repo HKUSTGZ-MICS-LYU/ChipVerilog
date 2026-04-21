@@ -7,14 +7,14 @@ Module name:
 Input ports:
     input clk: Clock signal that defines sequential update timing for this logic.
     input rst: Reset signal that initializes state elements to known values.
-    input enable: Input signal consumed by the module control or datapath logic.
-    input fpu_op: Control signal that selects operation mode, command, or multiplexed path.
-    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
-    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+    input enable: Active-high pipeline enable; all state updates occur only when asserted.
+    input fpu_op: Operation selector: 0 = add, 1 = subtract.
+    input [1:0] rmode: IEEE-754 rounding mode: 2'b00=nearest, 2'b01=zero, 2'b10=+inf, 2'b11=-inf.
+    input [63:0] opa, opb: IEEE-754 double-precision input operands.
 
 Output port:
-    output [63:0] out: Output signal driven by the module toward surrounding logic.
-    output ready: Handshake signal that marks transfer validity, readiness, or completion.
+    output [63:0] out: Final IEEE-754 result after normalization and rounding.
+    output ready: Asserted when the fixed-latency pipeline completes and the result is valid.
 
 Internal reg/wire signals:
     reg [63:0] outfp: Outfp.
@@ -41,7 +41,7 @@ Internal reg/wire signals:
     reg fpu_op_1: Stage-1 pipeline copy of the fpu operation.
     reg fpu_op_2: Stage-2 pipeline copy of the fpu operation.
     reg fpu_op_3: Stage-3 pipeline copy of the fpu operation.
-    reg fpu_op_final: Fpu operation final.
+    reg fpu_op_final: Effective operation after sign adjustment: fpu_op_1 XOR (sign_a XOR sign_b).
     reg fpuf_2: Stage-2 pipeline copy of the pipeline valid.
     reg fpuf_3: Stage-3 pipeline copy of the pipeline valid.
     reg fpuf_4: Stage-4 pipeline copy of the pipeline valid.
@@ -213,7 +213,7 @@ Internal reg/wire signals:
     reg [55:0] diff_10: Stage-10 pipeline copy of the diff.
     reg [55:0] diff_11: Stage-11 pipeline copy of the diff.
     reg diffshift_gt_exponent: Diffshift greater-than-exponent flag.
-    reg diffshift_et_55: Stage-55 pipeline copy of the diffshift et.
+    reg diffshift_et_55: Flag asserted when diff_shift_2 == 55, indicating exact cancellation.
     reg diffround_overflow: Diffround overflow.
     reg round_nearest_mode: Round nearest mode.
     reg round_posinf_mode: Round posinf mode.
@@ -233,8 +233,5 @@ Internal reg/wire signals:
 
 Implementation:
 
-- The module performs pipelined double-precision floating-point add/sub by aligning exponents, combining significands, and forwarding staged normalized results.
-- There is a leading '1' that is not included in the mantissa, but it is part of the value of the number for all double precision floating point numbers with a value in the exponent field greater than 0.
-- The Verilog version of the code is in folder "fpu_double", and the VHDL version is in folder "double_fpu".
-- These cores are designed to meet the IEEE 754 standard for double precision floating point arithmetic.
-- The IEEE 754 standard defines how double precision floating point number are represented.
+- Normalized operands include an implicit leading 1 when the exponent is nonzero.
+

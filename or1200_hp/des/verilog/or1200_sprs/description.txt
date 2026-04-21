@@ -5,8 +5,6 @@ This module is the central decoder and data router for Special Purpose Register 
 
 Description:
 
-The module decodes and serves OR1200 special-purpose register accesses for system control and status state.
-
 
 This module implements centralized control of SPR (Special Purpose Register) access and system control register updates. It is located between the CPU execution path, the debugging unit and each functional sub-module. It is responsible for converting the `l.mtspr/l.mfspr` instructions or direct access of the debugging unit into a unified SPR address, chip select, write enable and read data return, while maintaining key register control signals such as SR, EPCR, EEAR and ESR in the system group.
 
@@ -18,7 +16,7 @@ The update of the system status register SR is the most critical timing behavior
 
 Other register control signals of the system group are exported in combined form: `pc_we` is valid when writing to NPC/PPC, `epcr_we/eear_we/esr_we` is valid when the respective registers are written. Read data `sys_data` OR synthesizes `spr_dat_cfgr`, `spr_dat_rf`, `spr_dat_npc`, `spr_dat_ppc`, `sr`, `epcr`, `eear` and `esr` by address selection through multiple one-hot masking vectors. `flag` and `carry` are respectively exported as aliases of the corresponding bits of SR.
 
-The determination of instruction and debugging access types is completely completed by combinational logic: when `sprs_op` is `MTSR`, `write_spr=1`, `read_spr=0`, `to_wbmux=0`; when it is `MFSR`, `write_spr=0`, `read_spr=1`, and based on the group number of `spr_addr` Select a data source from TT, PIC, PM, DMMU, IMMU, MAC, DU or system group to send to `to_wbmux`; both are 0 under other ALU operations. The entire module is therefore equivalent to the OR1200's SPR crossbar and system control center: exception/RFE updates to the SR take precedence over normal software writes, debug access takes precedence over normal execution access, and read returns are uniquely gated by group number.
+The determination of instruction and debugging access types is completely completed by combinational logic: when `sprs_op` is `MTSR`, `write_spr=1`, `read_spr=0`, `to_wbmux=0`; when it is `MFSR`, `write_spr=0`, `read_spr=1`, and based on the group number of `spr_addr` Select a data source from TT, PIC, PM, DMMU, IMMU, MAC, DU or system group to send to `to_wbmux`; both are 0 under other ALU operations. The entire module is therefore equivalent to the OR1200's SPR crossbar and system control center: exception/RFE updates to the SR take precedence over normal software writes, debug access overrides address and write-data paths (spr_addr, spr_dat_o), while read/write qualification still depends on decoded operations, and read returns are uniquely gated by group number.
 
 module or1200_sprs(
     // Clk & Rst
@@ -138,13 +136,13 @@ Internal reg/wire signals:
     wire du_access: Debug unit access.
     wire [3:0] sprs_op: SPR subsystem operation.
     reg [31:0] unqualified_cs: Unqualified chip-select.
-    wire [31:0] read_spr_cfgr_sel_32: Stage-32 pipeline copy of the read SPR configuration register select.
-    wire [31:0] read_spr_rf_sel_32: Stage-32 pipeline copy of the read SPR register file select.
-    wire [31:0] read_spr_npc_sel_32: Stage-32 pipeline copy of the read SPR next PC select.
-    wire [31:0] read_spr_ppc_sel_32: Stage-32 pipeline copy of the read SPR previous PC select.
-    wire [31:0] read_spr_sr_sel_32: Stage-32 pipeline copy of the read SPR status register select.
-    wire [31:0] read_spr_epcr_sel_32: Stage-32 pipeline copy of the read SPR exception PC register select.
-    wire [31:0] read_spr_eear_sel_32: Stage-32 pipeline copy of the read SPR exception address register select.
-    wire [31:0] read_spr_esr_sel_32: Stage-32 pipeline copy of the read SPR exception status register select.
-    wire [31:0] sr_32: Stage-32 pipeline copy of the status register.
-    wire [31:0] esr_32: Stage-32 pipeline copy of the exception status register.
+    wire [31:0] read_spr_cfgr_sel_32: 32-bit mask for cfgr readback; {32{read_spr & cfgr_sel}}
+    wire [31:0] read_spr_rf_sel_32: 32-bit mask for RF readback; {32{read_spr & rf_sel}}
+    wire [31:0] read_spr_npc_sel_32: 32-bit mask for NPC readback; {32{read_spr & npc_sel}}.
+    wire [31:0] read_spr_ppc_sel_32: 32-bit mask for PPC readback; {32{read_spr & ppc_sel}}.
+    wire [31:0] read_spr_sr_sel_32: 32-bit mask for SR readback; {32{read_spr & sr_sel}}.
+    wire [31:0] read_spr_epcr_sel_32: 32-bit mask for EPCR readback; {32{read_spr & epcr_sel}}.
+    wire [31:0] read_spr_eear_sel_32: 32-bit mask for EEAR readback; {32{read_spr & eear_sel}}.
+    wire [31:0] read_spr_esr_sel_32: 32-bit mask for ESR readback; {32{read_spr & esr_sel}}.
+    wire [31:0] sr_32: Zero-extended SR to 32 bits for sys_data OR-mux.
+    wire [31:0] esr_32: Zero-extended ESR to 32 bits for sys_data OR-mux.

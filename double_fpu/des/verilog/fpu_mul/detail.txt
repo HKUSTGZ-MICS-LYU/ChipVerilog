@@ -46,18 +46,19 @@
 
 5. Exponent Computation
 5.1 Base exponent term
-- Compute `exponent_terms = exponent_a + exponent_b`.
+- Compute `exponent_terms = exponent_a + exponent_b + !a_is_norm + !b_is_norm`. The `+!a_is_norm` and `+!b_is_norm` terms treat denormal operands as having an effective exponent contribution of 1 in this datapath, compensating for the absent hidden bit.
 
 5.2 Bias removal
 - The module subtracts 1022 rather than 1023 because the mantissa product may span `[1,4)` before final normalization.
-- Compute `exponent_gt_expoffset = exponent_terms > 1022`.
+- Compute `exponent_gt_expoffset = exponent_terms > 1021`.
 - Compute `exponent_under = 1022 - exponent_terms` when `exponent_terms <= 1022`, else 0.
 - Compute `exponent_1 = exponent_terms - 1022` when `exponent_terms > 1022`, else 0.
 
 5.3 Left-normalization compensation
 - The module counts the leading-zero distance in the 106-bit product using `product_shift`.
-- Then compute `exponent_gt_prodshift = exponent_1 > product_shift_2`.
-- `exponent_2 = exponent_1 - product_shift_2` when `exponent_gt_prodshift` is true, else 0.
+- Then compute `exponent_gt_prodshift = exponent_2 > product_shift_2`.
+- `exponent_3 = exponent_2 - product_shift` (uses combinational `product_shift`, not `product_shift_2`) when `exponent_gt_prodshift` is true.
+- `exponent_4 = exponent_gt_prodshift ? exponent_3 : 0`.
 
 5.4 Denormal underflow compensation
 - If the exponent is too small, the product must be right-shifted to form a denormal result.
@@ -67,7 +68,7 @@
 6. Product Normalization and Denormal Handling
 6.1 Leading-zero count
 - A combinational `casex` priority encoder computes `product_shift` from the 106-bit product.
-- Only shifts up to 53 are needed. A larger count implies a case that necessarily underflows in this design space.
+- Only shifts up to 53 are needed. A larger count implies denormal×denormal multiplication, which necessarily underflows (bounded by the 53-bit mantissa width including the hidden bit).
 
 6.2 Normalize left when possible
 - If the product does not already have its leading 1 at the expected top position, shift left by `product_shift_2` to create `product_1`.

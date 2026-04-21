@@ -11,7 +11,6 @@ The module monitors instruction and data-side activity and decides whether execu
 
 Description:
 
-The module implements the debug unit, including breakpoint/watchpoint control and debug interaction with pipeline execution.
 
 
 This module is the debug unit of OR1200. It is responsible for connecting the external debugging port and the internal CPU debugging interface, and implements debugging registers, breakpoint/observation point comparison, stop reason recording, hardware breakpoint triggering, and access control to CPU SPR/internal registers. The module uses the rising edge of clk to update the internal debugging registers and event status, and rst asynchronously resets these statuses; when the debugging unit is not implemented, the module degenerates into a set of simple transparent transmission and constant value output.
@@ -210,7 +209,7 @@ Internal reg/wire signals:
     reg wpcntr1_match: Wpcntr 1 match.
     reg incr_wpcntr0: Incr wpcntr 0.
     reg incr_wpcntr1: Incr wpcntr 1.
-    reg [10:0] wp: Wp.
+    reg [10:0] wp: Watchpoint hit vector; each bit corresponds to one watchpoint match result.
     wire du_hwbkpt: Debug unit hwbkpt.
     reg [31:0] spr_dat_o: SPR data output.
     reg [13:0] except_stop: Exception stop flag.

@@ -1,18 +1,17 @@
 
-Module `or1200_dc_ram` implements the data-cache data array storage and indexed read/write access behavior.
+Module `or1200_dc_ram` implements the data-cache data array storage and indexed access interface to the underlying data RAM.
 
 This module implements the data array of the OR1200 data cache. It stores the cache-line payload words and provides byte-write capability for stores and refill writes.
 
 Description:
 
-The module implements the data-cache data array storage and indexed read/write access behavior.
 
 
-This module is a storage wrapper for the OR1200 data cache data array, providing index-accessed data RAM ports to upper layers. The module interface includes clock clk, reset rst, address addr, enable en, 4-bit byte write enable we, write data datain and read data dataout; when BIST is enabled, the memory test chain is also connected in series. The module itself does not implement additional control states, nor does it define new read and write timing rules at this layer. The specific read and write behavior is determined by the instantiated underlying RAM macro model.
+This module is a storage wrapper for the OR1200 data cache data array, providing index-accessed data RAM ports to upper layers. The module interface includes clock clk, reset rst, address addr, enable en, 4-bit byte write enable we, write data datain and read data dataout; when BIST is enabled, the memory test chain is also connected in series. The module itself does not implement additional control states, nor does it introduce additional timing behavior beyond that of the underlying RAM primitive. The specific read and write behavior is determined by the instantiated underlying RAM macro model.
 
 When the compilation configuration turns off the data cache (OR1200_NO_DC), the module degrades to an empty implementation: dataout is always 0; if BIST is enabled, mbist_so_o directly transparently transmits mbist_si_i. There is no valid storage content at this time and will not respond to writes. If the data cache is enabled, the module selects a specific memory bank for implementation based on the comprehensive goal. For Virtex RAM model paths, the module maps en, we, addr, and datain directly to dual-port/pseudo-dual-port block RAM instances, with port A performing writes on clk and port B reading dataout at the same address. For the general implementation path, instantiate a single-port RAM macro that matches the configured capacity, connect en to ce, we to byte write enable, and oe to be fixed to 1, so that read data is continuously output.
 
-From the perspective of system semantics, this module is responsible for the physical storage of cache line data words. It does not explain the address, hit or backfill process, and does not shield the write priority. As long as the upper layer pulls en high in a certain clock cycle and provides valid we/datain, it will update the corresponding bytes according to the synchronous write rules of the underlying RAM. rst is only passed to the underlying RAM macro, there is no additional post-reset register behavior from the module itself.
+From the perspective of system semantics, this module is responsible for the physical storage of cache line data words. It does not explain the address, hit or backfill process, and does not shield the write priority. As long as the upper layer pulls en high in a certain clock cycle and provides valid we/datain, it will update the corresponding bytes according to the synchronous write rules of the underlying RAM. rst is only forwarded to the underlying RAM macro and does not control additional logic in this wrapper, there is no additional post-reset register behavior from the module itself.
 
 module or1200_dc_ram(
     // Reset and clock

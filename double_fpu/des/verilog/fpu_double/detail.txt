@@ -40,7 +40,7 @@
 - Preserve submodule instance connectivity and handshake timing across hierarchy boundaries.
 
 5. High-Level Notes
-- `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations, the rounding module, and the exceptions module.
+- The top-level module `fpu` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations, the rounding module, and the exceptions module.
 - There is a leading 1 that is not included in the mantissa, but it is part of the value of the number for all double-precision floating-point numbers with a value in the exponent field greater than 0.
 - If the FPU operation is addition and one operand is positive while the other is negative, the module routes the operation to the subtraction module.
 - Likewise, if the operation is subtraction and the operand signs imply magnitude addition, the module routes the operation to the addition module.

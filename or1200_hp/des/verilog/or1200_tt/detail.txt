@@ -1,10 +1,10 @@
 1. Match logic
 - match is asserted when TTMR[TP] equals TTCR[27:0].
 - restart is asserted when match is true and mode M == restart-on-match.
-- stop is asserted when mode indicates stop, when mode is disabled, or when the debug unit stalls the core.
+- stop = (match & (TTMR[M] == 2'b10)) | (TTMR[M] == 2'b00) | du_stall.
 
 2. TTMR behavior
-- On reset TTMR is cleared, or defaults to a constant architectural value if TTMR storage is compiled out.
+- On reset TTMR is cleared to 32'b0 when implemented; if TTMR storage is compiled out, it is tied to a constant value {2'b11,30'b0}.
 - On an SPR write to TTMR, the register is loaded from spr_dat_i.
 - If interrupts are enabled, TTMR[IP] is set when a match occurs.
 

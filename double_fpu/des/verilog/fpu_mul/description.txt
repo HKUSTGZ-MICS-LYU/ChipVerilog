@@ -18,13 +18,13 @@ module fpu_mul( clk, rst, enable, opa, opb, sign, product_7, exponent_5);
 Input ports:
     input clk: Clock signal that defines sequential update timing for this logic.
     input rst: Reset signal that initializes state elements to known values.
-    input enable: Input signal consumed by the module control or datapath logic.
-    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+    input enable: Active-high pipeline enable; all clocked assignments are gated by this signal.
+    input [63:0] opa, opb: Two 64-bit IEEE-754 double-precision floating-point input operands (sign[63], exponent[62:52], mantissa[51:0]).
 
 Output port:
-    output sign: Output signal driven by the module toward surrounding logic.
-    output [55:0] product_7: Data output that carries computed results or status information.
-    output [11:0] exponent_5: Data output that carries computed results or status information.
+    output reg sign: Result sign bit; opa[63] XOR opb[63].
+    output [55:0] product_7: Combinational wire (not a register): 56-bit intermediate mantissa bundle forwarded to the rounding stage.
+    output reg [11:0] exponent_5: 12-bit intermediate exponent forwarded to the rounding stage; zero when either input is zero.
 
 Internal reg/wire signals:
     reg [5:0] product_shift: Normalization shift flag for the product path.
@@ -59,7 +59,7 @@ Internal reg/wire signals:
     reg [33:0] product_f: Product f.
     reg [35:0] product_g: Product g.
     reg [28:0] product_h: Product h.
-    reg [28:0] product_i: Product input.
+    reg [28:0] product_i: Partial product i.
     reg [30:0] product_j: Product J.
     reg [41:0] sum_0: Stage-0 pipeline copy of the sum.
     reg [35:0] sum_1: Stage-1 pipeline copy of the sum.
@@ -78,7 +78,7 @@ Internal reg/wire signals:
     reg [105:0] product_5: Stage-5 pipeline copy of the product.
     reg [105:0] product_6: Stage-6 pipeline copy of the product.
     reg product_lsb: LSB of the product.
-    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Stage-7 pipeline copy of the product.
+    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Combinational output wire assembled from product_6 and the sticky bit product_lsb; not a pipeline register.
     reg [11:0] exponent_5: Stage-5 pipeline copy of the exponent.
 
 

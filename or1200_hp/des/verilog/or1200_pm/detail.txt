@@ -8,7 +8,7 @@ The PMR contains at least:
 2. Write behavior
 - PMR is selected by the PM SPR group and PMR offset.
 - On an SPR write to PMR, SDF, DME, SME, and DCGE are loaded from spr_dat_i.
-- If pic_wakeup is asserted, DME and SME are automatically cleared so the processor exits doze/sleep.
+- If pic_wakeup is asserted and no SPR write occurs in the same cycle, dme and sme are cleared so the processor exits doze/sleep.
 
 3. Read behavior
 - spr_dat_o returns the PMR fields in their architectural bit positions.
@@ -16,11 +16,11 @@ The PMR contains at least:
 
 4. Output behavior
 - pm_clksd directly reflects SDF.
-- pm_cpu_gate is asserted when doze or sleep is active and no wakeup is pending.
+- pm_cpu_gate is asserted as (dme | sme) & ~pic_wakeup.
 - pm_dc_gate, pm_ic_gate, pm_dmmu_gate, and pm_immu_gate track pm_cpu_gate.
-- pm_tt_gate is asserted only for sleep mode and no wakeup pending.
+- pm_tt_gate is asserted as sme & ~pic_wakeup.
 - pm_wakeup mirrors pic_wakeup.
-- pm_lvolt is asserted when the CPU is clock-gated or the external pm_cpustall request is active.
+- pm_lvolt is asserted as pm_cpu_gate | pm_cpustall.
 
 5. Disabled-feature behavior
 If PM is not implemented:

@@ -5,7 +5,6 @@ This module generates the processor pipeline freeze/stall signals. The source fi
 
 Description:
 
-The module generates stage freeze/stall controls to maintain pipeline correctness across hazards, waits, and exceptions.
 
 
 This module implements OR1200 pipeline freeze and pause control and is the unified generation point for freeze signals at all levels of the processor's front-end/back-end. The module generates `genpc_freeze`, `if_freeze`, `id_freeze`, `ex_freeze` and `wb_freeze` based on conditions such as debugging shutdown, memory access wait, multi-cycle instruction, delay slot forced instruction fetch, MAC unit pause, abnormal termination and flush pipeline request, thereby ensuring that the pipelines at all levels maintain a consistent advancement relationship when the relevant data or control conditions are not met.

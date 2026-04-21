@@ -5,7 +5,6 @@ This module implements the WISHBONE Bus Interface Unit. The source file describe
 
 Description:
 
-The module adapts OR1200 data-side load/store traffic to Wishbone bus transactions and response handling.
 
 
 This module implements the bridge between the OR1200 internal BIU and the external Wishbone bus. It is responsible for converting internal `biu_*` requests into Wishbone `cyc/stb/we/sel/adr/dat` signals, and converting Wishbone's `ack/err/rty/dat` returns into CPU-visible completion, error and read data. At the same time, the module supports optional input/output registration, optional bus clock frequency division synchronization, retry waiting, and graceful ending of canceled transactions.
@@ -16,7 +15,7 @@ The timing register mainly includes `valid_div`, optional registered output sign
 
 In terms of handshake conversion, `biu_ack_o` and `biu_err_o` are not simply directly connected, but are obtained from `long_ack_o/long_err_o` through frequency division mode gating. If registered input is defined, `long_ack_o/long_err_o` latches `wb_ack_i/wb_err_i` on the WB clock and masks `aborted`; otherwise, use `wb_ack_i/wb_err_i` and `~aborted_r` directly. This ensures that even if the external bus returns aborted after the internal request has been aborted, expired responses will still be swallowed correctly with `aborted_r`.
 
-Retrying and canceling transactions are key boundary behaviors of this module. `retry` is set immediately after receiving `wb_rty_i` and remains 1 until the `retry_cntr` countdown ends, thus temporarily blocking the issuance of new `wb_cyc_o`. `aborted` is established when "there is still `stb` on the WB side, but the internal `biu_cyc_i & biu_stb_i` has been revoked, and the current transaction has not received ACK/ERR", indicating that the transaction has been abandoned internally, but the external bus has not officially ended. `aborted_r` will keep this state until `wb_ack_i` or `wb_err_i` is actually received, so that the aborted termination is not propagated back internally.
+Retrying and canceling transactions are key boundary behaviors of this module. `retry` suppresses new transfer issuance by preventing wb_cyc_o from being asserted for new BIU requests, but does not terminate an already active or aborted transfer. `aborted` is asserted as `wb_stb_o & ~(biu_cyc_i & biu_stb_i) & ~(wb_ack_i | wb_err_i)`, meaning: an external transfer is in progress but the internal request has been withdrawn and no termination has arrived yet, indicating that the transaction has been abandoned internally, but the external bus has not officially ended. Specifically, `aborted_r` is set when `aborted` is asserted, and cleared when `wb_ack_i | wb_err_i` arrives, ensuring the abort state persists exactly until the pending external transfer completes, so that the aborted termination is not propagated back internally.
 
 The priority of Wishbone output is also very clear. `wb_cyc_o` is driven by `biu_cyc_i` under normal circumstances and can be suspended by `retry`; if it is an unfinished canceled transaction, `aborted & ~wb_ack_i` will force `cyc` to continue until the official end is given externally. `wb_stb_o` is pulled high when there is an internal request and is not blocked by `retry`, and will also remain during aborted. `wb_we_o` takes `biu_we_i` during normal requests, and keeps the original writing direction unchanged during aborted. `wb_sel_o` and `wb_dat_o` correspond to internal byte strobe and write data respectively. If CAB/B3 is enabled, `wb_cab_o` transparently transmits the internal burst indication, `wb_cti_o` outputs the incremental burst code in the middle beat of the burst, and outputs the end-of-burst in the last beat. `wb_bte_o` is fixed to 4-beat wrap burst.
 
@@ -93,7 +92,7 @@ Output port:
     - biu_ack_o: Acknowledge/transfer-complete indication for the internal BIU interface.
     - biu_err_o: Error termination indication for the internal BIU interface.
 Internal reg/wire signals:
-    reg [1:0] valid_div: Valid div flag.
+    reg [1:0] valid_div: Modulo-4 counter in the RISC clock domain used for clock-division synchronization.
     reg [31:0] wb_adr_o: Writeback-stage address output.
     reg wb_cyc_o: Writeback-stage cycle output.
     reg wb_stb_o: Writeback-stage strobe output.

@@ -33,14 +33,14 @@ The module shall decode array outputs into:
 - vpn and valid bit from match RAM
 - ppn, swe, sre, uwe, ure, ci from translate RAM
 Hit generation is:
-- hit = (vpn == vaddr[DTLB tag bits]) & valid
+- hit = (vpn == vaddr[31:19]) & valid
 
 2.5 SPR readback format
 For SPR reads, the module shall return either:
 - match-register format containing VPN, index, and valid bit
 or
 - translate-register format containing PPN, permission bits, and cache-inhibit
-according to spr_addr[OR1200_DTLB_TM_ADDR].
+according to spr_addr[7].
 
 2.6 Protection information
 The outputs encode whether user/supervisor read/write accesses are permitted:

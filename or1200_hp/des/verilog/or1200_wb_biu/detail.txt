@@ -10,12 +10,13 @@
 3. Retry handling
 - If OR1200_WB_RETRY is enabled, wb_rty_i loads a retry counter.
 - retry remains asserted while the counter is nonzero.
-- wb_cyc_o is suppressed while retry is active, temporarily backing off new requests.
+- wb_cyc_o for new transfers is suppressed while retry is active, but aborted logic can still hold wb_cyc_o high until completion, temporarily backing off new requests.
 
 4. Graceful abort handling
-- aborted is asserted when an external transfer is already in progress but the internal request disappears before a normal termination arrives.
+- aborted = wb_stb_o & ~(biu_cyc_i & biu_stb_i) & ~(wb_ack_i | wb_err_i)
 - aborted_r extends this condition until the pending transfer is eventually terminated by wb_ack_i or wb_err_i.
 - This prevents the interface from losing track of an externally visible transfer that must still be completed on the bus.
+- aborted_r is set when aborted and cleared when wb_ack_i | wb_err_i.
 
 5. Output generation
 - wb_adr_o, wb_dat_o, wb_we_o, wb_sel_o, wb_stb_o, and wb_cyc_o are either direct combinational mappings or registered outputs depending on synthesis configuration.

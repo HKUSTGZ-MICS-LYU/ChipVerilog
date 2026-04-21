@@ -1,58 +1,56 @@
-Module `fpu_add` implements double-precision floating-point addition through exponent alignment, significand accumulation, and post-add normalization.
-The module aligned floating-point addition for the case where the effective operation is the addition of two magnitudes with the same sign. It extracts exponent and mantissa fields, aligns the smaller operand to the larger exponent, performs the mantissa addition, normalizes the result if a carry is generated, and forwards a 56-bit mantissa bundle plus exponent to the next stage.
-The module adds the significands of two IEEE-754 double-precision operands after exponent alignment. The sign is passed through from operand A because this block is only used when the effective add/sub routing has already determined that the result sign is known.
-fpu_add.v performs exponent-based operand alignment, inserts the hidden leading bit for normalized operands, preserves sticky information when low-order bits are shifted away, adds the aligned significands, normalizes a carry-out result, and emits an intermediate floating-point representation suitable for the downstream rounding and exception logic.
-This module performs the aligned mantissa addition stage for double-precision floating-point operands that must be added with the same effective sign. The module does not emit a final IEEE-754 64-bit result. Instead, it emits an intermediate sign, exponent, and 56-bit mantissa bundle that is intended for the later rounding and exception stages.
-
+Module `fpu_add` implements the aligned mantissa addition stage for double-precision floating-point operands that share the same effective sign. It extracts exponent and mantissa fields, aligns the smaller operand to the larger exponent, performs the mantissa addition, normalizes a carry-out result, handles the denormalized-to-normalized boundary transition, and forwards a 56-bit mantissa bundle plus 11-bit exponent to the downstream rounding and exception stages.
+This module is used only when the top-level routing has already determined that the effective operation is a magnitude addition and that the result sign is known to equal operand A's sign. It does not emit a final IEEE-754 64-bit result; instead it emits an intermediate sign, exponent, and 56-bit mantissa bundle for later rounding and exception handling.
+The implementation is a single clocked always block using nonblocking assignments throughout. Each signal is stored in a register and updated only on the rising edge of clk when enable is asserted. Because of this, the datapath forms a multi-cycle pipeline: operations that appear sequential in the code each consume one additional clock cycle, with each stage reading from the registered output of the previous stage.
+fpu_add.v performs exponent-based operand alignment, inserts the hidden leading bit for normalized operands, preserves sticky information when low-order bits are shifted away via the small_fraction_enable mechanism, adds the aligned significands, normalizes a carry-out result, corrects the exponent at the denormalized-to-normalized boundary, and emits an intermediate floating-point representation suitable for the downstream rounding and exception logic.
+ 
 Description:
-This module performs the floating-point addition datapath for double-precision operands. It is used for same-sign addition, or for cases that the top level has already transformed into an equivalent magnitude addition. The inputs are two 64-bit floating-point operands, opa and opb. The outputs are an intermediate sign sign, a normalized exponent exponent_2, and a 56-bit extended mantissa sum_2 that is passed to the rounding stage. The module does not generate the final IEEE-754 encoding directly.
-
-The operands are separated into sign, exponent, and mantissa fields. The module compares the exponents and assigns the operand with the larger exponent to mantissa_large / exponent_large, while the smaller-exponent operand populates mantissa_small / exponent_small. The comparison is used to determine which mantissa must be right-shifted before addition. If the exponents are equal, the mantissas are added without shifting .
-
-For normalized numbers, the implied leading 1 is included in the mantissa; for denormalized numbers it is not. The smaller mantissa is right-shifted by the exponent difference and then added to the larger mantissa. If the addition produces an overflow bit, the result is shifted right by one and the exponent is incremented. The output sum_2 contains an extra MSB for possible rounding overflow, the leading 1, the 52-bit mantissa, and 2 extra low-order bits used for rounding and inexact detection. The least significant extra bit includes the OR of leftover shifted-out bits, so sticky information is preserved for the rounding stage .
-
-All state and outputs are updated on the rising edge of the clock. A new addition operation is started when enable is asserted. On reset, internal registers and all outputs are cleared. This module does not make final decisions for NaN, infinity, overflow, or underflow; those are handled later by the rounding and exceptions stages.
-
+This module performs the floating-point addition datapath for double-precision operands. The inputs are two 64-bit floating-point operands, opa and opb. The outputs are an intermediate sign, a normalized 11-bit exponent exponent_2, and a 56-bit extended mantissa sum_2 that is passed to the rounding stage. The module does not generate the final IEEE-754 encoding directly.
+The operands are separated into sign, exponent, and mantissa fields. The module compares the exponents and assigns the operand with the larger exponent to mantissa_large / exponent_large, while the smaller-exponent operand populates mantissa_small / exponent_small. The comparison is used to determine which mantissa must be right-shifted before addition. When exponents are equal and operand types match, the effective alignment shift is zero and both mantissas are added directly.
+For normalized numbers, the implied leading 1 is included in the mantissa; for denormalized numbers it is not. The effective exponent difference used for alignment is exponent_large - exponent_small - large_norm_small_denorm, where large_norm_small_denorm corrects for the implicit-1 gap when the large operand is normalized and the small operand is denormalized. The smaller mantissa is right-shifted by this effective difference and then added to the larger mantissa.
+Sticky information is preserved through the small_fraction_enable mechanism: if the small operand is nonzero but its shifted result is all zero (meaning all significant bits were shifted out), the design forces the low bit of small_shift_3 to 1 rather than using the zero-valued shift result. This preserves the inexact indication for the rounding stage.
+If the addition produces an overflow bit (sum[55] = 1), the result is shifted right by one and the exponent is incremented. Additionally, if the large operand was denormalized and the result's leading bit (sum_2[54]) is 1, a denormalized-to-normalized transition is detected via denorm_to_norm, and the exponent is incremented by one more to move into the normalized range. The output sum_2 contains an extra MSB as an overflow guard bit, the leading 1, the 52-bit mantissa, and 2 extra low-order bits used for rounding and inexact detection.
+All state and outputs are updated on the rising edge of the clock. A new addition operation advances through the pipeline when enable is asserted. On reset, all internal registers and outputs are cleared to zero. This module does not make final decisions for NaN, infinity, overflow, or underflow; those are handled later by the rounding and exceptions stages.
 module fpu_add( clk, rst, enable, opa, opb, sign, sum_2, exponent_2);
-
+ 
 Input ports:
-    input clk: Clock signal that defines sequential update timing for this logic.
-    input rst: Reset signal that initializes state elements to known values.
-    input enable: Input signal consumed by the module control or datapath logic.
-    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
-
-Output port:
-    output sign: Output signal driven by the module toward surrounding logic.
-    output [55:0] sum_2: Data output that carries computed results or status information.
-    output [10:0] exponent_2: Data output that carries computed results or status information.
-
+    input clk: Rising-edge clock. All register updates occur on the positive edge of this signal.
+    input rst: Synchronous active-high reset. When asserted, all internal pipeline registers and output registers are cleared to zero on the next rising clock edge.
+    input enable: Active-high pipeline enable. All assignments inside the always block are gated by this signal; when deasserted, the pipeline holds its current state.
+    input [63:0] opa: First IEEE-754 double-precision floating-point operand. Bit 63 is the sign, bits 62:52 are the biased exponent, and bits 51:0 are the mantissa fraction field.
+    input [63:0] opb: Second IEEE-754 double-precision floating-point operand. Same field layout as opa.
+ 
+Output ports:
+    output reg sign: Result sign bit. Directly forwarded from opa[63]. This is correct because the module is used only when the effective result sign is known to equal the sign of operand A after top-level routing.
+    output reg [55:0] sum_2: Intermediate 56-bit mantissa bundle forwarded to the rounding stage. Bit 55 is an overflow guard bit (0 if no carry occurred from addition). Bit 54 is the leading integer bit after normalization. Bits 53:2 are the 52-bit mantissa field candidate. Bits 1:0 are low-order remainder bits passed to rounding and inexact-detection logic; the sticky information from shifted-out bits is folded into this field via the small_fraction_enable mechanism.
+    output reg [10:0] exponent_2: 11-bit post-normalization exponent. Adjusted for carry-out overflow and for the denormalized-to-normalized boundary transition. Forwarded to the rounding stage.
+ 
 Internal reg/wire signals:
-    reg [10:0] exponent_a: Exponent A.
-    reg [10:0] exponent_b: Exponent B.
-    reg [51:0] mantissa_a: Mantissa A.
-    reg [51:0] mantissa_b: Mantissa B.
-    reg expa_gt_expb: Expa greater-than-expb flag.
-    reg [10:0] exponent_small: Exponent small.
-    reg [10:0] exponent_large: Exponent large.
-    reg [51:0] mantissa_small: Mantissa small.
-    reg [51:0] mantissa_large: Mantissa large.
-    reg small_is_denorm: Small is denormal flag.
-    reg large_is_denorm: Large is denormal flag.
-    reg large_norm_small_denorm: Large normalized small denormal.
-    reg [10:0] exponent_diff: Exponent diff.
-    reg [55:0] large_add: Large add.
-    reg [55:0] small_add: Small add.
-    reg [55:0] small_shift: Small shift control.
-    wire small_shift_nonzero = |small_shift[55:0]: Small shift nonzero flag.
-    wire small_is_nonzero = (exponent_small > 0) | |mantissa_small[51:0]: Small is nonzero flag.
-    wire small_fraction_enable = small_is_nonzero & !small_shift_nonzero: Small fraction enable flag.
-    wire [55:0] small_shift_2 = { 55'b0, 1'b1 }: Stage-2 pipeline copy of the small shift.
-    reg [55:0] small_shift_3: Stage-3 pipeline copy of the small shift.
-    reg [55:0] sum: Sum.
-    wire sum_overflow = sum[55]: Sum overflow flag.
-    reg [55:0] sum_2: Stage-2 pipeline copy of the sum.
-    reg [10:0] exponent: Exponent.
-    wire sum_leading_one = sum_2[54]: Sum leading one flag.
-    reg denorm_to_norm: Denormal to normalized.
-    reg [10:0] exponent_2: Stage-2 pipeline copy of the exponent.
+    reg [10:0] exponent_a: Biased exponent field extracted from opa[62:52].
+    reg [10:0] exponent_b: Biased exponent field extracted from opb[62:52].
+    reg [51:0] mantissa_a: Mantissa fraction field extracted from opa[51:0].
+    reg [51:0] mantissa_b: Mantissa fraction field extracted from opb[51:0].
+    reg expa_gt_expb: Comparison flag; 1 if exponent_a > exponent_b, used to select large/small operand roles.
+    reg [10:0] exponent_small: Biased exponent of the operand assigned to the smaller-exponent role.
+    reg [10:0] exponent_large: Biased exponent of the operand assigned to the larger-exponent role.
+    reg [51:0] mantissa_small: Mantissa fraction of the smaller-exponent operand.
+    reg [51:0] mantissa_large: Mantissa fraction of the larger-exponent operand.
+    reg small_is_denorm: 1 if the smaller-exponent operand is denormalized (exponent_small == 0).
+    reg large_is_denorm: 1 if the larger-exponent operand is denormalized (exponent_large == 0).
+    reg large_norm_small_denorm: 1 when the large operand is normalized and the small operand is denormalized; used to adjust the effective exponent difference by 1 to account for the implicit-1 gap.
+    reg [10:0] exponent_diff: Effective alignment shift amount, computed as exponent_large - exponent_small - large_norm_small_denorm.
+    reg [55:0] large_add: 56-bit extended mantissa for the large operand, formed as {1'b0, !large_is_denorm, mantissa_large, 2'b0}.
+    reg [55:0] small_add: 56-bit extended mantissa for the small operand, formed as {1'b0, !small_is_denorm, mantissa_small, 2'b0}.
+    reg [55:0] small_shift: Result of right-shifting small_add by exponent_diff to align to the larger exponent.
+    wire small_shift_nonzero = |small_shift[55:0]: 1 if any bit of small_shift is nonzero after alignment shift.
+    wire small_is_nonzero = (exponent_small > 0) | |mantissa_small[51:0]: 1 if the small operand has any nonzero value.
+    wire small_fraction_enable = small_is_nonzero & !small_shift_nonzero: Asserted when the small operand is nonzero but all its bits were shifted out; triggers injection of a sticky guard bit.
+    wire [55:0] small_shift_2 = { 55'b0, 1'b1 }: Constant used to inject a low-order sticky bit when small_fraction_enable is asserted.
+    reg [55:0] small_shift_3: Final small operand value used in addition; equals small_shift_2 when small_fraction_enable is asserted, otherwise equals small_shift.
+    reg [55:0] sum: Raw sum of large_add and small_shift_3.
+    wire sum_overflow = sum[55]: Asserted when the addition produced a carry into bit 55, indicating the result needs right-normalization.
+    reg [55:0] sum_2: Registered output port (also used as internal pipeline register); holds sum >> 1 if sum_overflow, otherwise sum.
+    reg [10:0] exponent: Intermediate exponent after carry-out adjustment; equals exponent_large + 1 if sum_overflow, otherwise exponent_large.
+    wire sum_leading_one = sum_2[54]: Asserted when the leading bit of sum_2 is 1; used to detect denormalized-to-normalized transition.
+    reg denorm_to_norm: Asserted when large_is_denorm and sum_leading_one; indicates the result has transitioned from denormalized to normalized and requires an additional exponent increment.
+    reg [10:0] exponent_2: Registered output port (also used as internal pipeline register); equals exponent + 1 if denorm_to_norm, otherwise exponent.
 

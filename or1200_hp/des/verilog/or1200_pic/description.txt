@@ -5,14 +5,10 @@ This module implements the Programmable Interrupt Controller according to the OR
 
 Description:
 
-The module implements programmable interrupt masking, latching, and interrupt-request signaling to core control logic.
-
-- The passing must follow certain rules, so that the overall functionality of the hyper pipelined core is not broken.
-- The main benefit of doing the modification (PSR insertion) on RTL is next to the short tool runtime of a few seconds the fact, that the new hyper pipelined core must be used in the testbench of the modified project.
 
 This module implements the programmable interrupt controller (PIC) and is responsible for masking external interrupt inputs, maintaining status, SPR read and write access, and outputting the final interrupt request to the CPU. The module also synchronously outputs whether there is an unmasked interrupt as `pic_wakeup` for the power management unit to use as a wake-up condition.
 
-When `OR1200_PIC_IMPLEMENTED` is enabled, the module contains optional interrupt mask register `picmr` and interrupt status register `picsr`, both updated on the rising edge of `clk` with an asynchronous high reset `rst`. After reset, `picmr` is initialized to the form of "interrupt 1:0 is always enabled, and the remaining bits are masked by default", that is, the high bit is cleared and the lowest two bits are implicitly 1; `picsr` is cleared. `picmr` is only overwritten by the CPU when the address selection hits PICMR and `spr_write` is valid. `picsr` is then both writable by the CPU via SPR and will automatically OR on every beat the current unmasked interrupt `um_ints`, so once an unmasked interrupt arrives it will be set and held until software explicitly writes back to the status register.
+When `OR1200_PIC_IMPLEMENTED` is enabled, the module contains optional interrupt mask register `picmr` and interrupt status register `picsr`, both updated on the rising edge of `clk` with an asynchronous high reset `rst`. After reset, `picmr` is initialized to {1'b1, {OR1200_PIC_INTS-3{1'b0}}}, while the lowest two bits are implicitly unmasked through {picmr, 2'b11}, that is, the high bit is cleared and the lowest two bits are implicitly 1; `picsr` is cleared. `picmr` is only overwritten by the CPU when the address selection hits PICMR and `spr_write` is valid. `picsr` is then both writable by the CPU via SPR and will automatically OR on every beat the current unmasked interrupt `um_ints`, accumulated as picsr <= picsr | um_ints, and may be modified by software writes.
 
 In combinational logic, `picmr_sel` and `picsr_sel` are decoded according to `spr_cs` and `spr_addr`; `um_ints = pic_int & {picmr, 2'b11}` represents the effective interrupt set obtained after external interrupts are first masked, of which the lowest two bits are always unmaskable. `intr` is pulled high as long as any bit of `um_ints` is 1, so the output to the CPU is a merge request of "there is currently at least one unmasked interrupt" instead of the encoded interrupt number. `pic_wakeup` is directly equal to `intr`, which means that whenever an unmasked interrupt arrives, a request is made to exit the low-power state.
 
@@ -55,5 +51,5 @@ Internal reg/wire signals:
     wire [19:0] picsr: PIC status register.
     wire picmr_sel: PIC mask register select.
     wire picsr_sel: PIC status register select.
-    wire [19:0] um_ints: Um ints.
+    wire [19:0] um_ints: Unmasked interrupt vector; computed as pic_int & {picmr, 2'b11}
     reg [31:0] spr_dat_o: SPR data output.

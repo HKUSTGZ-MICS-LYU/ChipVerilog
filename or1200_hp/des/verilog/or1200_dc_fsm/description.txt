@@ -11,7 +11,7 @@ and generates the control signals that drive the data RAM, tag update logic, and
 
 Description:
 
-The module controls data-cache refill, write-back, and miss-handling state transitions for memory-side transactions.
+The module controls data-cache refill, write-through store handling, and miss-handling state transitions for memory-side transactions.
 
 
 This module is the main control state machine of the OR1200 data cache. It is responsible for determining hit/miss when the CPU initiates data access, controlling external bus reading and writing, driving cache RAM write enable, organizing full row backfill, and generating first hit response, first miss response and error indication to the upstream LSU. All states are updated on the rising edge of clk, rst is an asynchronous reset; when reset, the state machine returns to IDLE, and the save address saved_addr_r, row count cnt, hit judgment flag hitmiss_eval, load/store mode and cache_inhibit flag are all cleared.
@@ -20,7 +20,7 @@ In IDLE state, new requests are only received when dc_en=1 and dcqmem_cycstb_i=1
 
 The CSTORE state is used to process write requests, which is semantically a write-through process. If the request is revoked in advance, the external write returns an error, or the access is to a cache-inhibited area and the external write has been completed, IDLE will be returned directly. If OR1200_DC_STORE_REFILL is enabled and the external first write has been completed after the write miss, you can transfer to SREFILL4 to continue reading the cache line from the outside and fill it into the local RAM; otherwise, return directly to IDLE after the external write is completed. first_store_hit_ack is valid when the CSTORE state, tag hit, external write is completed and is not cache-inhibited, and is used to simultaneously confirm the LSU and update the local dcram by byte select. LREFILL3 and optional SREFILL4 are both linear backfill states: each time a biudata_valid is received, if cnt is non-zero, cnt is decremented and the word offset of saved_addr is increased by 1; after the last word is written, it returns to IDLE and the load flag is cleared.
 
-In terms of combined output, biu_read is valid when "hit/miss determination is being made and it is determined to be a miss" or "the entire row backfill load state has been entered"; biu_write is valid in store mode. dc_addr takes start_addr during the hit/miss determination phase, and takes saved_addr during subsequent external continuous reading and writing, so the external bus address will increase sequentially with the backfill process. dcram_we consists of two types of conditions: when reading miss backfill, all 4 bytes are written under biudata_valid and not cache-inhibit; when writing hit and the external write response arrives, only partial bytes are written to the hit word according to dcqmem_sel_i. tag_we is only set during the backfill read process, when valid external data is received and is not cache-inhibited, and is used to write to the tag RAM during the completion of the full row load. first_hit_ack, first_miss_ack and first_miss_err respectively distinguish three ending conditions upstream: "hit direct completion", "miss first word completion" and "miss/pass-through access error". Burst is 1 after the first determination of a read miss and in the subsequent backfill state, which is used to drive the external bus to use cache line backfill burst access.
+In terms of combined output, biu_read is asserted during miss detection or while continuing a refill load sequence; biu_write is valid in store mode. dc_addr takes start_addr during the hit/miss determination phase, and takes saved_addr during subsequent external continuous reading and writing, so the external bus address will increase sequentially with the backfill process. dcram_we consists of two types of conditions: when reading miss backfill, all 4 bytes are written under biudata_valid and not cache-inhibit; when writing hit and the external write response arrives, only partial bytes are written to the hit word according to dcqmem_sel_i. tag_we is only set during the backfill read process, when valid external data is received and is not cache-inhibited, and is used to write to the tag RAM during the completion of the full row load. first_hit_ack, first_miss_ack and first_miss_err respectively distinguish three ending conditions upstream: "hit direct completion", "miss first word completion" and "miss/pass-through access error". Burst is 1 after the first determination of a read miss and in the subsequent backfill state, which is used to drive the external bus to use cache line backfill burst access.
 
 module or1200_dc_fsm(
     // Clock and reset
@@ -74,10 +74,10 @@ Output port:
     - dc_addr[31:0]: Address currently driven by the data-cache controller toward RAM/BIU.
 Internal reg/wire signals:
     reg [31:0] saved_addr_r: One-cycle registered copy of the saved address.
-    reg [2:0] state: State.
-    reg [2:0] cnt: Count counter.
+    reg [2:0] state: Current FSM state register.
+    reg [2:0] cnt: Remaining-word counter used during cache-line refill.
     reg hitmiss_eval: Hit/miss evaluation flag.
-    reg store: Store.
+    reg store: Indicates the current transaction is a store operation.
     reg load: Load flag.
     reg cache_inhibit: Cache inhibit.
     wire first_store_hit_ack: First store hit acknowledge.

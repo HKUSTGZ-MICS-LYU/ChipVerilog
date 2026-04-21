@@ -26,7 +26,7 @@ When IMMU is enabled, qmemimmu_cycstb_o must only be asserted when translation s
 icpu_rty_o is asserted either from the downstream retry input or while an ITLB SPR access is in progress with IMMU enabled. This means the CPU front end sees the MMU itself as a retry source when TLB maintenance temporarily blocks fetch progression.
 
 5.3 Address output
-qmemimmu_adr_o is either the translated {ppn, page offset} or the incoming address, depending on whether IMMU is enabled and whether translation results are valid.
+qmemimmu_adr_o is `{itlb_ppn, icpu_adr_i[12:0]}` when `itlb_done` is true; otherwise it is `{icpu_vpn_r, icpu_adr_i[12:0]}`. In the OR1200_NO_IMMU configuration, it is simply `icpu_adr_i`.
 
 6. Error and tag generation
 The top block generates CPU-visible tags for instruction translation failures.
@@ -42,7 +42,7 @@ Instruction fetch permission depends on current privilege mode:
 If the selected execute permission is absent after a valid translation, the module raises a page fault.
 
 8. Cache inhibit propagation
-When translation succeeds, qmemimmu_ci_o must reflect the ci attribute stored in the ITLB entry. This allows instruction-cache logic to bypass cacheable behavior on pages marked cache-inhibited.
+In this implementation, 1qmemimmu_ci_o1 is forced to `OR1200_IMMU_CI`; the `ci` bit returned by the ITLB is intentionally not propagated to avoid an asynchronous combinational loop.
 
 9. Summary
 or1200_immu_top.v is the instruction-fetch translation front end. It adds ITLB-based address translation, execute-permission checking, retry management during TLB access, and cache-attribute propagation while still supporting a transparent no-IMMU build mode.
