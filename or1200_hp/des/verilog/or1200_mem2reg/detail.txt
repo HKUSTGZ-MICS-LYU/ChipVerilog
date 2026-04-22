@@ -9,7 +9,7 @@ The implementation may support additional encodings, but these behaviors are man
 
 2. Alignment and byte ordering
 The original design assumes a fixed byte-lane ordering consistent with dcpu_sel_o generation in the LSU and with OR1200 memory organization. The selection cases show that addr = 2'b00 maps the returned most-significant byte memdata[31:24] to the addressed byte, addr = 2'b01 maps memdata[23:16], and so on. A rewrite must preserve this mapping.
-
+This reflects the big-endian byte ordering used by OR1200.
 3. Byte-load behavior
 3.1 LBZ
 Select the addressed byte and zero extend it to 32 bits.

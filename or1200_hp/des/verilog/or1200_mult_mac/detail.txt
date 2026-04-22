@@ -8,21 +8,21 @@
 - Division support is optional under compile-time defines.
 - The divider reuses the registered product register as a shift/subtract working register.
 - On DIV/DIVU start, the module loads the dividend into the working register and initializes a 32-step counter.
-- Each cycle performs a subtract/shift decision using the divisor and the upper half of the working register.
+- Each cycle computes `div_tmp = mul_prod_r[63:32] - y` and updates the working register with a shift/subtract step according to the subtraction result.
 - For signed divide, the final quotient sign is corrected using operand signs.
-- Division progress contributes to mac_stall_r so the core can hold dependent operations until the quotient is ready.
-
+- The divider activity (div_cntr != 0) contributes to mac_stall_r to stall the pipeline until the quotient is ready.
 3. Result-selection behavior
 - For DIV: output quotient, sign-corrected when required.
 - For DIVU: output quotient directly.
 - For MUL: output lower 32 bits of the registered product.
-- Otherwise: output the low 32 bits of the MAC accumulator, or a configured shifted window when OR1200_MAC_SHIFTBY is enabled.
+- Otherwise: output `mac_r[31:0]`, or a shifted window of the MAC accumulator when OR1200_MAC_SHIFTBY is enabled.
 
 4. MAC pipeline behavior
 - mac_op is delayed through three sequential registers (mac_op_r1/r2/r3) to align control with the multiplier pipeline latency.
 - When delayed mac_op equals MAC, the 64-bit accumulator mac_r is incremented by mul_prod_r.
 - When delayed mac_op equals MSB, the accumulator is decremented by mul_prod_r.
 - When macrc_op is executed and EX is not frozen, the accumulator is cleared after its value has been consumed.
+- SPR write operations (spr_maclo_we / spr_machi_we) have priority over MAC accumulation updates.
 
 5. SPR behavior
 - The accumulator is exposed as two 32-bit halves through SPR readback.
@@ -30,8 +30,8 @@
 - spr_addr selects whether the low or high half is accessed.
 
 6. Stall behavior
-- mac_stall_r is asserted when an l.macrc in ID must wait for outstanding MAC operations still in the multiplier pipeline.
-- mac_stall_r is also asserted while the optional divider is busy.
+- mac_stall_r is asserted when MAC operations are still pending in the pipeline and a MAC result read (id_macrc_op) is requested.
+- mac_stall_r is also asserted when the divider is active (div_cntr != 0).
 - This output is architectural pipeline flow control, not merely a local ready signal.
 
 7. Required functional guarantees

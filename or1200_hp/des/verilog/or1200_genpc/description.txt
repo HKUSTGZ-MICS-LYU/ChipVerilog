@@ -7,7 +7,6 @@ This block is the only place in the provided file set that decides the next inst
 
 Description:
 
-The module computes next program-counter values for sequential flow, branches, jumps, and exception vectors.
 
 
 This module is the program counter generation and instruction fetch address initiating unit of OR1200. It is responsible for generating the next instruction address based on sequential execution, branch/jump, abnormal start, abnormal return and software write PC request, and updating the internal PC register pcreg at the appropriate time. The module uses the rising edge of clk to update pcreg and a single-shot genpc_refetch_r, rst asynchronous reset; after reset, pcreg is initialized to the value of "reset exception vector address minus 4" and then shifted right by 2, so the next normal update cycle will push the PC to the real reset entry. except_prefix affects the selection of high address prefixes for this reset vector and subsequent exception vectors.
@@ -78,6 +77,6 @@ Output port:
     - taken: Indicates whether the selected branch operation changes control flow.
 Internal reg/wire signals:
     reg [31:2] pcreg: Registered program-counter value in word address form.
-    reg [31:0] pc: Next fetch address selected by the PC-generation logic.
+    reg [31:0] pc: Combinational next fetch address selected by the PC-generation logic.
     reg taken: Branch-taken result for the current control-flow operation.
     reg genpc_refetch_r: One-cycle registered copy of `genpc_refetch`.

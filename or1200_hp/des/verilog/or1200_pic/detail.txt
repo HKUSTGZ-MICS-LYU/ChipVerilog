@@ -1,21 +1,21 @@
 1. PICMR semantics
 - Bits corresponding to interrupt sources determine whether each input contributes to the processor interrupt.
 - Lower interrupt bits are forced enabled in the mask composition used by this design ({picmr, 2'b11}).
-- On reset, PICMR initializes to all ones in implemented configurations, meaning interrupts are unmasked by default.
+- On reset, PICMR initializes to {1'b1, {OR1200_PIC_INTS-3{1'b0}}} in implemented configurations.
 
 2. PICSR semantics
-- PICSR holds or reflects pending interrupt status.
+- PICSR accumulates pending unmasked interrupts as picsr <= picsr | um_ints and may be updated by software writes when implemented.
 - In some compile configurations it is a real register written by software; in others it directly mirrors input lines.
 - Readback shall present the currently architecturally defined view.
 
 3. Interrupt-generation behavior
-- Unmasked interrupts are computed as pic_int AND mask.
+- Unmasked interrupts are computed as um_ints = pic_int & {picmr, 2'b11}.
 - intr is asserted when any unmasked interrupt is active.
 - pic_wakeup is asserted whenever intr is asserted.
 
 4. SPR read/write behavior
 - SPR address decoding selects between PICMR and PICSR offsets.
-- Writes update the selected register when the relevant implementation option exists.
+- Writes to PICSR update it as picsr <= spr_dat_i[19:0] | um_ints; writes to PICMR directly load spr_dat_i[19:2].
 - Reads return the selected register value, with unused upper bits optionally zero-filled.
 
 5. Disabled-feature behavior

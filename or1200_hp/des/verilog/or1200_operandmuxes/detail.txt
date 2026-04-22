@@ -14,17 +14,17 @@ sel_b chooses between:
 - WB forwarding value
 
 2. Combinational mux layer
-The module computes muxed_a and muxed_b combinationally from sel_a/sel_b and the input sources. These muxes are straightforward priority-free case statements based on the encoded select values defined in or1200_defines.v.
+The module computes muxed_a and muxed_b combinationally from sel_a/sel_b and the input sources. These muxes are combinational casex statements driven solely by the encoded select signals (sel_a, sel_b) without additional priority logic.
 
 3. Registered operand layer
 The outputs operand_a and operand_b are registers updated on the clock edge. This means the execution stage consumes stable registered operands rather than purely combinational mux outputs.
 
 4. Freeze-related save behavior
 The subtle feature of this module is the saved_a/saved_b logic.
-- On reset, operands are cleared and saved flags are cleared.
+- On reset, operand_a and operand_b are cleared to zero, and saved_a/saved_b are cleared and saved flags are cleared.
 - If EX is not frozen but ID is frozen and the corresponding saved flag is not yet set, the module captures the current muxed operand into operand_a/operand_b and sets saved_a/saved_b.
 - If EX is not frozen and the saved flag is not set, the module simply updates the operand register from the mux output.
-- When EX is not frozen and ID is no longer frozen, the saved flag clears.
+- When !ex_freeze && !id_freeze, the corresponding saved flag is cleared.
 This ensures that if decode is frozen while execute is still allowed to advance, the operand presented to EX is captured exactly once and not overwritten by changing upstream sources.
 
 5. Required observable behavior

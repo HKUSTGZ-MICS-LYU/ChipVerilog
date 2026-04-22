@@ -5,10 +5,11 @@ This module implements optional embedded memory handling (“QMEM”). The sourc
 
 Description:
 
-The module implements the OR1200 QMEM local-memory interface path for instruction/data accesses outside cached Wishbone flow.
 
 
-This module implements the top-level on-chip fast memory (QMEM) of OR1200, which is used to complete access directly from the local RAM when the instruction access path and data access path hit the on-chip embedded RAM address window; when the QMEM address range is missed, the request is bypassed to the instruction Cache/DC path. The module performs address hit judgment on the command side and data side at the same time, and generates local response `qmem_iack/qmem_dack` through a small arbitration state machine.
+This module implements the top-level on-chip fast memory (QMEM) of OR1200, which is used to complete access directly from the local RAM when the instruction access path and data access path hit the on-chip embedded RAM address window; when the QMEM address range is missed, the request is bypassed to the instruction Cache/DC path. The module performs address hit judgment on the command side and data side at the same time, and generates local response qmem_iack/qmem_dack through a priority-based FSM that re-evaluates requests every cycle.
+
+This priority is re-evaluated every cycle rather than fixed per transaction.
 
 The QMEM interface is split into two groups: one group connects IMMU/ICPU and IC, and the other group connects DMMU/DCPU and DC. `qmemimmu_*` and `qmemdmmu_*` represent requests from the upper-layer address translation, `icqmem_*` and `dcqmem_*` are bypass interfaces sent to the downstream Cache. When QMEM implementation is enabled, the module first calculates `iaddr_qmem_hit` and `daddr_qmem_hit` respectively, that is, whether the current instruction address or data address falls into the predefined QMEM address window. When a hit occurs, the access on this side is no longer sent to the IC/DC, but is completed by the on-chip RAM; when a miss occurs, all addresses, controls, data and responses are transparently transmitted to the IC/DC as they are.
 
@@ -135,9 +136,9 @@ Output port:
     - dcqmem_tag_o[3:0]: Tag field carried on the data-cache/QMEM interface.
     - dcqmem_dat_o[31:0]: Data bus for the data-cache/QMEM interface.
 Internal reg/wire signals:
-    wire iaddr_qmem_hit: Iaddr QMEM hit.
-    wire daddr_qmem_hit: Daddr QMEM hit.
-    reg [2:0] state: State.
+    wire iaddr_qmem_hit: Asserted when the instruction address matches the configured QMEM instruction window.
+    wire daddr_qmem_hit: Asserted when the data address matches the configured QMEM data window.
+    reg [2:0] state: Current QMEM arbiter FSM state register.
     reg qmem_dack: QMEM dack.
     reg qmem_iack: QMEM iack.
     wire [31:0] qmem_di: QMEM di.

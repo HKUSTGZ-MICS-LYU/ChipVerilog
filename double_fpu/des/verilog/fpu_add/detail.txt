@@ -1,28 +1,35 @@
 1. Details
-- The module implements double-precision floating-point addition through exponent alignment, significand accumulation, and post-add normalization.
+- The module implements double-precision floating-point addition through exponent alignment, significand accumulation, and post-add normalization, including correction at the denormalized-to-normalized boundary.
 - `fpu_double` contains the instantiations of the other 6 modules, which are 6 separate source files for the 4 operations (add, subtract, multiply, divide), the rounding module, and the exceptions module.
-- The inputs to `fpu_round` from the previous stage are `sign` (1 bit), `mantissa_term` (56 bits), and `exponent_term` (12 bits).
+- The inputs to `fpu_round` from the previous stage are `sign` (1 bit), `mantissa_term` (56 bits), and `exponent_term` (11 bits). [Note: verify against fpu_round.v port declaration; earlier drafts incorrectly stated 12 bits.]
 - The module `fpu_add` outputs an intermediate floating-point representation because the result of the addition operation still needs to go through the rounding stage and then the exceptions stage.
-- The implementation is written as a single clocked pipeline block. Each step is stored in registers rather than being purely combinational. Because nonblocking assignments are used throughout, the internal operations form a staged pipeline over successive enabled clock cycles.
-
+- The implementation is written as a single clocked always block using nonblocking assignments throughout. Because nonblocking assignments sample the right-hand side from the current register values and update all registers simultaneously at the clock edge, each line of the always block reads from the previous cycle's registered state. The datapath therefore forms a multi-cycle pipeline: a new set of inputs takes multiple enabled clock cycles to propagate through all stages to the outputs.
+ 
 2. Interpretation of Inputs
 - Each operand is interpreted as:
 - `sign`: bit 63.
 - `exponent`: bits 62:52.
 - `mantissa`: bits 51:0.
-
+ 
 3. Normalization and Special-Case Handling
-- For normalized numbers, an implied leading 1 is added internally.
+- For normalized numbers, an implied leading 1 is added internally (via !large_is_denorm and !small_is_denorm in the large_add and small_add construction).
 - For denormalized numbers, the hidden bit is 0.
+- When the large operand is normalized and the small operand is denormalized (large_norm_small_denorm = 1), the effective alignment exponent difference is reduced by 1 to account for the implicit-1 gap between the two formats.
+- When the large operand is denormalized and the addition result shows a leading 1 in bit 54 of sum_2 (sum_leading_one = 1), the denorm_to_norm flag is asserted and the output exponent is incremented by 1 to move the result into the normalized exponent range.
 - The module does not directly handle NaN and infinity as top-level exceptions; those are resolved later by the exception block.
-
+ 
 4. Output Encoding
 - The module outputs a 56-bit mantissa bundle with this structure:
-- bit 55: overflow guard bit reserved for a possible carry from addition.
+- bit 55: overflow guard bit reserved for a possible carry from addition (0 if no carry).
 - bit 54: leading integer bit after normalization.
 - bits 53:2: 52-bit mantissa field candidate.
 - bits 1:0: two low-order remainder bits passed to the rounding and inexact-detection logic.
-
+- Sticky information is preserved through the small_fraction_enable mechanism rather than an explicit OR-reduction of all shifted-out bits. If the small operand is nonzero but its aligned shift result is all zero (all significant bits shifted out), small_shift_3 is forced to the constant {55'b0, 1'b1}, setting the low bit to 1 to indicate that non-zero bits were lost during alignment.
+ 
 5. Sign Output
 - The sign output is simply `opa[63]`.
-- This is correct because this module is only used in cases where the effective result sign equals the sign of operand A after top-level routing.
+- This is correct because this module is only used in cases where the effective result sign equals the sign of operand A after top-level routing. The module is not a general-purpose signed adder.
+ 
+6. Exponent Alignment Detail
+- The smaller operand is right-shifted by the effective alignment distance, which is derived from the exponent difference and the normalized/denormalized status of each operand. When the effective alignment distance is zero, no shift occurs and both mantissas are added directly. This distance is not simply exponent_large - exponent_small; it also subtracts large_norm_small_denorm to account for the implicit-1 representation difference at the normalized/denormalized boundary.
+ 

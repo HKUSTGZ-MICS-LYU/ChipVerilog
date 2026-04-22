@@ -27,7 +27,7 @@
 5.1 Round to nearest
 - Trigger when `round_mode == 2'b00` and `mantissa_term[1] == 1`.
 - This implementation rounds to nearest based only on the first discarded bit.
-- It does not implement a tie-to-even check using the sticky bit or the current mantissa LSB.
+- It does not implement tie-to-even; rounding depends only on mantissa_term[1].
 
 5.2 Round toward positive infinity
 - Trigger when `round_mode == 2'b10`, `sign_term == 0`, and at least one of `mantissa_term[1:0]` is 1.
@@ -66,7 +66,7 @@
 
 8. Required Sequential Behavior
 - Reset clears all internal registers and outputs.
-- In all non-reset cycles, the module computes and registers a new rounded result regardless of the `enable` input.
+- In all non-reset cycles, the module ignores enable and updates every cycle.
 - A functionally equivalent implementation must preserve this behavior because downstream timing in the original design assumes the rounder is always updating.
 
 9. Functional Corner Cases

@@ -1,5 +1,5 @@
 
-Module `or1200_dc_tag` implements data-cache tag storage with valid/dirty status handling for hit/miss evaluation.
+Module or1200_dc_tag implements data-cache tag storage with valid-bit handling for hit/miss evaluation.
 
 This module implements the tag array of the OR1200 data cache. It stores, per cache index:
 - the address tag bits
@@ -9,10 +9,9 @@ The cache top module uses this information to decide whether the current access 
 
 Description:
 
-The module implements data-cache tag storage with valid/dirty status handling for hit/miss evaluation.
 
 
-This module is the tag RAM wrapper of the OR1200 data cache and is used to save and read out the tag value and valid bit of each cache line by index. The interface includes clock clk, reset rst, index address addr, access enable en, single-bit write enable we, write data datain, and read tag and tag_v; it also provides test chain signals when BIST is enabled. The module itself has no state machine, and the timing and read and write rules of tag/tag_v are completely implemented by the underlying RAM macro.
+This module is the tag RAM wrapper of the OR1200 data cache and is used to save and read out the tag value and valid bit of each cache line by index. The interface includes clock clk, reset rst, index address addr, access enable en, single-bit write enable we, write data datain, and read tag and tag_v; it also provides test chain signals when BIST is enabled. The module itself has no state machine, and the timing and read/write behavior follow the underlying RAM macro implementation.
 
 When OR1200_NO_DC is defined, the data cache tag storage is turned off, the tag output by the module is always all 0, and tag_v is always 0; at this time, all cache lines are considered invalid, and the BIST output is directly transparently input when needed. If data cache is enabled, the module selects a specific storage implementation based on the target platform. Under the Virtex path, the module instantiates the FPGA-specific tag RAM, reads the lowest bit in the vector doutb as the valid bit tag_v, and the remaining high bits as tag. Under the common path, the module instantiates a single-port RAM macro corresponding to the cache size, and the read data is returned in the form of {tag, tag_v}, so the tag and valid bits must be packed when writing to datain.
 

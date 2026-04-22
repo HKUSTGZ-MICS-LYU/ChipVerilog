@@ -58,12 +58,12 @@ A compatible implementation shall preserve this functional partitioning even if 
 3. Functional Specification
 3.1 Status-derived enables
 The module shall derive:
-- dc_en from SR[DCE]
-- ic_en from SR[ICE]
-- dmmu_en from SR[DME]
-- immu_en from SR[IME]
-- supv from SR[SM]
-- exception-prefix information from SR[EPH]
+- dc_en from SR[3] (DCE)
+- ic_en from SR[4] (ICE)
+- dmmu_en from SR[5] (DME)
+- immu_en from SR[6] (IME)
+- supv from SR[0] (SM)
+- exception-prefix information from SR[14] (EPH)
 
 3.2 Fetch and next-PC control
 The module shall connect branch_op, branch offsets, exception type/start, and refetch/flush control into the PC generation and instruction-fetch path.

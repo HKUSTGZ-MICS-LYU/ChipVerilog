@@ -6,7 +6,7 @@ fpu_double.v is the orchestration layer of the core. It latches a command, maps 
 Description:
 This module is the top-level double-precision floating-point unit. It accepts two 64-bit IEEE-754 double-precision operands and performs addition, subtraction, multiplication, or division, producing a 64-bit floating-point result together with ready, underflow, overflow, inexact, exception, and invalid. The enable input starts an operation. The rounding mode is selected by rmode (00 = nearest, 01 = zero, 10 = positive infinity, 11 = negative infinity), and the operation is selected by fpu_op (000 = add, 001 = subtract, 010 = multiply, 011 = divide) .
 The top level instantiates the add, subtract, multiply, divide, rounding, and exceptions modules. For add/subtract operations, the top level does not always use the arithmetic unit named by fpu_op directly. If the requested operation is addition and the operands have opposite signs, the operation is routed to the subtraction module. Likewise, if the requested operation is subtraction and the operand signs imply magnitude addition, the operation is routed to the addition module. This separates sign handling from magnitude arithmetic and ensures the correct final sign. Multiplication and division are sent directly to their corresponding modules .
-A fixed-latency ready counter is maintained in the top-level controller. The counter starts one clock cycle after enable goes high and counts to the cycle budget required by the selected operation: 20 cycles for addition, 21 for subtraction, 24 for multiplication, and 71 for division. When the counter reaches the final count, ready goes high and the output becomes valid. The module therefore behaves as a fixed-latency control wrapper rather than a variable-latency handshake datapath .
+A fixed-latency ready counter is maintained in the top-level controller. The latency counter is reset on the start pulse (enable_reg_1) and then increments each cycle until completion required by the selected operation: 20 cycles for addition, 21 for subtraction, 24 for multiplication, and 71 for division. When the counter reaches the final count, ready goes high and the output becomes valid. The module therefore behaves as a fixed-latency control wrapper rather than a variable-latency handshake datapath .
 The arithmetic submodules do not directly produce the final 64-bit IEEE-754 result. Instead, they generate an intermediate sign, extended exponent, and extended mantissa. The top level selects the proper intermediate result according to fpu_op, sends it to the rounding stage, and then chooses between the rounded result and the exception-handled result. If the exceptions module indicates a special case, the final output is overridden by the exception result; otherwise the normal rounded result is used. Reset has highest priority: when rst is asserted, internal operand registers, control registers, counters, outputs, and flags are cleared, and ready is deasserted.
 
 
@@ -17,7 +17,7 @@ overflow, inexact, exception, invalid);
 Input ports:
     input clk: Clock signal that defines sequential update timing for this logic.
     input rst: Reset signal that initializes state elements to known values.
-    input enable: Input signal consumed by the module control or datapath logic.
+    input enable: Rising-edge start signal; a new operation is latched only when enable transitions from 0 to 1.
     input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
         - 2'b00 = round to nearest.
         - 2'b01 = round to zero.
@@ -29,17 +29,16 @@ Input ports:
         - 3'b010 = multiplication.
         - 3'b011 = division.
         - other codes are treated as unused.
-    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+    input [63:0] opa, opb: Two 64-bit IEEE-754 double-precision input operands.
 
 Output port:
     output [63:0] out: Output signal driven by the module toward surrounding logic.
-    output ready: Handshake signal that marks transfer validity, readiness, or completion.
+    output ready: Asserted when the fixed-latency operation completes and the result is valid.
     output underflow: Output signal driven by the module toward surrounding logic.
     output overflow: Output signal driven by the module toward surrounding logic.
     output inexact: Output signal driven by the module toward surrounding logic.
     output exception: Output signal driven by the module toward surrounding logic.
-    output invalid: Handshake signal that marks transfer validity, readiness, or completion.
-
+    output invalid: Asserted when an IEEE-754 invalid operation is detected.
 Internal reg/wire signals:
     reg [63:0] opa_reg: Registered operand A.
     reg [63:0] opb_reg: Registered operand B.

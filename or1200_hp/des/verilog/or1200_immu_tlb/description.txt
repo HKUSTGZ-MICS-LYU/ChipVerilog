@@ -5,7 +5,7 @@ This module is the instruction-side translation lookaside buffer (ITLB). It stor
 
 Description:
 
-The module performs instruction-side TLB translation and protection checking for virtual instruction fetches.
+The module performs instruction-side TLB translation and outputs permission attributes for virtual instruction fetches.
 
 
 This module implements the ITLB storage and hit decoding logic of the OR1200 instruction MMU. It receives the virtual instruction address vaddr and enable tlb_en, and outputs the hit flag hit, physical page number ppn, user mode/supervisor mode execution permission bit uxe/sxe, and cache inhibit bit ci; it also supports reading and writing TLB entries through the SPR interface. The module does not explicitly control the state machine, the hit and output fields are combined results, the contents of the table entries are saved in the clock-driven underlying RAM, and rst is only passed to these RAM instances.
@@ -47,7 +47,7 @@ module or1200_immu_tlb(
 
 Input ports:
     - clk: Primary clock; sequential state in this module updates on its rising edge.
-    - rst: Reset input that returns local state elements to their defined reset values.
+    - rst: Reset input passed to underlying RAM instances; this module itself has no explicit state registers.
     - tlb_en: Enables the TLB lookup for the current access.
     - vaddr[31:0]: Virtual address presented to the TLB.
     - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
@@ -57,7 +57,7 @@ Input ports:
     - spr_addr[31:0]: SPR address used for register decode.
     - spr_dat_i[31:0]: Write data from the SPR/control path.
 Output port:
-    - hit: Hit indication for the current TLB/cache lookup.
+    - hit: Hit indication for the current TLB lookup (vpn match with valid bit set).
     - ppn[31:13]: Physical page number returned by the TLB.
     - uxe: User-mode execute permission bit returned by the ITLB.
     - sxe: Supervisor-mode execute permission bit returned by the ITLB.

@@ -5,9 +5,8 @@ This module is the operand-selection block for the execution stage. The source d
 
 Description:
 
-The module selects ALU operand sources from register file data, immediates, and forwarding paths.
 
-This module implements two operand registers at the execution level and their forward/immediate selection logic. It is located between the register file read port and the execution stage. It is responsible for selecting the two operands actually used by this instruction from the register file output, execution level forward results, write-back level forward results or immediate data according to the selection signals `sel_a` and `sel_b`, and saves the selected value when the pipeline is frozen to prevent the execution level operands from being destroyed due to changes in the read port during the ID level pause.
+This module implements two operand registers at the execution level and their forward/immediate selection logic. It is located between the register file read port and the execution stage. It is responsible for selecting the two operands actually used by this instruction from the register file output, execution level forward results, write-back level forward results or immediate data according to the selection signals `sel_a` and `sel_b`, and captures the selected value only when !ex_freeze && id_freeze && !saved_x to prevent the execution level operands from being destroyed due to changes in the read port during the ID level pause.
 
 The module updates `operand_a`, `operand_b` and auxiliary flags `saved_a`, `saved_b` on the rising edge of `clk` with an asynchronous high reset `rst`. After reset, the two operand registers are cleared and the save flag is cleared. Under normal circumstances, as long as the execution level is not frozen `!ex_freeze` and the corresponding operand is not in the "saved for release" state, the combined selection result `muxed_a/muxed_b` will be loaded into `operand_a/operand_b`. If a scenario occurs where "the execution level can advance, but the ID level is frozen and the operand has not been saved", the module will load the current combination result into the register at this time and set `saved_a/saved_b` to lock the operand of this instruction. Later, when the ID level freeze is lifted and the execution level can continue to advance, the save flag is cleared, allowing new operands to be loaded.
 
@@ -56,5 +55,5 @@ Internal reg/wire signals:
     reg [31:0] operand_b: Selected operand B value.
     reg [31:0] muxed_a: Muxed operand-A value.
     reg [31:0] muxed_b: Muxed operand-B value.
-    reg saved_a: Saved A.
-    reg saved_b: Saved B.
+    reg saved_a: Flag indicating operand A has been captured and held during an id_freeze/ex_advance window.
+    reg saved_b: Flag indicating operand B has been captured and held during an id_freeze/ex_advance window.

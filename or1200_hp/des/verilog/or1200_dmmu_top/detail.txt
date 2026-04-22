@@ -26,7 +26,7 @@ The module classifies translation failures locally.
 This means the DMMU is logically upstream of the data-cache/bus error path.
 
 2.4 Translation timing and dtlb_done
-The code contains a one-cycle delayed flag dtlb_done. It is asserted one clock after a new address when dtlb_en is active. This delay models the DTLB lookup timing. A reimplementation must preserve the functional effect: request forwarding and some permission/tag decisions are delayed until translation results are valid.
+The code contains a one-cycle delayed flag dtlb_done. It is asserted one clock after a new address when dtlb_en is active. This delay models the DTLB lookup latency and aligns downstream request/control signals. A reimplementation must preserve the functional effect: request forwarding and some permission/tag decisions are delayed until translation results are valid.
 
 2.5 Request gating
 qmemdmmu_cycstb_o is cut off when translation fails. The module comments say: “Cut transfer if something goes wrong with translation.” When dc_en is low but dmmu_en is high, forwarding explicitly waits for dtlb_done. Otherwise request gating still prevents forwarding on miss or fault.

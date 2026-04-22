@@ -1,15 +1,14 @@
 
 Module `or1200_mult_mac` executes multiply and multiply-accumulate operations and manages associated result/control state.
 
-This module implements the top-level multiplier, divider, and multiply-accumulate datapath. The source file states: “Multiplier is 32x32 however multiply instructions only use lower 32 bits of the result. MAC is 32x32=64+64.” It also exposes the MAC accumulator via SPR access.
+This module implements the multiplier, optional divider, and multiply-accumulate datapath with shared hardware resources. The source file states: “Multiplier is 32x32 however multiply instructions only use lower 32 bits of the result. MAC is 32x32=64+64.” It also exposes the MAC accumulator via SPR access.
 
 Description:
 
 The module executes multiply and multiply-accumulate operations and manages associated result/control state.
 
-- Additionally, the CMLS (core multiplier level selector) signal is routed to the memories.
 
-This module implements the OR1200's multiplication, optional division, and multiply-accumulate/multiply-subtract-accumulate (MAC) datapaths and provides interface access to the MAC accumulation registers through SPR. It not only outputs the current ALU-related result `result` to the execution stage, but also blocks the pipeline through `mac_stall_r` when needed to ensure that multi-cycle MAC read or division operations are synchronized with the processor pipeline.
+This module implements the OR1200's multiplication, optional division, and multiply-accumulate/multiply-subtract-accumulate (MAC) datapaths and provides interface access to the MAC accumulation registers through SPR. It not only outputs the selected result from multiply, divide, or MAC datapath depending on `alu_op` to the execution stage, but also requests pipeline stall when MAC or division operations are not yet completed to ensure that multi-cycle MAC read or division operations are synchronized with the processor pipeline.
 
 The core timing status of the module includes multiplication/division result register `mul_prod_r`, MAC accumulation register `mac_r`, MAC operation pipeline register `mac_op_r1/r2/r3`, division busy and idle control `div_free` and optional division counter `div_cntr`. These registers are updated on the rising edge of `clk` with an asynchronous high reset of `rst`. After reset, the multiplication result and MAC register are cleared, the MAC operation pipeline is cleared, `div_free` is set to 1 to indicate that the divider is idle, and `div_cntr` is cleared. If MAC is implemented, `mac_r` can be written to the upper 32 bits or lower 32 bits respectively through `spr_cs & spr_write`, and the read operation returns the upper or lower halfword of `mac_r` according to the address bits in `spr_addr`.
 

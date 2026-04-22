@@ -7,14 +7,13 @@ Module name:
 Input ports:
     input clk: Clock signal that defines sequential update timing for this logic.
     input rst: Reset signal that initializes state elements to known values.
-    input enable: Input signal consumed by the module control or datapath logic.
-    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
-    input [63:0] opa, opb: Control signals that selects operation mode, command, or multiplexed path.
+    input enable: Active-high pipeline enable; all state updates occur only when asserted.
+    input [1:0] rmode: IEEE-754 rounding mode: 2'b00=nearest, 2'b01=zero, 2'b10=+inf, 2'b11=-inf.
+    input [63:0] opa, opb: IEEE-754 double-precision input operands.
 
 Output port:
-    output ready: Handshake signal that marks transfer validity, readiness, or completion.
-    output [63:0] outfp: Output signal driven by the module toward surrounding logic.
-
+    output ready: Asserted when the fixed-latency pipeline completes and the result is valid.
+    output [63:0] outfp: Final IEEE-754 multiplication result after normalization and rounding.
 Internal reg/wire signals:
     reg product_shift: Normalization shift flag for the product path.
     reg [1:0] rm_1: Stage-1 pipeline copy of the rounding mode.
@@ -126,7 +125,7 @@ Internal reg/wire signals:
     reg [33:0] product_f: Product f.
     reg [35:0] product_g: Product g.
     reg [28:0] product_h: Product h.
-    reg [28:0] product_i: Product input.
+    reg [28:0] product_i: Partial product i.
     reg [30:0] product_j: Product J.
     reg [41:0] sum_0: Stage-0 pipeline copy of the sum.
     reg [6:0] sum_0_2: Stage-2 pipeline copy of the sum 0.
@@ -195,7 +194,5 @@ Internal reg/wire signals:
 
 Implementation:
 - The module computes double-precision floating-point multiplication by forming the significand product, adjusting exponent/sign, and normalizing the result path.
-- rounding will be performed, with the least significant remainder bit calculated by performing an OR on any bits that were shifted out of the mantissa due to the difference in exponents.
-- The multiplication operation is performed in the module (fpu_mul) in the source file, (fpu_mul.v).
-- The mantissa of operand A and the leading '1' (for normalized numbers) are stored in the 53-bit register (mul_a).
-- The mantissa of operand B and the leading '1' (for normalized numbers) are stored in the 53-bit register (mul_b).
+- Rounding is applied based on guard and remainder bits of the product.
+- The mul_a and mul_b are 53-bit values storing the mantissa with implicit leading 1 for normalized inputs.

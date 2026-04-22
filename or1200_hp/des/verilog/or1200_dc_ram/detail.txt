@@ -6,11 +6,10 @@ The module shall provide one word of storage per indexed location in the data ca
 The 4-bit we bus shall independently control byte writes inside the 32-bit word, allowing byte, halfword, and word stores to update only the selected lanes.
 
 1.3 Enable behavior
-When en is deasserted, the RAM shall not perform an active write. Read-output behavior may follow the underlying RAM primitive convention, but the architectural wrapper assumes correct data when enabled.
+When en is deasserted, no write operation shall occur; read behavior follows the underlying RAM primitive. Read-output behavior may follow the underlying RAM primitive convention, but the architectural wrapper assumes correct data when enabled.
 
 1.4 Parameterization
-The width parameter dw defaults to OR1200_OPERAND_WIDTH.
-The address width aw defaults to OR1200_DCINDX.
+The data width is fixed to 32 bits and the address width is determined by the configured cache size (e.g., 11-bit index in this implementation).
 A compatible implementation shall preserve these architectural meanings.
 
 2. Physical Implementation Variants

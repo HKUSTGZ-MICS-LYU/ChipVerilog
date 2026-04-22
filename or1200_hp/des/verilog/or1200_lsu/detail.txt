@@ -1,5 +1,5 @@
 1. Effective address and request generation
-The effective address is always dcpu_adr_o = addrbase + addrofs.
+The effective address output is dcpu_adr_o = addrbase + addrofs.
 A data cycle is started when lsu_op is nonzero and none of the following suppressions apply:
 - du_stall
 - lsu_unstall (ack just arrived)
@@ -9,7 +9,7 @@ Thus dcpu_cycstb_o is the LSU operation-valid bit gated by debug, completion, an
 2. Operation type decoding
 - dcpu_we_o is taken from lsu_op[3], so stores are distinguished from loads by the top operation bit.
 - dcpu_tag_o is OR1200_DTAG_ND when a cycle is active, otherwise OR1200_DTAG_IDLE.
-The LSU therefore labels all normal accesses uniformly; special tags are injected later by the DMMU or bus fabric on error.
+The LSU therefore labels all normal accesses uniformly; this module only drives OR1200_DTAG_ND for active normal accesses and OR1200_DTAG_IDLE otherwise; downstream blocks may later return error-classifying tags on dcpu_tag_i.
 
 3. Byte-enable generation
 The module generates dcpu_sel_o from the operation and effective-address low bits.

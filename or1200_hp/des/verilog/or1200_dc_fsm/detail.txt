@@ -23,9 +23,10 @@ If a cacheable load misses:
 - the FSM shall save the requested address
 - initiate a BIU read burst
 - write incoming words into data RAM according to refill position
-- eventually write the tag valid/tag value when the line is complete
+- update the tag (valid/tag value) once the refill sequence completes
 - assert first_miss_ack when the requested data becomes available
 - assert burst during burst refill
+- The refill counter cnt is initialized to OR1200_DCLS-2 (for load refill) or OR1200_DCLS-1 (for store refill), confirming a cache line of OR1200_DCLS words.
 
 The state names indicate a 4-word cache line. The refill logic shall therefore advance through word positions of the line.
 

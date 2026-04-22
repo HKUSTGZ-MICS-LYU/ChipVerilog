@@ -20,7 +20,7 @@ In terms of combined decoding, the module directly generates the register file r
 
 In terms of timing decoding, the module latches if_insn to id_insn, id_insn to ex_insn, and ex_insn to wb_insn. In terms of priority, rst and flushpipe will clear these pipeline registers; for ex-level control registers, when the "ID is frozen but EX is not frozen" situation occurs, NOP will be inserted into EX to prevent old instructions from being executed repeatedly by mistake. rf_addrw is generated at the EX level and takes the destination register field id_insn[25:21] by default, but for link branches such as JR/BAL, it is forced to write to the link register r9; wb_rfaddrw saves another beat at the WB level for forward judgment. spr_addrimm is also generated from the ID instruction on the clock edge, where mfspr uses bits[15:0] and mtspr concatenates bits[25:21] with bits[10:0]. multicycle, sel_imm and imm_signextend are decoded by the current ID instruction type, where multicycle is mainly effective for specific ALU multi-cycle operations.
 
-Function control output includes: alu_op, mac_op, shrink_op, comp_op, lsu_op, branch_op, rfwb_op, cust5_op, cust5_limm, sig_syscall, sig_trap, except_illegal, rfe, etc. They are generated based on the instruction main opcode and some subfields, and are registered at the required pipeline level. except_illegal is registered at the EX level and will output 0 only for explicitly listed OR1200 supported instructions, and 1 for unrecognized or unimplemented instructions. id_macrc_op is used to identify the MAC result read operation formed by movhi+special bit combination at the ID level, and ex_macrc_op is its EX-level timing version. rfe is 1 on pre-branch operations or when formal branch_op is RFE, used to drive the exception return path.
+Function control output includes: alu_op, mac_op, shrot_op, comp_op, lsu_op, branch_op, rfwb_op, cust5_op, cust5_limm, sig_syscall, sig_trap, except_illegal, rfe, etc. They are generated based on the instruction main opcode and some subfields, and are registered at the required pipeline level. except_illegal is registered at the EX level and will output 0 only for explicitly listed OR1200 supported instructions, and 1 for unrecognized or unimplemented instructions. id_macrc_op is used to identify the MAC result read operation formed by movhi+special bit combination at the ID level, and ex_macrc_op is its EX-level timing version. rfe is 1 on pre-branch operations or when formal branch_op is RFE, used to drive the exception return path.
 
 For branch and delay slot control, the module gives branch_op and no_more_dslot. no_more_dslot is set when it is detected that the branch has been established and the current ID instruction is not empty, or the current branch type is RFE, to notify the instruction fetch/PC logic not to continue normal delay slot processing. id_void and ex_void detect specific NOP codes to indicate that the corresponding pipeline level is a no-op. force_dslot_fetch is hardwired to 0 in the current implementation, so no additional pull delay slot instructions are forced. On the whole, this module encodes all the main control semantics required by an OR1200 instruction in the pipeline, and ensures that these control signals are consistent with the instruction flow through reset, flush and freeze rules.
 
@@ -121,9 +121,9 @@ Internal reg/wire signals:
     reg [2:0] pre_branch_op: Pre branch operation.
     reg [2:0] branch_op: Branch operation select.
     reg [3:0] alu_op: ALU operation select.
-    reg [1:0] mac_op: Multiply-accumulate operation select.
+    reg [1:0] mac_op: MAC operation select (when OR1200_MAC_IMPLEMENTED is defined).
     reg ex_macrc_op: Execute-stage macrc operation.
-    wire [1:0] mac_op: Multiply-accumulate operation select.
+    wire [1:0] mac_op: Tied to OR1200_MACOP_NOP (when OR1200_MAC_IMPLEMENTED is not defined).
     wire ex_macrc_op: Execute-stage macrc operation.
     reg [1:0] shrot_op: Shift/rotate operation select.
     reg [31:0] id_insn: Decode-stage instruction.
@@ -139,7 +139,7 @@ Internal reg/wire signals:
     reg [3:0] lsu_op: Load/store unit operation select.
     reg [3:0] comp_op: Compare operation select.
     reg [1:0] multicycle: Multicycle-operation control.
-    reg imm_signextend: Immediate signextend.
+    reg imm_signextend: Selects sign extension (1) or zero extension (0) for immediate operands.
     reg [15:0] spr_addrimm: Immediate SPR address field.
     reg sig_syscall: Decoded system-call flag.
     reg sig_trap: Decoded trap flag.

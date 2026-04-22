@@ -5,8 +5,6 @@ This module is the instruction-cache finite-state machine. It controls cache-hit
 
 Description:
 
-The module controls instruction-cache refill and miss-handling state transitions for fetch-side memory requests.
-
 
 This module implements the instruction cache control state machine and is responsible for handling fetch hits, first word returns after misses, full line backfilling, and cache-inhibit accesses when the instruction cache is enabled. The core goal of the module is to generate control signals for the data RAM, Tag RAM and external bus based on the tag comparison results and the response/error returned by the external BIU after the CPU initiates an instruction fetch request, and return the first word response to the upper layer at the appropriate time.
 

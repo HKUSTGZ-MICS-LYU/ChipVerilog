@@ -1,5 +1,5 @@
 
-Module `or1200_dmmu_tlb` performs data-side TLB translation and permission checking from virtual addresses to physical mappings.
+Module `or1200_dmmu_tlb` performs data-side TLB translation and permission-bit extraction from virtual addresses to physical mappings.
 
 The file comment says “Data TLB.”
 This module implements one level of the OR1200 Data MMU lookup structure. It translates a virtual address into:
@@ -11,10 +11,8 @@ It also allows software/debug access to the TLB contents through the SPR interfa
 
 Description:
 
-The module performs data-side TLB translation and permission checking from virtual addresses to physical mappings.
 
-
-This module implements the data TLB memory bank and hit/permission decoding logic of the OR1200 data MMU. The module receives a data address translation request through vaddr and tlb_en, and outputs whether the hit is hit, the physical page number ppn, the user/supervisory state read and write permission bit uwe/ure/swe/sre, and the cache inhibit bit ci; at the same time, the SPR interface allows software to read and write the TLB match register and translate register. The module itself has no explicit always state machine, hits and outputs are combinational logic, saving of TLB entries is done by the underlying RAM macro on clock clk, rst is only used for these RAM instances.
+This module implements the data TLB memory bank and hit/permission decoding logic of the OR1200 data MMU. The module receives a data address translation request through vaddr and tlb_en, and outputs a hit indication, the physical page number ppn, the user/supervisory state read and write permission bit uwe/ure/swe/sre, and the cache inhibit bit ci; at the same time, the SPR interface allows software to read and write the TLB match register and translate register. The module itself contains no control FSM; translation logic is combinational, hits and outputs are combinational logic, TLB entries are stored in underlying RAM arrays clocked by clk, rst is only used for these RAM instances.
 
 The TLB is internally divided into two groups of storage: the match register stores the virtual page number vpn and the valid bit v, and the translate register stores the physical page number ppn, four access permission bits and the cache inhibit bit. tlb_mr_en/tlb_tr_en is pulled high in two situations: one is normal address translation tlb_en=1, and the other is the corresponding match/translate area is currently accessed through SPR. Write enable tlb_mr_we/tlb_tr_we is only 1 when spr_cs and spr_write are valid at the same time and the address points to the corresponding subarea, so ordinary address translation will not modify the TLB content. The index tlb_index used for storage takes the page table index bit of vaddr during normal translation, and takes the table entry index bit of spr_addr during SPR access.
 

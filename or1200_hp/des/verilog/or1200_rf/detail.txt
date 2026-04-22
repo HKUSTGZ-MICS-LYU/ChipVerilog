@@ -7,11 +7,12 @@
 2. Operand read behavior
 - dataa normally reflects read port A.
 - datab normally reflects read port B.
-- If the ID stage is frozen, the first observed read values are captured into temporary saved registers and then replayed until the freeze is released.
+- If id_freeze is asserted and the corresponding saved flag is not yet set, the current read value is captured into temporary saved registers and then replayed until the freeze is released.
 - This prevents operand changes caused by changing addresses or RAM timing while decode is stalled.
+- the saved value is cleared when id_freeze is deasserted
 
 3. Write behavior
-- rf_we is asserted for either a valid SPR write or a normal pipeline writeback write, provided writeback is not frozen.
+- rf_we is asserted as ((spr_valid & spr_write) | (we & ~wb_freeze)) & rf_we_allow & (supv | (|rf_addrw)).
 - A local rf_we_allow bit blocks writes during flushpipe conditions. It is updated when writeback is not frozen.
 - Normal writes are additionally qualified by supervision/zero-register rules via (supv | (|rf_addrw)).
 

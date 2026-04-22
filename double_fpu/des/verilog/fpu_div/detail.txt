@@ -54,6 +54,7 @@
 - `expon_final_1 = expon_term - exponent_b`.
 - If `exponent_b > expon_term`, then underflow has already occurred and the design records `expon_uf_1 = 1` and `expon_uf_term_1 = exponent_b - expon_term`.
 - Otherwise, `expon_uf_1 = 0` and `expon_uf_term_1 = 0`.
+- `expon_final_2 = expon_uf_1 ? 0 : expon_final_1`.
 
 6.2 Denormal operand corrections
 - For denormal inputs, the effective exponent must be corrected by the number of leading-zero shifts used to normalize the dividend and divisor significands.
@@ -98,7 +99,7 @@
 - `m_norm` is the OR of all bits in `expon_final_5`.
 - `remainder_6[55]` is the first discarded bit used as a rounding bit.
 - `rem_lsb` is the OR of `remainder_6[54:0]`, acting as a sticky bit.
-- Thus the 56-bit output contains a reserved leading zero, a normalized or denormal leading bit, 52 mantissa bits, a round bit, and a sticky bit.
+- Thus the 56-bit output contains a fixed leading zero inserted for alignment with the rounding stage format, a normalized or denormal leading bit, 52 mantissa bits, a round bit, and a sticky bit.
 
 8. Required Sequential Behavior
 - A functionally equivalent implementation must preserve these major sequential phases: decode and classify operands, compute denormal leading-zero shifts, delay enable through the launch pipeline, load `dividend_reg` and `divisor_reg`, initialize `count_out` to 53, generate one quotient bit per cycle, capture final remainder, compute exponent corrections, and assemble `mantissa_7` and `exponent_out`.

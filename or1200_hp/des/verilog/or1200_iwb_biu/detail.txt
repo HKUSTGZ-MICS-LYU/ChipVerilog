@@ -11,7 +11,7 @@ A conforming implementation must:
 When OR1200_REGISTERED_OUTPUTS is enabled, wb_adr_o, wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o, wb_dat_o and optional burst signals are registered on wb_clk_i. Otherwise they may be combinationally tied to the BIU inputs.
 
 2.2 Starting a transfer
-A transfer begins when biu_cyc_i and biu_stb_i are asserted and there is no completion/abort conflict. The module copies the current address, data, select, and write-enable values to the Wishbone side and raises wb_cyc_o/wb_stb_o.
+A transfer is issued when `biu_cyc_i & biu_stb_i` is asserted and not blocked by retry, repeated_access, or abort conditions and there is no completion/abort conflict. The module copies the current address, data, select, and write-enable values to the Wishbone side and raises wb_cyc_o/wb_stb_o.
 
 3. Input-side behavior
 3.1 Read data return
@@ -32,7 +32,7 @@ previous_complete becomes true after wb_ack_i on an active request and false whe
 
 6. Retry and abort handling
 The source includes retry and graceful-abort logic with optional retry counters. A faithful reimplementation must ensure:
-- retry responses do not look like successful acknowledgments;
+- retry (wb_rty_i) prevents new `wb_cyc_o/wb_stb_o` assertions and does not generate `biu_ack_o`;
 - aborted transactions suppress biu_ack_o;
 - internal state returns to idle cleanly after abort/retry.
 The exact details may depend on feature macros, but the observable contract is that the BIU never falsely reports success for a canceled cycle.
