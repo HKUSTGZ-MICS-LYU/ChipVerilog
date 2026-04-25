@@ -1,0 +1,103 @@
+or1200_rf is the top-level access module for the OR1200 general-purpose register file. It provides two read operand ports and one write-back port for the pipeline, while also reusing the same register-file resource through the SPR interface to support debug or control-path access to the GPRs. The module also handles operand retention when the ID stage is frozen, ensuring that dataa and datab do not lose the operands required by the current instruction due to read-address changes or disabled read ports during a pipeline stall.
+
+The normal write-back path is provided by addrw, dataw, and we, while the SPR debug write path is provided by spr_cs, spr_write, spr_addr, and spr_dat_i. When spr_cs is asserted and spr_addr[10:5] matches OR1200_SPR_RF, spr_valid is asserted, indicating that the current SPR access targets the general-purpose register-file address range. If the access is an SPR write, the write address rf_addrw is taken from spr_addr[4:0], and the write data rf_dataw is taken from spr_dat_i; otherwise, the write address and write data come from the normal pipeline write-back interface, namely addrw and dataw.
+
+The final write-enable signal rf_we is determined by three groups of conditions. First, the current access must be either a valid SPR write or a normal pipeline write-back while the writeback stage is not frozen, that is, (spr_valid & spr_write) | (we & ~wb_freeze). Second, the write-allow register rf_we_allow must be 1. This register is set to 1 after reset; afterward, it is updated to ~flushpipe only when wb_freeze is 0. Therefore, when a pipeline flush occurs and the writeback stage is not frozen, subsequent write-back is suppressed. Third, the write enable is also gated by (supv | (|rf_addrw)): in non-supervisor mode, writes to address 0 are blocked; in supervisor mode, this module does not disable the write enable merely because the write address is 0. Note, however, that whether address 0 can ultimately be written and read back effectively also depends on the selected underlying register-file implementation.
+
+On the read path, port A serves both normal pipeline reads and SPR reads. If the current access is a valid SPR read, meaning spr_valid & !spr_write is true, rf_addra is taken from spr_addr[4:0]; otherwise, rf_addra is taken from the normal read address addra. Port B always uses the normal read address addrb. spr_dat_o is always connected to the raw read data from port A, from_rfa, so SPR read access is performed through port A. SPR write access only reuses the write-address and write-data paths; it does not switch the port A read address to the SPR address.
+
+The read-enable signals for the two read ports are rf_ena = (rda & ~id_freeze) | spr_valid and rf_enb = (rdb & ~id_freeze) | spr_valid. For normal pipeline access, a read port is enabled only when the corresponding read-enable signal, rda or rdb, is asserted and the ID stage is not frozen. For SPR access, as long as spr_valid is asserted, the read ports are enabled regardless of whether the SPR access is a read or a write. This ensures that the register-file ports remain accessible during SPR operations.
+
+To keep operands stable when the ID stage is frozen, the module uses two 33-bit registers, dataa_saved and datab_saved. The most significant bit of each register is used as a valid flag, while the lower 32 bits store the data from the corresponding read port. On reset, both saved registers are cleared. When id_freeze is asserted and the corresponding valid bit has not yet been set, the module latches the current from_rfa or from_rfb value on the rising edge of the clock and sets the valid bit to 1. While the freeze continues, the saved registers are not overwritten again, and dataa and datab preferentially output the saved values. When id_freeze is deasserted, the saved registers are cleared, and the outputs return to directly reflecting the register-file read ports.
+
+Therefore, the output selection logic for dataa is as follows: if dataa_saved[32] is 1, dataa outputs dataa_saved[31:0]; otherwise, it outputs the current from_rfa. The logic for datab is the same: if datab_saved[32] is 1, datab outputs datab_saved[31:0]; otherwise, it outputs the current from_rfb. This mechanism prevents the current instruction’s operands from becoming unstable during a pipeline freeze due to read-address changes, read-enable changes, or progression of subsequent control logic.
+
+The register-file storage implementation is selected by compile-time macros. If OR1200_RFRAM_TWOPORT is defined, the module instantiates two or1200_tpram_32x32 blocks, one for each of the A and B read ports, with both sharing the same write port. If OR1200_RFRAM_DUALPORT is defined, the module instantiates two or1200_dpram_32x32 blocks, again providing separate A and B read ports with shared write behavior. If OR1200_RFRAM_GENERIC is defined, the module instantiates a generic flip-flop/register-array style or1200_rfram_generic, which internally provides both A/B read ports and the write port. If OR1200_RAM_MODELS_VIRTEX is defined, the module uses two FPGA-specific rf_sub RAM models and additionally registers the read addresses rf_addra_reg and rf_addrb_reg inside this module to match the read timing of that RAM model.
+
+In the Virtex-specific RAM model branch, this module explicitly forces reads from address 0 to return zero: when the registered read address is 5'h00, from_rfa or from_rfb outputs 32'h00000000; otherwise, it outputs the actual data read from RAM. In the other RAM implementation branches, this module does not explicitly override the read data for address 0. The final behavior of register 0 therefore depends on the corresponding underlying register-file module and the write-enable protection logic in this module.
+
+The explicit sequential state maintained inside this module includes rf_we_allow, dataa_saved, and datab_saved. In the Virtex RAM model branch, the module also maintains two additional read-address registers, rf_addra_reg and rf_addrb_reg. These registers all use asynchronous reset, with the reset branch taking priority over normal update logic. The reset behavior of the underlying register-file storage itself is determined by the corresponding instantiated module.
+
+If none of the supported register-file implementation macros is defined, the module falls into a fallback branch that prints "Define RFRAM type." during simulation and calls $finish to terminate the simulation. Therefore, this module does not directly implement the storage array itself in all configurations; instead, it defines the unified register-file access semantics, pipeline write-back control, SPR debug-access arbitration, operand retention during freezes, and macro-based selection of the underlying register-file implementation.
+
+module or1200_rf(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Write i/f
+    input supv,
+    input wb_freeze,
+    input [4:0] addrw,
+    input [31:0] dataw,
+    input we,
+    input flushpipe,
+
+    // Read i/f
+    input id_freeze,
+    input [4:0] addra,
+    input [4:0] addrb,
+    output [31:0] dataa,
+    output [31:0] datab,
+    input rda,
+    input rdb,
+
+    // Debug
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    supv: Current supervisor-mode status used for privileged behavior and permission checks.
+    wb_freeze: Freeze control for the writeback stage.
+    addrw[4:0]: Register-file write address.
+    dataw[31:0]: Writeback data word written into the register file.
+    we: Write-enable for the local storage block.
+    flushpipe: Pipeline flush request.
+    id_freeze: Freeze control for the decode stage.
+    addra[4:0]: Register-file read address for source port A.
+    addrb[4:0]: Register-file read address for source port B.
+    rda: Read-enable for register-file source port A.
+    rdb: Read-enable for register-file source port B.
+    spr_cs: SPR chip-select for this module.
+    spr_write: SPR write strobe for this module.
+    spr_addr[31:0]: SPR address used for register decode.
+    spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    dataa[31:0]: Read data returned from register-file port A.
+    datab[31:0]: Read data returned from register-file port B.
+    spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    wire [31:0] from_rfa: From rfa.
+    wire [31:0] from_rfb: From rfb.
+    reg [32:0] dataa_saved: Dataa saved.
+    reg [32:0] datab_saved: Datab saved.
+    wire [4:0] rf_addra: Register-file read address for port A.
+    wire [4:0] rf_addrw: Register-file write address.
+    wire [31:0] rf_dataw: Register-file write data.
+    wire rf_we: Register file write-enable.
+    wire spr_valid: SPR valid flag.
+    wire rf_ena: Register file enable flag.
+    wire rf_enb: Register file enb.
+    reg rf_we_allow: Register file write-enable allow.
+    wire [31:0] from_rfa_int: From rfa int.
+    wire [31:0] from_rfb_int: From rfb int.
+    reg [4:0] rf_addra_reg: Registered register file addra.
+    reg [4:0] rf_addrb_reg: Registered register file addrb.
+
+Processing Flow
+
+During operation, the module first determines whether the current SPR access targets the GPR register-file range by checking `spr_cs` and `spr_addr[10:5]`. If the access is a valid SPR operation, the module may redirect the register-file access path to the SPR interface: an SPR read uses port A with `spr_addr[4:0]` as the read address, while an SPR write uses `spr_addr[4:0]` and `spr_dat_i` as the write address and write data.
+
+For normal pipeline execution, port A and port B read addresses come from `addra` and `addrb`, and the write-back path uses `addrw`, `dataw`, and `we`. The actual read-port enables are gated by the decode-stage freeze signal, so normal operand reads are enabled only when the corresponding read request is asserted and the ID stage is not frozen. SPR accesses override this gating by enabling the register-file ports whenever `spr_valid` is asserted.
+
+The module then determines whether a write to the register file is allowed. A write can come either from a valid SPR write or from a normal write-back request when the writeback stage is not frozen. This write request is further gated by `rf_we_allow`, which is updated according to `flushpipe` when the writeback stage is not frozen, and by the address-0 protection condition `(supv | (|rf_addrw))`.
+
+In parallel with the register-file access, the module monitors `id_freeze`. When the ID stage becomes frozen, the first observed values from the A and B read ports are captured into `dataa_saved` and `datab_saved`. These saved operands remain valid throughout the freeze and are used as the outputs `dataa` and `datab`. Once the freeze is released, the saved values are cleared and the outputs again directly reflect the current register-file read data.
+
+Finally, the selected register-file implementation, determined by compile-time macros, performs the actual storage access. Although the underlying RAM implementation may vary, the external access semantics remain the same: two read operands are provided to the pipeline, one write-back path updates the register file, SPR accesses can read or write GPRs, and operand outputs remain stable during decode-stage stalls.

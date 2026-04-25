@@ -1,0 +1,58 @@
+or1200_wbmux implements the write-back-stage data multiplexer and its registered outputs in the OR1200 pipeline. Its purpose is to choose the data value that should be written back to the register file and, when the write-back stage is allowed to advance, latch that value together with a corresponding valid indication.
+
+The module has one parameter, width, which is defined as `OR1200_OPERAND_WIDTH. The write-back data inputs muxin_a, muxin_b, muxin_c, and muxin_d, as well as the outputs muxout and muxreg, all use this operand width. The write-back operation control signal rfwb_op has width `OR1200_RFWBOP_WIDTH. In the normal OR1200 configuration this control field is 3 bits wide, where the upper bits select the write-back data source and bit 0 is used as the write-back valid indication.
+
+The combinational write-back multiplexer produces muxout. Its selection is controlled by rfwb_op[OR1200_RFWBOP_WIDTH-1:1]; the low bit rfwb_op[0]does not participate in the data-source selection. For known selector values,2'b00selectsmuxin_a, 2'b01selectsmuxin_b, 2'b10selectsmuxin_c, and 2'b11selectsmuxin_d + 32'h8. The fourth case therefore does not forward muxin_ddirectly, but adds a constant 8 before drivingmuxout`, which is typically used for PC/link-address-style write-back values.
+
+The multiplexer is implemented using a Verilog case statement. For the normal 2-bit selector encodings, all four possible values are covered, so there is no intended priority chain among the sources. The code also includes Synopsys parallel_case directives, and optionally infer_mux, depending on the OR1200_ADDITIONAL_SYNOPSYS_DIRECTIVES macro. However, the case statement has no default branch, so if the selector contains unknown or high-impedance bits during RTL simulation, no branch may match and muxout may retain its previous value.
+
+The registered write-back outputs are updated in a sequential always block sensitive to posedge clk and posedge rst. Reset is asynchronous and active high. When rst is asserted, muxreg is assigned 32'd0, and muxreg_valid is cleared to 1'b0. Although the data path width is parameterized by width, the reset constant is written as a 32-bit value, matching the usual OR1200 operand width.
+
+During normal operation, the registers update only when wb_freeze is low. On a rising clock edge with rst deasserted and wb_freeze == 0, the current combinational result muxout is latched into muxreg, and rfwb_op[0] is latched into muxreg_valid. When wb_freeze is high, neither register is assigned in the sequential block, so both muxreg and muxreg_valid retain their previous values. This preserves the write-back data and its valid flag while the write-back stage is stalled.
+
+The sequential assignments use nonblocking assignments with #1 delays. These delays model simulation timing behavior in the RTL source and are generally not part of the synthesized hardware behavior.
+
+The module itself does not detect exceptions, choose the destination register, check whether a selected source is semantically valid, or perform the register-file write. It only selects one write-back data path according to the encoded operation field, optionally applies the +8 adjustment for the fourth source encoding, and registers both the selected data and the associated valid bit when the write-back stage is not frozen.
+
+module or1200_wbmux(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f
+    input wb_freeze,
+    input [2:0] rfwb_op,
+    input [31:0] muxin_a,
+    input [31:0] muxin_b,
+    input [31:0] muxin_c,
+    input [31:0] muxin_d,
+    output [31:0] muxout,
+    output [31:0] muxreg,
+    output muxreg_valid
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    wb_freeze: Freeze control for the writeback stage.
+    rfwb_op[2:0]: Encoded writeback-source selector and valid bit.
+    muxin_a[31:0]: Writeback-multiplexer input A.
+    muxin_b[31:0]: Writeback-multiplexer input B.
+    muxin_c[31:0]: Writeback-multiplexer input C.
+    muxin_d[31:0]: Writeback-multiplexer input D.
+Output port:
+    muxout[31:0]: Combinational output of the writeback multiplexer.
+    muxreg[31:0]: Registered writeback data output.
+    muxreg_valid: Registered writeback-valid indication.
+Internal reg/wire signals:
+    reg [31:0] muxout: Muxout.
+    reg [31:0] muxreg: Muxreg.
+    reg muxreg_valid: Muxreg valid flag.
+
+Processing Flow
+
+The processing flow of this module can be divided into two parts: combinational selection and sequential registering. First, the combinational logic selects the write-back data source according to rfwb_op[OR1200_RFWBOP_WIDTH-1:1]and immediately generatesmuxout. When the selector value is 2'b00, muxoutis assignedmuxin_a; when it is 2'b01, muxoutis assignedmuxin_b; when it is 2'b10, muxoutis assignedmuxin_c; and when it is 2'b11, muxoutis assignedmuxin_d + 32'h8. In this stage, rfwb_op[0]` does not participate in data selection; it only serves as the source of the valid flag that will be registered later.
+
+Then, on the rising edge of clk or the rising edge of the asynchronous reset rst, the sequential logic determines whether to update the registered outputs. If rst is high, the module immediately clears muxreg and clears muxreg_valid. If reset is not asserted and wb_freeze is low, the module latches the current muxout value into muxreg and latches rfwb_op[0] into muxreg_valid. If wb_freeze is high, the write-back stage is frozen, so both muxreg and muxreg_valid retain their previous values and are not overwritten by new combinational inputs.
+
+Therefore, the execution order can be understood as follows: the combinational logic continuously computes the candidate write-back result muxout, and the sequential logic advances that result into the write-back register only on cycles where the module is not reset and the write-back stage is not frozen. Reset has the highest priority, normal latching occurs when the stage is not frozen, and the current registered state is preserved during freeze cycles.

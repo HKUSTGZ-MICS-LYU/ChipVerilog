@@ -1,0 +1,147 @@
+Module `or1200_ctrl` decodes instructions and generates control signals for ALU, LSU, register write-back, branching, exception-related sideband signals, forwarding selection, and pipeline control.
+
+This module is the main instruction decode and control block of the OR1200 processor. It receives the fetch-stage instruction `if_insn`, decodes it into control signals for register-file access, immediate generation, ALU/compare/shift/MAC operation selection, branch handling, load/store control, special-purpose register access, write-back selection, custom instruction support, exception signaling, and pipeline movement.
+
+Most sequential state in this module is updated on the rising edge of `clk` and reset by an active-high asynchronous `rst`. On reset, the local instruction pipeline registers and control registers are initialized to defined NOP or inactive values. `flushpipe` clears the ID/EX/WB instruction pipeline registers to NOP and clears many EX-stage control outputs, but it does not directly clear every internal register; for example, `rf_addrw`, `wb_rfaddrw`, and `sel_imm` do not have explicit `flushpipe` branches. The freeze signals `id_freeze`, `ex_freeze`, and `wb_freeze` control whether the corresponding pipeline stage advances or holds its current state. When ID is frozen while EX is not frozen, the module inserts NOP/inactive control values into the EX stage to avoid re-executing stale decode information.
+
+For register-file read access, the module directly derives the source register addresses from `if_insn`: `rf_addra = if_insn[20:16]` and `rf_addrb = if_insn[15:11]`. The register-read enable indicators `rf_rda` and `rf_rdb` are derived from `if_insn[31]` and `if_insn[30]`, respectively. These signals indicate whether source port A or B is used according to the OR1200 instruction encoding.
+
+The module maintains instruction pipeline registers `id_insn`, `ex_insn`, and `wb_insn`. `if_insn` is latched into `id_insn`, `id_insn` into `ex_insn`, and `ex_insn` into `wb_insn`, subject to reset, flush, and freeze conditions. Reset and flush force the instruction registers to the special OR1200 NOP encoding whose bit 16 is set, allowing `id_void` and `ex_void` to detect void/NOP instructions.
+
+Forwarding control is generated through `sel_a` and `sel_b`. `sel_a` selects between the register file, EX-stage forwarding, and WB-stage forwarding by comparing the current ID-stage source register with the EX and WB destination registers. `sel_b` uses similar forwarding logic for source B, but immediate selection has the highest priority: when `sel_imm` is asserted, `sel_b` selects the immediate operand rather than register or forwarded data. `sel_imm` is decoded using an exclusion-style rule: explicitly listed register-type, branch-return, SPR, store, ALU, SFXX, custom, and NOP instructions clear `sel_imm`; all other opcodes default to immediate selection. Whether an unsupported opcode is legal is determined separately by `except_illegal`.
+
+Immediate generation is performed from the ID-stage instruction. `simm` is produced by either sign-extending or zero-extending `id_insn[15:0]`, depending on `imm_signextend`. Instructions such as `l.addi`, `l.addic`, `l.xori`, `l.muli` when multiplication is implemented, `l.maci` when MAC is implemented, and immediate compare instructions use sign extension; other immediate instructions default to zero extension. `branch_addrofs` is generated from the EX-stage instruction by sign-extending `ex_insn[25:0]` into the branch offset output range `[31:2]`. `lsu_addrofs` is also based on `ex_insn`; store instructions use a split immediate field involving `ex_insn[25:21]` and `ex_insn[10:0]`, while load and default cases use the immediate field involving `ex_insn[15:11]` and `ex_insn[10:0]`.
+
+The write-back destination register `rf_addrw` is generated at the EX-control timing point. By default it uses `id_insn[25:21]`. When `pre_branch_op` indicates `JR` or `BAL`, the destination address is forced to register r9, the link register. However, this does not by itself mean every such instruction writes the link register; actual write-back is controlled by `rfwb_op`. In this implementation, link-register write-back selection is generated for `JAL` and `JALR`, while ordinary `J` and `JR` do not generate register-file write-back. `wb_rfaddrw` stores the write destination one stage later and is used by the forwarding comparison logic.
+
+The module also generates the SPR immediate address `spr_addrimm`. For `l.mfspr`, it uses `id_insn[15:0]`; for other SPR-related cases, especially `l.mtspr`, it uses the concatenation `{id_insn[25:21], id_insn[10:0]}`. This register is reset to zero and is also cleared when a bubble is inserted into EX or when the pipeline is flushed.
+
+The `multicycle` output is decoded mainly from ALU instructions. For `OR1200_OR32_ALU`, it takes `id_insn[9:8]`; otherwise it defaults to `OR1200_ONE_CYCLE`. The code contains load/store two-cycle decode cases inside an `ifdef UNUSED` block, so those cases are normally not active unless that block is explicitly enabled.
+
+The module generates major functional control outputs including `alu_op`, `mac_op`, `shrot_op`, `comp_op`, `lsu_op`, `branch_op`, `rfwb_op`, `cust5_op`, `cust5_limm`, `sig_syscall`, `sig_trap`, `except_illegal`, and `rfe`. These signals are decoded from the instruction opcode and subfields, then registered or assigned at the stage required by the rest of the processor pipeline. `alu_op` selects ALU behavior such as immediate handling, MOVHI, SPR access, arithmetic, logic, shift/rotate, comparison, custom operation, or NOP. `shrot_op` is derived from `id_insn[7:6]`. `comp_op` is derived from `id_insn[24:21]`. `lsu_op` selects load/store size and sign behavior for load/store opcodes, and defaults to NOP for non-memory instructions.
+
+When MAC support is enabled, `mac_op` decodes MAC-related instructions such as `l.maci` and `l.mac/l.msb`; otherwise `mac_op` is tied to NOP. Similarly, `id_macrc_op` detects the MAC-result-read operation in the ID stage when MAC support is enabled, and `ex_macrc_op` is its EX-stage registered version. If MAC support is not implemented, both are tied inactive.
+
+Branch handling is split between `pre_branch_op` and `branch_op`. `pre_branch_op` is decoded from the fetch-stage instruction when the ID stage can accept a new instruction. It identifies branch, jump, jump-register, branch-if-flag, branch-if-no-flag, and RFE operations. `branch_op` is the EX-stage registered version of `pre_branch_op`, subject to flush and freeze rules. The `rfe` output is asserted when either `pre_branch_op` or `branch_op` indicates an RFE operation, allowing exception-return handling to be observed early or at the formal branch-control stage.
+
+For delay-slot control, `no_more_dslot` is asserted when a branch operation is present, the ID instruction is not void, and `branch_taken` is true, or when the current branch operation is RFE. This informs the instruction fetch / PC-control logic that no further normal delay-slot instruction should be processed. `force_dslot_fetch` is present as an interface signal, but in this implementation it is hardwired to `1'b0`; the older logic that forced delay-slot fetching after load/store-before-branch cases is commented out.
+
+Exception-related decode includes `except_illegal`, `sig_syscall`, and `sig_trap`. `except_illegal` is registered at the EX-control timing point. It is cleared for explicitly supported OR1200 opcodes and asserted for unrecognized or unsupported opcodes. Its exact set of legal instructions depends on compile-time feature macros such as MAC, multiplication, and custom instruction support. `sig_syscall` is asserted when the instruction encoding matches `l.sys`. `sig_trap` is asserted when the instruction encoding matches `l.trap`, and it is also asserted when the debug unit raises `du_hwbkpt`.
+
+Custom instruction support is reflected through `cust5_op` and `cust5_limm`, which are assigned directly from EX-stage instruction subfields. If custom instruction opcode support is enabled at compile time, `l.cust5` is treated as a legal instruction and can select the custom ALU operation path.
+
+module or1200_ctrl(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f
+    input id_freeze,
+    input ex_freeze,
+    input wb_freeze,
+    input flushpipe,
+    input [31:0] if_insn,
+    output [31:0] ex_insn,
+    output [2:0] branch_op,
+    input branch_taken,
+    output [4:0] rf_addra,
+    output [4:0] rf_addrb,
+    output rf_rda,
+    output rf_rdb,
+    output [3:0] alu_op,
+    output [1:0] mac_op,
+    output [1:0] shrot_op,
+    output [3:0] comp_op,
+    output [4:0] rf_addrw,
+    output [2:0] rfwb_op,
+    output [31:0] wb_insn,
+    output [31:0] simm,
+    output [31:2] branch_addrofs,
+    output [31:0] lsu_addrofs,
+    output [1:0] sel_a,
+    output [1:0] sel_b,
+    output [3:0] lsu_op,
+    output [4:0] cust5_op,
+    output [5:0] cust5_limm,
+    output [1:0] multicycle,
+    output [15:0] spr_addrimm,
+    input wbforw_valid,
+    input du_hwbkpt,
+    output sig_syscall,
+    output sig_trap,
+    output force_dslot_fetch,
+    output no_more_dslot,
+    output ex_void,
+    output id_macrc_op,
+    output ex_macrc_op,
+    output rfe,
+    output except_illegal
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    id_freeze: Freeze control for the decode stage.
+    ex_freeze: Freeze control for the execute stage.
+    wb_freeze: Freeze control for the writeback stage.
+    flushpipe: Pipeline flush request.
+    if_insn[31:0]: Instruction word presented to the decode stage.
+    branch_taken: Indicates whether the current branch decision is taken.
+    wbforw_valid: Indicates that the writeback-forwarding path carries valid data.
+    du_hwbkpt: Hardware-breakpoint request generated by the debug unit.
+Output port:
+    ex_insn[31:0]: Instruction word in the execute stage.
+    branch_op[2:0]: Encoded branch/jump operation selector.
+    rf_addrw[4:0]: Register-file write address.
+    rf_addra[4:0]: Register-file read address for source port A.
+    rf_addrb[4:0]: Register-file read address for source port B.
+    rf_rda: Source-A register-read enable from the control path.
+    rf_rdb: Source-B register-read enable from the control path.
+    alu_op[3:0]: Major ALU operation selector.
+    mac_op[1:0]: Encoded MAC operation selector.
+    shrot_op[1:0]: Shift/rotate sub-operation selector.
+    rfwb_op[2:0]: Encoded writeback-source selector and valid bit.
+    wb_insn[31:0]: Instruction word in the writeback stage.
+    simm[31:0]: Expanded immediate operand supplied to execute-stage muxing.
+    branch_addrofs[31:2]: Branch target offset produced by the decode/control path.
+    lsu_addrofs[31:0]: Load/store address offset generated by the control path.
+    sel_a[1:0]: Source selector for execute-stage operand A.
+    sel_b[1:0]: Source selector for execute-stage operand B.
+    lsu_op[3:0]: Encoded load/store operation selector.
+    comp_op[3:0]: Compare sub-operation selector.
+    multicycle[1:0]: Multi-cycle operation control value used by the freeze logic.
+    cust5_op[4:0]: Minor opcode for l.cust5 custom operations.
+    cust5_limm[5:0]: Immediate field used by l.cust5 custom operations.
+    spr_addrimm[15:0]: Immediate SPR address field generated by the decode/control logic.
+    sig_syscall: Raw system-call exception source.
+    sig_trap: Raw trap exception source.
+    force_dslot_fetch: Control that forces fetching of a branch delay-slot instruction.
+    no_more_dslot: Indicates that no further delay-slot instruction should be executed.
+    ex_void: Indicates that the execute stage currently holds a void/NOP instruction.
+    id_macrc_op: Decode-stage indication that the current instruction reads the MAC result.
+    ex_macrc_op: Execute-stage MAC-result-read indication.
+    rfe: Exception-return control indication.
+    except_illegal: Illegal-instruction exception indication exported to exception control.
+
+Processing Flow:
+
+1. Fetch-stage decode and register-file read setup:
+   The module first uses the incoming `if_insn` to derive register-file source addresses and read-enable indicators. It also pre-decodes branch information into `pre_branch_op` and pre-decodes immediate selection into `sel_imm` when the ID stage is not frozen.
+
+2. ID-stage instruction capture:
+   When reset or flush occurs, `id_insn` is forced to the OR1200 NOP encoding. Otherwise, if `id_freeze` is not asserted, `if_insn` is latched into `id_insn`.
+
+3. ID-stage combinational decode:
+   The current `id_insn` is used to generate immediate extension control, `simm`, forwarding selections `sel_a` and `sel_b`, multicycle information, and MAC-result-read detection. Source operands are selected from the register file, EX forwarding, WB forwarding, or immediate data according to these decode results.
+
+4. EX-stage control registration:
+   When EX can advance, the module transfers `id_insn` into `ex_insn` and registers most functional control signals, including `alu_op`, `mac_op`, `shrot_op`, `comp_op`, `lsu_op`, `rfwb_op`, `branch_op`, `spr_addrimm`, `sig_syscall`, `sig_trap`, and `except_illegal`. If ID is frozen while EX is not frozen, or if the pipeline is flushed, the module inserts NOP or inactive control values into the EX stage.
+
+5. EX-stage address and branch-related generation:
+   The EX-stage instruction is used to form `branch_addrofs`, `lsu_addrofs`, `cust5_op`, `cust5_limm`, `ex_void`, and branch/delay-slot sideband signals. `branch_op`, together with `branch_taken` and `id_void`, determines whether `no_more_dslot` should be asserted.
+
+6. Write-back stage tracking:
+   When WB can advance, `ex_insn` is latched into `wb_insn`, and the write-back destination register is tracked through `wb_rfaddrw`. This WB-stage destination information is used by the forwarding selection logic for later instructions.
+
+7. Exception and special-control handling:
+   In parallel with normal decode, the module identifies illegal instructions, system calls, traps, debug hardware breakpoints, MAC result reads, and RFE operations. These signals are aligned to the pipeline stage where the rest of the processor expects to consume them.

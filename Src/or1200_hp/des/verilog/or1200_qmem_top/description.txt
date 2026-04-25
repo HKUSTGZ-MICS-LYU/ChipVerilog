@@ -1,0 +1,168 @@
+or1200_qmem_top is the top-level interface module used in OR1200 to implement the optional on-chip embedded memory, QMEM. It sits between the CPU/MMU access paths and the instruction/data cache paths, and determines whether the current instruction access or data access falls within the preconfigured QMEM address window. If an access hits QMEM, the access is completed through the local SRAM instantiated inside this module, and the request is prevented from propagating to the IC or DC. If an access misses QMEM, the module does not change the access semantics; instead, it transparently passes the related address, control, write data, and response signals between the CPU/MMU side and the IC/DC side. When OR1200_QMEM_IMPLEMENTED is not defined, the module degenerates into pure pass-through logic: it performs no address hit detection, instantiates no local RAM, and performs no local arbitration.
+
+The instruction-side interface connects the CPU/IMMU path to the IC path. The instruction-side address qmemimmu_adr_i is compared against the QMEM instruction address window. qmemimmu_cycstb_i indicates that the current instruction access request is valid. qmemimmu_ci_i, qmemicpu_sel_i, and qmemicpu_tag_i carry the cache-inhibit attribute, byte-lane select information, and tag information, respectively. When the instruction address misses QMEM, these signals are forwarded directly to the IC. When the instruction address hits QMEM, the address, request, cache-inhibit signal, byte select, and tag sent to the IC are all forced to 0, preventing the access from continuing into the instruction cache path.
+
+The instruction-side return path must distinguish between “the address hits QMEM” and “the local QMEM response has been granted by the FSM.” In the code, the local return selection condition for qmemicpu_dat_o, qmemicpu_ack_o, qmemimmu_rty_o, qmemimmu_err_o, and qmemimmu_tag_o is not simply iaddr_qmem_hit; it is qmem_iack. Only when the FSM asserts qmem_iack does the instruction side return the local RAM output qmem_do, assert ack, force retry and error to 0, and return tag 0. If qmem_iack is not asserted, these return signals still come from the IC return interface. Therefore, an instruction-side QMEM address hit only means that the request is taken over by the local path and the IC request is blocked; the actual return of local data and ack still depends on whether the FSM grants an instruction fetch response in that cycle.
+
+The data-side interface connects the CPU/DMMU path to the DC path. The data-side address qmemdmmu_adr_i is compared against the QMEM data address window. qmemdmmu_cycstb_i indicates that the current data access request is valid. qmemdmmu_ci_i, qmemdcpu_we_i, qmemdcpu_sel_i, qmemdcpu_tag_i, and qmemdcpu_dat_i carry the cache-inhibit attribute, write enable, byte-lane select, tag, and write data, respectively. When the data address misses QMEM, these signals are forwarded directly to the DC, and the DC return data, ack, retry, error, and tag are returned directly to the CPU/DMMU side. When the data address hits QMEM, the address, request, cache-inhibit signal, write enable, byte select, tag, and write data sent to the DC are all forced to 0, preventing the access from continuing into the data cache path.
+
+The data-side return path is slightly different from the instruction-side return path. In the code, the selection condition for qmemdcpu_dat_o is daddr_qmem_hit: as long as the data address hits QMEM, the return data bus selects the local RAM output qmem_do; if it misses, it selects the DC return data dcqmem_dat_i. However, this does not mean that the data is necessarily valid whenever there is a hit. Data validity is determined by the handshake signals. When the data address hits QMEM, qmemdcpu_ack_o is driven by the local response register qmem_dack, while qmemdcpu_rty_o is equal to ~qmem_dack. Therefore, when the data side hits QMEM but the FSM has not yet produced the local ack, the data side sees a retry/wait condition; when qmem_dack is asserted, ack is valid and retry becomes 0. On a data-side QMEM hit, error is forced to 0 and tag is forced to 0.
+
+QMEM address hit detection is implemented using two internal signals: iaddr_qmem_hit and daddr_qmem_hit. If OR1200_QMEM_IADDR is defined, the instruction-side hit condition is that the current instruction address ANDed with OR1200_QMEM_IMASK equals OR1200_QMEM_IADDR; if this macro is not defined, the instruction-side hit signal is fixed to 0. If OR1200_QMEM_DADDR is defined, the data-side hit condition is that the current data address ANDed with OR1200_QMEM_DMASK equals OR1200_QMEM_DADDR; if this macro is not defined, the data-side hit signal is fixed to 0. These two hit signals only indicate whether the current address falls within the configured QMEM window; they do not include the cycstb request-valid condition. An actual local RAM access also requires the corresponding request-valid signal.
+
+The local RAM access is controlled by qmem_en, qmem_we, qmem_addr, qmem_di, and the optional qmem_sel and qmem_ack signals. qmem_en is asserted when either the instruction side has a valid request whose address hits QMEM, or the data side has a valid request whose address hits QMEM. qmem_we is asserted only for a valid data-side QMEM write access, meaning that qmemdmmu_cycstb_i, daddr_qmem_hit, and qmemdcpu_we_i are all asserted. qmem_di is fixed to the data-side write data qmemdcpu_dat_i, because only data-side accesses can write to QMEM. qmem_addr selects qmemdmmu_adr_i when the data side has a valid QMEM request; otherwise, it selects qmemimmu_adr_i. Therefore, when the instruction side and data side request local QMEM at the same time, the local RAM address gives priority to the data side. If OR1200_QMEM_BSEL is defined, qmem_sel selects qmemdcpu_sel_i when there is a valid data-side QMEM request; otherwise, it selects qmemicpu_sel_i. If OR1200_QMEM_ACK is defined, qmem_ack is driven by the local RAM; otherwise, the code fixes qmem_ack to 1, meaning that the local RAM is treated as always able to respond immediately.
+
+The module instantiates a single-port SRAM, or1200_spram_2048x32, as the actual QMEM storage array. The RAM address input uses qmem_addr[12:2], so it is addressed by 32-bit words and can represent 2048 32-bit entries. The RAM chip enable is connected to qmem_en, the write enable is connected to qmem_we, the output enable is tied to 1, the write data input is connected to qmem_di, and the read data output is connected to qmem_do. When BIST is enabled, the MBIST signals are also connected to this RAM. Because the RAM is single-port, the module cannot truly serve one instruction-side local access and one data-side local access in the same cycle. Therefore, the code gives the local RAM port priority to the data-side access through address selection and FSM priority.
+
+The local QMEM response is controlled by a synchronous FSM. The FSM states are IDLE, STORE, LOAD, and FETCH, corresponding to idle, data write, data read, and instruction fetch, respectively. On reset, the state is set to IDLE, and both qmem_dack and qmem_iack are cleared. On each clock cycle, the FSM re-evaluates the current requests according to a fixed priority instead of locking onto one transaction until completion. The priority is: data-side QMEM write first, data-side QMEM read second, and instruction-side QMEM fetch last. Each request type requires the corresponding address hit, the corresponding cycstb request-valid signal, and qmem_ack to be asserted before the FSM enters the corresponding state and asserts the corresponding local ack.
+
+Specifically, when there is a data-side QMEM write request, meaning qmemdmmu_cycstb_i & daddr_qmem_hit & qmemdcpu_we_i & qmem_ack is true, the FSM enters or remains in the STORE state, asserts qmem_dack, and clears qmem_iack. If there is no data write request but there is a data-side QMEM read request, meaning qmemdmmu_cycstb_i & daddr_qmem_hit & qmem_ack is true, the FSM enters or remains in the LOAD state, also asserts qmem_dack, and clears qmem_iack. If there is no data-side QMEM request but there is an instruction-side QMEM fetch request, meaning qmemimmu_cycstb_i & iaddr_qmem_hit & qmem_ack is true, the FSM enters or remains in the FETCH state, asserts qmem_iack, and clears qmem_dack. If, while in an active state, there is no access satisfying “request valid, address hit, and qmem_ack asserted,” the FSM returns to IDLE and clears both local ack signals.
+
+This FSM can be understood as a cycle-by-cycle arbiter. It decides in each cycle whether to respond to a data write, a data read, or an instruction fetch based on the current inputs. As a result, consecutive data writes or data reads can continuously receive qmem_dack, while a change in request type can cause the FSM to switch to a new state on the next cycle. Since data-side requests have priority over instruction-side requests, when both instruction and data accesses hit QMEM at the same time, the data side receives the local RAM port and local ack first; the instruction-side fetch can receive qmem_iack only when there is no data-side QMEM request.
+
+Overall, or1200_qmem_top inserts an optional on-chip fast memory path alongside the normal instruction/data memory access paths of OR1200. It identifies which accesses should be handled by local QMEM through address-window comparison, blocks IC/DC requests and selects local return paths on QMEM hits, stores the actual data in a single-port SRAM, and uses a priority FSM to generate local ack responses among data write, data read, and instruction fetch accesses. On QMEM misses, or when QMEM is not enabled, the module remains transparent and preserves the behavior of the original IC/DC access paths.
+
+module or1200_qmem_top(
+    // Rst, clk and clock control
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // QMEM and CPU/IMMU
+    input [31:0] qmemimmu_adr_i,
+    input qmemimmu_cycstb_i,
+    input qmemimmu_ci_i,
+    input [3:0] qmemicpu_sel_i,
+    input [3:0] qmemicpu_tag_i,
+    output [31:0] qmemicpu_dat_o,
+    output qmemicpu_ack_o,
+    output qmemimmu_rty_o,
+    output qmemimmu_err_o,
+    output [3:0] qmemimmu_tag_o,
+
+    // QMEM and IC
+    output [31:0] icqmem_adr_o,
+    output icqmem_cycstb_o,
+    output icqmem_ci_o,
+    output [3:0] icqmem_sel_o,
+    output [3:0] icqmem_tag_o,
+    input [31:0] icqmem_dat_i,
+    input icqmem_ack_i,
+    input icqmem_rty_i,
+    input icqmem_err_i,
+    input [3:0] icqmem_tag_i,
+
+    // QMEM and CPU/DMMU
+    input [31:0] qmemdmmu_adr_i,
+    input qmemdmmu_cycstb_i,
+    input qmemdmmu_ci_i,
+    input qmemdcpu_we_i,
+    input [3:0] qmemdcpu_sel_i,
+    input [3:0] qmemdcpu_tag_i,
+    input [31:0] qmemdcpu_dat_i,
+    output [31:0] qmemdcpu_dat_o,
+    output qmemdcpu_ack_o,
+    output qmemdcpu_rty_o,
+    output qmemdmmu_err_o,
+    output [3:0] qmemdmmu_tag_o,
+
+    // QMEM and DC
+    output [31:0] dcqmem_adr_o,
+    output dcqmem_cycstb_o,
+    output dcqmem_ci_o,
+    output dcqmem_we_o,
+    output [3:0] dcqmem_sel_o,
+    output [3:0] dcqmem_tag_o,
+    output [31:0] dcqmem_dat_o,
+    input [31:0] dcqmem_dat_i,
+    input dcqmem_ack_i,
+    input dcqmem_rty_i,
+    input dcqmem_err_i,
+    input [3:0] dcqmem_tag_i
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    qmemimmu_adr_i[31:0]: Address bus for the downstream instruction-memory path after IMMU/QMEM arbitration.
+    qmemimmu_cycstb_i: Combined cycle-and-strobe request for the downstream instruction-memory path after IMMU/QMEM arbitration.
+    qmemimmu_ci_i: Cache-inhibit attribute for the downstream instruction-memory path after IMMU/QMEM arbitration.
+    qmemicpu_sel_i[3:0]: Byte-lane select for the QMEM local instruction-return interface.
+    qmemicpu_tag_i[3:0]: Tag field carried on the QMEM local instruction-return interface.
+    icqmem_dat_i[31:0]: Data bus for the instruction-cache/QMEM interface.
+    icqmem_ack_i: Acknowledge/transfer-complete indication for the instruction-cache/QMEM interface.
+    icqmem_rty_i: Retry/wait indication for the instruction-cache/QMEM interface.
+    icqmem_err_i: Error termination indication for the instruction-cache/QMEM interface.
+    icqmem_tag_i[3:0]: Tag field carried on the instruction-cache/QMEM interface.
+    qmemdmmu_adr_i[31:0]: Address bus for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_cycstb_i: Combined cycle-and-strobe request for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_ci_i: Cache-inhibit attribute for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdcpu_we_i: Write-enable / write-versus-read qualifier for the QMEM local data-memory interface.
+    qmemdcpu_sel_i[3:0]: Byte-lane select for the QMEM local data-memory interface.
+    qmemdcpu_tag_i[3:0]: Tag field carried on the QMEM local data-memory interface.
+    qmemdcpu_dat_i[31:0]: Data bus for the QMEM local data-memory interface.
+    dcqmem_dat_i[31:0]: Data bus for the data-cache/QMEM interface.
+    dcqmem_ack_i: Acknowledge/transfer-complete indication for the data-cache/QMEM interface.
+    dcqmem_rty_i: Retry/wait indication for the data-cache/QMEM interface.
+    dcqmem_err_i: Error termination indication for the data-cache/QMEM interface.
+    dcqmem_tag_i[3:0]: Tag field carried on the data-cache/QMEM interface.
+Output port:
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    qmemicpu_dat_o[31:0]: Data bus for the QMEM local instruction-return interface.
+    qmemicpu_ack_o: Acknowledge/transfer-complete indication for the QMEM local instruction-return interface.
+    qmemimmu_rty_o: Retry/wait indication for the downstream instruction-memory path after IMMU/QMEM arbitration.
+    qmemimmu_err_o: Error termination indication for the downstream instruction-memory path after IMMU/QMEM arbitration.
+    qmemimmu_tag_o[3:0]: Tag field carried on the downstream instruction-memory path after IMMU/QMEM arbitration.
+    icqmem_adr_o[31:0]: Address bus for the instruction-cache/QMEM interface.
+    icqmem_cycstb_o: Combined cycle-and-strobe request for the instruction-cache/QMEM interface.
+    icqmem_ci_o: Cache-inhibit attribute for the instruction-cache/QMEM interface.
+    icqmem_sel_o[3:0]: Byte-lane select for the instruction-cache/QMEM interface.
+    icqmem_tag_o[3:0]: Tag field carried on the instruction-cache/QMEM interface.
+    qmemdcpu_dat_o[31:0]: Data bus for the QMEM local data-memory interface.
+    qmemdcpu_ack_o: Acknowledge/transfer-complete indication for the QMEM local data-memory interface.
+    qmemdcpu_rty_o: Retry/wait indication for the QMEM local data-memory interface.
+    qmemdmmu_err_o: Error termination indication for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_tag_o[3:0]: Tag field carried on the downstream data-memory path after DMMU/QMEM arbitration.
+    dcqmem_adr_o[31:0]: Address bus for the data-cache/QMEM interface.
+    dcqmem_cycstb_o: Combined cycle-and-strobe request for the data-cache/QMEM interface.
+    dcqmem_ci_o: Cache-inhibit attribute for the data-cache/QMEM interface.
+    dcqmem_we_o: Write-enable / write-versus-read qualifier for the data-cache/QMEM interface.
+    dcqmem_sel_o[3:0]: Byte-lane select for the data-cache/QMEM interface.
+    dcqmem_tag_o[3:0]: Tag field carried on the data-cache/QMEM interface.
+    dcqmem_dat_o[31:0]: Data bus for the data-cache/QMEM interface.
+Internal reg/wire signals:
+    wire iaddr_qmem_hit: Asserted when the instruction address matches the configured QMEM instruction window.
+    wire daddr_qmem_hit: Asserted when the data address matches the configured QMEM data window.
+    reg [2:0] state: Current QMEM arbiter FSM state register.
+    reg qmem_dack: QMEM dack.
+    reg qmem_iack: QMEM iack.
+    wire [31:0] qmem_di: QMEM di.
+    wire [31:0] qmem_do: QMEM do.
+    wire qmem_en: QMEM enable flag.
+    wire qmem_we: QMEM write-enable.
+    wire [3:0] qmem_sel: QMEM select.
+    wire [31:0] qmem_addr: QMEM address.
+    wire qmem_ack: QMEM acknowledge.
+    wire qmem_ack = 1'b1: QMEM acknowledge.
+    
+Processing Flow
+
+The module first checks whether QMEM support is enabled through OR1200_QMEM_IMPLEMENTED. If QMEM is not implemented, the module works as a pure pass-through bridge: the instruction-side CPU/IMMU signals are forwarded directly to the IC, and the data-side CPU/DMMU signals are forwarded directly to the DC. No local address comparison, SRAM access, or FSM arbitration is performed.
+
+When QMEM is implemented, the module compares the current instruction and data addresses against their configured QMEM address windows. The instruction-side hit signal iaddr_qmem_hit is generated from qmemimmu_adr_i and the instruction QMEM mask/address macros, while the data-side hit signal daddr_qmem_hit is generated from qmemdmmu_adr_i and the data QMEM mask/address macros. These hit signals only indicate whether the current addresses fall within the configured QMEM regions; a real local access also requires the corresponding cycstb request signal to be asserted.
+
+After hit detection, the module decides whether each request should continue to the cache path or be handled locally. If the instruction address misses QMEM, the instruction-side address and control signals are forwarded to the IC; if it hits QMEM, the outgoing IC request signals are forced to 0. Similarly, if the data address misses QMEM, the data-side address, control, write data, and tag signals are forwarded to the DC; if it hits QMEM, the outgoing DC request signals are forced to 0.
+
+In parallel, the module prepares the local SRAM access. qmem_en is asserted when either the instruction side or the data side has a valid QMEM request. qmem_we is asserted only for a valid data-side QMEM write. The write data qmem_di always comes from qmemdcpu_dat_i. The SRAM address selects the data-side address when the data side has a valid QMEM request; otherwise, it selects the instruction-side address. Therefore, when both instruction and data requests hit QMEM in the same cycle, the single local RAM port is assigned to the data-side access.
+
+The FSM then arbitrates which local request receives an acknowledge. In every cycle, it evaluates requests with fixed priority: data write first, data read second, and instruction fetch last. A request can be acknowledged only if its address hits QMEM, its cycstb signal is asserted, and qmem_ack is asserted. For a selected data write or data read, the FSM asserts qmem_dack; for a selected instruction fetch, it asserts qmem_iack. If no valid and acknowledged local request exists, the FSM returns to IDLE and clears the local ack signals.
+
+Finally, the module drives the return paths. On the instruction side, the local RAM output is returned only when qmem_iack is asserted; otherwise, the return signals come from the IC interface. On the data side, the data bus selects the local RAM output whenever the data address hits QMEM, but the data is considered valid only when qmem_dack is asserted. While a data-side QMEM hit is waiting for local ack, qmemdcpu_rty_o is asserted as ~qmem_dack. On QMEM misses, all return signals are transparently passed back from the IC or DC.

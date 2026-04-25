@@ -1,0 +1,118 @@
+The or1200_wb_biu module implements the conversion between the OR1200 processor’s internal BIU interface and the external WISHBONE bus interface. The module receives internal biu_* request signals and converts them into external Wishbone access-control and data signals such as wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o, wb_adr_o, and wb_dat_o. It also receives Wishbone return signals such as wb_ack_i, wb_err_i, wb_rty_i, and wb_dat_i, and generates BIU-visible biu_ack_o, biu_err_o, and biu_dat_o. Therefore, this module is not a simple wire-level adapter; it is a Wishbone Bus Interface Unit that includes clock-ratio synchronization, optional input/output registers, retry delay handling, post-abort completion handling, and optional burst support.
+
+The two main interfaces of the module are the RISC/BIU side and the Wishbone side. clk and rst belong to the RISC-side clock and reset domain and are used to drive RISC-clock-domain state such as valid_div. wb_clk_i and wb_rst_i belong to the Wishbone-side clock and reset domain and are used to drive optional Wishbone output registers, input response registers, abort state, the retry counter, and the burst counter. clmode describes the clock ratio of the Wishbone clock relative to the RISC clock. In the source-code comments, it is defined as follows: 00 means WB=RISC, 01 means WB=RISC/2, 10 is unused or unavailable, and 11 means WB=RISC/4.
+
+The data and address widths are defined by the parameters dw and aw, both of which are derived from OR1200_OPERAND_WIDTH. Therefore, the Wishbone-side wb_dat_i, wb_dat_o, and wb_adr_o, as well as the BIU-side biu_dat_i and biu_adr_i, have parameterized widths in the source code. It should be noted that biu_dat_o is declared as a fixed [31:0] signal in the source code, rather than [dw-1:0]. In typical OR1200 configurations, the operand width is 32 bits, so these widths usually appear as 32-bit signals.
+
+When OR1200_REGISTERED_OUTPUTS is not defined, the Wishbone output signals are mainly generated combinationally from the BIU inputs. For example, the address wb_adr_o is directly assigned from biu_adr_i, the write data wb_dat_o is directly assigned from biu_dat_i, wb_sel_o is directly assigned from biu_sel_i, wb_we_o is generated from biu_cyc_i & biu_stb_i & biu_we_i, and wb_stb_o is generated from biu_cyc_i & biu_stb_i. In this mode, the output path is essentially a combinational adapter, and the ability of abort and retry logic to hold or suppress certain signals is limited and depends on the specific combinational assignment expressions.
+
+When OR1200_REGISTERED_OUTPUTS is defined, the Wishbone output signals are registered on the rising edge of wb_clk_i and reset by wb_rst_i. The address register wb_adr_o is updated only when a new internal request is detected, no wb_ack_i is present, the module is not entering an abort state, and the previous strobe is not being held while waiting for an ACK. The write-data register wb_dat_o is also updated when there is a new internal request, no ACK, and no abort condition, but it does not include the additional previous-strobe-hold guard used by the address register. In registered-output mode, wb_sel_o directly loads biu_sel_i on every Wishbone clock cycle and is not additionally gated by ack, retry, or aborted.
+
+The input data return path is controlled by OR1200_REGISTERED_INPUTS. If this macro is not defined, biu_dat_o is directly assigned from wb_dat_i, while long_ack_o and long_err_o are also generated combinationally from the Wishbone return signals and are masked by aborted_r to suppress responses from requests that have already been abandoned internally. If this macro is defined, biu_dat_o samples wb_dat_i on the rising edge of wb_clk_i when wb_ack_i is asserted. long_ack_o and long_err_o are also registered on wb_clk_i and are generated from wb_ack_i & ~aborted and wb_err_i & ~aborted, respectively. In other words, registered-input mode masks the response using the current combinational aborted condition, while non-registered-input mode masks the combinational response using the held aborted_r state.
+
+valid_div is a 2-bit incrementing counter running in the RISC clock domain clk, and it is cleared on reset. It is used, in configurations that support clock division, to phase-select the Wishbone return pulses long_ack_o and long_err_o. Because the Wishbone clock may be equal to the RISC clock, or may run at one half or one quarter of the RISC clock frequency, a single Wishbone-side return pulse may last for one, two, or four RISC cycles as seen from the RISC side. The source code uses valid_div and clmode to gate long_ack_o and long_err_o, so that biu_ack_o and biu_err_o are asserted during the appropriate RISC cycle. This logic is also controlled by the OR1200_CLKDIV_2_SUPPORTED and OR1200_CLKDIV_4_SUPPORTED macros. If these macros are not enabled, the corresponding clock-division gating does not participate in the generation of biu_ack_o or biu_err_o.
+
+biu_ack_o is generated from long_ack_o. When clock-division support is enabled, long_ack_o is further gated according to valid_div and clmode, so that it is passed to the BIU only at the selected RISC-clock phase. biu_err_o is generated symmetrically from long_err_o and passes through the same clock-division phase-selection logic. It is important to note that wb_rty_i does not directly generate either biu_ack_o or biu_err_o; retry is handled as a condition requiring the external bus access to be retried or delayed, not as a BIU-side completion or error response.
+
+The retry logic exists only when OR1200_WB_RETRY is defined. In that case, retry is asserted when either the current wb_rty_i is asserted or the retry counter is nonzero. When wb_rty_i is asserted, retry_cntr is loaded with all ones; afterward, as long as the counter is nonzero, it decrements on each wb_clk_i cycle. This allows the module to maintain a retry-suppression window after receiving a Wishbone retry. In registered-output mode, retry suppresses the generation of new wb_cyc_o and wb_stb_o transfers. In non-registered-output mode, the effect of retry on wb_cyc_o depends on the exact combinational expression, while wb_stb_o itself is not directly gated by retry.
+
+The abort logic handles the case where the internal BIU request has been withdrawn while the external Wishbone transaction has not yet formally completed. In the source code, aborted is asserted when the following conditions are all true: the current wb_stb_o is high, the internal biu_cyc_i & biu_stb_i request is no longer valid, and neither wb_ack_i nor wb_err_i is asserted in the current cycle. This means that a transaction is still pending on the Wishbone side, but the BIU side has already abandoned the request. aborted_r is the holding register for this state. It is cleared by wb_rst_i, cleared when wb_ack_i or wb_err_i is received, and set when aborted is detected. It should be noted that wb_rty_i does not clear aborted_r; only ACK or ERR is considered the formal termination condition for the abandoned transaction.
+
+In registered-output mode, the abort logic allows the module to gracefully hold an abandoned Wishbone transaction until the external bus returns ACK or ERR. For example, the registered assignments for wb_cyc_o and wb_stb_o both include an aborted & ~wb_ack_i branch, so when the transaction has been withdrawn internally but has not yet completed externally, the module can continue to keep the Wishbone transaction valid until the external termination arrives. In registered-output mode, wb_we_o also includes an aborted & wb_we_o branch, which allows the original read/write direction to be preserved during the abort period. In non-registered-output mode, these hold behaviors are not fully present, because signals such as wb_stb_o and wb_we_o are mainly generated combinationally from the current BIU request.
+
+The generation of wb_cyc_o depends heavily on macro configuration. In registered-output mode with bursts disabled, wb_cyc_o is generated from biu_cyc_i & ~wb_ack_i & ~retry or from the abort-hold branch. In registered-output mode with bursts allowed, biu_cab_i can also participate in holding the cycle. In non-registered-output mode with bursts disabled, wb_cyc_o = biu_cyc_i & ~retry. In non-registered-output mode with bursts allowed, the source-code expression is biu_cyc_i | biu_cab_i & ~retry, which, according to Verilog operator precedence, is equivalent to biu_cyc_i | (biu_cab_i & ~retry). Therefore, retry gates only the biu_cab_i branch and does not suppress the entire wb_cyc_o when biu_cyc_i is high.
+
+In registered-output mode, wb_stb_o is determined jointly by the internal request, ACK, retry, and abort conditions. Under normal operation, wb_stb_o is asserted when biu_cyc_i & biu_stb_i is valid, no ACK is present, and retry is not active. If the module enters an abort state and ACK has not yet arrived, the abort branch keeps it asserted. In non-registered-output mode, wb_stb_o is directly assigned from biu_cyc_i & biu_stb_i and does not directly account for ACK, retry, or abort holding.
+
+wb_we_o indicates the write enable for the Wishbone transaction. In non-registered-output mode, it is generated combinationally from biu_cyc_i & biu_stb_i & biu_we_i. In registered-output mode, it is updated according to the BIU write-enable value during normal requests; if the module enters the abort state, the aborted & wb_we_o branch preserves the previous write direction, preventing an already-withdrawn internal request from changing the attributes of a transaction that is still waiting for external termination.
+
+wb_sel_o represents the byte-select signal. In non-registered-output mode, it is directly connected to biu_sel_i. In registered-output mode, it loads biu_sel_i on every rising edge of wb_clk_i and is cleared on wb_rst_i. wb_dat_o represents write-data output. In non-registered-output mode, it is directly assigned from biu_dat_i; in registered-output mode, it is updated only when there is a valid internal request, no ACK, and no abort condition.
+
+If OR1200_WB_CAB is defined, the module exports wb_cab_o, which carries consecutive-address burst information. In non-registered-output mode, wb_cab_o is directly assigned from biu_cab_i. In registered-output mode, wb_cab_o registers biu_cab_i on wb_clk_i and is cleared by wb_rst_i. The existence of this signal is entirely controlled by the OR1200_WB_CAB macro.
+
+If OR1200_WB_B3 is defined, the module exports the Wishbone B3-related signals wb_cti_o and wb_bte_o. wb_bte_o is fixed at 2'b01, indicating a 4-beat wrapping burst. The source code also defines the burst_len counter to help generate wb_cti_o. When biu_cab_i is low, burst_len is loaded with 2'b11; when biu_cab_i is high, burst_len is nonzero, and wb_ack_i is received, burst_len decrements. Therefore, burst_len represents the remaining count state during the current CAB burst and decrements only on acknowledged CAB beats.
+
+The behavior of wb_cti_o is also controlled by macros. When both OR1200_WB_B3 and OR1200_REGISTERED_OUTPUTS are enabled, wb_cti_o is reset to 3'b000, meaning a classic cycle. If OR1200_NO_BURSTS is defined, wb_cti_o is forced to 3'b111 during operation, meaning end-of-burst. If bursts are allowed, then when biu_cab_i is asserted and burst_len[1] is high, wb_cti_o outputs 3'b010, meaning an incrementing burst cycle. When biu_cab_i remains asserted and wb_ack_i is received, but the previous condition is no longer satisfied, wb_cti_o outputs 3'b111, meaning end-of-burst. The source code marks the case where B3 is enabled without registered outputs as Unsupported !!!, so B3 CTI output depends on the registered-output configuration.
+
+Overall, the core function of or1200_wb_biu can be summarized as follows: it converts requests, data, and response signals between the OR1200 internal BIU protocol and the external Wishbone protocol; provides timing isolation through optional input and output registers; supports fixed Wishbone/RISC clock ratios through valid_div and clmode; handles Wishbone retry through a retry counter; ensures that externally issued but internally abandoned transactions are completed with ACK or ERR through aborted and aborted_r; and supports CAB/B3 burst-control signals when the corresponding macros are enabled. Because many behaviors of this module depend on compile-time macros, an accurate description of its implementation must distinguish between configurations such as registered outputs, registered inputs, retry support, CAB support, B3 support, OR1200_NO_BURSTS, and clock-division support.
+
+module or1200_wb_biu(
+    // RISC clock, reset and clock control
+    input clk,
+    input rst,
+    input [1:0] clmode,
+
+    // WISHBONE interface
+    input wb_clk_i,
+    input wb_rst_i,
+    input wb_ack_i,
+    input wb_err_i,
+    input wb_rty_i,
+    input [31:0] wb_dat_i,
+    output wb_cyc_o,
+    output [31:0] wb_adr_o,
+    output wb_stb_o,
+    output wb_we_o,
+    output [3:0] wb_sel_o,
+    output [31:0] wb_dat_o,
+`ifdef OR1200_WB_CAB
+    output wb_cab_o,
+`endif
+`ifdef OR1200_WB_B3
+    output [2:0] wb_cti_o,
+    output [1:0] wb_bte_o,
+`endif
+
+    // Internal RISC bus
+    input [31:0] biu_dat_i,
+    input [31:0] biu_adr_i,
+    input biu_cyc_i,
+    input biu_stb_i,
+    input biu_we_i,
+    input [3:0] biu_sel_i,
+    input biu_cab_i,
+    output [31:0] biu_dat_o,
+    output biu_ack_o,
+    output biu_err_o
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    clmode[1:0]: Clock-division mode that defines the WB-to-RISC timing ratio.
+    wb_clk_i: Wishbone-side clock input used by the external bus domain.
+    wb_rst_i: Wishbone-side reset input used by the external bus domain.
+    wb_ack_i: Acknowledge/transfer-complete indication for the external Wishbone bus.
+    wb_err_i: Error termination indication for the external Wishbone bus.
+    wb_rty_i: Retry/wait indication for the external Wishbone bus.
+    wb_dat_i[31:0]: Data bus for the external Wishbone bus.
+    biu_dat_i[31:0]: Data bus for the internal BIU interface.
+    biu_adr_i[31:0]: Address bus for the internal BIU interface.
+    biu_cyc_i: Cycle-valid request for the internal BIU interface.
+    biu_stb_i: Strobe/request-valid qualifier for the internal BIU interface.
+    biu_we_i: Write-enable / write-versus-read qualifier for the internal BIU interface.
+    biu_cab_i: Consecutive-address burst indication for the internal BIU interface.
+    biu_sel_i[3:0]: Byte-lane select for the internal BIU interface.
+Output port:
+    wb_cyc_o: Cycle-valid request for the external Wishbone bus.
+    wb_adr_o[31:0]: Address bus for the external Wishbone bus.
+    wb_stb_o: Strobe/request-valid qualifier for the external Wishbone bus.
+    wb_we_o: Write-enable / write-versus-read qualifier for the external Wishbone bus.
+    wb_sel_o[3:0]: Byte-lane select for the external Wishbone bus.
+    wb_dat_o[31:0]: Data bus for the external Wishbone bus.
+    wb_cab_o: Consecutive-address burst indication for the external Wishbone bus. Present only when `OR1200_WB_CAB` is enabled.
+    wb_cti_o[2:0]: Cycle-type identifier for the external Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    wb_bte_o[1:0]: Burst-type extension for the external Wishbone bus. Present only when `OR1200_WB_B3` is enabled.
+    biu_dat_o[31:0]: Data bus for the internal BIU interface.
+    biu_ack_o: Acknowledge/transfer-complete indication for the internal BIU interface.
+    biu_err_o: Error termination indication for the internal BIU interface.
+
+Processing Flow:
+The module operates as a Wishbone transaction adapter between the internal BIU interface and the external Wishbone bus.
+1. The BIU presents a request using `biu_cyc_i`, `biu_stb_i`, address, write data, byte select, write-enable, and optional burst indication.
+2. The module generates Wishbone request signals. Depending on compile-time options, these signals are either direct combinational mappings or registered on `wb_clk_i`.
+3. If retry support is enabled, `wb_rty_i` starts a retry wait interval and suppresses new request issuance according to the configured output path.
+4. If the BIU withdraws a request while a Wishbone transfer is still active and no `ack/err` has arrived, the module enters a graceful-abort state. The external transaction is allowed to terminate, but its completion is masked from the BIU side.
+5. Wishbone `ack/err` responses are converted into `long_ack_o/long_err_o`, with abort masking. When clock-division support is enabled, `valid_div` gates these long pulses according to `clmode` to generate BIU-visible `biu_ack_o/biu_err_o`.
+6. Read data from `wb_dat_i` is either directly forwarded to `biu_dat_o` or sampled on `wb_clk_i` when `wb_ack_i` is asserted, depending on whether registered inputs are enabled.
+7. If B3 burst support is enabled, the module maintains a small burst counter and generates `wb_cti_o`/`wb_bte_o` for 4-beat wrapping bursts.

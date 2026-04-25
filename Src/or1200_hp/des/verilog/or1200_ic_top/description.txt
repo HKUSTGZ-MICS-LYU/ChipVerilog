@@ -1,0 +1,118 @@
+or1200_ic_top is the top-level instruction cache module in the OR1200 processor. It sits between the CPU instruction-fetch/QMEM interface and the external instruction BIU interface, and connects the instruction cache FSM, cache data RAM, cache tag RAM, and the required combinational control logic into a complete I-cache access path. Although the source code header comment says Data cache, the module name, signal names, instantiated submodules, and overall behavior all show that this module is actually the instruction cache top level. That comment should therefore be understood as a leftover or copy-paste error. The actual source code is in the uploaded code file, and the original description is in the other text file.
+
+The main responsibility of this module is to handle CPU/QMEM-side instruction-fetch requests when the instruction cache is enabled. It performs cache tag lookup, hit/miss detection, cache-hit data return, external BIU reads after cache misses, miss refill, tag update, and first-word miss response. When the instruction cache is disabled, the module no longer performs cache lookup and does not rely on the data RAM or tag RAM to return data. Instead, it acts as a bypass wrapper between the CPU/QMEM side and the external instruction BIU, directly forwarding requests and responses. In addition, the module supports software-controlled instruction cache invalidation through SPR writes, which clear the valid bit of the selected cache tag entry.
+
+This top-level module instantiates three core submodules. or1200_ic_fsm is the instruction cache control state machine. It generates control signals such as hit acknowledge, miss acknowledge, miss error, BIU read, burst indication, data RAM write enable, and tag RAM write enable according to the CPU/QMEM request, the cache-inhibit attribute, the tag comparison result, and the external BIU ack/error responses. or1200_ic_ram is the instruction cache data RAM, which stores instruction data in cache lines. Its address comes from ic_addr[12:2], its write data comes from the external BIU input icbiu_dat_i, and its write enable is controlled by the FSM output icram_we. or1200_ic_tag is the instruction cache tag RAM, which stores the tag field and valid bit. Its normal access address comes from ic_addr[12:4], and its outputs are tag_v and tag[18:0], which are used by the top-level combinational logic for tag comparison.
+
+The module uses ic_addr as the common address source for the external BIU address, the data RAM address, and the normal tag RAM access address. The selection of ic_addr is determined solely by icfsm_biu_read: when the FSM is issuing an external BIU read, ic_addr selects the FSM-saved address saved_addr; otherwise, ic_addr selects the current CPU/QMEM input address icqmem_adr_i. The external BIU address icbiu_adr_o is driven directly by ic_addr. This allows the same address path to serve both ordinary cache lookup and external reads during miss refill.
+
+On the external BIU interface, this module only issues instruction reads and never initiates writes. Therefore, icbiu_we_o is tied to 0 and icbiu_dat_o is tied to 0. When the cache is enabled, icbiu_cyc_o and icbiu_stb_o are controlled by the FSM signal icfsm_biu_read, while icbiu_cab_o is controlled by the FSM signal icfsm_burst. icbiu_sel_o is fixed to 4'b1111 when the cache is enabled and the FSM is performing a BIU read, indicating a full 32-bit instruction-word read; otherwise, it passes through the CPU/QMEM-side icqmem_sel_i. When the cache is disabled, icbiu_cyc_o and icbiu_stb_o are directly equal to icqmem_cycstb_i, icbiu_sel_o is directly equal to icqmem_sel_i, and icbiu_cab_o is fixed to 0, implementing a direct bypass access to the external BIU.
+
+On the CPU/QMEM-side response path, icqmem_ack_o is generated from the FSM signals icfsm_first_hit_ack or icfsm_first_miss_ack when the cache is enabled, and is directly passed through from the external BIU signal icbiu_ack_i when the cache is disabled. icqmem_err_o comes from the FSM signal icfsm_first_miss_err when the cache is enabled, and is directly passed through from the external BIU signal icbiu_err_i when the cache is disabled. icqmem_rty_o is defined as ~icqmem_ack_o & ~icqmem_err_o, so it is asserted whenever the current access has neither completed successfully with an acknowledge nor terminated with an error. In this implementation, rty behaves more like a “not yet completed / keep waiting” indication rather than a retry signal independently supplied by the external BIU. icqmem_tag_o normally passes through icqmem_tag_i; when icqmem_err_o is asserted, it is replaced by OR1200_ITAG_BE to indicate an instruction bus error.
+
+The CPU/QMEM-side data return path is selected by a simple mux. When the cache is disabled, icqmem_dat_o comes directly from the external BIU input icbiu_dat_i. When the cache is enabled and the current response is the first external word returned after a miss, that is, when icfsm_first_miss_ack is asserted, icqmem_dat_o also comes directly from icbiu_dat_i. In all other cache-enabled cases, icqmem_dat_o comes from the instruction cache data RAM output from_icram. Therefore, this data selection logic does not directly test icfsm_first_hit_ack; instead, it selects between external return data and cache RAM data based on icfsm_first_miss_ack and ic_en. Whether the data is valid for the CPU/QMEM side must be interpreted together with icqmem_ack_o, icqmem_err_o, and the current FSM state.
+
+The tag comparison logic is implemented as top-level combinational logic. The valid bit output from the tag RAM is tag_v, and the tag field is tag[18:0]. The code splits the tag field into four parts and compares them with saved_addr[31:28], saved_addr[27:23], saved_addr[22:18], and saved_addr[17:13], respectively. If any segment mismatches, or if tag_v is 0, tagcomp_miss is asserted. Only when the valid bit is 1 and the entire tag exactly matches saved_addr[31:13] is the access considered a cache hit. It is important to note that the tag comparison uses the FSM-saved address saved_addr, not the current input address icqmem_adr_i directly. This reflects the fact that the FSM controls the address of the instruction fetch or refill currently being processed.
+
+SPR invalidation is generated by spr_cs & spr_write. When both signals are 1, ic_inv is asserted, indicating that software is requesting an instruction cache tag invalidation. The tag RAM write enable ictag_we is the OR of the normal FSM tag write request icfsm_tag_we and ic_inv, so the tag RAM can be written either by the FSM during refill or by an SPR invalidation operation. During invalidation, the tag RAM write address selects spr_dat_i[12:4]; otherwise, it selects ic_addr[12:4]. The valid bit written to the tag RAM is ~ic_inv, so normal refill writes a valid bit of 1, while SPR invalidation writes a valid bit of 0. In other words, SPR invalidation has priority on the tag RAM write-address and valid-bit control path, but it does not directly override the FSM state, the external BIU request, or the data RAM write path.
+
+The tag RAM enable logic is ictag_en = ic_inv | ic_en. This means that when the cache is enabled, the tag RAM can participate in normal cache lookup or refill tag update. When the cache is disabled, the tag RAM does not participate in normal access by default. However, even when the cache is disabled, an SPR invalidation still enables the tag RAM so that the selected entry can be written with an invalid state. By contrast, the data RAM enable is controlled directly by ic_en, so the data RAM does not participate in the normal instruction-fetch path when the cache is disabled.
+
+When ic_en = 1, the module operates in instruction-cache mode. The CPU/QMEM side issues an instruction-fetch request through icqmem_adr_i and icqmem_cycstb_i. The top-level module works with the tag RAM and data RAM to perform the lookup and passes the tag comparison result tagcomp_miss to the FSM. The FSM then decides the next action according to the request, the cache-inhibit attribute icqmem_ci_i, the tag miss indication, and the external BIU return status. If the access hits, the FSM generates a first-hit acknowledge, and the CPU/QMEM side receives a response, with the data path normally coming from from_icram. If the access misses, the FSM asserts icfsm_biu_read to issue an external BIU read and controls data RAM writes as data returns from the BIU. The first returned word after a miss can be sent directly back to the CPU/QMEM side through icfsm_first_miss_ack. During or after refill, the FSM asserts icfsm_tag_we to write the tag RAM. Under normal refill conditions, the tag RAM is written with {ic_addr[31:13], 1'b1}, making the corresponding cache line valid. The detailed state transitions, refill order, burst length, data RAM write timing, and tag RAM write timing are implemented inside or1200_ic_fsm; the top-level module is responsible for wiring these control signals and performing the related mux selections.
+
+When ic_en = 0, the module operates in cache-disabled/bypass mode. In this mode, the CPU/QMEM-side request does not go through instruction cache hit/miss detection. The external BIU request signals are generated directly from the CPU/QMEM-side request, and the external BIU’s returned data, acknowledge, and error are passed directly back to the CPU/QMEM side. In this mode, icqmem_dat_o comes from icbiu_dat_i, icqmem_ack_o comes from icbiu_ack_i, and icqmem_err_o comes from icbiu_err_i. However, disabling the cache does not prevent SPR invalidation. Since the tag RAM enable is controlled by ic_inv | ic_en, software can still clear the valid bit of a selected tag entry through an SPR write even when the cache is disabled.
+
+When OR1200_BIST is defined, the module also connects the MBIST scan chain for the instruction cache data RAM and tag RAM. The MBIST input mbist_si_i first enters the data RAM, the data RAM scan output connects to the tag RAM scan input, and the tag RAM scan output becomes mbist_so_o. The control bus mbist_ctrl_i is passed to both the data RAM and the tag RAM to control the BIST flow.
+
+From a timing perspective, the or1200_ic_top top level itself is mainly composed of combinational logic and submodule instantiations. It does not contain independent resettable sequential state registers. Although tagcomp_miss is declared as a reg, it is assigned in a combinational always block and is therefore a combinational signal rather than a clock-triggered register. The clk and rst signals are forwarded to the FSM, data RAM, and tag RAM. The actual state-machine state, RAM behavior, tag RAM behavior, and reset behavior are implemented inside those submodules.
+
+Overall, or1200_ic_top is the top-level integration module for the instruction cache. When the cache is enabled, it organizes tag lookup, hit/miss detection, cache-hit data return, external reads after cache misses, first-word miss response, cache refill, and tag update. When the cache is disabled, it provides a direct bypass from the CPU/QMEM side to the external BIU. It also supports index-based clearing of tag valid bits through SPR writes. The detailed refill control and state transitions are not implemented directly in this top level, but are handled by or1200_ic_fsm; the top level selects the correct address, data, response, and tag RAM control paths according to the FSM outputs, the cache enable state, and SPR invalidation requests.
+
+module or1200_ic_top(
+    // Rst, clk and clock control
+    input clk,
+    input rst,
+
+    // External i/f
+    output [31:0] icbiu_dat_o,
+    output [31:0] icbiu_adr_o,
+    output icbiu_cyc_o,
+    output icbiu_stb_o,
+    output icbiu_we_o,
+    output [3:0] icbiu_sel_o,
+    output icbiu_cab_o,
+    input [31:0] icbiu_dat_i,
+    input icbiu_ack_i,
+    input icbiu_err_i,
+
+    // Internal i/f
+    input ic_en,
+    input [31:0] icqmem_adr_i,
+    input icqmem_cycstb_i,
+    input icqmem_ci_i,
+    input [3:0] icqmem_sel_i,
+    input [3:0] icqmem_tag_i,
+    output [31:0] icqmem_dat_o,
+    output icqmem_ack_o,
+    output icqmem_rty_o,
+    output icqmem_err_o,
+    output [3:0] icqmem_tag_o,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // SPRs
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_dat_i
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    icbiu_dat_i[31:0]: Data bus for the instruction-cache to external instruction BIU interface.
+    icbiu_ack_i: Acknowledge/transfer-complete indication for the instruction-cache to external instruction BIU interface.
+    icbiu_err_i: Error termination indication for the instruction-cache to external instruction BIU interface.
+    ic_en: Instruction-cache enable control.
+    icqmem_adr_i[31:0]: Address bus for the instruction-cache/QMEM interface.
+    icqmem_cycstb_i: Combined cycle-and-strobe request for the instruction-cache/QMEM interface.
+    icqmem_ci_i: Cache-inhibit attribute for the instruction-cache/QMEM interface.
+    icqmem_sel_i[3:0]: Byte-lane select for the instruction-cache/QMEM interface.
+    icqmem_tag_i[3:0]: Tag field carried on the instruction-cache/QMEM interface.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    spr_cs: SPR chip-select for this module.
+    spr_write: SPR write strobe for this module.
+    spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    icbiu_dat_o[31:0]: Data bus for the instruction-cache to external instruction BIU interface.
+    icbiu_adr_o[31:0]: Address bus for the instruction-cache to external instruction BIU interface.
+    icbiu_cyc_o: Cycle-valid request for the instruction-cache to external instruction BIU interface.
+    icbiu_stb_o: Strobe/request-valid qualifier for the instruction-cache to external instruction BIU interface.
+    icbiu_we_o: Write-enable / write-versus-read qualifier for the instruction-cache to external instruction BIU interface.
+    icbiu_sel_o[3:0]: Byte-lane select for the instruction-cache to external instruction BIU interface.
+    icbiu_cab_o: Consecutive-address burst indication for the instruction-cache to external instruction BIU interface.
+    icqmem_dat_o[31:0]: Data bus for the instruction-cache/QMEM interface.
+    icqmem_ack_o: Acknowledge/transfer-complete indication for the instruction-cache/QMEM interface.
+    icqmem_rty_o: Retry/wait indication for the instruction-cache/QMEM interface.
+    icqmem_err_o: Error termination indication for the instruction-cache/QMEM interface.
+    icqmem_tag_o[3:0]: Tag field carried on the instruction-cache/QMEM interface.
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+
+Processing Flow
+
+The processing flow of or1200_ic_top depends on whether the instruction cache is enabled by ic_en.
+
+When ic_en is asserted, the module operates in instruction-cache mode. A CPU/QMEM-side instruction fetch request arrives through icqmem_adr_i and icqmem_cycstb_i. If the FSM is not currently issuing an external BIU read, ic_addr selects the current CPU/QMEM address; otherwise, it selects the FSM-saved address saved_addr. The selected address is used to access the cache data RAM and tag RAM, while the tag RAM output is compared against saved_addr[31:13] together with the valid bit. The resulting tagcomp_miss signal is passed to or1200_ic_fsm.
+
+The FSM determines whether the current request is a hit, a miss, a cache-inhibited access, or an access that requires an external BIU transaction. On a cache hit, the FSM asserts icfsm_first_hit_ack, and the CPU/QMEM side receives an acknowledge through icqmem_ack_o; the returned instruction data comes from the cache data RAM output from_icram. On a cache miss, the FSM asserts icfsm_biu_read to issue an external BIU read. During this phase, ic_addr selects saved_addr, and the external BIU address icbiu_adr_o is driven by that address. As BIU data returns through icbiu_dat_i, it is written into the cache data RAM under control of icram_we.
+
+For the first word returned after a miss, the FSM asserts icfsm_first_miss_ack, allowing the returned BIU data to be sent directly to the CPU/QMEM side through icqmem_dat_o. During or after refill, the FSM asserts icfsm_tag_we to update the tag RAM with the current tag and a valid bit of 1. If the BIU reports an error during the first miss access, the FSM asserts icfsm_first_miss_err, and icqmem_err_o is asserted to the CPU/QMEM side.
+
+When ic_en is deasserted, the module operates in bypass mode. In this mode, the CPU/QMEM-side request does not go through cache lookup or hit/miss detection. Instead, icqmem_cycstb_i, icqmem_sel_i, and icqmem_adr_i are passed to the external BIU path through the corresponding output logic. The external BIU response signals icbiu_ack_i, icbiu_err_i, and icbiu_dat_i are passed directly back to the CPU/QMEM side as icqmem_ack_o, icqmem_err_o, and icqmem_dat_o.
+
+SPR invalidation can occur independently of the normal fetch flow. When spr_cs & spr_write is asserted, ic_inv becomes active. The tag RAM is enabled, its write address is selected from spr_dat_i[12:4], and the written valid bit is forced to 0. This invalidates the selected cache tag entry. This invalidation path has priority over the normal tag write address and valid-bit selection, but it does not directly override the FSM state, external BIU request, or data RAM write path.

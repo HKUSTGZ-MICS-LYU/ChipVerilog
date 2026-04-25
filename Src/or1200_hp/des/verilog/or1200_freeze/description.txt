@@ -1,0 +1,80 @@
+or1200_freeze is the pipeline freeze-control module in the OR1200 processor. It generates the freeze signals for several pipeline-related stages according to instruction fetch waits, load/store waits, multicycle execution, debug stalls, MAC stalls, pipeline flushes, and execute-stage abort conditions. The module outputs genpc_freeze, if_freeze, id_freeze, ex_freeze, and wb_freeze, which control whether the PC generation, instruction fetch, decode, execute, and writeback-related stages are allowed to advance. The module itself only generates freeze-control signals; it does not directly save, clear, overwrite, or invalidate pipeline registers. Actual NOP insertion, flush handling, and abort handling must be performed by other pipeline-control logic.
+
+The module follows the pipeline freeze constraints described in the source comments. Freeze conditions near the front of the pipeline may be asserted more often than freeze conditions near the back of the pipeline. However, when a later pipeline stage is frozen, the earlier related stages must also be frozen to prevent newer upstream contents from overwriting stalled downstream contents. In other words, wb_freeze must not be asserted while ex_freeze is deasserted, and ex_freeze must not be asserted while id_freeze is deasserted. In the current implementation, ex_freeze is directly assigned from wb_freeze, while if_freeze includes id_freeze. The design also allows some cases where the front end is frozen while the later stages continue to advance, such as when id_freeze and if_freeze are asserted but ex_freeze and wb_freeze are not. This behavior supports inserting a NOP from the ID stage into the EX stage.
+
+In the combinational logic, genpc_freeze is controlled only by du_stall and the registered flush request flushpipe_r. In the current code, lsu_stall does not directly freeze PC generation, although the commented-out older assignment shows that lsu_stall had previously been considered as part of the genpc_freeze condition. if_freeze is asserted when either id_freeze or extend_flush is asserted. Therefore, whenever the decode stage is frozen, the instruction-fetch stage is also frozen. In addition, during an extended flush, if_freeze may be asserted even when id_freeze is not asserted.
+
+id_freeze combines several conditions that prevent the decode stage from safely advancing. It is asserted when lsu_stall is active, when instruction fetch is stalled and the LSU has not released the stall through lsu_unstall, when a multicycle freeze is active, when a delay-slot fetch must be forced through force_dslot_fetch, when the debug unit requests a stall through du_stall, or when the MAC unit requests a stall through mac_stall. The term ~lsu_unstall & if_stall means that the instruction-fetch stall contributes to id_freeze only when the LSU has not indicated an unstall condition.
+
+wb_freeze uses a similar but not identical set of conditions to id_freeze. It is asserted by lsu_stall, ~lsu_unstall & if_stall, multicycle_freeze, du_stall, mac_stall, and abort_ex. Therefore, when an execute-stage abort condition occurs, abort_ex causes wb_freeze to be asserted. However, wb_freeze does not include force_dslot_fetch, while id_freeze does. For this reason, wb_freeze is not simply id_freeze with abort_ex added; the two signals intentionally differ. ex_freeze is not computed independently. It is directly assigned to wb_freeze, so every condition that asserts wb_freeze also asserts ex_freeze.
+
+The module contains two sequential state registers: flushpipe_r and multicycle_cnt. Both are updated on the rising edge of clk and are cleared by the active-high asynchronous reset rst. After reset, flushpipe_r is cleared to indicate that no registered pipeline-flush request is pending, and multicycle_cnt is cleared to indicate that no multicycle freeze is active.
+
+flushpipe_r is a flush-state register gated by the instruction-side response signals. When either icpu_ack_i or icpu_err_i is asserted, the current value of flushpipe is sampled into flushpipe_r. This aligns the pipeline-flush request with instruction-fetch completion or instruction-fetch error reporting. If there is no new instruction-side acknowledge or error and flushpipe is deasserted, flushpipe_r is cleared. If there is no acknowledge or error and flushpipe remains asserted, flushpipe_r keeps its previous value. The registered flush signal then contributes to genpc_freeze, preventing the PC generation logic from advancing while the registered flush condition is active.
+
+Multicycle freezing is implemented using multicycle_cnt and multicycle_freeze. multicycle_freeze is the reduction-OR of multicycle_cnt; therefore, it is asserted whenever the counter is nonzero. If the counter is already nonzero, it is decremented on each clock cycle. If the counter is zero, the input multicycle is nonzero, and ex_freeze is not asserted, the value of multicycle is loaded into multicycle_cnt. Thus, a multicycle freeze is not generated directly and continuously from the multicycle input. Instead, the input is first loaded into a counter at an appropriate time, and the nonzero counter state then produces multicycle_freeze. This signal contributes to both id_freeze and wb_freeze, and it affects ex_freeze indirectly through wb_freeze.
+
+Overall, or1200_freeze acts as the central arbitration point for pipeline freeze conditions. It combines control information from the LSU, instruction-fetch side, debug unit, MAC unit, multicycle execution logic, pipeline flush logic, and execute-stage abort logic. Its main purpose is to ensure that the pipeline stages freeze or advance in legal combinations so that instructions are not overwritten, lost, or incorrectly advanced during memory waits, fetch waits, multicycle operations, debug stalls, control-flow flushes, or abort conditions.
+
+module or1200_freeze(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f
+    input [1:0] multicycle,
+    input flushpipe,
+    input extend_flush,
+    input lsu_stall,
+    input if_stall,
+    input lsu_unstall,
+    input du_stall,
+    input mac_stall,
+    input force_dslot_fetch,
+    input abort_ex,
+    output genpc_freeze,
+    output if_freeze,
+    output id_freeze,
+    output ex_freeze,
+    output wb_freeze,
+    input icpu_ack_i,
+    input icpu_err_i
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - multicycle[1:0]: Multi-cycle operation control value used by the freeze logic.
+    - flushpipe: Pipeline flush request.
+    - extend_flush: Extended flush control that keeps the pipeline invalidated for multiple cycles.
+    - lsu_stall: Load/store-unit stall indication.
+    - if_stall: Fetch-stage stall indication.
+    - lsu_unstall: Load/store completion indication that releases the pipeline stall.
+    - force_dslot_fetch: Control that forces fetching of a branch delay-slot instruction.
+    - abort_ex: Indicates that the current execute-stage instruction must be aborted.
+    - du_stall: Debug-unit stall request into the pipeline.
+    - mac_stall: MAC-unit stall request into the freeze logic.
+    - icpu_ack_i: Acknowledge/transfer-complete indication for the CPU-to-instruction-memory interface.
+    - icpu_err_i: Error termination indication for the CPU-to-instruction-memory interface.
+Output port:
+    - genpc_freeze: Freeze control for the program-counter generation stage.
+    - if_freeze: Freeze control for the fetch stage.
+    - id_freeze: Freeze control for the decode stage.
+    - ex_freeze: Freeze control for the execute stage.
+    - wb_freeze: Freeze control for the writeback stage.
+Internal reg/wire signals:
+    wire multicycle_freeze: Freeze asserted while a multicycle op is active.
+    reg [1:0] multicycle_cnt: Countdown for the remaining multicycle stalls.
+    reg flushpipe_r: One-cycle registered copy of the pipeline flush request.
+
+Processing Flow
+
+On each clock cycle, the module first updates its internal state registers. If rst is asserted, both flushpipe_r and multicycle_cnt are cleared. Otherwise, flushpipe_r is updated according to the instruction-side response signals: when icpu_ack_i or icpu_err_i is asserted, the current flushpipe value is sampled into flushpipe_r; when there is no instruction-side response and flushpipe is deasserted, flushpipe_r is cleared; otherwise, it retains its previous value.
+
+In parallel, the multicycle counter is updated. If multicycle_cnt is already nonzero, it is decremented by one on the clock edge. If the counter is zero, multicycle is nonzero, and ex_freeze is not asserted, the module loads multicycle into multicycle_cnt. The signal multicycle_freeze is then asserted whenever multicycle_cnt is nonzero, indicating that a multicycle operation is still being held.
+
+After the internal state is established, the combinational freeze logic generates the pipeline freeze outputs. genpc_freeze is asserted when either du_stall or flushpipe_r is active. id_freeze is asserted when the pipeline must be held due to an LSU stall, an instruction-fetch stall that has not been released by lsu_unstall, an active multicycle freeze, a forced delay-slot fetch, a debug stall, or a MAC stall. if_freeze is then asserted whenever id_freeze is asserted or when extend_flush is active.
+
+The back-end freeze signals are generated from the writeback-side conditions. wb_freeze is asserted when there is an LSU stall, an unreleased instruction-fetch stall, an active multicycle freeze, a debug stall, a MAC stall, or an execute-stage abort. ex_freeze directly follows wb_freeze, so the execute stage is frozen whenever the writeback stage is frozen.
+
+This processing flow ensures that internal flush and multicycle states are tracked across clock cycles, while the final freeze outputs are continuously derived from the current stall, flush, abort, and counter conditions. It also preserves the intended pipeline ordering rule: upstream stages may be frozen more often than downstream stages, but downstream freezes are not allowed to occur without the corresponding upstream freezes needed to protect pipeline contents.

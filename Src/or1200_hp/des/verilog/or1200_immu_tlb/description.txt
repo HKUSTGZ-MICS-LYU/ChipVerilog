@@ -1,0 +1,107 @@
+or1200_immu_tlb implements the instruction-side TLB, or ITLB, in the OR1200 instruction MMU. It stores and retrieves virtual-to-physical page translation information for instruction fetch addresses, and outputs the physical page number, execution permission bits, and cache-inhibit attribute associated with the selected TLB entry. The module itself only implements ITLB storage, indexed access, SPR read/write access, VPN matching, and attribute output. It does not perform higher-level exception classification or state-machine control; TLB misses, insufficient execution permission, and subsequent handling of the cache-inhibit attribute are handled by the upper-level IMMU logic.
+
+The ITLB is a directly indexed structure, not a fully associative or set-associative structure. Each logical entry is stored in two RAM blocks: the Match Register RAM, or MR RAM, and the Translate Register RAM, or TR RAM. The MR RAM stores the virtual page number, or VPN, and the valid bit. The TR RAM stores the physical page number, or PPN, the user-mode execute permission bit uxe, the supervisor-mode execute permission bit sxe, and the cache-inhibit bit ci. The MR RAM has an internal width of 14 bits, where tlb_mr_ram_out[13:1] corresponds to vpn and tlb_mr_ram_out[0] corresponds to the valid bit v. The TR RAM has an internal width of 22 bits, where tlb_tr_ram_out[21:3] corresponds to ppn, tlb_tr_ram_out[2] corresponds to uxe, tlb_tr_ram_out[1] corresponds to sxe, and tlb_tr_ram_out[0] corresponds to ci. Therefore, a complete ITLB entry contains a VPN tag, a valid bit, a PPN, a user-mode execute permission bit, a supervisor-mode execute permission bit, and a cache-inhibit attribute.
+
+clk is the clock used for RAM access and writes. The module itself does not contain explicit state registers or independent reset logic. In the generic RAM implementation branch, rst is passed to the or1200_spram_64x22 and or1200_spram_64x14 RAM instances. However, in the OR1200_RAM_MODELS_VIRTEX branch, the instantiated itlb_tr_sub and itlb_mr_sub RAM macros do not use a rst port. Therefore, more precisely, rst is only passed to the underlying RAMs in the generic SPRAM implementation; the module itself does not directly use rst to clear internal logic.
+
+During normal instruction address translation, tlb_en enables normal lookup access to the MR RAM and TR RAM. It should be noted that tlb_en is not a global enable for all module outputs. The RAMs can also be enabled during SPR accesses, and hit is not ANDed with tlb_en. For the input virtual address vaddr[31:0], vaddr[18:13] is used as the index into the 64-entry TLB, while vaddr[31:19] is used as the VPN tag and compared with the vpn read from the MR RAM. The hit generation logic is hit = (vpn == vaddr[31:19]) & v. Therefore, hit depends only on the current RAM output vpn, the valid bit v, and the current vaddr[31:19]. The module does not actively mask hit, ppn, uxe, sxe, or ci based on tlb_en, spr_cs, or a miss condition. The upper-level logic must determine whether these outputs are valid according to the current access phase.
+
+The ITLB index is selected by the tlb_index signal. When spr_cs=0, the module uses vaddr[18:13] as the index for normal translation access. When spr_cs=1, regardless of whether the SPR access is a read or a write, the index comes from spr_addr[5:0]. In other words, SPR access has priority over the normal virtual-address index path.
+
+The MR RAM enable signal is tlb_mr_en = tlb_en | (spr_cs & !spr_addr[7]), meaning that the MR RAM is enabled either during a normal TLB lookup or during an SPR access to the MR region. The MR RAM write enable signal is tlb_mr_we = spr_cs & spr_write & !spr_addr[7]. Thus, the MR RAM is written only when the SPR access is valid, the current operation is a write, and spr_addr[7]=0, indicating access to the MR region. The TR RAM enable signal is tlb_tr_en = tlb_en | (spr_cs & spr_addr[7]), meaning that the TR RAM is enabled either during a normal TLB lookup or during an SPR access to the TR region. The TR RAM write enable signal is tlb_tr_we = spr_cs & spr_write & spr_addr[7]. Thus, the TR RAM is written only when the SPR access is valid, the current operation is a write, and spr_addr[7]=1, indicating access to the TR region.
+
+The module supports direct writes to the MR RAM and TR RAM through the SPR interface. When writing the MR RAM, the input data spr_dat_i is repacked as {spr_dat_i[31:19], spr_dat_i[0]}. Here, spr_dat_i[31:19] is written as the VPN, and spr_dat_i[0] is written as the valid bit. When writing the TR RAM, the input data spr_dat_i is repacked as {spr_dat_i[31:13], spr_dat_i[7], spr_dat_i[6], spr_dat_i[1]}. Here, spr_dat_i[31:13] is written as the PPN, spr_dat_i[7] is written as the user-mode execute permission bit uxe, spr_dat_i[6] is written as the supervisor-mode execute permission bit sxe, and spr_dat_i[1] is written as the cache-inhibit bit ci. These values are written into the corresponding underlying RAM on the clock edge, with the exact timing depending on the instantiated RAM implementation.
+
+spr_dat_o is a combinationally generated, packed readback value. It selects either the MR or TR readback format according to spr_write and spr_addr[7]. When spr_write=0 and spr_addr[7]=0, it returns the MR-region format, which includes the current MR RAM output vpn and v. In this format, the index field is bitwise-ANDed with the valid bit v, so when v=0, the readback index field is cleared to zero. When spr_write=0 and spr_addr[7]=1, it returns the TR-region format, which includes the current TR RAM output ppn, uxe, sxe, and ci, with unimplemented fields filled with zeros. When spr_write=1, spr_dat_o outputs 32'h00000000. It is important to note that the combinational selection condition for spr_dat_o does not include spr_cs. Therefore, from the local logic of this module, as long as spr_write=0, spr_dat_o outputs either the MR or TR formatted data according to spr_addr[7], even when spr_cs=0. Typically, the upper-level SPR bus logic samples this output only when the module is selected, but this module itself does not gate spr_dat_o with spr_cs.
+
+The data read from the MR RAM is split into vpn and v, while the data read from the TR RAM is split into ppn, uxe, sxe, and ci. hit becomes 1 only when the VPN from the current MR RAM output matches the high-order tag bits of the input virtual address and the valid bit is 1. The module does not check whether the current access is in user mode or supervisor mode, and it does not generate permission exceptions based on uxe or sxe. It only outputs the execution permission bits to the upper-level IMMU. The upper-level IMMU uses the current processor mode, hit, uxe, sxe, and related signals to decide whether instruction fetch is allowed or whether an exception should be generated. ci is the cache-inhibit attribute read from the TR RAM. The module only outputs this attribute; it does not implement cache behavior itself and does not contain memory-mapping logic.
+
+When OR1200_BIST is defined, the module includes RAM BIST-related ports and an internal serial scan chain. The BIST chain is connected as mbist_si_i -> itlb_mr_ram_si -> itlb_mr_ram_so -> itlb_tr_ram_si -> itlb_tr_ram_so -> mbist_so_o. In other words, the MR RAM and TR RAM are chained together in the same MBIST scan path, and mbist_ctrl_i is passed to the underlying RAM instances.
+
+The module selects different RAM implementations according to configuration macros. When OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates the Virtex-specific RAM macros itlb_tr_sub and itlb_mr_sub, and connects enable, write-enable, index, and input data signals to the RAM macros through several intermediate wires. The RAM instances in this branch do not have an explicit rst input. When OR1200_RAM_MODELS_VIRTEX is not defined, the module instantiates generic SPRAMs: or1200_spram_64x22 for the TR RAM and or1200_spram_64x14 for the MR RAM. These two generic RAM instances use the clk, rst, ce, we, oe, addr, di, and doq interfaces, with oe tied to 1'b1.
+
+Overall, or1200_immu_tlb is the directly indexed ITLB storage and lookup module of the OR1200 instruction MMU. It stores VPN and valid information in the MR RAM, and PPN, user/supervisor execute permissions, and cache-inhibit information in the TR RAM. During normal instruction fetch translation, the module uses vaddr[18:13] as the index to read the selected entry, and compares the VPN read from the MR RAM with vaddr[31:19] to generate hit. During SPR access, the module uses spr_addr[5:0] as the index and uses spr_addr[7] to distinguish between the MR and TR regions. The module supports SPR-based reads and writes of TLB entries, but the combinational readback logic for spr_dat_o is not gated by spr_cs, and hit is not gated by tlb_en. The module only outputs the hit result, physical page number, execution permission bits, and cache-inhibit attribute; it does not perform final TLB miss handling, permission exception generation, or cache behavior control.
+
+module or1200_immu_tlb(
+    // Rst and clk
+    input clk,
+    input rst,
+
+    // I/F for translation
+    input tlb_en,
+    input [31:0] vaddr,
+    output hit,
+    output [31:13] ppn,
+    output uxe,
+    output sxe,
+    output ci,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // SPR access
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input passed to underlying RAM instances; this module itself has no explicit state registers.
+    - tlb_en: Enables the TLB lookup for the current access.
+    - vaddr[31:0]: Virtual address presented to the TLB.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    - hit: Hit indication for the current TLB lookup (vpn match with valid bit set).
+    - ppn[31:13]: Physical page number returned by the TLB.
+    - uxe: User-mode execute permission bit returned by the ITLB.
+    - sxe: Supervisor-mode execute permission bit returned by the ITLB.
+    - ci: Cache-inhibit attribute returned by the TLB or memory-mapping logic.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    wire [31:19] vpn: Virtual page number.
+    wire v: Valid.
+    wire [5:0] tlb_index: TLB index.
+    wire tlb_mr_en: TLB mr enable flag.
+    wire tlb_mr_we: TLB mr write-enable.
+    wire [13:0] tlb_mr_ram_in: TLB mr RAM in.
+    wire [13:0] tlb_mr_ram_out: TLB mr RAM output register.
+    wire tlb_tr_en: TLB tr enable flag.
+    wire tlb_tr_we: TLB tr write-enable.
+    wire [21:0] tlb_tr_ram_in: TLB tr RAM in.
+    wire [21:0] tlb_tr_ram_out: TLB tr RAM output register.
+    wire itlb_mr_ram_si: Instruction TLB mr RAM serial input.
+    wire itlb_mr_ram_so: Instruction TLB mr RAM serial output.
+    wire itlb_tr_ram_si: Instruction TLB tr RAM serial input.
+    wire itlb_tr_ram_so: Instruction TLB tr RAM serial output.
+    wire tlb_tr_en_wire: TLB tr enable wire flag.
+    wire [0 : 0] tlb_tr_we_wire: TLB tr write-enable wire.
+    wire [5 : 0] tlb_index_wire: TLB index wire counter.
+    wire [21 : 0] tlb_tr_ram_in_wire: TLB tr RAM in wire.
+    wire tlb_mr_en_wire: TLB mr enable wire flag.
+    wire [0 : 0] tlb_mr_we_wire: TLB mr write-enable wire.
+    wire [13 : 0] tlb_mr_ram_in_wire: TLB mr RAM in wire.
+
+Processing Flow
+
+The module has two main operating paths: the normal instruction translation path and the SPR access path. The selected path affects the TLB index, RAM enables, write enables, and the meaning of the data returned from the RAMs.
+
+During normal instruction translation, spr_cs is low, so tlb_index is selected from vaddr[18:13]. When tlb_en is asserted, both the MR RAM and TR RAM are enabled. The MR RAM outputs the stored VPN and valid bit for the selected entry, while the TR RAM outputs the corresponding PPN, execute permission bits, and cache-inhibit bit. The module then compares the stored VPN with vaddr[31:19] and combines the comparison result with the valid bit to generate hit. At the same time, ppn, uxe, sxe, and ci are driven directly from the TR RAM output. The module does not mask these outputs based on hit; the upper-level IMMU decides whether to use them.
+
+During an SPR access, spr_cs is high, so tlb_index is selected from spr_addr[5:0] instead of the virtual address. The address bit spr_addr[7] selects which half of the ITLB storage is accessed: spr_addr[7]=0 selects the MR RAM, while spr_addr[7]=1 selects the TR RAM. If spr_write is asserted, the selected RAM is written with the repacked fields from spr_dat_i. For MR writes, the module stores spr_dat_i[31:19] as the VPN and spr_dat_i[0] as the valid bit. For TR writes, the module stores spr_dat_i[31:13] as the PPN, spr_dat_i[7] as uxe, spr_dat_i[6] as sxe, and spr_dat_i[1] as ci.
+
+During an SPR read, spr_write is low, and spr_dat_o is generated combinationally from the current MR or TR output according to spr_addr[7]. If the MR region is selected, the readback value contains the stored VPN, a valid-gated index field, zero-filled unused fields, and the valid bit. If the TR region is selected, the readback value contains the stored PPN, the uxe and sxe permission bits, the ci bit, and zero-filled unused fields. The spr_dat_o readback selection is not gated by spr_cs inside this module, so the upper-level SPR bus logic is expected to sample it only when this ITLB module is actually selected.
+
+In all cases, the module only provides raw TLB lookup and attribute information. It does not decide whether a miss, permission violation, or cache-related action should occur. Those decisions are made by the upper-level instruction MMU logic using hit, ppn, uxe, sxe, ci, the current processor mode, and other control signals.

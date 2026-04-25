@@ -1,0 +1,68 @@
+Module `or1200_dc_ram` implements the data RAM wrapper for the OR1200 data-cache data array. It provides an index-addressed 32-bit storage interface used by the upper data-cache logic to read and write cache-line payload words. The module supports 4-bit byte write enable signals, allowing individual byte lanes of `datain[31:0]` to be written when supported by the selected underlying RAM implementation.
+
+The module interface includes clock `clk`, reset `rst`, address `addr[10:0]`, enable `en`, byte write enable `we[3:0]`, write data `datain[31:0]`, and read data `dataout[31:0]`. When `OR1200_BIST` is defined, the MBIST signals `mbist_si_i`, `mbist_so_o`, and `mbist_ctrl_i` are also present.
+
+This wrapper does not implement cache-control logic. It does not perform tag lookup, hit/miss detection, refill sequencing, store merging, address interpretation, or write-priority resolution. It also contains no local state machine or local sequential registers. The read latency, write timing, reset effect, same-address read/write behavior, and output behavior when disabled are determined by the selected underlying RAM macro or RAM model.
+
+When `OR1200_NO_DC` is defined, the data cache RAM is not implemented. In this configuration, no storage is instantiated, `dataout` is tied to zero, and write requests have no effect. If `OR1200_BIST` is also defined, `mbist_so_o` directly bypasses `mbist_si_i`.
+
+When the data cache is enabled, the actual RAM implementation is selected by compile-time configuration macros. If `OR1200_RAM_MODELS_VIRTEX` is defined, the module instantiates the Virtex-specific `dc_ram_sub` RAM model. In this path, `en`, `we`, `addr`, and `datain` are assigned to local wires and connected to the RAM write-side signals. The RAM uses `clk` on both ports: port A receives the enable, byte write enable, address, and write data, while port B reads `dataout` using the same address. The exact behavior for reads, writes, and same-cycle read/write access is defined by the `dc_ram_sub` model. This code path does not explicitly connect the MBIST signals to the Virtex RAM model.
+
+In the generic implementation path, the module instantiates a single-port byte-write RAM macro selected by the configured data-cache size. If `OR1200_DC_1W_4KB` is defined, `or1200_spram_1024x32_bw` is instantiated. If `OR1200_DC_1W_8KB` is defined, `or1200_spram_2048x32_bw` is instantiated. In this path, `en` connects to the RAM chip enable `ce`, `we[3:0]` connects to the byte write enable, `addr[10:0]` connects to the RAM address, `datain[31:0]` connects to the RAM data input, and `dataout[31:0]` is driven by the RAM data output `doq`. The output enable `oe` is tied high. If `OR1200_BIST` is defined, the MBIST signals are connected to the generic RAM macro.
+
+The `clk` signal is forwarded to the selected RAM implementation and does not clock any additional wrapper-local registers. The `rst` signal is forwarded only in the generic RAM path and does not reset any wrapper-local state. In the no-data-cache and Virtex RAM model paths, this wrapper does not use `rst`.
+
+From the system perspective, `or1200_dc_ram` is responsible only for providing the physical data storage array interface for data-cache payload words. The upper cache logic must provide valid `addr`, `en`, `we`, and `datain` signals according to the timing requirements of the selected RAM implementation. Any interpretation of the address as a cache index, any decision to write store data or refill data, and any handling of cache coherency or miss processing are performed outside this module.
+
+module or1200_dc_ram(
+    // Reset and clock
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [10:0] addr,
+    input en,
+    input [3:0] we,
+    input [31:0] datain,
+    output [31:0] dataout
+);
+
+Input ports:
+    clk: Clock forwarded to the selected RAM implementation. The wrapper itself contains no local sequential logic clocked by `clk`.
+    rst: Reset input forwarded only to the generic RAM macro path. It does not reset any wrapper-local state and is not used in the `OR1200_NO_DC` or `OR1200_RAM_MODELS_VIRTEX` paths.
+    addr[10:0]: RAM index/address input. The number of effective address bits depends on the selected RAM depth and implementation.
+    en: RAM access enable. In the generic RAM path, it connects to the RAM chip enable `ce`. In the Virtex RAM model path, it connects to the RAM port-A enable.
+    we[3:0]: Byte write-enable input. Each bit corresponds to one byte lane of `datain[31:0]`, subject to the behavior of the selected RAM macro or RAM model.
+    datain[31:0]: Write data input to the selected RAM implementation.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is defined.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is defined.
+
+Output ports:
+    dataout[31:0]: Read data output from the selected RAM implementation. When `OR1200_NO_DC` is defined, this output is tied to zero.
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is defined. In the no-data-cache path, it directly bypasses `mbist_si_i`; in the generic RAM path, it is driven by the RAM macro. The Virtex RAM model path does not explicitly connect this signal in the shown code.
+
+Internal wire signals:
+    These wires exist only in the `OR1200_RAM_MODELS_VIRTEX` implementation path:
+    en_wire: Local RAM enable signal assigned from `en`.
+    we_wire[3:0]: Local RAM byte write-enable signal assigned from `we`.
+    addr_wire[10:0]: Local RAM address signal assigned from `addr`.
+    datain_wire[31:0]: Local RAM write-data signal assigned from `datain`.
+
+Processing Flow:
+
+The processing flow of or1200_dc_ram is determined by compile-time configuration rather than by an internal state machine. The wrapper first selects the active implementation path according to the defined configuration macros. If OR1200_NO_DC is defined, no data-cache RAM is instantiated. In this configuration, dataout is tied to zero, write requests have no effect, and, when OR1200_BIST is enabled, mbist_so_o directly bypasses mbist_si_i.
+
+When the data cache is enabled, the wrapper instantiates one of the available RAM implementations. If OR1200_RAM_MODELS_VIRTEX is defined, the module routes en, we, addr, and datain through local wires and connects them to the Virtex-specific dc_ram_sub instance. The clock is forwarded to both RAM ports, with the write-side signals connected to port A and the read data returned through port B using the same address.
+
+If the Virtex RAM model is not selected, the wrapper uses the generic RAM macro path. In this path, the selected RAM macro depends on the configured data-cache size. OR1200_DC_1W_4KB selects or1200_spram_1024x32_bw, while OR1200_DC_1W_8KB selects or1200_spram_2048x32_bw. The wrapper connects en to the RAM chip-enable input, we[3:0] to the byte write-enable input, addr to the RAM address input, datain to the RAM data input, and dataout to the RAM data output. The output enable is tied active, and reset and MBIST signals are forwarded when supported by the selected macro.
+
+During normal operation, the upper data-cache logic supplies the address, enable, byte write-enable, and write-data signals. The wrapper simply forwards these signals to the selected storage implementation. If byte write enables are asserted, the corresponding byte lanes of datain may be written according to the behavior of the underlying RAM. Read latency, write timing, reset behavior, disabled-output behavior, and same-address read/write behavior are not defined locally by this wrapper, but by the instantiated RAM macro or RAM model.
+
+Therefore, or1200_dc_ram should be understood as a configurable physical data-array wrapper for cache payload storage. It does not perform tag comparison, hit or miss detection, refill sequencing, store merging, coherency handling, or any other cache-control operation. Those functions are handled by the upper data-cache logic outside this module.

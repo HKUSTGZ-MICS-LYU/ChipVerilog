@@ -1,0 +1,40 @@
+This module implements a generic two-stage pipelined 32x32 signed multiplier.
+
+The operands X and Y are 32-bit input vectors. They are first assigned to the internal Verilog integer variables xi and yi. Because Verilog integer variables are signed 32-bit values, the multiplication is performed as a signed 32-bit by signed 32-bit operation. The resulting 64-bit product is stored in the pipeline registers p0 and p1 and is finally driven to the output P.
+
+The first pipeline stage updates on the rising edge of CLK and captures the product xi * yi into p0. The second pipeline stage also updates on the rising edge of CLK and transfers p0 into p1. The output P is continuously assigned from p1, so P is a registered output rather than a combinational multiplication result.
+
+The reset signal RST is asynchronous and affects only the second pipeline register p1. When RST is asserted, p1 is cleared to zero. The first pipeline register p0 is not reset. Therefore, after reset is released, p1 may receive a stale or undefined value from p0 for one cycle until a newly computed product has propagated through the pipeline.
+
+The module has no explicit input registers, no enable signal, and no valid/ready handshake. It can accept new input values every clock cycle, and the externally visible product appears on P after two rising clock edges through the pipeline.
+
+Although an implementation may be mapped by synthesis to a DSP block, a standard cell multiplier, or another hardware multiplier structure, this RTL does not explicitly describe a Wallace tree, partial-product compressor, or any full-adder-level pipeline. The multiplier is inferred from the Verilog expression xi * yi.
+
+module or1200_gmultp2_32x32(
+    input [31:0] X,
+    input [31:0] Y,
+    input CLK,
+    input RST,
+    output [63:0] P
+);
+
+Input ports:
+    - X[31:0]: 32-bit multiplier operand X. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - Y[31:0]: 32-bit multiplier operand Y. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - CLK: Multiplier pipeline clock; sequential product stages update on its rising edge. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+    - RST: Asynchronous reset for the multiplier pipeline output stage. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+Output port:
+    - P[63:0]: 64-bit registered multiplication result after the module pipeline delay. Present only when `OR1200_GENERIC_MULTP2_32X32` is enabled.
+Internal reg/wire signals:
+    reg [63:0] p0: Partial-product pipeline register P0.
+    reg [63:0] p1: Partial-product pipeline register P1.
+
+Processing Flow:
+
+When the macro OR1200_GENERIC_MULTP2_32X32 is defined, this module is compiled as a two-stage pipelined 32x32 signed multiplier. The 32-bit input vectors X and Y are first assigned to the internal integer variables xi and yi whenever the corresponding input changes. Since xi and yi are Verilog integer variables, the operands are interpreted as signed 32-bit values before multiplication.
+
+On each rising edge of CLK, the first pipeline stage computes the signed product xi * yi and stores the result in the 64-bit register p0. On the following rising edge of CLK, the second pipeline stage transfers the previous value of p0 into p1, unless RST is asserted. The output P is continuously driven by p1, so the product becomes externally visible only after passing through the two registered pipeline stages.
+
+If RST is asserted, the second pipeline register p1 is asynchronously cleared to zero, which also clears the output P. The first pipeline register p0 is not reset. Therefore, after reset is released, one pipeline cycle may be needed before p1 contains a newly computed product rather than a stale or undefined value from p0.
+
+The module has no input enable, output valid, ready signal, or handshake logic. As long as CLK is running, it accepts the current X and Y values every clock cycle and continuously advances multiplication results through the pipeline.

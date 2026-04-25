@@ -1,0 +1,67 @@
+
+Module or1200_dc_tag implements data-cache tag storage with valid-bit handling for hit/miss evaluation.
+
+or1200_dc_tag is the tag RAM wrapper for the OR1200 data cache. It stores and reads the tag value and valid bit associated with each data-cache index. The wrapper exposes clock clk, reset rst, index/address addr, enable en, write enable we, write data datain, and read outputs tag and tag_v. When OR1200_BIST is enabled, it also exposes MBIST scan/control signals.
+
+The module itself contains no explicit state machine and no tag-compare logic. It does not generate cache hit or miss signals. The upper data-cache logic uses the returned tag and tag_v together with the current request address to determine hit or miss.
+
+When OR1200_NO_DC is defined, no tag RAM is instantiated. The module drives tag to all zeros and tag_v to 0, so all cache lines appear invalid. If BIST is enabled in this configuration, mbist_so_o is directly assigned from mbist_si_i.
+
+When the data cache is enabled, the storage implementation depends on synthesis/configuration macros. In the OR1200_RAM_MODELS_VIRTEX path, the module instantiates the FPGA-specific dc_tag_sub RAM. Its read data doutb[19:0] is split so that doutb[19:1] becomes tag and doutb[0] becomes tag_v.
+
+In the generic path, the module instantiates a single-port RAM macro selected by the configured data-cache size, such as or1200_spram_256x21 for OR1200_DC_1W_4KB or or1200_spram_512x20 for OR1200_DC_1W_8KB. The read output is connected as .doq({tag, tag_v}), so the valid bit is the least significant bit of the stored value and the tag occupies the upper bits. Writes are supplied through datain, under control of en and we.
+
+The reset input is not used by the wrapper logic itself. It is only passed to the generic RAM macro when that implementation is selected; reset behavior therefore depends on the selected RAM implementation.
+
+module or1200_dc_tag(
+    // Clock and reset
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [8:0] addr,
+    input en,
+    input we,
+    input [19:0] datain,
+    output tag_v,
+    output [18:0] tag
+);
+
+Input ports:
+    clk: Clock supplied to the selected tag RAM implementation. Read/write timing depends on the RAM macro.
+    rst: Reset input passed to the generic RAM macro when that implementation is selected. The wrapper itself has no local reset state.
+    addr[8:0]: Tag RAM index/address input.
+    en: Enable/chip-enable for the tag RAM access.
+    we: Write enable for updating the tag RAM.
+    datain[19:0]: Write data for the tag RAM. The stored format is tag bits in the upper bits and valid bit in bit 0.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH-1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+
+Output ports:
+    tag_v: Valid bit read from the tag storage.
+    tag[18:0]: Tag bits read from the data-cache tag storage.
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+
+Internal signals:
+    doutb[19:0]: Read-data bus used only in the `OR1200_RAM_MODELS_VIRTEX` implementation path. `doutb[19:1]` maps to `tag`, and `doutb[0]` maps to `tag_v`.
+
+Processing Flow:
+
+The module first selects its behavior according to the compile-time configuration. If OR1200_NO_DC is defined, the data-cache tag RAM is disabled. Otherwise, the module instantiates a tag RAM implementation according to the selected target configuration.
+
+When OR1200_NO_DC is defined, no tag RAM is instantiated. The tag output is driven to all zeros, and tag_v is driven to 0. If OR1200_BIST is enabled, mbist_so_o is directly assigned from mbist_si_i. In this configuration, every cache line appears invalid to the upper data-cache logic.
+
+When the data cache is enabled and OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates the FPGA-specific dc_tag_sub RAM. The addr signal is supplied as both the write and read address. The en signal controls the RAM enable, and we controls write operations. The datain[19:0] value is written to the RAM. The read data is returned on doutb[19:0], where doutb[19:1] is assigned to tag and doutb[0] is assigned to tag_v.
+
+When the data cache is enabled and OR1200_RAM_MODELS_VIRTEX is not defined, the module instantiates a generic single-port RAM macro selected by the cache-size configuration. The en signal is connected to the RAM chip enable ce, we is connected to the RAM write enable, addr selects the tag RAM entry, and datain is connected to the RAM write-data input di. The RAM read output is connected as doq({tag, tag_v}), so the stored value is interpreted as tag bits in the upper bits and the valid bit in bit 0.
+
+During normal cache operation, this module only outputs tag and tag_v to the upper data-cache logic. It does not compare the stored tag with the current request tag, and it does not generate a hit or miss signal. The upper data-cache logic performs hit/miss evaluation using tag, tag_v, and the current request address tag.
+
+The wrapper itself has no local state machine or explicitly declared registers. The rst input is only passed to the generic RAM macro when that implementation path is selected. Therefore, read, write, and reset timing are determined by the selected RAM implementation rather than by additional logic in this wrapper.

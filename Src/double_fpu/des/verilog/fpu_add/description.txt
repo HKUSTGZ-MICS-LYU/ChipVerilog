@@ -1,0 +1,54 @@
+The fpu_add module implements the significand alignment and addition stage of a double-precision floating-point adder. This module is intended for cases where the upper-level logic has already determined that the two operands should be processed as an effective same-sign addition. It does not directly generate the final IEEE-754 64-bit floating-point result. Instead, it outputs intermediate values for the downstream rounding and exception handling stages: the sign bit sign, the intermediate exponent exponent_2, and the 56-bit extended significand sum_2.
+The module performs the aligned significand addition stage for double-precision floating-point operands with the same effective sign. On each rising clock edge, if rst is high, all internal registers and outputs are cleared to zero. If enable is high, the module extracts exponent and fraction fields from opa and opb, selects the operand with the larger exponent, inserts the hidden bit for normalized operands, aligns the smaller significand, adds the aligned significands, performs carry-out normalization, applies denormal-to-normal exponent correction, and outputs sign, sum_2, and exponent_2.
+The input operands opa and opb are interpreted according to the IEEE-754 double-precision format. Bit 63 is the sign bit, bits 62:52 are the exponent field, and bits 51:0 are the fraction field.
+
+module fpu_add (
+    input clk,
+    input rst,
+    input enable,
+    input [63:0] opa,
+    input [63:0] opb,
+    output reg sign,
+    output reg [55:0] sum_2,
+    output reg [10:0] exponent_2
+);
+
+Input ports:
+    input clk: Rising-edge clock. All register updates occur on the positive edge of this signal.
+    input rst: Synchronous active-high reset. When asserted, all internal pipeline registers and output registers are cleared to zero on the next rising clock edge.
+    input enable: Active-high pipeline enable. All assignments inside the always block are gated by this signal; when deasserted, the pipeline holds its current state.
+    input [63:0] opa: First IEEE-754 double-precision floating-point operand. Bit 63 is the sign, bits 62:52 are the biased exponent, and bits 51:0 are the mantissa fraction field.
+    input [63:0] opb: Second IEEE-754 double-precision floating-point operand. Same field layout as opa.
+ 
+Output ports:
+    output reg sign: Result sign bit. Directly forwarded from opa[63]. This is correct because the module is used only when the effective result sign is known to equal the sign of operand A after top-level routing.
+    output reg [55:0] sum_2: Intermediate 56-bit mantissa bundle forwarded to the rounding stage. Bit 55 is an overflow guard bit (0 if no carry occurred from addition). Bit 54 is the leading integer bit after normalization. Bits 53:2 are the 52-bit mantissa field candidate. Bits 1:0 are low-order remainder bits passed to rounding and inexact-detection logic; the sticky information from shifted-out bits is folded into this field via the small_fraction_enable mechanism.
+    output reg [10:0] exponent_2: 11-bit post-normalization exponent. Adjusted for carry-out overflow and for the denormalized-to-normalized boundary transition. Forwarded to the rounding stage.
+
+Processing Flow:
+When enable is asserted, the module updates its internal registers on the rising edge of the clock. The main processing flow is as follows:
+1. Extract the exponent and fraction fields from opa and opb.
+2. Compare the two exponent values. The operand with the larger exponent is assigned to the large side, while the operand with the smaller exponent is assigned to the small side. If the two exponents are equal, the code defaults to assigning opb to the large side and opa to the small side.
+3. Determine whether each operand is denormalized by checking whether its exponent is zero.
+4. Insert the hidden leading 1 for normalized operands. Denormalized operands do not receive a hidden leading bit.
+5. Compute the effective exponent difference between the two operands and right-shift the extended significand of the smaller operand to align it with the larger operand.
+6. Add the two aligned extended significands.
+7. If the addition result produces a carry, indicated by sum[55] being 1, shift the result right by one bit and increment the exponent by one.
+8. If the larger operand was originally denormalized and the result significand contains a leading 1, the denorm_to_norm signal is used to correct the exponent at the denormalized-to-normalized boundary.
+9. Output the intermediate sign, exponent, and extended significand for the downstream rounding and exception handling logic.
+
+Sticky Information Handling:
+When an operand has an exponent value of zero, the module treats it as a denormalized number and does not insert a hidden leading 1.When the larger operand is normalized and the smaller operand is denormalized, large_norm_small_denorm reduces the effective alignment distance by one:exponent_diff <= exponent_large - exponent_small - large_norm_small_denorm;
+This compensates for the boundary difference between normalized and denormalized numbers.When the addition result causes a denormalized significand to produce a leading 1, the module applies an additional exponent correction through: denorm_to_norm <= sum_leading_one & large_is_denorm;exponent_2 <= denorm_to_norm ? exponent + 1 : exponent;
+This moves the result into the normalized range.
+The module includes a limited mechanism for preserving sticky information: small_fraction_enable = small_is_nonzero & !small_shift_nonzero;
+If the smaller operand is nonzero but its aligned value small_shift becomes completely zero after the right shift, the module forces the least significant bit of small_shift_3 to 1: small_shift_3 <= small_fraction_enable ? small_shift_2 : small_shift;
+This prevents the smaller operand from being completely lost after a large alignment shift. However, this is not a complete IEEE-754 sticky-bit generation mechanism. It only handles the case where the entire smaller operand is shifted out. It does not OR-reduce all discarded low-order bits. Therefore, if the shifted result remains nonzero but some discarded low-order bits also contain 1s, this module does not fully preserve that sticky information.
+
+Timing Characteristics and Limitations:
+This module uses a single clocked always @(posedge clk) block, and all assignments are nonblocking assignments. Therefore, statements later in the always block do not use values newly assigned by earlier statements in the same clock cycle. Instead, they use values stored in registers from the previous clock cycle.For example: expa_gt_expb <= exponent_a > exponent_b; exponent_small <= expa_gt_expb ? exponent_b : exponent_a; In this case, exponent_small uses the previous value of expa_gt_expb, not the comparison result that is being assigned in the current clock cycle.
+As a result, the module behaves as a multi-cycle registered datapath. However, the code does not include an explicit valid signal, nor does it strictly synchronize all control signals, data signals, and the sign bit. If opa and opb change every clock cycle, control and data may become misaligned.
+Therefore, this implementation is suitable only under one of the following conditions:
+1. The upper-level logic keeps the input operands stable until one operation completes.
+2. The upper-level logic drives enable according to a fixed schedule that ensures all pipeline registers remain aligned.
+3. The module is modified to include complete pipeline synchronization for data, control, and sign signals.

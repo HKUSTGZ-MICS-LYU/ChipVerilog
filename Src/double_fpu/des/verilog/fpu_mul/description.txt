@@ -1,0 +1,103 @@
+fpu_mul implements a pipelined intermediate datapath for IEEE-754 double-precision multiplication. It accepts two 64-bit operands, extracts their sign, exponent, and fraction fields, forms 53-bit significands using a leading 1 only for normalized operands, computes a decomposed 106-bit significand product, adjusts the intermediate exponent, and outputs a 56-bit mantissa bundle plus a 12-bit exponent for a later rounding/exception stage.
+
+The 53×53 significand multiplication is decomposed into smaller partial products rather than written as a single large multiply. The code uses operand slices of different widths, including 24×17, 24×2, 17×17, 17×19, 12×17, and 12×19 partial products, then combines them through staged sums to reconstruct the 106-bit product.
+
+The exponent path forms exponent_terms = exponent_a + exponent_b + !a_is_norm + !b_is_norm, applies a bias correction using 1022, and handles small exponents by right-shifting the product with exponent_under. For normalized outputs, product_shift acts as a leading-zero-based normalization shift amount, and the exponent is reduced accordingly.
+
+product_7 is a combinational wire assembled as {1'b0, product_6[105:52], product_lsb}. The high constant 0 is a reserved bit, product_6[105:52] contains the leading significand bit, mantissa field, and guard bit, and product_lsb is intended to be the sticky bit formed from the OR of discarded low bits. Most internal values are registered on the rising clock edge when enable is high, but product_7 itself is not a register.
+
+Because the module is deeply pipelined and uses nonblocking assignments throughout, cycle alignment between sign, exponent_5, product_6, and product_lsb should be checked carefully. In particular, sign is computed directly from the current operands and is not visibly delayed through the same pipeline depth as the product datapath in this module.
+
+module fpu_mul (
+    input clk,
+    input rst,
+    input enable,
+    input [63:0] opa,
+    input [63:0] opb,
+    output reg sign,
+    output [55:0] product_7,
+    output reg [11:0] exponent_5
+);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Active-high pipeline enable; all clocked assignments are gated by this signal.
+    input [63:0] opa, opb: Two 64-bit IEEE-754 double-precision floating-point input operands (sign[63], exponent[62:52], mantissa[51:0]).
+
+Output port:
+    output reg sign: Result sign bit; opa[63] XOR opb[63].
+    output [55:0] product_7: Combinational wire (not a register): 56-bit intermediate mantissa bundle forwarded to the rounding stage.
+    output reg [11:0] exponent_5: 12-bit intermediate exponent forwarded to the rounding stage; zero when either input is zero.
+
+Internal reg/wire signals:
+    reg [5:0] product_shift: Normalization shift flag for the product path.
+    reg [5:0] product_shift_2: Stage-2 pipeline copy of the normalization shift flag for the product path.
+    reg sign: Result sign bit.
+    reg [51:0] mantissa_a: Mantissa A.
+    reg [51:0] mantissa_b: Mantissa B.
+    reg [10:0] exponent_a: Exponent A.
+    reg [10:0] exponent_b: Exponent B.
+    reg a_is_norm: A is normalized flag.
+    reg b_is_norm: B is normalized flag.
+    reg a_is_zero: A is zero flag.
+    reg b_is_zero: B is zero flag.
+    reg in_zero: In zero flag.
+    reg [11:0] exponent_terms: Exponent term.
+    reg exponent_gt_expoffset: Exponent greater-than-exponent offset flag.
+    reg [11:0] exponent_under: Exponent under.
+    reg [11:0] exponent_1: Stage-1 pipeline copy of the exponent.
+    wire [11:0] exponent = 0: Exponent.
+    reg [11:0] exponent_2: Stage-2 pipeline copy of the exponent.
+    reg exponent_gt_prodshift: Exponent greater-than-product-shift flag.
+    reg [11:0] exponent_3: Stage-3 pipeline copy of the exponent.
+    reg [11:0] exponent_4: Stage-4 pipeline copy of the exponent.
+    reg exponent_et_zero: Exponent equals-zero flag.
+    reg [52:0] mul_a: Multiply A.
+    reg [52:0] mul_b: Multiply B.
+    reg [40:0] product_a: Product A.
+    reg [40:0] product_b: Product B.
+    reg [40:0] product_c: Product c.
+    reg [25:0] product_d: Product D.
+    reg [33:0] product_e: Product E.
+    reg [33:0] product_f: Product f.
+    reg [35:0] product_g: Product g.
+    reg [28:0] product_h: Product h.
+    reg [28:0] product_i: Partial product i.
+    reg [30:0] product_j: Product J.
+    reg [41:0] sum_0: Stage-0 pipeline copy of the sum.
+    reg [35:0] sum_1: Stage-1 pipeline copy of the sum.
+    reg [41:0] sum_2: Stage-2 pipeline copy of the sum.
+    reg [35:0] sum_3: Stage-3 pipeline copy of the sum.
+    reg [36:0] sum_4: Stage-4 pipeline copy of the sum.
+    reg [27:0] sum_5: Stage-5 pipeline copy of the sum.
+    reg [29:0] sum_6: Stage-6 pipeline copy of the sum.
+    reg [36:0] sum_7: Stage-7 pipeline copy of the sum.
+    reg [30:0] sum_8: Stage-8 pipeline copy of the sum.
+    reg [105:0] product: Product.
+    reg [105:0] product_1: Stage-1 pipeline copy of the product.
+    reg [105:0] product_2: Stage-2 pipeline copy of the product.
+    reg [105:0] product_3: Stage-3 pipeline copy of the product.
+    reg [105:0] product_4: Stage-4 pipeline copy of the product.
+    reg [105:0] product_5: Stage-5 pipeline copy of the product.
+    reg [105:0] product_6: Stage-6 pipeline copy of the product.
+    reg product_lsb: LSB of the product.
+    wire [55:0] product_7 = { 1'b0, product_6[105:52], product_lsb }: Combinational output wire assembled from product_6 and the sticky bit product_lsb; not a pipeline register.
+    reg [11:0] exponent_5: Stage-5 pipeline copy of the exponent.
+
+
+fpu_mul implements a pipelined intermediate datapath for IEEE-754 double-precision floating-point multiplication. The module receives two 64-bit operands, opa and opb, using the standard double-precision layout: bit 63 is the sign, bits 62:52 are the exponent, and bits 51:0 are the fraction. It outputs the intermediate result sign sign, a 12-bit adjusted exponent exponent_5, and a 56-bit extended significand bundle product_7 for a later rounding and exception-handling stage.
+
+On reset, all internal registers are cleared to zero. When enable is high, the module advances one pipeline step on each rising clock edge. The sign is generated by XORing the two input sign bits, while the operand fractions and exponents are registered separately. A normalized operand is detected when its exponent field is nonzero. The 53-bit significand operands mul_a and mul_b are formed by concatenating the normalized flag with the 52-bit fraction, so normalized operands use an implicit leading 1 and denormalized operands use a leading 0.
+
+The significand multiplication produces a 106-bit product. Instead of using a single direct 53-by-53 multiplier, the implementation decomposes mul_a and mul_b into smaller bit slices and computes multiple partial products. These partial products include slice combinations such as 24×17, 24×2, 17×17, 17×19, 12×17, and 12×19. The partial products are then combined through several registered intermediate sums and concatenated to reconstruct the full 106-bit product.
+
+The exponent path computes an intermediate exponent term from the two registered input exponents and the normalization status of both operands. The expression is exponent_terms = exponent_a + exponent_b + !a_is_norm + !b_is_norm. The bias correction uses 1022. If exponent_terms is greater than 1021, the candidate exponent is generated by subtracting 1022. Otherwise, the result is treated as too small for a normalized exponent, and the significand product is right-shifted by exponent_under = 1022 - exponent_terms to form a denormalized intermediate result when needed.
+
+The module computes product_shift from the 106-bit product using a combinational casex block. product_shift is a 6-bit leading-zero-based normalization shift amount, not a simple flag. It indicates how far the product should be left-shifted to place the leading significant bit in the expected position. The search is limited to shifts up to 53, because larger leading-zero counts correspond to severe underflow cases.
+
+After the product and exponent are generated, the module adjusts the product according to the exponent range and the normalization shift. If the exponent is large enough, the product is left-shifted by product_shift, and the exponent is reduced by the same amount. If the exponent is not large enough to cover the full normalization shift, the product is shifted according to the remaining exponent so that the result becomes denormalized. If the adjusted exponent is zero, the product is shifted right by one more bit before being forwarded.
+
+The output exponent_5 is a registered 12-bit intermediate exponent. It is forced to zero when the pipelined zero-input flag is set; otherwise, it receives the adjusted exponent value. The output product_7 is a 56-bit combinational wire, not a register. It is assembled as {1'b0, product_6[105:52], product_lsb}. The upper constant zero is a reserved bit, product_6[105:52] provides the leading significand bit, fraction bits, and guard bit for later rounding, and product_lsb is intended to be the sticky bit formed by OR-reducing the discarded low bits of product_6.
+
+This module does not generate the final IEEE-754 encoded multiplication result. It only produces the intermediate sign, adjusted exponent, and extended significand bundle used by later rounding, exception-handling, and final packing logic. NaN, infinity, invalid operations, final rounding, and final result encoding are outside the scope of this module.

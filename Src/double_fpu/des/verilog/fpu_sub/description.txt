@@ -1,0 +1,82 @@
+Module fpu_sub implements the intermediate datapath for double-precision floating-point subtraction. It is used when the effective arithmetic operation is subtraction, including normal subtraction and addition cases that are converted by the top level into magnitude subtraction.
+The module takes two IEEE-754 double-precision operands opa and opb, compares their magnitudes, subtracts the smaller magnitude from the larger magnitude, determines the correct result sign, normalizes the subtraction result, and outputs an intermediate sign, exponent, and extended mantissa bundle for later rounding and exception handling.
+This module performs the floating-point subtraction datapath for double-precision operands. It is used for same-sign subtraction and also for cases that the top level converts from opposite-sign addition into a magnitude subtraction. The outputs are the intermediate result sign, normalized 11-bit exponent exponent_2, and 56-bit extended mantissa diff_2, which is passed to the rounding stage rather than directly encoded as the final IEEE-754 result.
+The module always subtracts the smaller magnitude from the larger magnitude. If A is smaller than B, the hardware computes B - A and then adjusts the sign so that the final result is mathematically correct.
+As in addition, the operands are aligned before subtraction. The smaller-exponent mantissa is right-shifted so both operands are represented at the same exponent. The effective exponent difference used for alignment is exponent_large - exponent_small - large_norm_small_denorm, where large_norm_small_denorm corrects for the implicit-1 gap when the large operand is normalized and the small operand is denormalized. Normalized numbers include the hidden leading 1; denormalized numbers do not.
+Sticky information is preserved through the subtra_fraction_enable mechanism: if the small operand is nonzero but its aligned shift result is all zero, the design forces the low bit of subtra_shift_3 to 1 rather than using the zero-valued shift result.
+After subtraction, the difference is stored in diff, and a combinational priority-encoder casex block counts leading zeros and produces diff_shift (values 0-54 for each leading-one position; 55 if diff is all zero). The result is then left-shifted by diff_shift_2 (the registered copy of diff_shift), and the exponent is reduced by the same amount, thereby normalizing the output. If the shift amount would drive the exponent negative, the exponent is clamped to zero and the shift is limited to exponent_large. If diff is exactly zero, exponent_2 is forced to zero. If a normalized input pair produces a denormal result (in_norm_out_denorm), diff_1 is right-shifted one additional bit before being placed into diff_2.
+All outputs update on the rising edge of the clock, and reset clears all internal registers. NaN, infinity, and invalid-operation cases are not resolved here; they are handled by the exceptions stage.
+
+Main function:
+The module supports two logical use cases:
+- true subtraction, when the effective operation is A - B with same-sign operands
+- sign-converted addition cases, when the top level redirects opposite-sign addition into the subtraction datapath
+ 
+To keep the arithmetic simple, the module always subtracts the smaller magnitude from the larger magnitude and then derives the final sign according to which operand had greater magnitude and which logical operation is being performed.
+ 
+module fpu_sub (
+    input clk,
+    input rst,
+    input enable,
+    input [63:0] opa,
+    input [63:0] opb,
+    input [2:0] fpu_op,
+    output reg sign,
+    output reg [55:0] diff_2,
+    output reg [10:0] exponent_2
+);
+
+
+Input ports:
+    input clk: Rising-edge clock. All register updates in the clocked always block occur on the positive edge of this signal.
+    input rst: Synchronous active-high reset. When asserted, all internal pipeline registers and output registers are cleared to zero on the next rising clock edge.
+    input enable: Active-high pipeline enable. All assignments inside the clocked always block are gated by this signal; when deasserted, the pipeline holds its current state.
+    input [63:0] opa: First IEEE-754 double-precision floating-point operand. Bit 63 is the sign, bits 62:52 are the biased exponent, and bits 51:0 are the mantissa fraction field.
+    input [63:0] opb: Second IEEE-754 double-precision floating-point operand. Same field layout as opa.
+    input [2:0] fpu_op: Original top-level opcode passed down from fpu_double. Used in sign selection: the subtract module is invoked both for true subtraction requests and for addition requests whose operands have opposite signs, and the sign correction formula differs between the two cases. Specifically, fpu_op == 3'b000 identifies the routed-addition case.
+ 
+Output ports:
+    output reg sign: Result sign bit. If operand A has greater-or-equal magnitude, sign = opa[63]. Otherwise, sign = (!opb[63]) XOR (fpu_op == 3'b000). This accounts for both the true subtraction case and the routed opposite-sign addition case.
+    output reg [55:0] diff_2: Intermediate 56-bit mantissa bundle forwarded to the rounding stage. Bit 55 is a reserved leading zero. Bits 54:0 hold the normalized or denormalized subtraction result, including two low-order remainder bits for rounding. Bit 54 is the leading integer position for normalized results; bits 53:2 are the 52-bit mantissa candidate; bits 1:0 carry low remainder and sticky information.
+    output reg [10:0] exponent_2: Intermediate 11-bit exponent after renormalization, clamped to zero for exact cancellation. Forwarded to the rounding stage.
+ 
+
+For each input operand, bit 63 is the sign bit, bits 62:52 are the biased exponent, and bits 51:0 are the fraction field. The output diff_2 is not a packed IEEE-754 mantissa. It is an internal 56-bit bundle where bit 55 is a reserved leading zero, bit 54 is the leading integer position for normalized results, bits 53:2 form the 52-bit mantissa candidate, and bits 1:0 carry low-order remainder information for later rounding and inexact handling.
+
+The most important implementation requirement is that fpu_sub is a pipelined RTL datapath, not a single-cycle combinational implementation of the subtraction algorithm. All main datapath registers are updated in one clocked always @(posedge clk) block using nonblocking assignments. Because of nonblocking assignment semantics, every right-hand side inside the clocked block reads the value that existed before the active clock edge. Values assigned earlier in the same always block must not be treated as immediately available in that same cycle.
+
+Reset is synchronous and active high. When rst is asserted on a rising clock edge, all internal registers and output registers are cleared to zero. When rst is low and enable is high, the pipeline advances by one stage. When enable is low, all registers hold their previous values.
+
+At the front of the pipeline, the module registers the exponent and mantissa fields from the current operands into exponent_a, exponent_b, mantissa_a, and mantissa_b. The following comparison logic uses these registered fields rather than the current opa and opb inputs. Specifically, expa_gt_expb is computed from exponent_a and exponent_b, expa_et_expb is computed from exponent_a and exponent_b, and mana_gtet_manb is computed from mantissa_a and mantissa_b.
+
+The magnitude flag a_gtet_b is registered from the previous comparison results. Its assignment is based on expa_gt_expb, expa_et_expb, and mana_gtet_manb. It must not be recomputed directly from opa[62:52], opb[62:52], opa[51:0], or opb[51:0], because doing so would collapse part of the intended pipeline and change the cycle-by-cycle behavior of the design.
+
+The datapath always subtracts the smaller magnitude from the larger magnitude. The previously registered a_gtet_b flag determines which operand is treated as the larger operand. If a_gtet_b is true, operand A is selected as the larger-or-equal magnitude operand and the output sign register is assigned from opa[63]. If a_gtet_b is false, operand B is selected as the larger magnitude operand and the sign is computed as (!opb[63]) ^ (fpu_op == 3'b000). The opcode value fpu_op == 3'b000 identifies the routed addition case and is used in this sign correction.
+
+The selected operand fields are registered into exponent_large, mantissa_large, exponent_small, and mantissa_small. This selection also uses the previously registered a_gtet_b value and must not be implemented by redoing the magnitude comparison from the current input operands.
+
+After operand selection, the module detects whether the selected small and large operands are denormalized. small_is_denorm is true when exponent_small is zero, and large_is_denorm is true when exponent_large is zero. The flag large_norm_small_denorm is asserted when the small operand is denormalized and the large operand is normalized. The effective exponent difference used for alignment is registered as exponent_large - exponent_small - large_norm_small_denorm. This correction accounts for the missing hidden bit in the denormal operand.
+
+The extended significands are 55 bits wide. The minuend is built from the selected large operand, and the subtrahend is built from the selected small operand. Normalized operands receive a hidden leading 1, while denormalized operands receive a hidden leading 0. Two low-order zero bits are appended to provide extra precision for later rounding-related handling.
+
+The smaller significand is aligned by right-shifting subtrahend by exponent_diff, producing subtra_shift. The module also registers whether the selected smaller operand is nonzero. If the small operand is nonzero but the aligned shifted value becomes all zero, the design forces the low bit of subtra_shift_3 to 1 by selecting the constant {54'b0, 1'b1}. This preserves a minimal sticky or inexact indication when the smaller operand is shifted away completely. It is not a full sticky-bit OR reduction over all discarded alignment bits.
+
+The helper signals subtra_shift_nonzero, subtra_fraction_enable, and subtra_shift_2 are combinational continuous assignments. subtra_shift_nonzero is the reduction OR of subtra_shift, subtra_fraction_enable is small_is_nonzero & !subtra_shift_nonzero, and subtra_shift_2 is the constant {54'b0, 1'b1}. The registered subtra_shift_3 selects either this constant or the aligned subtra_shift according to subtra_fraction_enable.
+
+The raw significand subtraction result diff is registered from the previous values of minuend and subtra_shift_3. This subtraction corresponds to larger magnitude minus smaller magnitude. The sign correction has already been handled separately by the sign selection logic.
+
+A separate combinational leading-zero priority encoder observes the registered diff value and produces diff_shift. The encoder returns 0 when diff[54] is the leading one, 1 when diff[53] is the leading one, and continues in the same pattern down to 54 when diff[0] is the only one. If diff is exactly zero, diff_shift is 55. The priority encoder may be implemented with a casex block, and the combinational block should use blocking assignments and include a zero or default case.
+
+The clocked pipeline registers the leading-zero count into diff_shift_2. The following normalization logic uses the registered diff_shift_2, exponent_large, and diff values. The design first determines whether the required left shift would exceed the available exponent by comparing diff_shift_2 with exponent_large. It also records whether diff_shift_2 equals 55, which indicates exact cancellation.
+
+If the registered shift amount is greater than the available exponent, the exponent is clamped to zero and the left shift is limited to exponent_large. Otherwise, diff is shifted left by diff_shift_2 and the exponent is reduced by diff_shift_2. Because the implementation uses nonblocking assignments, diff_1 and exponent use the previous value of diffshift_gt_exponent, not the newly assigned comparison result from the same clock edge.
+
+The output exponent exponent_2 is registered from the previous values of diffshift_et_55 and exponent. If diffshift_et_55 is true, exponent_2 is forced to zero to represent exact cancellation. Otherwise, exponent_2 receives the normalized exponent.
+
+The output mantissa bundle diff_2 is registered from diff_1 with a leading zero bit prepended. There is one additional denormal-boundary adjustment. The helper signal in_norm_out_denorm is a combinational wire defined as (exponent_large > 0) & (exponent == 0). If this helper is true, diff_1 is shifted right by one additional bit before being placed into diff_2. Since in_norm_out_denorm is combinational, it is evaluated from the current registered exponent_large and exponent values before the active clock edge, not from any newly assigned exponent value in the same clocked block.
+
+The implementation should consist of one clocked always @(posedge clk) block for all pipeline registers, one combinational leading-zero encoder block driven by diff, and continuous wire assignments for the helper logic. Syntax cleanups are allowed, such as removing duplicate declarations of output reg signals, using always @(*) for the combinational encoder, and using blocking assignments inside the combinational block.
+
+The implementation must preserve all register-to-register dependencies and output latency of the reference RTL. It must not collapse the pipeline into a combinational datapath, must not replace registered intermediate values with current-cycle opa/opb expressions, and must not recompute a_gtet_b, sign, selected operands, diff, diff_1, exponent, exponent_2, or diff_2 from earlier-stage current inputs.
+
+NaN, infinity, invalid operation, final rounding, and final exception handling are outside the scope of this module and are handled by other FPU stages.
