@@ -1,0 +1,39 @@
+Module signed_shifter implements a variable arithmetic right-shift operation for signed CORDIC datapath values. It is used by the rotator module to generate shifted versions of the current x and y values. These shifted values implement the CORDIC scaling term 1/2^i, where i is the current iteration index.
+
+The module receives a signed input value D and a shift amount i. It produces output Q, which represents D shifted right by i bit positions while preserving the sign bit. This arithmetic right shift is required because the CORDIC datapath uses signed fixed-point values. Without sign extension, negative x or y values would be shifted incorrectly.
+
+The implementation is combinational. Inside the always @* block, Q is first initialized to D. The module then repeatedly shifts Q right by one bit for i iterations. During each one-bit shift, the sign bit from the original input D[XY_BITS]` is reinserted into the most significant bit position. This preserves the signed value behavior during the right-shift operation.
+
+In the rotator module, two instances of signed_shifter are used. One instance shifts x_i to produce x_i_shifted, and the other shifts y_i to produce y_i_shifted. These shifted values are then added to or subtracted from the unshifted x and y values to perform one CORDIC micro-rotation step.
+
+The signed_shifter module does not contain any sequential state and does not use a clock or reset. Its output changes combinationally whenever the input value D or shift amount i changes.
+
+One source-level caveat should be noted: the uploaded code text appears to contain a syntax issue in the for loop line. The intended loop is conceptually a repeated arithmetic right shift, but the shown line is missing punctuation or parentheses around the loop update and assignment. A syntactically corrected version would need to ensure that the for loop update and the shift assignment are written as separate Verilog statements.
+
+module signed_shifter (
+  input wire [`ITERATION_BITS-1:0] i,
+  input wire signed [`XY_BITS:0] D,
+  output reg signed [`XY_BITS:0] Q );
+
+Input ports:
+    [`ITERATION_BITS-1:0] i: Shift amount used to determine how many arithmetic right-shift steps are applied to D. In the CORDIC datapath, this corresponds to the current iteration index and implements division by 2^i.
+
+    signed [`XY_BITS:0] D: Signed input datapath value to be shifted. This value is typically either the current x or y value from a CORDIC rotator stage.
+
+Output ports:
+    signed [`XY_BITS:0] Q: Signed shifted output value. Q represents D arithmetically shifted right by i bit positions, with sign extension preserved.
+
+Processing Flow:
+    The module receives the signed input value D and the shift amount i.
+
+    The combinational always block initializes Q with the unshifted input value D.
+
+    The loop variable j starts at zero and increments until it reaches the shift amount i.
+
+    On each loop iteration, Q is shifted right by one bit.
+
+    During each shift step, the original sign bit D[`XY_BITS] is inserted into the most significant bit position of Q to preserve signed arithmetic behavior.
+
+    After i one-bit shift steps, Q contains the final arithmetic right-shift result.
+
+    The output Q updates combinationally whenever D or i changes.

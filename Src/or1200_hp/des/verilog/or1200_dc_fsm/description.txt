@@ -1,12 +1,6 @@
 Module or1200_dc_fsm is the main finite-state machine of the OR1200 data cache. It controls data-cache load/store request sequencing, hit/miss handling, cache-inhibited access handling, BIU read/write transactions, cache line refill, DCRAM write enable generation, tag write enable generation, and acknowledge/error signaling back to the upstream LSU.
 
-The module determines whether a CPU-side data-cache access is:
-
-an immediate load hit,
-a load miss requiring cache-line refill,
-a write-through store,
-an optional store-miss refill when OR1200_DC_STORE_REFILL is enabled,
-or a cache-inhibited access that bypasses cache refill.
+The module determines whether a CPU-side data-cache access is: an immediate load hit, a load miss requiring cache-line refill, a write-through store, an optional store-miss refill when OR1200_DC_STORE_REFILL is enabled, or a cache-inhibited access that bypasses cache refill.
 
 All sequential state is updated on the rising edge of clk. The reset rst is asynchronous and active high. On reset, the FSM returns to IDLE, and saved_addr_r, cnt, hitmiss_eval, store, load, and cache_inhibit are cleared.
 

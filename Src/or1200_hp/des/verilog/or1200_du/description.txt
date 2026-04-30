@@ -39,7 +39,7 @@ module or1200_du(
     input [31:0] dcpu_adr_i,
     input [31:0] dcpu_dat_lsu,
     input [31:0] dcpu_dat_dc,
-    input [0:0] icpu_cycstb_i,
+    input icpu_cycstb_i,
     input ex_freeze,
     input [2:0] branch_op,
     input [31:0] ex_insn,
@@ -84,7 +84,7 @@ Input ports:
     - dcpu_adr_i[31:0]: Address bus for the CPU-to-data-memory interface.
     - dcpu_dat_lsu[31:0]: Dcpu data load/store unit.
     - dcpu_dat_dc[31:0]: Dcpu data data cache.
-    - icpu_cycstb_i[0:0]: Combined cycle-and-strobe request for the CPU-to-instruction-memory interface.
+    - icpu_cycstb_i: Combined cycle-and-strobe request for the CPU-to-instruction-memory interface.
     - ex_freeze: Freeze control for the execute stage.
     - branch_op[2:0]: Encoded branch/jump operation selector.
     - ex_insn[31:0]: Instruction word in the execute stage.

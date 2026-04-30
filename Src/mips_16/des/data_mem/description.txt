@@ -1,0 +1,32 @@
+The data_mem module is the data memory module in the MIPS_16 processor, corresponding to the MEM_stage in the five-stage pipeline. According to the specification document, MIPS_16 uses a 16-bit data width, and the MEM_stage is currently implemented as RAM. In the future, it can be extended to a D-cache or an external data memory interface . Therefore, the main function of this module is to provide data read and write support when the processor executes memory access instructions, such as reading data from data memory for the LD instruction and writing data to data memory for the ST instruction.
+
+The module internally defines a RAM array with a 16-bit data width. The depth of the RAM is determined by the macro `DATA_MEM_ADDR_WIDTH, meaning that the number of memory entries is 2 ** DATA_MEM_ADDR_WIDTH. Although the input memory access address mem_access_addr is 16 bits wide, only the lower `DATA_MEM_ADDR_WIDTH bits are used as the internal RAM address ram_addr when accessing the RAM. This design keeps the external interface in a 16-bit address format while allowing the actual capacity of the data memory to be adjusted flexibly through the macro definition.
+
+The clk signal is the clock input of the module and is used to control synchronous write operations. Data is written on the rising edge of the clock. When the write enable signal mem_write_en is high, the module writes the 16-bit data from mem_write_data into the memory location specified by ram_addr. If mem_write_en is low, the RAM contents are not modified during that clock cycle. Therefore, the write port of this module is a synchronous write port, which is suitable for working with the timing control of the processor pipeline.
+
+The read operation is performed through the mem_read_data output. This module uses an asynchronous read method, where mem_read_data is directly connected to ram[ram_addr] through a continuous assignment statement. When mem_access_addr changes and causes ram_addr to change, mem_read_data reflects the data stored at the corresponding address without waiting for the next rising edge of the clock. This design allows the MEM_stage to obtain the read result from the data memory within the current cycle and pass it to the following WB_stage.
+
+For the input ports, mem_access_addr is the shared 16-bit memory access address for both read and write operations, specifying the data memory location to be accessed. mem_write_data is the 16-bit write data input, usually coming from the register file or a result from an earlier pipeline stage. mem_write_en is the write enable control signal, used to distinguish whether the current operation writes to memory or only reads from memory. clk is used to synchronize writes to the RAM. The output port mem_read_data is the 16-bit read data output, which returns the data stored at the specified address to the processor datapath.
+
+module data_mem
+(
+	input					clk,
+	
+	// address input, shared by read and write port
+	input	[15:0]			mem_access_addr,
+	
+	// write port
+	input	[15:0]			mem_write_data,
+	input					mem_write_en,
+	// read port
+	output	[15:0]			mem_read_data
+	
+);
+
+Processing Flow
+
+During operation, the module first receives a 16-bit memory access address through mem_access_addr. The lower `DATA_MEM_ADDR_WIDTH bits of this address are extracted and used as the actual RAM address ram_addr. This address is shared by both the read path and the write path.
+
+For a write operation, when mem_write_en is asserted, the module stores the 16-bit input data mem_write_data into the RAM location indexed by ram_addr on the rising edge of clk. If mem_write_en is not asserted, the RAM contents remain unchanged during that clock cycle.
+
+For a read operation, the module continuously outputs the data stored at ram[ram_addr] through mem_read_data. Since the read logic is implemented using a continuous assignment, the read result is generated asynchronously. Therefore, once the access address changes, the output data changes according to the new RAM address after the combinational propagation delay.

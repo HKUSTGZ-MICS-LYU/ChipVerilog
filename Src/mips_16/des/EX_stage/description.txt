@@ -1,0 +1,40 @@
+The EX_stage module represents the execution stage of the MIPS_16 processor pipeline. In the five-stage pipeline architecture, this stage is located after the ID_stage and before the MEM_stage. According to the MIPS_16 specification, the EX_stage mainly contains the ALU and is responsible for performing arithmetic and logic operations . In this implementation, the EX_stage receives decoded control and operand information from the ID_stage through pipeline_reg_in, executes the required ALU operation, and then registers the result together with the memory and write-back control signals before sending them to the MEM_stage.
+
+The input pipeline_reg_in is a 57-bit pipeline register bus from the ID_stage. It contains all information required by the execution, memory access, and write-back stages. Bits [56:54] store the ALU command alu_cmd, which determines the operation performed by the ALU. Bits [53:38] and [37:22] store the two 16-bit ALU operands, alu_src1 and alu_src2. Bits [21:5] contain the memory control information, including the memory write enable signal and memory write data. Bits [4:0] contain the write-back control information, including the write-back enable signal, destination register, and write-back result selection signal.
+
+Inside the module, the ALU is instantiated as alu_inst. The ALU receives alu_src1, alu_src2, and alu_cmd as inputs, and produces the 16-bit execution result ex_alu_result. This result may be used as an arithmetic or logic operation result, or as an address calculation result for memory access instructions such as load and store. The exact operation performed by the ALU is controlled by the decoded ALU command generated in the ID_stage.
+
+The output pipeline_reg_out is a 38-bit pipeline register bus sent to the MEM_stage. On every rising edge of clk, if rst is asserted, the entire output pipeline register is cleared to zero. This reset behavior prevents invalid control or data signals from propagating to later pipeline stages. If rst is not asserted, the module stores the ALU result into bits [37:22] of pipeline_reg_out, while directly passing the lower 22 bits of pipeline_reg_in to pipeline_reg_out[21:0]. These lower bits include the memory access control signals and write-back control signals that are needed by the MEM_stage and WB_stage.
+
+The module also provides the output signal ex_op_dest to the hazard detection unit. This signal is assigned from pipeline_reg_in[3:1], which represents the destination register number of the instruction currently in the EX_stage. The hazard detection unit can compare this destination register with source registers of later instructions to detect possible RAW data hazards. This is consistent with the MIPS_16 pipeline design, where the hazard detection unit stalls the pipeline when a source register depends on the destination register of an earlier instruction.
+
+Overall, the EX_stage module performs the execution function of the pipeline by calculating the ALU result and forwarding necessary control information to the next stage. It also participates in pipeline hazard handling by exposing the destination register of the current instruction to the hazard detection unit. This module acts as the bridge between instruction decoding and memory access, ensuring that ALU computation results and control signals are correctly synchronized before entering the MEM_stage.
+
+
+module EX_stage
+(
+	input					clk,
+	input					rst,
+	// from ID_stage
+	input		[56:0]		pipeline_reg_in,	//	[56:22],35bits:	ex_alu_cmd[2:0], ex_alu_src1[15:0], ex_alu_src2[15:0]
+												//	[21:5],17bits:	mem_write_en, mem_write_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	
+	// to MEM_stage
+	output	reg	[37:0]		pipeline_reg_out,	//	[37:22],16bits:	ex_alu_result[15:0];
+												//	[21:5],17bits:	mem_write_en, mem_write_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	
+	// to hazard detection unit
+	output		[2:0]		ex_op_dest
+);
+
+Process Flow
+
+During operation, the EX_stage first receives the 57-bit pipeline input bus pipeline_reg_in from the ID_stage. The module extracts the ALU command from bits [56:54], the first ALU operand from bits [53:38], and the second ALU operand from bits [37:22]. These signals are connected to the internal ALU instance to perform the required arithmetic or logic operation.
+
+The ALU computes a 16-bit result according to the selected ALU command. This result is assigned to the internal signal ex_alu_result. Depending on the instruction type, the ALU result may represent an arithmetic or logic result, or it may be used as a memory access address for load and store instructions.
+
+On the rising edge of clk, the module updates the output pipeline register pipeline_reg_out. If rst is asserted, pipeline_reg_out is cleared to zero, preventing invalid data or control signals from moving to the MEM_stage. If rst is not asserted, the ALU result is stored into pipeline_reg_out[37:22], while the memory control signals and write-back control signals from pipeline_reg_in[21:0] are passed directly to pipeline_reg_out[21:0].
+
+At the same time, the module continuously outputs ex_op_dest to the hazard detection unit. This signal is taken from pipeline_reg_in[3:1] and represents the destination register of the instruction currently in the EX_stage. The hazard detection unit uses this destination register information to check whether following instructions have RAW data dependencies.

@@ -1,0 +1,29 @@
+The IF_stage module represents the instruction fetch stage of the MIPS_16 processor pipeline. In the five-stage pipeline architecture, this stage is the first pipeline stage and is responsible for maintaining the program counter, fetching instructions from instruction memory, and supporting branch target updates. According to the MIPS_16 specification, the processor uses a classic five-stage static pipeline with one branch delay slot, and the IF_stage contains the PC and an asynchronous instruction memory, which is implemented as a ROM for simulation. The instruction memory can later be replaced by an instruction cache or an external instruction memory interface .
+
+The main function of the IF_stage is to generate the current instruction address through the program counter pc and use this address to read a 16-bit instruction from the instruction memory. The output instruction is then passed to the following ID_stage for instruction decoding. Since MIPS_16 uses a 16-bit instruction and data width, the instruction output of this module is also 16 bits wide, matching the processor instruction format described in the specification .
+
+The clk input is the system clock used to update the program counter. The rst input is an active-high reset signal. When rst is asserted, the program counter is cleared to zero, causing instruction fetching to restart from address 0. The instruction_fetch_en input controls whether the IF_stage is allowed to update the program counter. When this signal is high, the PC can advance to the next instruction or branch target. When it is low, the PC holds its current value, which allows the pipeline control logic to freeze the IF_stage during a pipeline stall.
+
+The branch-related inputs are branch_offset_imm and branch_taken. The signal branch_taken indicates whether the branch condition has been satisfied in the ID_stage. If branch_taken is asserted while instruction fetching is enabled, the PC is updated by adding a sign-extended 6-bit branch offset to the current PC. The sign extension is performed using the most significant bit of branch_offset_imm, allowing both forward and backward branch offsets. If branch_taken is not asserted, the PC is incremented by one to fetch the next sequential instruction.
+
+The pc output is the current program counter value. Its width is determined by the macro `PC_WIDTH, which makes the instruction address width configurable. This output is connected to the instruction memory and indicates which instruction should be fetched. The instruction output is the 16-bit instruction returned by the instruction memory. Internally, the module instantiates instruction_mem as imem, connects the current pc to it, and outputs the corresponding instruction to the rest of the processor pipeline.
+
+module IF_stage
+(
+	input							clk,
+	input							rst,				//active high
+	input							instruction_fetch_en,
+	
+	input	[5:0]					branch_offset_imm,
+	input							branch_taken,
+	
+	output	reg	[`PC_WIDTH-1:0]		pc,
+	output	[15:0]					instruction
+);
+
+Process Flow
+During operation, the IF_stage first maintains the current program counter value in the pc register. On reset, pc is cleared to zero. After reset is released, the PC is updated on each rising edge of clk only when instruction_fetch_en is asserted.
+If instruction fetching is enabled and no branch is taken, the PC is incremented by one. This causes the processor to fetch the next sequential instruction from instruction memory. If a branch is taken, the module adds the sign-extended 6-bit branch_offset_imm to the current PC. This generates the branch target address and redirects instruction fetching to the branch target.
+The current PC value is continuously provided to the instantiated instruction_mem module. The instruction memory uses this PC value as its read address and returns the corresponding 16-bit instruction through the instruction output. This fetched instruction is then sent to the ID_stage for decoding.
+When instruction_fetch_en is deasserted, the PC is not updated. This allows the IF_stage to be frozen during pipeline stalls, such as when the hazard detection unit detects a RAW dependency. By holding the PC value, the processor prevents a new instruction from being fetched until the stall condition is resolved.
+Overall, the IF_stage module provides the instruction fetch mechanism for the MIPS_16 processor. It controls sequential instruction fetching, branch redirection, reset behavior, and pipeline stall support through PC holding. As the first stage of the pipeline, it supplies the instruction stream required by the following decode and execution stages.

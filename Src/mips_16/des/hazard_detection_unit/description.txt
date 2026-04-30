@@ -1,0 +1,29 @@
+The hazard_detection_unit module is responsible for detecting data hazards in the MIPS_16 processor pipeline. According to the MIPS_16 specification, the processor uses a classic five-stage static pipeline and can detect and prevent RAW hazards, but it does not include forwarding logic . Therefore, when an instruction in the ID_stage depends on the result of an earlier instruction that is still in the EX_stage, MEM_stage, or WB_stage, the pipeline must be stalled until the required data becomes available.
+
+This module focuses on detecting RAW, or Read After Write, hazards. A RAW hazard occurs when the instruction currently being decoded needs to read a register that will be written by an earlier instruction still moving through the pipeline. Since the design does not use forwarding logic, the dependent instruction cannot immediately receive the new value from later pipeline stages. Instead, the hazard detection unit asserts a stall signal to freeze the earlier pipeline stages and prevent incorrect operand values from being used.
+
+The inputs decoding_op_src1 and decoding_op_src2 are the source register numbers of the instruction currently in the ID_stage. These two signals represent the registers that the current instruction needs to read. The inputs ex_op_dest, mem_op_dest, and wb_op_dest represent the destination register numbers of the previous instructions currently located in the EX_stage, MEM_stage, and WB_stage. By comparing the source registers of the decoding instruction with these destination registers, the module determines whether the current instruction depends on an unfinished result.
+
+The output pipeline_stall_n is an active-low pipeline stall control signal. Under normal conditions, pipeline_stall_n is set to 1, which means the pipeline can continue running. If a hazard is detected, pipeline_stall_n is set to 0, indicating that the pipeline should be stalled. This signal can then be used by the pipeline control logic to freeze the IF_stage and ID_stage and insert bubbles into the EX_stage, as described in the specification .
+
+The module ignores register number 0 during hazard checking. This behavior matches the MIPS-style register convention used in the MIPS_16 architecture, where register 0 is a special register. The specification states that register 0 always reads as zero and write operations to it are discarded . Therefore, if either decoding_op_src1 or decoding_op_src2 is equal to zero, it cannot create a meaningful RAW hazard and is not considered during comparison.
+
+The logic is implemented as a combinational always @(*) block. At the beginning of each evaluation, pipeline_stall_n is assigned 1. The module then checks decoding_op_src1. If this source register is not zero and matches any of ex_op_dest, mem_op_dest, or wb_op_dest, the module sets pipeline_stall_n to 0. The same comparison is then performed for decoding_op_src2. If either source register depends on a destination register from one of the previous three pipeline stages, the pipeline stall signal is asserted.
+
+module hazard_detection_unit
+(
+	input		[2:0]		decoding_op_src1,		//ID stage source_1 register number
+	input		[2:0]		decoding_op_src2,		//ID stage source_2 register number
+	
+	input		[2:0]		ex_op_dest,				//EX stage destinaton register number
+	input		[2:0]		mem_op_dest,			//MEM stage destinaton register number
+	input		[2:0]		wb_op_dest,				//WB stage destinaton register number
+	
+	output	reg				pipeline_stall_n		// Active low
+);
+
+Process Flow
+During operation, the hazard detection unit first receives the source register numbers of the instruction in the ID_stage through decoding_op_src1 and decoding_op_src2. At the same time, it receives the destination register numbers of earlier instructions currently located in the EX_stage, MEM_stage, and WB_stage through ex_op_dest, mem_op_dest, and wb_op_dest.
+The module initially assumes that no hazard exists and sets pipeline_stall_n to 1. It then checks the first source register. If decoding_op_src1 is not register zero and is equal to the destination register of any instruction in the EX_stage, MEM_stage, or WB_stage, the module identifies a RAW hazard and drives pipeline_stall_n low.
+After that, the module checks the second source register in the same way. If decoding_op_src2 is not register zero and matches any of the destination registers from the EX_stage, MEM_stage, or WB_stage, the module also drives pipeline_stall_n low. If neither source register matches any pending destination register, the signal remains high and the pipeline continues normally.
+Overall, the hazard_detection_unit provides the control mechanism required to protect the MIPS_16 pipeline from RAW data hazards. Since the processor does not implement forwarding logic, this module is essential for maintaining correct instruction execution by stalling the pipeline whenever a dependent instruction is detected.

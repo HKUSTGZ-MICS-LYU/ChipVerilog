@@ -1,0 +1,78 @@
+Module rotator implements one CORDIC micro-rotation step. It is the basic computational stage used by the top-level cordic module. For each iteration, the module receives the current x-coordinate, y-coordinate, and angle accumulator value, performs one shift-add CORDIC update, and outputs the updated x, y, and z values. The source comments also describe this module as the heart of the CORDIC computer, where x_i, y_i, and z_i are updated according to the current iteration step and the corresponding arctangent value.
+
+The module supports different build configurations through compile-time macros. In PIPELINE or COMBINATORIAL configurations, the current iteration index and arctangent value are provided as module parameters named iteration and tangle. In ITERATE configuration, iteration and tangle are input ports, because the same rotator instance is reused across multiple cycles and must receive the current iteration count dynamically. The init input also exists only in ITERATE mode and is used to load the initial x_i, y_i, and z_i values before iterative feedback begins.
+
+The input clk provides the sequential timing for registered configurations. In PIPELINE and ITERATE modes, the rotator updates its internal registers on the rising edge of clk. The input rst clears the internal result registers x_1, y_1, and z_1 to zero. In COMBINATORIAL mode, the update block is generated as combinational logic rather than clocked logic, but the same reset branch is still present in the source.
+
+The datapath inputs x_i and y_i are signed XY_BITS + 1-bit values representing the current vector components. The input z_i is a signed THETA_BITS + 1-bit value representing the current angle accumulator. The outputs x_o, y_o, and z_o expose the updated values after one CORDIC micro-rotation. Internally, the updated values are stored in x_1, y_1, and z_1, and the output ports are continuously assigned from these internal registers.
+
+Before performing the add/subtract update, the module generates shifted versions of the input x and y values. The signed_shifter instances compute x_i_shifted and y_i_shifted, which correspond to arithmetic right shifts of x_i and y_i by the current iteration amount. These shifted values implement the CORDIC factor of division by 2^iteration, allowing the micro-rotation to be implemented using shifts instead of multipliers.
+
+The micro-rotation direction depends on the selected CORDIC function mode. When ROTATE is defined, the rotator uses the sign of z_i to decide the direction of rotation. If z_i is negative, the rotator updates the datapath as x_o = x_i + y_i_shifted, y_o = y_i - x_i_shifted, and z_o = z_i + tangle. Otherwise, it updates the datapath as x_o = x_i - y_i_shifted, y_o = y_i + x_i_shifted, and z_o = z_i - tangle. This drives the residual angle toward zero and is used for sine/cosine-style rotation.
+
+When VECTOR is defined, the rotator instead uses the sign of y_i to decide the micro-rotation direction. If y_i is positive, the rotator applies the same update form used for the positive-angle correction path; otherwise, it applies the opposite update. This drives the y component toward zero while accumulating the corresponding angle in z_o, which supports arctangent-style vectoring operation.
+
+In ITERATE mode, when init is asserted, the rotator bypasses the CORDIC update and directly loads x_i, y_i, and z_i into its internal registers. When init is deasserted, the rotator performs the normal micro-rotation update using the current iteration and tangle inputs. This allows a single rotator instance to be reused over multiple clock cycles.
+
+In PIPELINE mode, each rotator instance represents one fixed CORDIC stage. The top-level cordic generate loop assigns each instance a fixed iteration parameter and a fixed tangle parameter. Each stage registers its micro-rotation result and passes it to the next stage on the following clock cycle. In this configuration, the rotator does not have an init input because input loading is handled by the pipeline structure.
+
+Overall, rotator performs one parameterized CORDIC rotation step. It does not by itself implement the full sine, cosine, or arctangent operation; instead, the top-level cordic module connects multiple rotator stages in a pipeline or reuses one rotator iteratively to complete the full CORDIC sequence.
+
+module rotator (
+    input wire clk,
+    input wire rst,
+    `ifdef ITERATE
+    input wire init,
+    input wire [`ITERATION_BITS:0] iteration,
+    input wire signed [`THETA_BITS:0] tangle,
+    `endif
+    input wire signed  [`XY_BITS:0]    x_i,
+    input wire signed  [`XY_BITS:0]    y_i,
+    input wire signed  [`THETA_BITS:0] z_i,
+    output wire signed [`XY_BITS:0]    x_o,
+    output wire signed [`XY_BITS:0]    y_o,
+    output wire signed [`THETA_BITS:0] z_o
+    );
+
+Input ports:
+    clk: Clock signal that defines sequential update timing for the rotator in PIPELINE and ITERATE configurations.
+
+    rst: Reset signal that clears the internal rotator registers x_1, y_1, and z_1 to zero.
+
+    init: Conditional input port present only when ITERATE is defined. When asserted, it loads x_i, y_i, and z_i directly into the internal registers instead of performing a CORDIC update.
+
+    [`ITERATION_BITS:0] iteration: Conditional input port present only when ITERATE is defined. It provides the current CORDIC iteration index used to select the shift amount.
+
+    signed [`THETA_BITS:0] tangle: Conditional input port present only when ITERATE is defined. It provides the precomputed arctangent value for the current iteration.
+
+    signed [`XY_BITS:0] x_i: Current signed x-coordinate input for this CORDIC micro-rotation stage.
+
+    signed [`XY_BITS:0] y_i: Current signed y-coordinate input for this CORDIC micro-rotation stage.
+
+    signed [`THETA_BITS:0] z_i: Current signed angle accumulator input for this CORDIC micro-rotation stage.
+
+Output ports:
+    signed [`XY_BITS:0] x_o: Updated signed x-coordinate output after one CORDIC micro-rotation step.
+
+    signed [`XY_BITS:0] y_o: Updated signed y-coordinate output after one CORDIC micro-rotation step.
+
+    signed [`THETA_BITS:0] z_o: Updated signed angle accumulator output after one CORDIC micro-rotation step.
+
+Processing Flow:
+    The rotator first receives the current x_i, y_i, and z_i values for one CORDIC stage.
+
+    The signed_shifter instances generate x_i_shifted and y_i_shifted by shifting x_i and y_i right by the current iteration amount.
+
+    If rst is asserted, the internal registers x_1, y_1, and z_1 are cleared to zero.
+
+    In ITERATE mode, if init is asserted, the rotator loads x_i, y_i, and z_i directly into x_1, y_1, and z_1.
+
+    If normal CORDIC processing is active, the rotator selects a micro-rotation direction according to the selected mode.
+
+    In ROTATE mode, the direction is selected from the sign of z_i. A negative z_i causes the stage to add tangle to z_i; a non-negative z_i causes the stage to subtract tangle from z_i.
+
+    In VECTOR mode, the direction is selected from the sign of y_i. A positive y_i selects one update direction; a non-positive y_i selects the opposite update direction.
+
+    The selected update computes the next x, y, and z values using add/subtract operations with x_i_shifted, y_i_shifted, and tangle.
+
+    The updated values are stored in x_1, y_1, and z_1, and are continuously driven to x_o, y_o, and z_o.

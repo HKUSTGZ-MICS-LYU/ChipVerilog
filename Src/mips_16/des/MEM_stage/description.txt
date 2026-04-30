@@ -1,0 +1,33 @@
+The MEM_stage module represents the memory access stage of the MIPS_16 processor pipeline. In the classic five-stage pipeline, this stage is located after the EX_stage and before the WB_stage. According to the MIPS_16 specification, the MEM_stage is currently implemented as a RAM-based data memory, and it can later be extended to a D-cache or an external memory interface . Therefore, the main function of this module is to perform data memory access for load and store instructions, while also forwarding the ALU result and write-back control information to the next pipeline stage.
+
+The module receives a 38-bit input pipeline register pipeline_reg_in from the EX_stage. This bus contains the ALU result, memory write control information, memory write data, and write-back control signals. Bits [37:22] store the 16-bit ALU result ex_alu_result. In memory access instructions, this value is used as the data memory address. Bit [21] stores the memory write enable signal mem_write_en, which determines whether the current instruction writes data into memory. Bits [20:5] store the 16-bit memory write data mem_write_data. Bits [4:0] carry the write-back control information, including write-back enable, destination register, and write-back result selection.
+
+Inside the MEM_stage, the data_mem module is instantiated as dmem. The ALU result ex_alu_result is connected to the data memory address input mem_access_addr, while mem_write_data and mem_write_en are connected to the write port of the data memory. When the current instruction is a store instruction, mem_write_en is asserted, and the data memory writes mem_write_data to the address calculated by the EX_stage. When the current instruction is a load instruction, mem_write_en is not asserted, and the memory data at the address ex_alu_result is read out through mem_read_data.
+
+The output pipeline register pipeline_reg_out is a 37-bit bus sent to the WB_stage. On each rising edge of clk, if rst is asserted, this output register is cleared to zero. This prevents invalid memory or write-back information from propagating to the WB_stage. If rst is not asserted, the module stores the ALU result into pipeline_reg_out[36:21], the data memory read result into pipeline_reg_out[20:5], and the write-back control information from pipeline_reg_in[4:0] into pipeline_reg_out[4:0]. This allows the WB_stage to select whether the final write-back value should come from the ALU result or from memory.
+
+The mem_op_dest output is provided to the hazard detection unit. It is assigned from pipeline_reg_in[3:1], which represents the destination register number of the instruction currently in the MEM_stage. According to the MIPS_16 specification, the hazard detection unit compares the source registers of the instruction in the ID_stage with the destination registers of previous instructions in the EX_stage, MEM_stage, and WB_stage to detect RAW hazards . Therefore, mem_op_dest is required for identifying whether the instruction currently in MEM_stage will write to a register needed by a following instruction.
+
+Process Flow
+During operation, the MEM_stage first receives the 38-bit pipeline register input from the EX_stage. The module extracts the ALU result from bits [37:22], the memory write enable signal from bit [21], and the memory write data from bits [20:5]. The lower five bits are kept as write-back control information and passed to the next stage.
+The ALU result is used as the access address for the data memory. If mem_write_en is asserted, the data_mem module writes mem_write_data into the selected memory location on the rising edge of clk. This corresponds to the behavior of a store instruction. If mem_write_en is not asserted, no memory write occurs, and the data memory output mem_read_data provides the value stored at the selected address. This read result is used by load instructions.
+On the rising edge of clk, the MEM_stage updates pipeline_reg_out. If reset is active, the output pipeline register is cleared to zero. Otherwise, the module forwards the ALU result, memory read data, and write-back control signals to the WB_stage. The WB_stage can then choose the correct final write-back data based on the write-back result selection signal.
+At the same time, the module continuously outputs mem_op_dest to the hazard detection unit. This signal indicates the destination register of the instruction currently in the MEM_stage, allowing the hazard detection unit to detect possible RAW dependencies with the instruction currently being decoded.
+Overall, the MEM_stage module provides the data memory access function for the MIPS_16 pipeline. It supports store operations through memory write control, supports load operations by reading data from memory, forwards execution results and memory results to the WB_stage, and provides destination register information for pipeline hazard detection.
+
+module MEM_stage
+(
+	input					clk,
+	input					rst,
+	
+	// from EX_stage
+	input		[37:0]		pipeline_reg_in,	//	[37:22],16bits:	ex_alu_result[15:0];
+												//	[21:5],17bits:	mem_write_en, mem_write_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	
+	// to WB_stage
+	output	reg	[36:0]		pipeline_reg_out,	//	[36:21],16bits:	ex_alu_result[15:0]
+												//	[20:5],16bits:	mem_read_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	output		[2:0]		mem_op_dest
+);
