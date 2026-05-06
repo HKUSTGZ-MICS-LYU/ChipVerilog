@@ -1,0 +1,6080 @@
+{
+  "backend": "yosys",
+  "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+  "candidate_path": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result",
+  "module_dir": "or1200_mult_mac",
+  "model_filter": null,
+  "depth": 8,
+  "timeout": 120,
+  "tool_path": "/hpc/home/connect.ytan910/miniforge3/bin/yosys",
+  "results": [
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 8 failed",
+      "counterexample": {
+        "failing_step": 8,
+        "mismatch_outputs": {
+          "mac_stall_r": {
+            "gold": {
+              "bin": "0",
+              "hex": "0x0"
+            },
+            "gate": {
+              "bin": "1",
+              "hex": "0x1"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "00000000000000000000000000001000",
+                "hex": "0x00000008"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "01101011001100011011001011101001",
+                "hex": "0x6b31b2e9"
+              },
+              "b": {
+                "bin": "10101101011111111011101010100111",
+                "hex": "0xad7fbaa7"
+              },
+              "mac_op": {
+                "bin": "11",
+                "hex": "0x3"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "01011100001001010010010000111000",
+                "hex": "0x5c252438"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "01011100001001010010010000111000",
+                "hex": "0x5c252438"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "01011100001001010010010000111000",
+                "hex": "0x5c252438"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "11111111001000010111111011000001",
+                "hex": "0xff217ec1"
+              },
+              "b": {
+                "bin": "01000000000101110100110111001110",
+                "hex": "0x40174dce"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10111010000011000001000001110011",
+                "hex": "0xba0c1073"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "01011100001001010010010000111000",
+                "hex": "0x5c252438"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "01011100001001010010010000111000",
+                "hex": "0x5c252438"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10111010000011000001000001110011",
+                "hex": "0xba0c1073"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10111010000011000001000001110011",
+                "hex": "0xba0c1073"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "01",
+                "hex": "0x1"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "01100000000000000000000000000000",
+                "hex": "0x60000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "01100000000000000000000000000000",
+                "hex": "0x60000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10111010000011000001000001110011",
+                "hex": "0xba0c1073"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "01100000000000000000000000000000",
+                "hex": "0x60000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "10111010000011000001000001110011",
+                "hex": "0xba0c1073"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 3 failed",
+      "counterexample": {
+        "failing_step": 3,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            },
+            "gate": {
+              "bin": "11101111111111111111111111000111",
+              "hex": "0xefffffc7"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "11000110000001110001100100001100",
+                "hex": "0xc607190c"
+              },
+              "b": {
+                "bin": "11110011100111110001110110101010",
+                "hex": "0xf39f1daa"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00011001001010001000000011011101",
+                "hex": "0x192880dd"
+              },
+              "b": {
+                "bin": "11111000111000101000011011110011",
+                "hex": "0xf8e286f3"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10101000010111100110001111111001",
+                "hex": "0xa85e63f9"
+              },
+              "b": {
+                "bin": "10101111110000001000110111110001",
+                "hex": "0xafc08df1"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0010",
+                "hex": "0x2"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000001000000000000000011111111",
+                "hex": "0x810000ff"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11101111111111111111111111000111",
+                "hex": "0xefffffc7"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0011",
+                "hex": "0x3"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00010000000000000000000000111001",
+                "hex": "0x10000039"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "10011011100111000000000000000001",
+                "hex": "0x9b9c0001"
+              },
+              "b": {
+                "bin": "01101001111111100101000011110100",
+                "hex": "0x69fe50f4"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1001",
+                "hex": "0x9"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000001010",
+                "hex": "0x8000000a"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00010000000000000000000000111001",
+                "hex": "0x10000039"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "11000000000000000000000000000000",
+                "hex": "0xc0000000"
+              },
+              "b": {
+                "bin": "01011110111001111111111111000010",
+                "hex": "0x5ee7ffc2"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000001100000000001100001111111",
+                "hex": "0x8180187f"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10000000100000000000000011111010",
+                "hex": "0x808000fa"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "incompatible",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "interface_mismatch",
+      "reason": "Interface normalization rejected candidate",
+      "interface_reason_kind": "missing_extra",
+      "interface_reason": "missing ports: alu_op, ex_freeze, id_macrc_op, mac_stall_r, macrc_op, spr_addr, spr_cs, spr_dat_i, spr_dat_o, spr_write; extra ports: mac_enable, mac_stall",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "incompatible",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "interface_mismatch",
+      "reason": "Interface normalization rejected candidate",
+      "interface_reason_kind": "missing_extra",
+      "interface_reason": "missing ports: alu_op, ex_freeze, id_macrc_op, mac_stall_r, macrc_op, spr_addr, spr_cs, spr_dat_i, spr_dat_o, spr_write; extra ports: mac_stall, overflow",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 8 failed",
+      "counterexample": {
+        "failing_step": 8,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "10110111111110100000001010001011",
+              "hex": "0xb7fa028b"
+            },
+            "gate": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "10000000000000000000000000000001",
+                "hex": "0x80000001"
+              },
+              "b": {
+                "bin": "00110111111110100000001010001011",
+                "hex": "0x37fa028b"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "11000100011101110001011101110111",
+                "hex": "0xc4771777"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10111110001011011100011011101111",
+                "hex": "0xbe2dc6ef"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11000100011101110001011101110111",
+                "hex": "0xc4771777"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11000100011101110001011101110111",
+                "hex": "0xc4771777"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000100010010001000000100100000",
+                "hex": "0x84488120"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10111110001011011100011011101111",
+                "hex": "0xbe2dc6ef"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "10111110001011011100011011101111",
+                "hex": "0xbe2dc6ef"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "10110111111110100000001010001011",
+                "hex": "0xb7fa028b"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_mult_mac/or1200_mult_mac_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 4 failed",
+      "counterexample": {
+        "failing_step": 4,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            },
+            "gate": {
+              "bin": "00000010000001001011111101101101",
+              "hex": "0x0204bf6d"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "00000000010000100000001000000000",
+                "hex": "0x00420200"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "10001011101111001001001000000001",
+                "hex": "0x8bbc9201"
+              },
+              "b": {
+                "bin": "10111110001111110110101010010011",
+                "hex": "0xbe3f6a93"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1000",
+                "hex": "0x8"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000001000000000000000000000",
+                "hex": "0x80200000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "01101011101010101010111111101111",
+                "hex": "0x6baaafef"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10000000000000000000000000000001",
+                "hex": "0x80000001"
+              },
+              "b": {
+                "bin": "01110000000110000000011011000111",
+                "hex": "0x701806c7"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1001",
+                "hex": "0x9"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000010000001001011111101101101",
+                "hex": "0x0204bf6d"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "11011000010111100001110110010101",
+                "hex": "0xd85e1d95"
+              },
+              "b": {
+                "bin": "11010110011101111000011001110010",
+                "hex": "0xd6778672"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1101",
+                "hex": "0xd"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "11010011000001000010000000000000",
+                "hex": "0xd3042000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1101",
+                "hex": "0xd"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "10001010011011101001100001010001",
+                "hex": "0x8a6e9851"
+              },
+              "b": {
+                "bin": "11000001011110101101011111111111",
+                "hex": "0xc17ad7ff"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1010",
+                "hex": "0xa"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00010010000000000000000000000000",
+                "hex": "0x12000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11010011000001000010000000000000",
+                "hex": "0xd3042000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11101011101010000010101001011010",
+                "hex": "0xeba82a5a"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11010011000001000010000000000000",
+                "hex": "0xd3042000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_mult_mac/or1200_mult_mac_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 8 failed",
+      "counterexample": {
+        "failing_step": 8,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "00001111111111111111000000001111",
+              "hex": "0x0ffff00f"
+            },
+            "gate": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "b": {
+                "bin": "00000000000010000000000000000000",
+                "hex": "0x00080000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "10000101001001000100010000000001",
+                "hex": "0x85244401"
+              },
+              "b": {
+                "bin": "10110110000011111111010000001111",
+                "hex": "0xb60ff40f"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10000000100000000000111100111111",
+                "hex": "0x80800f3f"
+              },
+              "b": {
+                "bin": "01100001100001110100101111110011",
+                "hex": "0x61874bf3"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0111",
+                "hex": "0x7"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000000010",
+                "hex": "0x80000002"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0010",
+                "hex": "0x2"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "11001010111110111111000100100101",
+                "hex": "0xcafbf125"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00001111111111111111000000001111",
+                "hex": "0x0ffff00f"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_mult_mac/or1200_mult_mac_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            },
+            "gate": {
+              "bin": "01100011101010001100011001001000",
+              "hex": "0x63a8c648"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "11000110111010000010110001100001",
+                "hex": "0xc6e82c61"
+              },
+              "b": {
+                "bin": "11011001100000010011111110101111",
+                "hex": "0xd9813faf"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "01111111111111111111111111111111",
+                "hex": "0x7fffffff"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "11111111111111111111111111111111",
+                "hex": "0xffffffff"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00111101000010011110010110001000",
+                "hex": "0x3d09e588"
+              },
+              "b": {
+                "bin": "00111100111011011100001110011001",
+                "hex": "0x3cedc399"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10100000001000000000000000000001",
+                "hex": "0xa0200001"
+              },
+              "b": {
+                "bin": "10100110010101000011010100001100",
+                "hex": "0xa654350c"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "01100011101010001100011001001000",
+                "hex": "0x63a8c648"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00011000000000000000000000000000",
+                "hex": "0x18000000"
+              },
+              "b": {
+                "bin": "11111110111101101011101010101110",
+                "hex": "0xfef6baae"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0000",
+                "hex": "0x0"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "01100011101010001100011001001000",
+                "hex": "0x63a8c648"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "11101000000000000000000000000001",
+                "hex": "0xe8000001"
+              },
+              "b": {
+                "bin": "01110111111111001010100000000111",
+                "hex": "0x77fca807"
+              },
+              "mac_op": {
+                "bin": "01",
+                "hex": "0x1"
+              },
+              "alu_op": {
+                "bin": "1101",
+                "hex": "0xd"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010010000000100000000110001000",
+                "hex": "0x12020188"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0101",
+                "hex": "0x5"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_mult_mac/or1200_mult_mac_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 3 failed",
+      "counterexample": {
+        "failing_step": 3,
+        "mismatch_outputs": {
+          "mac_stall_r": {
+            "gold": {
+              "bin": "0",
+              "hex": "0x0"
+            },
+            "gate": {
+              "bin": "1",
+              "hex": "0x1"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00011101011000000010111100011011",
+                "hex": "0x1d602f1b"
+              },
+              "b": {
+                "bin": "10110101100011110000010011001001",
+                "hex": "0xb58f04c9"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00011111111111111111111111111111",
+                "hex": "0x1fffffff"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10110110110001110001110001100010",
+                "hex": "0xb6c71c62"
+              },
+              "b": {
+                "bin": "11011111111110111101011111000010",
+                "hex": "0xdffbd7c2"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "11011011000001011101111101000001",
+                "hex": "0xdb05df41"
+              },
+              "b": {
+                "bin": "11011111111110010111111110111110",
+                "hex": "0xdff97fbe"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11101101110011111101000001000100",
+                "hex": "0xedcfd044"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "01111001111101010100010111000111",
+                "hex": "0x79f545c7"
+              },
+              "b": {
+                "bin": "11111101010101111100100110110001",
+                "hex": "0xfd57c9b1"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000001010000000000110000000000",
+                "hex": "0x01400c00"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11101101110011111101000001000100",
+                "hex": "0xedcfd044"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00011100101110111011111011001011",
+                "hex": "0x1cbbbecb"
+              },
+              "b": {
+                "bin": "11101011101000000000000000000011",
+                "hex": "0xeba00003"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000001010000000000110000000000",
+                "hex": "0x01400c00"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "01000111111111110111110110010111",
+                "hex": "0x47ff7d97"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000001010000000000110000000000",
+                "hex": "0x01400c00"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00001110000000000000000000000001",
+                "hex": "0x0e000001"
+              },
+              "b": {
+                "bin": "01011110000000000000000000000001",
+                "hex": "0x5e000001"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1010",
+                "hex": "0xa"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000001010000000000110000000000",
+                "hex": "0x01400c00"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000001010000000000110000000000",
+                "hex": "0x01400c00"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1001",
+                "hex": "0x9"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_mult_mac/or1200_mult_mac_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: a ([width-1:0] vs [31:0] -> 32 bits); b ([width-1:0] vs [31:0] -> 32 bits); mac_op ([`OR1200_MACOP_WIDTH-1:0] vs [1:0] -> 2 bits); alu_op ([`OR1200_ALUOP_WIDTH-1:0] vs [3:0] -> 4 bits); result ([width-1:0] vs [31:0] -> 32 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 6 failed",
+      "counterexample": {
+        "failing_step": 6,
+        "mismatch_outputs": {
+          "result": {
+            "gold": {
+              "bin": "00000000000000000000000000000000",
+              "hex": "0x00000000"
+            },
+            "gate": {
+              "bin": "11010101111011011000101000100110",
+              "hex": "0xd5ed8a26"
+            }
+          },
+          "mac_stall_r": {
+            "gold": {
+              "bin": "0",
+              "hex": "0x0"
+            },
+            "gate": {
+              "bin": "1",
+              "hex": "0x1"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "ex_freeze": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10100001110011000000000000000001",
+                "hex": "0xa1cc0001"
+              },
+              "b": {
+                "bin": "00010100001100101100001111010010",
+                "hex": "0x1432c3d2"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "01110011111101101000010011001011",
+                "hex": "0x73f684cb"
+              },
+              "b": {
+                "bin": "10111111010111011110111001000010",
+                "hex": "0xbf5dee42"
+              },
+              "mac_op": {
+                "bin": "01",
+                "hex": "0x1"
+              },
+              "alu_op": {
+                "bin": "0001",
+                "hex": "0x1"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00001000000000110001000000010101",
+                "hex": "0x08031015"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "10111010101100000010000001001111",
+                "hex": "0xbab0204f"
+              },
+              "b": {
+                "bin": "01010011100011001111010010000101",
+                "hex": "0x538cf485"
+              },
+              "mac_op": {
+                "bin": "01",
+                "hex": "0x1"
+              },
+              "alu_op": {
+                "bin": "0100",
+                "hex": "0x4"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00001000000000110001000000011101",
+                "hex": "0x0803101d"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10110000000000000000000000000000",
+                "hex": "0xb0000000"
+              },
+              "mac_op": {
+                "bin": "10",
+                "hex": "0x2"
+              },
+              "alu_op": {
+                "bin": "1001",
+                "hex": "0x9"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "10000000000000000000000000010000",
+                "hex": "0x80000010"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "a": {
+                "bin": "11110101000001001110001101010011",
+                "hex": "0xf504e353"
+              },
+              "b": {
+                "bin": "10101100011100111100000101111110",
+                "hex": "0xac73c17e"
+              },
+              "mac_op": {
+                "bin": "01",
+                "hex": "0x1"
+              },
+              "alu_op": {
+                "bin": "1000",
+                "hex": "0x8"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "spr_dat_i": {
+                "bin": "00001000000000110101010000010101",
+                "hex": "0x08035415"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "1001",
+                "hex": "0x9"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "11010101111011011000101000100110",
+                "hex": "0xd5ed8a26"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "11000010110101000011011011110100",
+                "hex": "0xc2d436f4"
+              },
+              "b": {
+                "bin": "11110000110101000101010110000111",
+                "hex": "0xf0d45587"
+              },
+              "mac_op": {
+                "bin": "10",
+                "hex": "0x2"
+              },
+              "alu_op": {
+                "bin": "1011",
+                "hex": "0xb"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00010000100010100000000000000000",
+                "hex": "0x108a0000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "ex_freeze": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "id_macrc_op": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "macrc_op": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "a": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "b": {
+                "bin": "10000000000000000000000000000000",
+                "hex": "0x80000000"
+              },
+              "mac_op": {
+                "bin": "00",
+                "hex": "0x0"
+              },
+              "alu_op": {
+                "bin": "0110",
+                "hex": "0x6"
+              },
+              "spr_cs": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_write": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_addr": {
+                "bin": "00000000000000000000000000000001",
+                "hex": "0x00000001"
+              },
+              "spr_dat_i": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              }
+            },
+            "gold_outputs": {
+              "result": {
+                "bin": "00000000000000000000000000000000",
+                "hex": "0x00000000"
+              },
+              "mac_stall_r": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "spr_dat_o": {
+                "bin": "00010000100010100000000000000000",
+                "hex": "0x108a0000"
+              }
+            },
+            "gate_outputs": {
+              "result": {
+                "bin": "01110110001101111111111010101100",
+                "hex": "0x7637feac"
+              },
+              "mac_stall_r": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "spr_dat_o": {
+                "bin": "00010000100010100000000000000000",
+                "hex": "0x108a0000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mult_mac/or1200_mult_mac_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: ERROR: Module `or1200_gmultp2_32x32' referenced in module `or1200_mult_mac' in cell `genblk1.genblk1.u_mult' does not have a port named 'product'.",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mult_mac/or1200_mult_mac_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: ERROR: Module `or1200_gmultp2_32x32' referenced in module `or1200_mult_mac' in cell `mult' does not have a port named 'p'.",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mult_mac/or1200_mult_mac_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: ERROR: Unterminated preprocessor conditional!",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mult_mac/or1200_mult_mac_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: ERROR: Found `endif outside of macro conditional branch!",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_mult_mac",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mult_mac/or1200_mult_mac_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_50i0oobc/verilog/or1200_mult_mac.v",
+      "reference_top": "or1200_mult_mac",
+      "candidate_top": "or1200_mult_mac",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: ERROR: Unterminated preprocessor conditional!",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    }
+  ],
+  "total_candidates": 15,
+  "observed_candidate_names": [
+    "or1200_mult_mac_t1.v",
+    "or1200_mult_mac_t1.v",
+    "or1200_mult_mac_t1.v",
+    "or1200_mult_mac_t2.v",
+    "or1200_mult_mac_t2.v",
+    "or1200_mult_mac_t2.v",
+    "or1200_mult_mac_t3.v",
+    "or1200_mult_mac_t3.v",
+    "or1200_mult_mac_t3.v",
+    "or1200_mult_mac_t4.v",
+    "or1200_mult_mac_t4.v",
+    "or1200_mult_mac_t4.v",
+    "or1200_mult_mac_t5.v",
+    "or1200_mult_mac_t5.v",
+    "or1200_mult_mac_t5.v"
+  ],
+  "observed_candidates": 15,
+  "expected_candidate_names": [
+    "or1200_mult_mac_t0.v",
+    "or1200_mult_mac_t1.v",
+    "or1200_mult_mac_t2.v",
+    "or1200_mult_mac_t3.v",
+    "or1200_mult_mac_t4.v",
+    "or1200_mult_mac_t5.v",
+    "or1200_mult_mac_t6.v",
+    "or1200_mult_mac_t7.v"
+  ],
+  "missing_candidate_names": [
+    "or1200_mult_mac_t0.v",
+    "or1200_mult_mac_t6.v",
+    "or1200_mult_mac_t7.v"
+  ],
+  "missing_candidates": 3,
+  "counts": {
+    "not_equivalent": 8,
+    "skip": 7
+  },
+  "interface_counts": {
+    "compatible": 8,
+    "incompatible": 2,
+    "skip": 5
+  },
+  "precheck_counts": {
+    "fail": 5,
+    "pass": 10
+  },
+  "model_counts": {
+    "claude": 5,
+    "codex": 5,
+    "deepseek": 5
+  },
+  "reason_bucket_counts": {
+    "interface_mismatch": 2,
+    "not_equivalent": 8,
+    "precheck_fail": 5
+  },
+  "interface_reason_kind_counts": {
+    "": 5,
+    "missing_extra": 2,
+    "width_equivalent": 8
+  },
+  "formal_status_by_model": {
+    "claude": {
+      "not_equivalent": 3,
+      "skip": 2
+    },
+    "codex": {
+      "not_equivalent": 5
+    },
+    "deepseek": {
+      "skip": 5
+    }
+  },
+  "interface_status_by_model": {
+    "claude": {
+      "compatible": 3,
+      "incompatible": 2
+    },
+    "codex": {
+      "compatible": 5
+    },
+    "deepseek": {
+      "skip": 5
+    }
+  },
+  "reason_bucket_by_model": {
+    "claude": {
+      "interface_mismatch": 2,
+      "not_equivalent": 3
+    },
+    "codex": {
+      "not_equivalent": 5
+    },
+    "deepseek": {
+      "precheck_fail": 5
+    }
+  },
+  "interface_reason_kind_by_model": {
+    "claude": {
+      "missing_extra": 2,
+      "width_equivalent": 3
+    },
+    "codex": {
+      "width_equivalent": 5
+    },
+    "deepseek": {
+      "": 5
+    }
+  }
+}

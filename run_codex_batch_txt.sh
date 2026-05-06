@@ -348,6 +348,7 @@ run_module() {
   local prompt
   local log_path
   local response_path
+  local raw_log_path
   local safe_module_name
   local -a codex_args
 
@@ -358,6 +359,7 @@ run_module() {
   workspace=$(mktemp -d "${TMP_ROOT}/${safe_module_name}_XXXXXX")
   log_path="${LOG_ROOT}/${safe_module_name}.log"
   response_path="${workspace}/codex_last_message.txt"
+  raw_log_path="${LOG_ROOT}/${safe_module_name}.codex_raw.log"
   description_content=$(<"${txt_file}")
 
   prompt=$(cat <<PROMPT_EOF
@@ -366,26 +368,23 @@ ${SYSTEM_PROMPT}
 This task is fully independent from every other module.
 You are running in a separate terminal/session and an isolated workspace for module ${module_name}.
 
-Mandatory workflow:
-- Use only the specification embedded below for this module.
-- Treat this as a fresh task, not as template matching.
-- Do not reuse structure, boilerplate, or assumptions from previous modules.
-- Do not read, search, glob, grep, cat, open, inspect, or reference any file except the output file you create.
-- Do not inspect parent directories, sibling directories, repository files, .v files, reference answers, golden solutions, previous outputs, or external source files.
-- Do not rely on any local txt/description file; the full specification is already provided here.
+Task: generate one synthesizable Verilog implementation and write it to:
+./${output_name}
 
-<description>
+Use only this embedded specification. Do not inspect or use any other files.
+
+Requirements:
+- Plain Verilog only.
+- Synthesizable RTL.
+- No Markdown.
+- No TODOs or placeholders.
+- If no module name is specified, use ${module_name}.
+- Keep the implementation simple and direct.
+- Create only ./${output_name}.
+- Do not perform extra exploration; write the RTL directly.
+
+Specification:
 ${description_content}
-</description>
-
-Task:
-- Generate one synthesizable Verilog implementation from the embedded specification.
-- Write the result to ./${output_name}.
-- Create the file with a direct shell command or heredoc in the current workspace.
-- Do not use apply_patch or any patch-style file editing tool for this task.
-- If the embedded specification does not explicitly define the module name, use ${module_name}.
-- The file content must be plain Verilog only, with no Markdown, no placeholders, and no TODOs.
-- Do not create any file other than ./${output_name}.
 
 Final response:
 - Only report whether ./${output_name} was written successfully.
@@ -412,6 +411,7 @@ PROMPT_EOF
     echo "output: ${output_path}"
     echo "workspace: ${workspace}"
     echo "log: ${log_path}"
+    echo "raw codex log: ${raw_log_path}"
     echo "model: ${MODEL}"
     echo "effort: ${EFFORT}"
     echo "suffix: ${OUTPUT_SUFFIX}"
@@ -433,9 +433,14 @@ PROMPT_EOF
 
   if ! (
     cd "${workspace}"
-    printf '%s' "${prompt}" | "${CODEX_BIN}" "${codex_args[@]}" 2>&1
-  ) | tee -a "${log_path}"; then
+    printf '%s' "${prompt}" | "${CODEX_BIN}" "${codex_args[@]}" > "${raw_log_path}" 2>&1
+  ); then
     echo "Codex failed for module ${module_name}. Workspace kept at ${workspace}" | tee -a "${log_path}" >&2
+    if [[ -f "${response_path}" ]]; then
+      echo "Last Codex message:" | tee -a "${log_path}" >&2
+      sed -n '1,120p' "${response_path}" | tee -a "${log_path}" >&2
+    fi
+    echo "Raw Codex log: ${raw_log_path}" | tee -a "${log_path}" >&2
     return 1
   fi
 
@@ -445,8 +450,13 @@ PROMPT_EOF
       echo "Last Codex message:" | tee -a "${log_path}" >&2
       sed -n '1,120p' "${response_path}" | tee -a "${log_path}" >&2
     fi
+    echo "Raw Codex log: ${raw_log_path}" | tee -a "${log_path}" >&2
     echo "Workspace kept at ${workspace}" | tee -a "${log_path}" >&2
     return 1
+  fi
+
+  if [[ -f "${response_path}" ]]; then
+    sed -n '1,20p' "${response_path}" | tee -a "${log_path}"
   fi
 
   mkdir -p "${output_dir}"

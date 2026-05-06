@@ -1,0 +1,5017 @@
+{
+  "backend": "yosys",
+  "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+  "candidate_path": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result",
+  "module_dir": "or1200_dc_tag",
+  "model_filter": null,
+  "depth": 8,
+  "timeout": 120,
+  "tool_path": "/hpc/home/connect.ytan910/miniforge3/bin/yosys",
+  "results": [
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_tag/or1200_dc_tag_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_tag/or1200_dc_tag_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "equivalent",
+      "reason": "Bounded proof passed within 8 cycles",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_tag/or1200_dc_tag_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: addr ([aw-1:0] vs [8:0] -> 9 bits); datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 3 failed",
+      "counterexample": {
+        "failing_step": 3,
+        "mismatch_outputs": {
+          "tag_v": {
+            "gold": {
+              "bin": "0",
+              "hex": "0x0"
+            },
+            "gate": {
+              "bin": "1",
+              "hex": "0x1"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "10000000000000000000",
+                "hex": "0x80000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111100",
+                "hex": "0x1fc"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_tag/or1200_dc_tag_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 8 failed",
+      "counterexample": {
+        "failing_step": 8,
+        "mismatch_outputs": {
+          "tag_v": {
+            "gold": {
+              "bin": "1",
+              "hex": "0x1"
+            },
+            "gate": {
+              "bin": "0",
+              "hex": "0x0"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "001010110",
+                "hex": "0x056"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101101100",
+                "hex": "0x16c"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "010000110",
+                "hex": "0x086"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "010000100",
+                "hex": "0x084"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "claude",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_tag/or1200_dc_tag_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "equivalent",
+      "reason": "Bounded proof passed within 8 cycles",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_dc_tag/or1200_dc_tag_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_dc_tag/or1200_dc_tag_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_dc_tag/or1200_dc_tag_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag_v": {
+            "gold": {
+              "bin": "1",
+              "hex": "0x1"
+            },
+            "gate": {
+              "bin": "0",
+              "hex": "0x0"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "011000001",
+                "hex": "0x0c1"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111100",
+                "hex": "0x1fc"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111010000",
+                "hex": "0x1d0"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111100011",
+                "hex": "0x1e3"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "010111001",
+                "hex": "0x0b9"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111010000",
+                "hex": "0x1d0"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111010000",
+                "hex": "0x1d0"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_dc_tag/or1200_dc_tag_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 8 failed",
+      "counterexample": {
+        "failing_step": 8,
+        "mismatch_outputs": {
+          "tag_v": {
+            "gold": {
+              "bin": "1",
+              "hex": "0x1"
+            },
+            "gate": {
+              "bin": "0",
+              "hex": "0x0"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "001010110",
+                "hex": "0x056"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "000000000",
+                "hex": "0x000"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101101100",
+                "hex": "0x16c"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "010000110",
+                "hex": "0x086"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000001",
+                "hex": "0x00001"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "010000100",
+                "hex": "0x084"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "codex",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_dc_tag/or1200_dc_tag_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "equivalent",
+      "reason": "Bounded proof passed within 8 cycles",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t1.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag_t1",
+      "reference_precheck": "pass",
+      "candidate_precheck": "fail",
+      "interface_status": "skip",
+      "formal_status": "skip",
+      "proof_type": "unknown",
+      "reason_bucket": "precheck_fail",
+      "reason": "Candidate precheck failed: candidate top resolution failed for /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t1.v: No module declarations found in /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t1.v",
+      "interface_reason_kind": "",
+      "interface_reason": "",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "",
+      "counterexample": null
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t2.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t3.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t4.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "backend": "yosys",
+      "model": "deepseek",
+      "module_dir": "or1200_dc_tag",
+      "candidate_file": "/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_dc_tag/or1200_dc_tag_t5.v",
+      "reference_file": "/tmp/or1200_equiv_ref_a3c7yyx7/verilog/or1200_dc_tag.v",
+      "reference_top": "or1200_dc_tag",
+      "candidate_top": "or1200_dc_tag",
+      "reference_precheck": "pass",
+      "candidate_precheck": "pass",
+      "interface_status": "compatible",
+      "formal_status": "not_equivalent",
+      "proof_type": "bounded_seq",
+      "reason_bucket": "not_equivalent",
+      "reason": "找到反例，候选设计与参考设计不等价",
+      "interface_reason_kind": "width_equivalent",
+      "interface_reason": "normalized width expressions: datain ([dw-1:0] vs [19:0] -> 20 bits); tag ([dw-2:0] vs [18:0] -> 19 bits)",
+      "interface_aliases_applied": [],
+      "counterexample_summary": "step 5 failed",
+      "counterexample": {
+        "failing_step": 5,
+        "mismatch_outputs": {
+          "tag": {
+            "gold": {
+              "bin": "0000110011111001100",
+              "hex": "0x067cc"
+            },
+            "gate": {
+              "bin": "0000000000000000000",
+              "hex": "0x00000"
+            }
+          }
+        },
+        "trace": [
+          {
+            "step": 1,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "addr": {
+                "bin": "110010010",
+                "hex": "0x192"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 2,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "001101010",
+                "hex": "0x06a"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 3,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011001101",
+                "hex": "0x0cd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 4,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "100110010",
+                "hex": "0x132"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 5,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "011111101",
+                "hex": "0x0fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 6,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "101010110",
+                "hex": "0x156"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 7,
+            "trigger": "1",
+            "inputs": {
+              "clk": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "we": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000110011111001100",
+                "hex": "0x067cc"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          },
+          {
+            "step": 8,
+            "trigger": "0",
+            "inputs": {
+              "clk": {
+                "bin": "1",
+                "hex": "0x1"
+              },
+              "rst": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "addr": {
+                "bin": "111111101",
+                "hex": "0x1fd"
+              },
+              "en": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "we": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "datain": {
+                "bin": "00000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gold_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            },
+            "gate_outputs": {
+              "tag_v": {
+                "bin": "0",
+                "hex": "0x0"
+              },
+              "tag": {
+                "bin": "0000000000000000000",
+                "hex": "0x00000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "total_candidates": 15,
+  "observed_candidate_names": [
+    "or1200_dc_tag_t1.v",
+    "or1200_dc_tag_t1.v",
+    "or1200_dc_tag_t1.v",
+    "or1200_dc_tag_t2.v",
+    "or1200_dc_tag_t2.v",
+    "or1200_dc_tag_t2.v",
+    "or1200_dc_tag_t3.v",
+    "or1200_dc_tag_t3.v",
+    "or1200_dc_tag_t3.v",
+    "or1200_dc_tag_t4.v",
+    "or1200_dc_tag_t4.v",
+    "or1200_dc_tag_t4.v",
+    "or1200_dc_tag_t5.v",
+    "or1200_dc_tag_t5.v",
+    "or1200_dc_tag_t5.v"
+  ],
+  "observed_candidates": 15,
+  "expected_candidate_names": [
+    "or1200_dc_tag_t0.v",
+    "or1200_dc_tag_t1.v",
+    "or1200_dc_tag_t2.v",
+    "or1200_dc_tag_t3.v",
+    "or1200_dc_tag_t4.v",
+    "or1200_dc_tag_t5.v",
+    "or1200_dc_tag_t6.v",
+    "or1200_dc_tag_t7.v"
+  ],
+  "missing_candidate_names": [
+    "or1200_dc_tag_t0.v",
+    "or1200_dc_tag_t6.v",
+    "or1200_dc_tag_t7.v"
+  ],
+  "missing_candidates": 3,
+  "counts": {
+    "equivalent": 3,
+    "not_equivalent": 11,
+    "skip": 1
+  },
+  "interface_counts": {
+    "compatible": 14,
+    "skip": 1
+  },
+  "precheck_counts": {
+    "fail": 1,
+    "pass": 14
+  },
+  "model_counts": {
+    "claude": 5,
+    "codex": 5,
+    "deepseek": 5
+  },
+  "reason_bucket_counts": {
+    "equivalent": 3,
+    "not_equivalent": 11,
+    "precheck_fail": 1
+  },
+  "interface_reason_kind_counts": {
+    "": 1,
+    "width_equivalent": 14
+  },
+  "formal_status_by_model": {
+    "claude": {
+      "equivalent": 2,
+      "not_equivalent": 3
+    },
+    "codex": {
+      "equivalent": 1,
+      "not_equivalent": 4
+    },
+    "deepseek": {
+      "not_equivalent": 4,
+      "skip": 1
+    }
+  },
+  "interface_status_by_model": {
+    "claude": {
+      "compatible": 5
+    },
+    "codex": {
+      "compatible": 5
+    },
+    "deepseek": {
+      "compatible": 4,
+      "skip": 1
+    }
+  },
+  "reason_bucket_by_model": {
+    "claude": {
+      "equivalent": 2,
+      "not_equivalent": 3
+    },
+    "codex": {
+      "equivalent": 1,
+      "not_equivalent": 4
+    },
+    "deepseek": {
+      "not_equivalent": 4,
+      "precheck_fail": 1
+    }
+  },
+  "interface_reason_kind_by_model": {
+    "claude": {
+      "width_equivalent": 5
+    },
+    "codex": {
+      "width_equivalent": 5
+    },
+    "deepseek": {
+      "": 1,
+      "width_equivalent": 4
+    }
+  }
+}

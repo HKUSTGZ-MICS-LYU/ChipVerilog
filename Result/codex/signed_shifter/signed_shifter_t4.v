@@ -1,0 +1,13 @@
+module signed_shifter (
+  input wire [`ITERATION_BITS-1:0] i,
+  input wire signed [`XY_BITS:0] D,
+  output reg signed [`XY_BITS:0] Q
+);
+  integer j;
+
+  always @* begin
+    Q = D;
+    for (j = 0; j < i; j = j + 1)
+      Q = {D[`XY_BITS], Q[`XY_BITS:1]};
+  end
+endmodule

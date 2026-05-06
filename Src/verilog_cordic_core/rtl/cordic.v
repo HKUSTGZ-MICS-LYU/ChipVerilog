@@ -13,7 +13,7 @@
     arctan of -y/x, in the second quadrant, feed the cordic function y/x and
     then add 90 degrees (or pi/2 if using radian mode) to the result.  When
     computing sin and cos of an angle, coarse rotate the angle into the first quadrant
-    by subtracting the appropriate number of 90 (or pi/2 increments to get the angle in
+    by subtracting the appropriate number of 90 (or pi/2) increments to get the angle in
     the first quadrant, keep track of this value, feed the cordic the angle.  Then
     simply change the sign of the results based on this stored number.
     
@@ -80,7 +80,7 @@
   The CORDIC can work with the angle expressed in radians or degrees
   Uncomment the appropriate `define below.
   RADIAN_16 uses 16 bit values (+ sign bit for 17 bit accuracy).  angle information
-  is in the format U(1,15 where bit 16 is the sign bit, bit 15 is the whole number part
+  is in the format U(1,15) where bit 16 is the sign bit, bit 15 is the whole number part
   and bits [14:0] are the fractional parts.
   DEGREE_8_8 uses U(8,8) + a sign bit where bit 16 = the sign bit, [15:8] = the whole number part
   and [7:0] = the fractional.
@@ -92,7 +92,7 @@
 
 /*  Bit accuracy for sin and cos
 
-  The X and Y values are computed using a `XY_BITS + sign bit accuracy.  The format is assumed to be U(1,15 + sign bit
+  The X and Y values are computed using a `XY_BITS + sign bit accuracy.  The format is assumed to be U(1,15) + sign bit
   However, the CORDIC algorythm really doesn't care.
 */
 `define XY_BITS    16
@@ -146,7 +146,7 @@
   
   CORDIC_gain = for (i=0;i<n;i++) An = An*SQRT(1+(1/2^2i)
   This quickly converges to ~ 1.647 as i goes to infinity.
-  For 16 bit numbers in the U(1,15 the value is 17'd53955
+  For 16 bit numbers in the U(1,15) the value is 17'd53955
   *** NOTE *** If you change the number representations
                you will have to recompute these values.
 */
@@ -175,7 +175,7 @@ module signed_shifter (
   integer j;
   always @ * begin
     Q = D;
-    for(j=0;j<i;j=j+1 Q = (Q >> 1 | (D[`XY_BITS] << `XY_BITS);
+    for(j=0;j<i;j=j+1) Q = (Q >> 1) | (D[`XY_BITS] << `XY_BITS);
   end
 endmodule
 /*  Rotator
@@ -355,7 +355,7 @@ always @ (posedge clk or posedge rst)
 
 `ifdef GENERATE_LOOP
 genvar i;
-generate for(i=0;i<`ITERATIONS-1;i=i+1 begin
+generate for(i=0;i<`ITERATIONS-1;i=i+1) begin
   rotator U (clk,rst,x[i],y[i],z[i],x[i+1],y[i+1],z[i+1]);
   defparam U.iteration = i;
   defparam U.tangle = tanangle(i);

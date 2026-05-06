@@ -41,7 +41,7 @@ cordic UUT (.clk(clock),.rst(reset),
     input integer j;
     input [`THETA_BITS:0] theta;
     begin
-      a_i = (j * 3.14 / 180;
+      a_i = (j * 3.14) / 180;
       a_o = theta;
       a_o = a_o / 32768;
       if (a_o > a_i) a_e = a_o - a_i; else a_e = a_i - a_o;
@@ -96,7 +96,7 @@ cordic UUT (.clk(clock),.rst(reset),
   $display("COMBINATORIAL configuration");
 `endif  
 
-  // The following table is computed for U(1,15 format numbers
+  // The following table is computed for U(1,15) format numbers
   // The angle data z[] is in radians
   x[0] <= 17'd32768;  y[0] <= 17'd0;      z[0] <= 17'd0;
   x[1] <= 17'd32763;  y[1] <= 17'd571;    z[1] <= 17'd571;
@@ -200,7 +200,7 @@ cordic UUT (.clk(clock),.rst(reset),
   #1 clock <= 0;
   reset <= 0;  
 
-  for (j=0;j<=90;j = j+1 begin // test 91 different angles, 0 to 90 degrees
+  for (j=0;j<=90;j = j+1) begin // test 91 different angles, 0 to 90 degrees
 `ifdef ROTATE // compute sin and cos
     x_i <= `CORDIC_1;
     y_i <= 0;
@@ -218,7 +218,7 @@ cordic UUT (.clk(clock),.rst(reset),
     #1 clock <= 1;
     #1 clock <= 0;
     init <= 0;
-    for(i=0;i<`ITERATIONS;i = i+1 begin  // iterate on the value
+    for(i=0;i<`ITERATIONS;i = i+1) begin  // iterate on the value
       #1 clock <= 1;
       #1 clock <= 0;
     end
@@ -238,7 +238,7 @@ cordic UUT (.clk(clock),.rst(reset),
       show_results((j-(`ITERATIONS-2)),x_o,y_o,theta_o);
     end
     if (j == 90)  // now flush the pipe
-    for(i=0;i<(`ITERATIONS-2);i = i+1 begin
+    for(i=0;i<(`ITERATIONS-2);i = i+1) begin
       #1 clock <= 1;
       #1 clock <= 0;
       show_results((90-`ITERATIONS+3+i),x_o,y_o,theta_o);
@@ -247,7 +247,7 @@ cordic UUT (.clk(clock),.rst(reset),
 
 
   end
-  for(i=0;i<16;i=i+1  // dump a few extra clock just for grins
+  for(i=0;i<16;i=i+1)  // dump a few extra clock just for grins
     #1 clock <= ~clock;
 end
 

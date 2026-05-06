@@ -175,7 +175,9 @@ module signed_shifter (
   integer j;
   always @ * begin
     Q = D;
-    for(j=0;j<i;j=j+1 Q = (Q >> 1 | (D[`XY_BITS] << `XY_BITS);
+    for (j = 0; j < i; j = j + 1) begin
+      Q = {D[`XY_BITS], Q[`XY_BITS:1]};
+    end
   end
 endmodule
 /*  Rotator
