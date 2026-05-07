@@ -1,0 +1,159 @@
+Module `fpu_exceptions` generates IEEE-754 exception flags such as invalid, overflow, underflow, divide-by-zero, and inexact conditions.
+This source file implements special-case handling and status-flag generation for the floating-point unit. It checks for NaNs, infinities, divide-by-zero, invalid arithmetic combinations, overflow, underflow, and inexact results. It can override the rounded datapath result with a special IEEE-754 output and drives the final exception-related status signals.
+This module performs all special-case substitution and status-flag generation for the floating-point unit. It receives the rounded normal datapath result, the original operands, the original opcode, the post-round exponent, and the low two remainder bits. It decides whether the normal rounded result should be overridden by NaN, infinity, max-finite, or signed-zero, and it generates underflow, overflow, inexact, exception, and invalid flags.
+
+Main function
+-------------
+The exception block operates after the arithmetic and rounding stages. It receives:
+- the original operands
+- the rounded candidate result
+- the post-round exponent
+- the two low-order remainder bits from the arithmetic path
+- the operation code
+- the rounding mode
+
+It decides whether the rounded datapath result can pass through unchanged or whether a special result such as NaN, infinity, largest finite number, or zero must be returned instead.
+
+Description:
+This module handles all special cases and exception conditions for the floating-point unit. Its inputs include the original operands opa and opb, the normal rounded result in_except, the extended exponent exponent_in, the two rounding-related extra bits mantissa_in, the operation code fpu_op, and the rounding mode rmode. Its outputs are the final result out, the exception override enable ex_enable, and the five status flags underflow, overflow, inexact, exception, and invalid.
+
+The exceptions module checks all of the special cases listed in the documentation, including divide by zero, 0/0, infinity/infinity, divide by infinity, 0 * infinity, arithmetic overflow, arithmetic underflow, +infinity + (-infinity), +infinity - +infinity, -infinity - -infinity, QNaN input, and SNaN input. When any of these cases occurs, the module generates the appropriate special output and asserts the required flags. If either input is a QNaN, the output is a QNaN. SNaN inputs are converted to QNaN and assert invalid. For other invalid operations such as 0/0, infinity/infinity, 0 * infinity, or invalid infinity add/subtract combinations, the output is NaN and invalid is asserted .
+
+The module also controls the final representation of overflow and underflow results. If the arithmetic result overflows, the default output is positive or negative infinity and overflow is asserted. However, if the rounding mode requires infinity to be rounded down to the largest finite number, the module outputs the largest positive or negative finite value instead of infinity. Specifically, if the result is positive infinity and the rounding mode is round to zero or round to negative infinity, the output becomes the largest positive number; if the result is negative infinity and the rounding mode is round to zero or round to positive infinity, the output becomes the largest negative number. The document explicitly states that this infinity rounding behavior is performed in the exceptions module, not in the rounding module .
+
+For underflow, the module outputs signed zero when the datapath result is zero and underflow is detected and asserts underflow. For inexact, the flag is asserted if either of the two extra remainder bits is 1, or if the result is modified due to overflow or underflow. The exception output is a summary flag that is asserted whenever any exception condition occurs. If the module determines that the normal rounded result must be overridden, it asserts ex_enable, and the top level selects this module’s out as the final output.
+
+All detections, flags, and outputs are registered on the rising edge of the clock. Reset clears all flags and outputs. This module is the final authority for special-value propagation, invalid-operation handling, infinity replacement, and exception reporting in the FPU.
+
+module fpu_exceptions (
+    input clk,
+    input rst,
+    input enable,
+    input [1:0] rmode,
+    input [63:0] opa,
+    input [63:0] opb,
+    input [63:0] in_except,
+    input [11:0] exponent_in,
+    input [1:0] mantissa_in,
+    input [2:0] fpu_op,
+    output reg [63:0] out,
+    output reg ex_enable,
+    output reg underflow,
+    output reg overflow,
+    output reg inexact,
+    output reg exception,
+    output reg invalid
+);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Active-high enable; all state updates occur only when asserted.
+    input [1:0] rmode: IEEE-754 rounding mode: 2'b00=nearest, 2'b01=zero, 2'b10=+inf, 2'b11=-inf.
+    input [63:0] opa: First IEEE-754 double-precision operand, command, or multiplexed path.
+    input [63:0] opb: Second IEEE-754 double-precision operand, command, or multiplexed path.
+    input [63:0] in_except: Rounded 64-bit result from fpu_round, used as the normal datapath result unless overridden by a special case.
+    input [11:0] exponent_in: Data input that provides operand or payload values to the datapath.
+    input [1:0] mantissa_in: Two low-order remainder bits used for inexact detection.
+    input [2:0] fpu_op: Operation selector (add, sub, mul, div).
+
+Output port:
+    output [63:0] out: Output signal driven by the module toward surrounding logic.
+    output ex_enable: Asserted when the exception module requests the top level to select out instead of the normal rounded result.
+    output underflow: Output signal driven by the module toward surrounding logic.
+    output overflow: Output signal driven by the module toward surrounding logic.
+    output inexact: Output signal driven by the module toward surrounding logic.
+    output exception: Output signal driven by the module toward surrounding logic.
+    output invalid: Asserted when an IEEE-754 invalid operation is detected.
+
+Internal reg/wire signals:
+    reg in_et_zero: In equals-zero flag.
+    reg opa_et_zero: Operand A equals-zero flag.
+    reg opb_et_zero: Operand B equals-zero flag.
+    reg input_et_zero: Input equals-zero flag.
+    reg add: Flag that the current operation is add.
+    reg subtract: Flag that the current operation is subtract.
+    reg multiply: Flag that the current operation is multiply.
+    reg divide: Flag that the current operation is divide.
+    reg opa_QNaN: Operand A quiet-NaN flag.
+    reg opb_QNaN: Operand B quiet-NaN flag.
+    reg opa_SNaN: Operand A signaling-NaN flag.
+    reg opb_SNaN: Operand B signaling-NaN flag.
+    reg opa_pos_inf: Operand A positive-infinity flag.
+    reg opb_pos_inf: Operand B positive-infinity flag.
+    reg opa_neg_inf: Operand A negative-infinity flag.
+    reg opb_neg_inf: Operand B negative-infinity flag.
+    reg opa_inf: Operand A infinity flag.
+    reg opb_inf: Operand B infinity flag.
+    reg NaN_input: Flag that at least one input operand is NaN.
+    reg SNaN_input: Flag that a signaling NaN is present at the input.
+    reg a_NaN: Canonical NaN-selection flag for the output path.
+    reg div_by_0: Flag that the divide operation has a zero divisor.
+    reg div_0_by_0: Flag that the divide operation is 0/0.
+    reg div_inf_by_inf: Div infinity by infinity flag.
+    reg div_by_inf: Div by infinity flag.
+    reg mul_0_by_inf: Multiply 0 by infinity flag.
+    reg mul_inf: Multiply infinity flag.
+    reg div_inf: Div infinity flag.
+    reg add_inf: Add infinity flag.
+    reg sub_inf: Subtract infinity flag.
+    reg addsub_inf_invalid: Addsub infinity invalid flag.
+    reg addsub_inf: Addsub infinity flag.
+    reg out_inf_trigger: Output infinity trigger flag.
+    reg out_pos_inf: Output positive-infinity flag.
+    reg out_neg_inf: Output negative-infinity flag.
+    reg round_nearest: Round nearest.
+    reg round_to_zero: Round to zero flag.
+    reg round_to_pos_inf: Round to positive-infinity flag.
+    reg round_to_neg_inf: Round to negative-infinity flag.
+    reg inf_round_down_trigger: Infinity round down trigger flag.
+    reg mul_uf: Multiply underflow flag.
+    reg div_uf: Div underflow flag.
+    reg underflow_trigger: Underflow trigger.
+    reg invalid_trigger: Invalid trigger.
+    reg overflow_trigger: Overflow trigger.
+    reg inexact_trigger: Inexact trigger.
+    reg except_trigger: Exception trigger.
+    reg enable_trigger: Enable trigger flag.
+    reg NaN_out_trigger: Na n output trigger.
+    reg SNaN_trigger: S na n trigger.
+    wire [10:0] exp_2047 = 11'b11111111111: Constant 11'b11111111111 representing exponent value 2047 (infinity/NaN encoding).
+    wire [10:0] exp_2046 = 11'b11111111110: Constant 11'b11111111110 representing exponent value 2046 (largest finite exponent).
+    reg [62:0] NaN_output_0: Stage-0 pipeline copy of the na n output.
+    reg [62:0] NaN_output: Na n output.
+    wire [51:0] mantissa_max = 52'b1111111111111111111111111111111111111111111111111111: Mantissa max.
+    reg [62:0] inf_round_down: Infinity round down flag.
+    reg [62:0] out_inf: Output infinity flag.
+    reg [63:0] out_0: Stage-0 pipeline copy of the output.
+    reg [63:0] out_1: Stage-1 pipeline copy of the output.
+    reg [63:0] out_2: Stage-2 pipeline copy of the output.
+
+The fpu_exceptions module is a registered exception and special-result handling block for a double-precision floating-point unit. It is used after the normal arithmetic and rounding stages. The module receives the original operands, the rounded candidate result, the post-round extended exponent, two low-order remainder bits, the operation code, and the rounding mode. Based on these inputs, it determines whether the rounded result can be passed through or whether it must be replaced by a special IEEE-754 value such as NaN, infinity, maximum finite value, or signed zero.
+
+The module has the following ports: clk, rst, enable, rmode, opa, opb, in_except, exponent_in, mantissa_in, fpu_op, out, ex_enable, underflow, overflow, inexact, exception, and invalid. The operands opa and opb are 64-bit IEEE-754 double-precision values. The input in_except is the rounded candidate result from the normal datapath. The input exponent_in is the extended result exponent used to detect exponent overflow. The input mantissa_in contains two low-order remainder bits used for inexact detection. The operation code fpu_op selects add, subtract, multiply, or divide, using 3'b000, 3'b001, 3'b010, and 3'b011 respectively. The rounding mode rmode uses 2'b00 for round-to-nearest, 2'b01 for round-toward-zero, 2'b10 for round-toward-positive-infinity, and 2'b11 for round-toward-negative-infinity.
+
+The implementation is fully registered and uses synchronous reset. All sequential logic is triggered only on the rising edge of clk. When rst is asserted, all internal registers and output registers are cleared to zero. When enable is asserted, the module updates its internal state and outputs. When enable is not asserted, all registers retain their previous values. The implementation should preserve this registered behavior and should not be rewritten as a new multi-stage pipeline or converted to asynchronous reset.
+
+The module decodes the input operands to detect zero, quiet NaN, signaling NaN, positive infinity, negative infinity, and general infinity values. A zero operand is detected by checking whether bits [62:0] are all zero. A NaN is detected when the exponent field is all ones and the fraction field is nonzero. A quiet NaN has fraction bit [51] set, while a signaling NaN has fraction bit [51] cleared. Infinity is detected when the exponent field is all ones and the fraction field is zero, with the sign bit distinguishing positive and negative infinity.
+
+The module also decodes the operation type from fpu_op. It detects add, subtract, multiply, and divide operations and uses these operation flags when checking special cases. The detected special cases include NaN input, signaling NaN input, nonzero division by zero, 0/0, infinity divided by infinity, finite division by infinity, 0 multiplied by infinity, infinity-producing multiplication, infinity-producing division, infinity-producing add/subtract, and invalid add/subtract combinations involving infinities.
+
+For add and subtract, the invalid infinity combinations are +infinity plus -infinity, -infinity plus +infinity, +infinity minus +infinity, and -infinity minus -infinity. These cases assert the invalid trigger and produce a NaN result. Other add/subtract cases involving infinity are treated as valid infinity results.
+
+For multiplication, 0 multiplied by infinity is invalid and produces NaN. Multiplication involving infinity is otherwise treated as an infinity result. For division, 0/0 and infinity/infinity are invalid and produce NaN. A finite nonzero value divided by zero is detected internally as division by zero and produces an infinity result. This module does not provide a separate divide-by-zero output flag; division by zero only affects the generated result and the existing status flags through the infinity and overflow path. A finite value divided by infinity is treated as an underflow-to-zero case.
+
+The infinity output trigger is asserted when the operation produces a valid infinity result, when division by zero is detected, or when exponent_in is greater than 2046. This trigger is used to generate either infinity or the largest finite value depending on the rounding mode. The sign of the special infinity or maximum-finite result is taken from in_except[63], not recomputed from the operand signs.
+
+When the result would be positive infinity, round-toward-zero and round-toward-negative-infinity replace the infinity magnitude with the largest finite double-precision value. When the result would be negative infinity, round-toward-zero and round-toward-positive-infinity replace the infinity magnitude with the largest finite double-precision value. In the other rounding modes, the result remains infinity. The magnitude for infinity is formed from exponent 2047 and a zero fraction. The magnitude for the maximum finite value is formed from exponent 2046 and an all-ones fraction.
+
+Underflow is detected for selected underflow-to-zero cases. These include finite division by infinity, nonzero multiplication producing a zero candidate result, and nonzero division producing a zero candidate result. When underflow is detected, the intermediate output becomes signed zero, with the sign bit taken from in_except[63].
+
+Invalid is asserted for signaling NaN input, invalid infinity add/subtract combinations, 0 multiplied by infinity, 0/0, and infinity/infinity division. Overflow is asserted when the infinity output trigger is asserted and there is no NaN input. Inexact is asserted when either bit of mantissa_in is set, or when an infinity output or underflow output is generated, provided there is no NaN input. The exception output is the OR of invalid, overflow, underflow, and inexact trigger conditions.
+
+NaN output generation must preserve the behavior of the original implementation and must not be replaced by a fixed canonical NaN constant. If an input NaN is selected, the output NaN payload is taken from the NaN operand, with the quiet bit set. If operand A is NaN, its payload is preferred; otherwise operand B is used. For invalid operations that require a generated NaN, the module constructs a quiet NaN using the exponent field set to all ones and a quiet NaN pattern derived from operand A. The final NaN result uses in_except[63] as its sign bit.
+
+The output selection is performed through registered intermediate results. First, the module selects either the normal rounded result or signed zero for underflow. Next, it replaces that value with infinity or maximum finite value when the infinity output trigger is active. Finally, it replaces the result with NaN when NaN output is required. This priority must be preserved: underflow handling first, infinity or maximum-finite replacement second, and NaN replacement last.
+
+The final output registers are updated on the rising edge of clk when enable is asserted. The output out receives the final selected result. The signal ex_enable is asserted when the module wants the top level to select its output instead of the normal datapath result. This can happen not only for NaN, infinity, overflow, or underflow cases, but also for ordinary inexact cases. Therefore, ex_enable should not be interpreted as meaning that the value was necessarily replaced by a special constant.
+
+The generated RTL should describe this implementation directly. It should not introduce a new five-stage pipeline, should not use asynchronous reset, should not replace NaN payload handling with a fixed QNaN constant, should not add a divide-by-zero output port, and should not recompute special-result signs from operand signs. The intent is to generate RTL matching this behavior, including the registered timing and trigger equations, rather than to design a new IEEE-754 exception unit.

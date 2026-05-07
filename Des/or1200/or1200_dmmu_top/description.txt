@@ -1,0 +1,112 @@
+or1200_dmmu_top is the top-level wrapper for the data-side MMU in the OR1200 processor. It sits between the CPU data access interface and the downstream data cache or data memory access path. Its main role is to decide, for each CPU data access, whether address translation is required. If the DMMU is enabled, the module uses the DTLB to translate the CPU data virtual address into a physical address, checks whether the access is permitted, and generates exception information such as TLB miss or page fault. If the DMMU is disabled, the module largely behaves as a bypass path and forwards the CPU request directly to the downstream interface.
+
+The module does not perform the actual data read or write operation. Instead, it handles the front-end control of a data access: address translation, permission checking, cache-inhibit attribute generation, exception tag generation, and downstream request gating. The actual memory transaction is still handled by the data cache or the external data access path. The outputs dcpu_err_o and dcpu_tag_o report back to the CPU whether the access failed because of translation, protection, or a downstream data access error.
+
+When OR1200_NO_DMMU is defined at compile time, the DMMU logic is completely bypassed. In this configuration, the module does not instantiate or use the DTLB, and it does not generate TLB miss or page fault semantics. The CPU address dcpu_adr_i is directly assigned to the downstream address qmemdmmu_adr_o, and the CPU request dcpu_cycstb_i is directly assigned to the downstream request qmemdmmu_cycstb_o. The downstream tag and error are passed back directly to the CPU, so dcpu_tag_o equals qmemdmmu_tag_i, and dcpu_err_o equals qmemdmmu_err_i. In this mode, SPR read data is fixed to zero, and the cache-inhibit output qmemdmmu_ci_o is taken from the most significant address bit, dcpu_adr_i[31]. If BIST support is enabled, the MBIST scan chain is also passed through transparently.
+
+In the normal implementation, when OR1200_NO_DMMU is not defined, the module instantiates the lower-level or1200_dmmu_tlb submodule. This submodule performs the actual DTLB lookup and supports SPR-based access to the DTLB entries. The top-level module provides the current CPU data address dcpu_adr_i to the DTLB as the virtual address. The DTLB returns a hit indication, dtlb_hit, a translated physical page number, dtlb_ppn, permission bits dtlb_uwe, dtlb_ure, dtlb_swe, and dtlb_sre, and the cache-inhibit bit dtlb_ci. The top-level module then uses these results to generate the physical address, exception signals, CPU return tag, CPU error signal, and downstream request control.
+
+A normal data access enables the DTLB through the signal dtlb_en. In the code, dtlb_en is defined as dmmu_en & dcpu_cycstb_i. Therefore, a DTLB lookup is enabled only when the DMMU is enabled at run time and the CPU data access request is valid. Here, dcpu_cycstb_i is the CPU data request valid signal, while dmmu_en is the run-time data MMU enable signal. If dmmu_en is zero, normal accesses do not go through DTLB translation, and the output address uses the original CPU address.
+
+The module uses the internal register dtlb_done to indicate that the DTLB lookup result has reached the stage where it can be used. On reset, dtlb_done is cleared. When dtlb_en is asserted, dtlb_done samples dcpu_cycstb_i on the next rising edge of clk. When dtlb_en is not asserted, dtlb_done is cleared. Importantly, dtlb_done is not a “new address detected” signal. The code does not compare the current address with the previous address, nor does it check whether the address has changed. More precisely, dtlb_done is a one-cycle delayed indication of a valid DMMU request. It is used so that miss detection, fault detection, and part of the downstream request gating logic take effect only after the DTLB lookup result is considered valid.
+
+When the DMMU is enabled, the downstream address qmemdmmu_adr_o is formed by concatenating the physical page number returned by the DTLB with the page offset from the original CPU address: {dtlb_ppn, dcpu_adr_i[12:0]}. When the DMMU is disabled, the downstream address is simply dcpu_adr_i. It is important to note that qmemdmmu_adr_o is a combinational output. It does not itself wait for dtlb_done, and it does not directly check dtlb_hit or fault. As a result, while the DTLB lookup is still pending, or when a miss or fault occurs, the address bus may still show some combinational value. Whether that address represents a valid downstream transaction must be determined together with qmemdmmu_cycstb_o.
+
+The TLB miss logic is straightforward. The signal miss is defined as dtlb_done & !dtlb_hit. This means that a TLB miss is recognized only after the DTLB lookup result is considered valid, and only if the DTLB did not hit. When a miss occurs, the module asserts the CPU error output and returns the tag OR1200_DTAG_TE, which represents a TLB miss exception. The downstream request is also suppressed so that an invalid translation result is not forwarded to the data access path.
+
+Permission failure is represented by the fault signal. The code checks the access type, the current privilege mode, and the permission bits returned by the DTLB. A user-mode load requires dtlb_ure to be set. A supervisor-mode load requires dtlb_sre to be set. A user-mode store requires dtlb_uwe to be set. A supervisor-mode store requires dtlb_swe to be set. If the permission bit required by the current access type and privilege mode is not set, and dtlb_done is asserted, then fault is asserted.
+
+One subtle point is that the fault signal in the code is not explicitly ANDed with dtlb_hit. In other words, the code does not define fault strictly as “the DTLB hit and the permissions failed.” If the DTLB misses and the permission bits also appear to deny the access, then miss and fault can theoretically both be asserted. The module resolves this at the CPU-visible tag output by giving miss higher priority than fault. If miss is asserted, dcpu_tag_o is set to OR1200_DTAG_TE. Only when there is no miss but fault is asserted does dcpu_tag_o become OR1200_DTAG_PE. Therefore, from the CPU-visible exception tag perspective, a TLB miss has priority over a page fault.
+
+The CPU error output dcpu_err_o is the logical OR of miss, fault, and the downstream error input qmemdmmu_err_i. Therefore, the CPU sees an error whenever there is a TLB miss, a permission fault, or a downstream data access error. The CPU tag output dcpu_tag_o distinguishes the source of the error: it reports a TLB miss tag on miss, a page fault tag on fault when there is no miss, and otherwise passes through the downstream tag qmemdmmu_tag_i.
+
+The downstream request signal qmemdmmu_cycstb_o determines whether the current CPU access is forwarded to the downstream data path. In all cases, the request is suppressed when miss or fault is asserted. In addition, when dc_en=0 and dmmu_en=1, the forwarding logic also requires dtlb_done=1. This means that when the data cache is disabled but the DMMU is enabled, the module explicitly waits for the DTLB lookup to complete before forwarding the request. In other cases, the request can still be suppressed by miss or fault, but dtlb_done is not directly included as an additional forwarding condition. Therefore, it would be inaccurate to say that every DMMU-enabled access always waits for dtlb_done before being forwarded. A more precise statement is that miss and fault detection depend on dtlb_done, while explicit request forwarding delay through dtlb_done depends on the combination of dc_en and dmmu_en.
+
+The cache-inhibit output qmemdmmu_ci_o also depends on whether the DMMU is enabled. When dmmu_en=1, qmemdmmu_ci_o comes from the DTLB entry’s cache-inhibit bit dtlb_ci, qualified by dtlb_done. Therefore, the DTLB-derived cache-inhibit attribute is only asserted once the DTLB result is considered valid. When dmmu_en=0, the module does not use the DTLB cache-inhibit bit; instead, it falls back to the address-bit convention and uses dcpu_adr_i[31].
+
+The module also provides an SPR interface for software access to the DTLB entries. The signal spr_cs is directly used as the DTLB SPR access select signal, dtlb_spr_access. When spr_cs is asserted, the SPR write control, SPR address, and SPR write data are passed to the lower-level or1200_dmmu_tlb submodule. For SPR reads, spr_dat_o returns the DTLB read data dtlb_dat_o during a DTLB SPR access; otherwise, it returns zero. The code comments identify the SPR address ranges used for the DTLB match and translate registers: the match register region is 0A00 - 0AFF, and the translate register region is 0B00 - 0BFF.
+
+The DTLB entry format is described by the code comments. The match register mainly contains the virtual page number, VPN, and a valid bit. The translate register explicitly contains the physical page number, PPN, and the permission bits swe, sre, uwe, and ure. In addition, the DTLB storage also includes a cache-inhibit bit, which is exposed to the top-level module through dtlb_ci. The top-level module does not manage the internal storage details of the DTLB entries directly; it relies on the lower-level or1200_dmmu_tlb block to provide lookup results and SPR read/write behavior.
+
+The module keeps an internal register named dcpu_vpn_r, which stores the VPN portion of the current CPU address, dcpu_adr_i[31:13], on each clock cycle. The code comment explains that this register was intended for a timing case where the DMMU is not enabled but the PPN is expected to arrive one clock cycle after the offset part. However, in the current implementation, the older address-generation expression using dcpu_vpn_r is commented out. The actual address output uses the translated {dtlb_ppn, dcpu_adr_i[12:0]} when the DMMU is enabled, and the full raw dcpu_adr_i when the DMMU is disabled. Therefore, dcpu_vpn_r is still updated, but it does not participate in the final generation of qmemdmmu_adr_o.
+
+Overall, or1200_dmmu_top implements the translation and protection front end of the data access path. When the DMMU is compiled out or disabled, it transparently forwards data accesses. When the DMMU is enabled, it uses the DTLB to generate a physical address and cache-inhibit attribute, checks the DTLB hit result and permission bits, and decides whether the access should continue to the downstream data path. If the lookup misses, the CPU receives a TLB miss indication. If permissions are insufficient, the CPU receives a page fault indication. If translation and permission checks pass, the request is allowed to proceed downstream. Two implementation details are especially important for an accurate description: the raw fault signal is not explicitly masked by dtlb_hit, although the CPU-visible tag gives priority to miss; and the address output is combinational, so its validity must be interpreted together with the downstream request signal.
+
+module or1200_dmmu_top(
+    // Rst and clk
+    input clk,
+    input rst,
+
+    // CPU i/f
+    input dc_en,
+    input dmmu_en,
+    input supv,
+    input [31:0] dcpu_adr_i,
+    input dcpu_cycstb_i,
+    input dcpu_we_i,
+    output [3:0] dcpu_tag_o,
+    output dcpu_err_o,
+
+    // SPR access
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // DC i/f
+    input qmemdmmu_err_i,
+    input [3:0] qmemdmmu_tag_i,
+    output [31:0] qmemdmmu_adr_o,
+    output qmemdmmu_cycstb_o,
+    output qmemdmmu_ci_o
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    dc_en: Data-cache enable control.
+    dmmu_en: Data-MMU enable control.
+    supv: Current supervisor-mode status used for privileged behavior and permission checks.
+    dcpu_adr_i[31:0]: Address bus for the CPU-to-data-memory interface.
+    dcpu_cycstb_i: Combined cycle-and-strobe request for the CPU-to-data-memory interface.
+    dcpu_we_i: Write-enable / write-versus-read qualifier for the CPU-to-data-memory interface.
+    spr_cs: SPR chip-select for this module.
+    spr_write: SPR write strobe for this module.
+    spr_addr[31:0]: SPR address used for register decode.
+    spr_dat_i[31:0]: Write data from the SPR/control path.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    qmemdmmu_err_i: Error termination indication for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_tag_i[3:0]: Tag field carried on the downstream data-memory path after DMMU/QMEM arbitration.
+Output port:
+    dcpu_tag_o[3:0]: Tag field carried on the CPU-to-data-memory interface.
+    dcpu_err_o: Error termination indication for the CPU-to-data-memory interface.
+    spr_dat_o[31:0]: Read data returned on the SPR bus.
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    qmemdmmu_adr_o[31:0]: Address bus for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_cycstb_o: Combined cycle-and-strobe request for the downstream data-memory path after DMMU/QMEM arbitration.
+    qmemdmmu_ci_o: Cache-inhibit attribute for the downstream data-memory path after DMMU/QMEM arbitration.
+
+Processing Flow
+
+For each CPU data access, the module first determines whether the DMMU logic is present and enabled. If OR1200_NO_DMMU is defined at compile time, the module operates as a transparent bypass: the CPU address, request, downstream tag, and downstream error are passed through directly, SPR read data is fixed to zero, and no DTLB lookup, TLB miss, or page fault logic is used.
+
+If the DMMU logic is present, the module checks the run-time DMMU enable signal dmmu_en. When dmmu_en is not asserted, the downstream address is the original CPU address dcpu_adr_i, and the DTLB is not enabled for normal data translation. When dmmu_en is asserted and the CPU request dcpu_cycstb_i is valid, dtlb_en is asserted and the current CPU data address is sent to the DTLB as the virtual address for lookup.
+
+The DTLB lookup result is treated as valid through the delayed flag dtlb_done. This flag is cleared on reset, set one clock cycle after an enabled DMMU request by sampling dcpu_cycstb_i, and cleared again when dtlb_en is not active. It does not detect whether the address is new; it only represents the delayed validity of an active DMMU request.
+
+Once dtlb_done is asserted, the module evaluates whether the translation missed or whether the access violates permissions. A TLB miss is detected when dtlb_done is high and dtlb_hit is low. Permission checking uses the access type and privilege mode: user-mode loads require dtlb_ure, supervisor-mode loads require dtlb_sre, user-mode stores require dtlb_uwe, and supervisor-mode stores require dtlb_swe. If the required permission bit is not set, fault is asserted.
+
+The module then generates the CPU-visible error and tag. dcpu_err_o is asserted if there is a TLB miss, a permission fault, or a downstream error. The tag output gives priority to a TLB miss: if miss is asserted, dcpu_tag_o reports OR1200_DTAG_TE; otherwise, if fault is asserted, it reports OR1200_DTAG_PE; if neither condition occurs, the downstream tag qmemdmmu_tag_i is passed through. This priority is important because the raw fault signal is not explicitly masked by dtlb_hit, so miss and fault can theoretically be asserted at the same time.
+
+In parallel, the module generates the downstream address and request. When dmmu_en is asserted, the address output is formed as {dtlb_ppn, dcpu_adr_i[12:0]}. When dmmu_en is not asserted, the address output is simply dcpu_adr_i. This address is combinational and should only be considered part of a valid downstream transaction when the request signal qmemdmmu_cycstb_o is also valid.
+
+Finally, the module decides whether the request is forwarded downstream. Any TLB miss or permission fault suppresses qmemdmmu_cycstb_o. In the special case where dc_en=0 and dmmu_en=1, forwarding also waits for dtlb_done, so the request is not sent until the DTLB result is available. In other cases, the request is gated by miss and fault but is not directly delayed by dtlb_done. The cache-inhibit output follows the DTLB ci bit qualified by dtlb_done when the DMMU is enabled, and falls back to dcpu_adr_i[31] when the DMMU is disabled.

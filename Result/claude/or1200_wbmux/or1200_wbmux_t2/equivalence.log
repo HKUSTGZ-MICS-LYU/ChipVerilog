@@ -1,0 +1,182 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_wbmux'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64.1-96.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_wbmux
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_wbmux
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed 1 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3 in module or1200_wbmux.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3 in module or1200_wbmux.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1 in module or1200_wbmux.
+Removed a total of 1 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 1 assignment to connection.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3'.
+     1/1: $1\muxout[31:0]
+Creating decoders for process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+     1/2: $0\muxreg_valid[0:0]
+     2/2: $0\muxreg[31:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_wbmux.\muxout' from process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_wbmux.\muxreg' using process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+  created $adff cell `$procdff$16' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wbmux.\muxreg_valid' using process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+  created $adff cell `$procdff$19' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3'.
+Removing empty process `or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:64$3'.
+Found and cleaned up 1 empty switch in `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+Removing empty process `or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wbmux/or1200_wbmux.v:50$1'.
+Cleaned up 2 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_wbmux.
+
+6. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: 473d4f4c06, CPU: user 0.01s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 73% 4x read_verilog (0 sec), 8% 1x opt_expr (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v' to AST representation.
+Generating RTLIL representation for module `\or1200_wbmux'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_wbmux
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_wbmux
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1 in module or1200_wbmux.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1'.
+     1/2: $0\internal_reg[31:0]
+     2/2: $0\data_out[31:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_wbmux.\data_out' using process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1'.
+  created $dff cell `$procdff$12' with positive edge clock.
+Creating register for signal `\or1200_wbmux.\internal_reg' using process `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1'.
+  created $dff cell `$procdff$13' with positive edge clock.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1'.
+Removing empty process `or1200_wbmux.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wbmux/or1200_wbmux_t2.v:11$1'.
+Cleaned up 2 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_wbmux.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: c7252f83bb, CPU: user 0.01s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 67% 4x read_verilog (0 sec), 10% 1x opt_expr (0 sec), ...
+exit_code=0

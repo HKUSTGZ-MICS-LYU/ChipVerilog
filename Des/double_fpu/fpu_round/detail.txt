@@ -1,0 +1,75 @@
+1. Details
+- The module applies IEEE-754 rounding-mode rules to intermediate mantissa and exponent values and produces the final rounded data word.
+- The inputs to `fpu_round` from the previous stage are `sign` (1 bit), `mantissa_term` (56 bits), and `exponent_term` (12 bits).
+- In the source file `fpu_add.v`, the module `fpu_add` outputs an intermediate floating-point format because the result still needs to go through the rounding stage and then the exceptions stage.
+- For multiply and divide, the remainder is left off of the mantissa, so in essence the operation is already rounding toward zero before the result is passed to the rounding module.
+- The module is implemented as a clocked stage. The incremented significand, overflow-adjusted significand, overflow-adjusted exponent, and final packed 64-bit output are all stored in registers.
+
+2. Input Bundle Interpretation
+- The module interprets `mantissa_term` as follows:
+- bit 55: reserved overflow position.
+- bit 54: leading integer bit of the current significand.
+- bits 53:2: 52-bit mantissa field to be emitted if no further renormalization occurs.
+- bit 1: first discarded bit used as the primary rounding bit.
+- bit 0: sticky bit indicating any additional discarded information.
+
+3. Rounding Modes
+- `2'b00`: round to nearest.
+- `2'b01`: round to zero.
+- `2'b10`: round toward positive infinity.
+- `2'b11`: round toward negative infinity.
+
+4. Rounding Increment
+- The module defines `rounding_amount = {53'b0, 1'b1, 2'b0}`.
+- This places a 1 in bit position 2 of the 56-bit mantissa bundle, which corresponds to incrementing the least significant retained mantissa bit.
+
+5. Trigger Conditions
+5.1 Round to nearest
+- Trigger when `round_mode == 2'b00` and `mantissa_term[1] == 1`.
+- This implementation rounds to nearest based only on the first discarded bit.
+- It does not implement tie-to-even; rounding depends only on mantissa_term[1].
+
+5.2 Round toward positive infinity
+- Trigger when `round_mode == 2'b10`, `sign_term == 0`, and at least one of `mantissa_term[1:0]` is 1.
+
+5.3 Round toward negative infinity
+- Trigger when `round_mode == 2'b11`, `sign_term == 1`, and at least one of `mantissa_term[1:0]` is 1.
+
+5.4 Round toward zero
+- No rounding increment is ever applied in this mode.
+
+6. Required Functional Algorithm
+6.1 Compute the incremented mantissa
+- `sum_round = mantissa_term + rounding_amount`.
+
+6.2 Detect increment overflow
+- `sum_round_overflow = sum_round[55]`.
+
+6.3 Overflow renormalization
+- If overflow occurred, renormalize by shifting right one bit: `sum_round_2 = sum_round >> 1` and `exponent_round = exponent_term + 1`.
+- Otherwise, `sum_round_2 = sum_round` and `exponent_round = exponent_term`.
+
+6.4 Determine whether rounding is active
+- Evaluate the trigger corresponding to `round_mode`.
+
+6.5 Apply the rounded or unrounded result
+- If rounding is active, `sum_final = sum_round_2` and `exponent_final = exponent_round`.
+- Otherwise, `sum_final = mantissa_term` and `exponent_final = exponent_term`.
+
+6.6 Assemble the rounded result
+- `round_out = {sign_term, exponent_final[10:0], sum_final[53:2]}`.
+
+7. Output Semantics
+- `exponent_final` retains 12 bits so the next stage can detect overflow beyond the 11-bit IEEE exponent field.
+- `round_out` uses only `exponent_final[10:0]` because it is formatted as a standard 64-bit double-precision word.
+- The low two remainder bits are not emitted; they influence only the rounding decision and are otherwise discarded.
+
+8. Required Sequential Behavior
+- Reset clears all internal registers and outputs.
+- In all non-reset cycles, the module ignores enable and updates every cycle.
+- A functionally equivalent implementation must preserve this behavior because downstream timing in the original design assumes the rounder is always updating.
+
+9. Functional Corner Cases
+- If mantissa increment overflows into bit 55, the module shifts right by one and increments the exponent.
+- In round-to-zero mode, the result is always truncated.
+- In directed-rounding modes, increment occurs only when discarded information exists and the sign matches the required direction.

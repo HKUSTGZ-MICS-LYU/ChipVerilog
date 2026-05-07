@@ -1,0 +1,57 @@
+The ID_stage module represents the instruction decode stage of the MIPS_16 processor pipeline. In the five-stage pipeline architecture, this stage is located after the IF_stage and before the EX_stage. According to the MIPS_16 specification, the ID_stage contains the central control logic and register read logic, and it is responsible for decoding the fetched instruction, generating control signals, and reading source operands from the register file . In this implementation, the ID_stage receives a 16-bit instruction from the IF_stage, decodes its opcode, register fields, and immediate value, then generates the required control signals for the EX_stage, MEM_stage, and WB_stage through the output pipeline register pipeline_reg_out .
+
+The module uses an internal instruction register instruction_reg to store the instruction received from the IF_stage. This register is updated on the rising edge of clk when instruction_decode_en is asserted. If rst is asserted, the instruction register is cleared to zero. When instruction_decode_en is deasserted, the instruction register keeps its previous value, which allows the decode stage to be frozen during a pipeline stall. The instruction fields are then extracted from instruction_reg: bits [15:12] are used as the opcode, bits [11:9] are used as the destination register field, bits [8:6] are used as the first source register, bits [5:3] are normally used as the second source register, and bits [5:0] are used as the immediate field.
+
+The ID_stage also supports pipeline bubble insertion. When instruction_decode_en is low, the module forces the decoded opcode to OP_NOP by assigning ir_op_code_with_bubble to zero. At the same time, the destination register field is forced to zero through ir_dest_with_bubble. This prevents the stalled instruction from incorrectly appearing as a valid operation in later pipeline stages, and it also prevents unnecessary hazard detection caused by an invalid destination register. This behavior is consistent with the processor specification, which states that the hazard detection unit freezes the IF and ID stages and inserts bubbles into the EX stage when a RAW hazard is detected .
+
+The central control logic is implemented using a combinational case statement based on the decoded opcode. For arithmetic and logic instructions such as ADD, SUB, AND, OR, XOR, SL, SR, and SRU, the module enables write-back, selects the ALU result as the write-back source, and generates the corresponding ALU command. For the ADDI instruction, the module also enables write-back and selects the sign-extended immediate value as the second ALU operand. For the LD instruction, the ALU is used to calculate the memory address, write-back is enabled, and the write-back result is selected from memory data. For the ST instruction, write-back is disabled, memory write is enabled, and the ALU is used to calculate the memory address. For the BZ branch instruction, write-back is disabled and branch decision logic is activated.
+
+The module interfaces with the register file through two read address outputs, reg_read_addr_1 and reg_read_addr_2, and two read data inputs, reg_read_data_1 and reg_read_data_2. The first read address is always taken from ir_src1. The second read address is normally taken from ir_src2, but for store instructions, the module uses the destination field instruction_reg[11:9] as the second source register. This is because the store instruction needs one register for address calculation and another register for the data to be written into memory. The data read from the register file is then used to generate ALU operands and memory write data.
+
+The EX_stage input signals are packed into the 57-bit pipeline_reg_out register. This output pipeline register contains the ALU command, the two ALU operands, memory control information, memory write data, and write-back control information. Specifically, bits [56:54] store the ALU command, bits [53:38] store the first ALU operand, bits [37:22] store the second ALU operand, bit [21] stores the memory write enable signal, bits [20:5] store the memory write data, bit [4] stores the write-back enable signal, bits [3:1] store the destination register number, and bit [0] stores the write-back result selection signal. This register is updated on the rising edge of clk, and it is cleared to zero when rst is asserted.
+
+The branch control logic is also generated in the ID_stage. The signal decoding_op_is_branch is asserted when the opcode corresponds to OP_BZ. When a branch instruction is decoded, the module checks the branch condition field. For the BRANCH_Z condition, branch_taken is asserted if reg_read_data_1 is equal to zero. Otherwise, branch_taken remains low. The immediate field ir_imm is directly assigned to branch_offset_imm, which is sent back to the IF_stage for branch target calculation. This allows the processor to determine whether the branch should be taken during the decode stage.
+
+The ID_stage also provides source register information to the hazard detection unit. The output decoding_op_src1 is assigned from ir_src1, while decoding_op_src2 is assigned depending on the instruction type. For instructions that do not require a second source register, such as NOP, ADDI, LD, and BZ, decoding_op_src2 is forced to zero. For other instructions, it is assigned from ir_src2. Since register zero is treated as a special register in the MIPS_16 architecture, forcing unused source registers to zero prevents false RAW hazard detection.
+
+module ID_stage
+(
+	input					clk,
+	input					rst,
+	input					instruction_decode_en,
+	//input					insert_bubble,
+	
+	
+	// to EX_stage
+	output	reg	[56:0]		pipeline_reg_out,	//	[56:22],35bits:	ex_alu_cmd[2:0], ex_alu_src1[15:0], ex_alu_src2[15:0]
+												//	[21:5],17bits:	mem_write_en, mem_write_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	
+	// to IF_stage
+	input		[15:0]		instruction,
+	output		[5:0]		branch_offset_imm,
+	output	reg				branch_taken,
+	
+	// to register file
+	output		[2:0]		reg_read_addr_1,	// register file read port 1 address
+	output		[2:0]		reg_read_addr_2,	// register file read port 2 address
+	input		[15:0]		reg_read_data_1,	// register file read port 1 data
+	input		[15:0]		reg_read_data_2,	// register file read port 2 data
+	
+	// to hazard detection unit
+	output		[2:0]		decoding_op_src1,		//source_1 register number
+	output		[2:0]		decoding_op_src2		//source_2 register number
+	
+);
+
+During operation, the ID_stage first receives the 16-bit instruction from the IF_stage. On the rising edge of clk, if rst is not asserted and instruction_decode_en is high, the instruction is loaded into instruction_reg. If reset is active, the instruction register is cleared. If instruction decoding is disabled, the instruction register holds its previous value, allowing the pipeline to stall safely.
+
+After the instruction is stored, the module extracts the opcode, destination register, source registers, and immediate value from the instruction register. These fields are used by the control logic to determine the instruction type and generate the required datapath control signals. If the decode stage is frozen, the module inserts a bubble by forcing the opcode and destination register to zero, so that a NOP-like operation is passed into the next pipeline stage.
+
+Next, the module generates register file read addresses. The first source register address is sent through reg_read_addr_1, and the second source register address is sent through reg_read_addr_2. The register file returns the corresponding data through reg_read_data_1 and reg_read_data_2. These values are then used as ALU operands or as memory write data, depending on the instruction type.
+
+The control logic then selects the correct ALU operation and operand source. For register-to-register operations, the second ALU operand comes from reg_read_data_2. For immediate-based instructions, load instructions, and store instructions, the second ALU operand is generated by sign-extending the 6-bit immediate value to 16 bits. The memory write enable signal, write-back enable signal, write-back destination register, and write-back result selection signal are also generated at this stage.
+
+On the next rising edge of clk, all generated execution, memory, and write-back information is packed into pipeline_reg_out and sent to the EX_stage. At the same time, branch-related signals are generated combinationally. If the current instruction is a branch instruction and the branch condition is satisfied, branch_taken is asserted and the branch offset immediate is sent to the IF_stage through branch_offset_imm.
+
+Finally, the module outputs the decoded source register numbers to the hazard detection unit. These outputs allow the hazard detection unit to compare the current instruction’s source registers with destination registers from later pipeline stages. If a RAW dependency is detected, the pipeline can be stalled and a bubble can be inserted, ensuring correct execution without forwarding logic.

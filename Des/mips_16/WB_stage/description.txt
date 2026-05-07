@@ -1,0 +1,30 @@
+The WB_stage module represents the write-back stage of the MIPS_16 processor pipeline. In the classic five-stage pipeline architecture, this is the final stage after IF_stage, ID_stage, EX_stage, and MEM_stage. According to the MIPS_16 specification, the WB_stage is responsible for writing the final instruction result back to the register file, while the register file provides one synchronized write port and two read ports . In this implementation, the WB_stage receives the ALU result, memory read data, and write-back control signals from the MEM_stage, then generates the register file write signals.
+The input pipeline_reg_in is a 37-bit pipeline register bus from the MEM_stage. Bits [36:21] contain the 16-bit ALU result ex_alu_result. This value is used as the final write-back data for arithmetic, logic, shift, and immediate instructions. Bits [20:5] contain the 16-bit memory read data mem_read_data, which is used as the final write-back data for load instructions. Bits [4:0] contain the write-back control information. Specifically, bit [4] is the write-back enable signal, bits [3:1] represent the destination register number, and bit [0] is the write-back result selection signal.
+The output reg_write_en is connected to the write enable input of the register file. When this signal is asserted, the register file writes the selected result into the destination register. The output reg_write_dest specifies the target register for write-back and is taken directly from write_back_dest. The output reg_write_data is the final 16-bit data written into the register file. It is selected by write_back_result_mux: when write_back_result_mux is 0, the WB_stage selects ex_alu_result; when it is 1, the WB_stage selects mem_read_data.
+This selection allows the WB_stage to support different instruction types. For arithmetic and logic instructions, the result comes from the ALU, so ex_alu_result is written back to the register file. For load instructions, the result comes from data memory, so mem_read_data is written back. For store and branch instructions, write-back is disabled through write_back_en, so no register update occurs.
+The module also outputs wb_op_dest to the hazard detection unit. This signal is assigned from pipeline_reg_in[3:1], which represents the destination register of the instruction currently in the WB_stage. According to the MIPS_16 specification, the hazard detection unit compares the source registers of the instruction in the ID_stage with the destination registers of the previous instructions in the EX_stage, MEM_stage, and WB_stage to detect RAW hazards . Therefore, wb_op_dest is used to determine whether the instruction being decoded depends on a value that is still being written back.
+
+Process Flow
+During operation, the WB_stage receives pipeline_reg_in from the MEM_stage. It first extracts the ALU result, memory read data, write-back enable signal, destination register number, and result selection signal from this input bus.
+The module then forwards the write-back enable signal to the register file through reg_write_en. It also forwards the destination register number through reg_write_dest. The final write-back data is selected according to write_back_result_mux. If the mux signal selects the ALU path, the ALU result is assigned to reg_write_data. If the mux signal selects the memory path, the memory read data is assigned to reg_write_data.
+After these signals are generated, the register file uses them to complete the instruction result write-back. Since the WB_stage itself is implemented as combinational logic, it does not contain a clocked pipeline register. The actual register update occurs inside the register file on the rising edge of clk.
+At the same time, the WB_stage continuously provides wb_op_dest to the hazard detection unit. This allows the hazard detection unit to include the WB_stage destination register when checking for RAW hazards.
+Overall, the WB_stage module completes instruction execution by selecting the correct final result and sending it to the register file. It supports ALU-result write-back and memory-data write-back, disables register updates for instructions that do not write a result, and provides destination register information for pipeline hazard detection.
+
+
+module WB_stage
+(
+	//input					clk,
+	
+	// from EX stage
+	input		[36:0]		pipeline_reg_in,	//	[36:21],16bits:	ex_alu_result[15:0]
+												//	[20:5],16bits:	mem_read_data[15:0]
+												//	[4:0],5bits:	write_back_en, write_back_dest[2:0], write_back_result_mux, 
+	
+	// to register file
+	output					reg_write_en,
+	output		[2:0]		reg_write_dest,
+	output		[15:0]		reg_write_data,
+	
+	output		[2:0]		wb_op_dest
+);

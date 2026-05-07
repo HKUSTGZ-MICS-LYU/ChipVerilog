@@ -1,0 +1,104 @@
+Module or1200_dc_fsm is the main finite-state machine of the OR1200 data cache. It controls data-cache load/store request sequencing, hit/miss handling, cache-inhibited access handling, BIU read/write transactions, cache line refill, DCRAM write enable generation, tag write enable generation, and acknowledge/error signaling back to the upstream LSU.
+
+The module determines whether a CPU-side data-cache access is: an immediate load hit, a load miss requiring cache-line refill, a write-through store, an optional store-miss refill when OR1200_DC_STORE_REFILL is enabled, or a cache-inhibited access that bypasses cache refill.
+
+All sequential state is updated on the rising edge of clk. The reset rst is asynchronous and active high. On reset, the FSM returns to IDLE, and saved_addr_r, cnt, hitmiss_eval, store, load, and cache_inhibit are cleared.
+
+In the IDLE state, the FSM accepts a new request only when dc_en=1 and dcqmem_cycstb_i=1. If dcqmem_we_i=1, the request is treated as a store and the FSM enters CSTORE; otherwise, it is treated as a load and the FSM enters CLOAD. When a request is accepted, start_addr is captured into saved_addr_r, hitmiss_eval is set to 1, and either the store or load flag is set. The cache_inhibit flag is cleared on entry; cache-inhibit status is detected later in CLOAD or CSTORE when dcqmem_cycstb_i & dcqmem_ci_i is observed.
+
+The CLOAD state handles load requests. During hit/miss evaluation, tagcomp_miss determines whether the access hits in the cache. If the request is aborted before hit/miss evaluation completes, if a BIU error occurs, or if the access is cache-inhibited and the external BIU access completes, the FSM returns to IDLE. Cache-inhibited loads do not refill the cache.
+
+For a normal non-cache-inhibited load hit, first_hit_ack is asserted combinationally while the FSM is in CLOAD, and the FSM returns to IDLE at the clock edge. For a non-cache-inhibited load miss, biu_read is asserted. When the first external word returns with biudata_valid=1, first_miss_ack is asserted, the FSM enters LREFILL3, saved_addr_r[3:2] is incremented to point to the next word in the cache line, and cnt is initialized to OR1200_DCLS-2 to count the remaining refill words.
+
+The LREFILL3 state continues the load-miss refill sequence. Each time biudata_valid is received and cnt is nonzero, cnt is decremented and saved_addr_r[3:2] is incremented. When the final refill word is received, the FSM returns to IDLE and clears the load flag.
+
+The CSTORE state handles store requests. Stores are write-through: biu_write is asserted while the store flag is set. If the request is aborted before hit/miss evaluation completes, if a BIU error occurs, or if the access is cache-inhibited and the external write completes, the FSM returns to IDLE. Cache-inhibited stores do not update the cache and do not trigger refill.
+
+On a store hit, the FSM waits for the external write-through response. When biudata_valid=1, first_store_hit_ack is asserted if the access is a tag hit and not cache-inhibited. This also contributes to first_hit_ack. At the same time, dcram_we is generated from dcqmem_sel_i, so only the selected byte lanes of the cached word are updated.
+
+On a store miss, the normal behavior is to complete the write-through transaction and return to IDLE when biudata_valid=1. If OR1200_DC_STORE_REFILL is enabled, then after the write-through response for a store miss, the FSM enters SREFILL4, clears store, sets load, initializes cnt to OR1200_DCLS-1, and begins reading the cache line from the current saved address. Unlike the load-miss path into LREFILL3, the store-refill path does not increment saved_addr_r[3:2] on entry to SREFILL4.
+
+The optional SREFILL4 state performs store-miss cache-line refill. On each biudata_valid, if cnt is nonzero, cnt is decremented and saved_addr_r[3:2] is incremented. When the final refill word is received, the FSM returns to IDLE and clears the load flag.
+
+The combined output biu_read is asserted when the FSM is evaluating a miss and tagcomp_miss=1, or when hit/miss evaluation is complete and a refill load sequence is active. biu_write is asserted whenever the store flag is active.
+
+The output dc_addr selects between start_addr and saved_addr. During hit/miss evaluation, or whenever no post-evaluation BIU transfer is active, dc_addr uses start_addr. During subsequent BIU read or write transfers after hitmiss_eval has been cleared, dc_addr uses saved_addr. During refill, only saved_addr_r[3:2] is incremented, so the FSM steps through the four word positions inside the 16-byte cache line rather than performing a full 32-bit address increment by 4.
+
+The DCRAM write enable dcram_we is generated from two cases. During load refill, if load=1, biudata_valid=1, and the access is not cache-inhibited, all four byte lanes are written. During a store hit, when first_store_hit_ack is asserted, only the byte lanes selected by dcqmem_sel_i are written.
+
+The tag RAM write enable tag_we is asserted whenever biu_read=1, biudata_valid=1, and the access is not cache-inhibited. Therefore, tag_we is associated with valid non-cache-inhibited BIU read data during refill; it is not limited only to the final word of a full cache-line refill.
+
+The acknowledge and error outputs distinguish different completion conditions. first_hit_ack is asserted for a load hit in CLOAD, or for a store hit when the external write-through response arrives. first_miss_ack is asserted whenever the FSM is in CLOAD or CSTORE and biudata_valid=1; although its name refers to a miss, the logic itself does not explicitly require tagcomp_miss=1. first_miss_err is asserted whenever the FSM is in CLOAD or CSTORE and biudata_error=1, indicating a BIU-side error response during the first external access phase.
+
+The burst output is asserted during a non-cache-inhibited load miss in CLOAD, throughout LREFILL3, and, if OR1200_DC_STORE_REFILL is enabled, throughout SREFILL4. It indicates that the current external transfer belongs to a cache-line refill burst sequence.
+
+module or1200_dc_fsm(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f to top level DC
+    input dc_en,
+    input dcqmem_cycstb_i,
+    input dcqmem_ci_i,
+    input dcqmem_we_i,
+    input [3:0] dcqmem_sel_i,
+    input tagcomp_miss,
+    input biudata_valid,
+    input biudata_error,
+    input [31:0] start_addr,
+    output [31:0] saved_addr,
+    output [3:0] dcram_we,
+    output biu_read,
+    output biu_write,
+    output first_hit_ack,
+    output first_miss_ack,
+    output first_miss_err,
+    output burst,
+    output tag_we,
+    output [31:0] dc_addr
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    dc_en: Data-cache enable control.
+    dcqmem_cycstb_i: Combined cycle-and-strobe request for the data-cache/QMEM interface.
+    dcqmem_ci_i: Cache-inhibit attribute for the data-cache/QMEM interface.
+    dcqmem_we_i: Write-enable / write-versus-read qualifier for the data-cache/QMEM interface.
+    dcqmem_sel_i[3:0]: Byte-lane select for the data-cache/QMEM interface.
+    tagcomp_miss: Combinational tag-compare miss indication.
+    biudata_valid: Indicates that returned BIU read data is valid.
+    biudata_error: Indicates that the current BIU access terminated with an error.
+    start_addr[31:0]: Starting address captured for the current cache transaction.
+Output port:
+    saved_addr[31:0]: Saved request address held by the FSM during refill or replay.
+    dcram_we[3:0]: Byte-write enable for the data-cache RAM.
+    biu_read: Read request issued by the cache/controller FSM to the external BIU.
+    biu_write: Write request issued by the cache/controller FSM to the external BIU.
+    first_hit_ack: One-cycle acknowledge for a cache hit or immediately satisfied access.
+    first_miss_ack: One-cycle acknowledge for the first returned word of a miss/refill access.
+    first_miss_err: One-cycle error indication for the first word of a miss/refill access.
+    burst: Indicates that the current external transfer belongs to a burst/refill sequence.
+    tag_we: Write enable for the tag RAM.
+    dc_addr[31:0]: Address currently driven by the data-cache controller toward RAM/BIU.
+
+Processing Flow
+
+The FSM starts in the IDLE state and waits for a valid data-cache request. A new request is accepted only when both dc_en and dcqmem_cycstb_i are asserted. If dcqmem_we_i is low, the request is treated as a load and the FSM enters CLOAD. If dcqmem_we_i is high, the request is treated as a store and the FSM enters CSTORE. When the request is accepted, start_addr is captured into saved_addr_r, hitmiss_eval is asserted to indicate that the tag comparison result should be evaluated, and either the load or store flag is set according to the request type.
+
+For a load request, the FSM performs hit/miss evaluation in the CLOAD state. If the access is a normal cacheable load and tagcomp_miss is low, the access is a cache hit. In this case, first_hit_ack is asserted while the FSM is in CLOAD, and the FSM returns to IDLE. If the access is a cacheable load miss, biu_read is asserted to fetch data from the BIU. When the first external word is returned with biudata_valid asserted, first_miss_ack is generated and the FSM enters LREFILL3 to continue refilling the remaining words of the cache line. On entry to LREFILL3, the word offset saved_addr_r[3:2] is incremented because the first missed word has already been returned in CLOAD.
+
+Cache-inhibited load accesses are handled as external BIU accesses without cache refill. When the FSM detects a cache-inhibited load, it waits for the BIU response. Once biudata_valid is asserted, the access is completed and the FSM returns to IDLE. No cache line refill is performed, and cache RAM/tag updates are suppressed for the cache-inhibited transaction. If the load request is aborted before hit/miss evaluation completes, or if biudata_error is asserted, the FSM also returns to IDLE.
+
+During LREFILL3, the FSM continues the load-miss refill sequence. Each valid BIU data return writes one word into the cache line. If more words remain, cnt is decremented and saved_addr_r[3:2] is incremented to select the next word position inside the 16-byte cache line. When the final refill word is received, the FSM clears the load flag and returns to IDLE.
+
+For a store request, the FSM enters CSTORE and performs a write-through transaction through the BIU. The biu_write output remains asserted while the internal store flag is active. If the store hits in the cache, the FSM still waits for the external write-through response. When biudata_valid is asserted, first_store_hit_ack is generated, which also contributes to first_hit_ack. At the same time, dcram_we updates only the byte lanes selected by dcqmem_sel_i, so the cached word is updated consistently with the store byte enable.
+
+If the store misses in the cache, the default behavior is to complete the external write-through transaction and then return to IDLE without refilling the cache. If OR1200_DC_STORE_REFILL is enabled, a store miss follows an additional refill path. After the external write response is received, the FSM enters SREFILL4, clears the store flag, sets the load flag, and begins reading the cache line back into the cache. Unlike the load-miss path, the store-refill path does not increment saved_addr_r[3:2] on entry to SREFILL4; the refill begins from the current saved word offset.
+
+Cache-inhibited store accesses are also handled only through the BIU. After the external write response is received, the FSM returns to IDLE without updating the cache RAM and without performing a refill. If the store request is aborted before hit/miss evaluation completes, or if biudata_error is asserted, the FSM returns to IDLE and clears the active store state.
+
+When OR1200_DC_STORE_REFILL is enabled, the optional SREFILL4 state performs cache-line refill after a store miss. On each valid BIU data return, the FSM writes the returned word into the cache line. If more words remain, cnt is decremented and saved_addr_r[3:2] is incremented. After the final word is received, the FSM clears the load flag and returns to IDLE.
+
+Throughout the flow, the output signals are generated combinationally from the FSM state and internal flags. biu_read is asserted during miss evaluation or during an active refill load sequence, while biu_write is asserted during write-through store processing. dc_addr uses start_addr during hit/miss evaluation and switches to saved_addr during post-evaluation BIU transfers. dcram_we writes all byte lanes during refill, but only the selected byte lanes during a store-hit cache update. tag_we is asserted when valid BIU read data is returned for a non-cache-inhibited access. The burst output is asserted during cache-line refill sequences, including LREFILL3 and, when enabled, SREFILL4.

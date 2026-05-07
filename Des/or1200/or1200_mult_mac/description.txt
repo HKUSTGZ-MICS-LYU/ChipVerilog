@@ -1,0 +1,112 @@
+The or1200_mult_mac module implements the multiplication, optional division, and optional multiply-accumulate / multiply-subtract-accumulate MAC datapaths in the OR1200 processor. Different functions are enabled through compile-time macros: when OR1200_MULT_IMPLEMENTED is defined, multiplication-related logic is implemented; when OR1200_IMPL_DIV is defined, division logic is implemented; when OR1200_MAC_IMPLEMENTED is defined, the MAC accumulator, MAC operation pipeline, SPR access, and related stall control are implemented. The module receives execute-stage operands a and b, performs the corresponding arithmetic operation according to alu_op and mac_op, and outputs the currently selected 32-bit result through result. At the same time, the module asserts mac_stall_r to request a pipeline stall, preventing MACRC from reading a MAC result before all pending accumulation operations have completed, or preventing the pipeline from advancing while the optional divider is still active.
+
+The module inputs include the main clock clk, the asynchronous active-high reset rst, the execute-stage freeze signal ex_freeze, the decode-stage MACRC indication signal id_macrc_op, the execute-stage MACRC indication signal macrc_op, the two 32-bit operands a and b, the MAC operation selector mac_op, the ALU operation selector alu_op, and the SPR interface signals spr_cs, spr_write, spr_addr, and spr_dat_i. The module outputs include the 32-bit result result, the stall request signal mac_stall_r, and the SPR read data spr_dat_o. Among these signals, id_macrc_op is mainly used to determine whether the decode stage is requesting a MAC result read, and therefore participates in stall generation. macrc_op indicates an execute-stage MACRC operation; when the execute stage is not frozen and no higher-priority update occurs, it clears the MAC accumulator. It does not directly select the result output path.
+
+The types and behavior of internal signals are controlled by conditional compilation. When OR1200_MULT_IMPLEMENTED is defined, result is a register-type signal assigned by combinational logic, and mul_prod_r is a 64-bit register used to store the multiplication result or, when division is implemented, to serve as the working register for division iteration. If this macro is not defined, result, mul_prod, and mul_prod_r are tied to zero, and the module does not perform actual multiplication. When OR1200_MAC_IMPLEMENTED is defined, mac_op_r1, mac_op_r2, and mac_op_r3 are three pipeline registers for MAC operations, mac_r is the 64-bit MAC accumulator, and mac_stall_r is a registered stall signal. If this macro is not defined, these MAC-related signals are tied to zero or inactive values, mac_stall_r is tied to zero, and spr_dat_o also returns zero.
+
+For SPR access, when OR1200_MAC_IMPLEMENTED is defined, the MAC accumulator mac_r can be read through the SPR interface. The least significant bit of the address, spr_addr[0], selects whether the high or low 32 bits of the accumulator are accessed. When spr_addr[0] is 1, mac_r[31:0], the low 32 bits, are accessed. When spr_addr[0] is 0, mac_r[63:32], the high 32 bits, are accessed. Therefore, spr_dat_o returns the low half when spr_addr[0] is 1, and the high half when spr_addr[0] is 0. The SPR write-enable signals spr_maclo_we and spr_machi_we are generated from spr_cs, spr_write, and spr_addr[0], but the actual write logic for mac_r also depends on the OR1200_MAC_SPR_WE macro. Therefore, the MAC accumulator supports SPR reads when OR1200_MAC_IMPLEMENTED is defined, but it supports SPR writes to the high or low 32 bits only when OR1200_MAC_SPR_WE is also defined. SPR writes have priority over MAC accumulation, multiply-subtract accumulation, and MACRC clearing.
+
+The module first generates the multiplier inputs x and y according to the current ALU operation and the low-power configuration. When division is implemented, alu_op_div indicates that the current operation is signed division, DIV, and alu_op_div_divu indicates that the current operation is either DIV or DIVU. For signed division, if operand a or b is negative, the module first converts it to its two’s-complement absolute value before passing it to the subsequent division iteration logic. Specifically, if the current operation is signed division and a[31] is 1, then x is assigned ~a + 1; if the current operation is signed division and b[31] is 1, then y is assigned ~b + 1. When OR1200_LOWPWR_MULT is not defined, non-division operations directly use the original operands a and b. When OR1200_LOWPWR_MULT is defined, if no division, multiplication, or MAC operation is currently being executed, x and y are forced to zero to reduce unnecessary switching activity at the multiplier inputs and therefore lower power consumption. Valid operands are provided to the multiplier only during DIV, DIVU, MUL, or MAC-related operations.
+
+When OR1200_MULT_IMPLEMENTED is defined, the module instantiates a 32x32 multiplier. If OR1200_ASIC_MULTP2_32X32 is defined, the ASIC-specific multiplier or1200_amultp2_32x32 is used; otherwise, the generic multiplier or1200_gmultp2_32x32 is used. The multiplier inputs are the preprocessed x and y, and its output is the 64-bit product mul_prod. This product is registered into mul_prod_r by sequential logic. For a normal multiplication instruction MUL, although the internal multiplier produces a 64-bit product, the module outputs only the low 32 bits of the registered product, mul_prod_r[31:0], through result.
+
+When OR1200_IMPL_DIV is defined, the module implements iterative division. The division logic reuses mul_prod_r as an internal shift/subtract working register instead of using a separate division register. When the current operation is DIV or DIVU and div_free indicates that the divider is idle, the module starts a new division operation. At division start, mul_prod_r is initialized to {31'b0, x[31:0], 1'b0}, div_cntr is set to 32, and div_free is cleared, indicating that the divider has entered the busy state. After that, as long as div_cntr is nonzero, the module performs one division iteration per cycle. In each iteration, it computes div_tmp = mul_prod_r[63:32] - y. If div_tmp[31] is 1, the subtraction result is negative, so the quotient bit for this iteration is 0 and mul_prod_r is shifted left with a 0 appended. If div_tmp[31] is 0, the subtraction result is nonnegative, so the quotient bit for this iteration is 1, and the updated partial remainder and quotient bit are written back into mul_prod_r. After each iteration, div_cntr is decremented by 1. After 32 iterations, the quotient is located in mul_prod_r[31:0].
+
+For signed division DIV, the module converts negative inputs to absolute values at the input stage, while final sign correction is performed during result selection. If the original operands a and b have different signs, that is, if a[31] ^ b[31] is 1, the module outputs the two’s-complement negative value of mul_prod_r[31:0]. If the two operands have the same sign, it directly outputs mul_prod_r[31:0]. For unsigned division DIVU, the module directly outputs mul_prod_r[31:0]. Therefore, the core of the division logic is a 32-cycle restoring-style shift/subtract iteration that generates the quotient, with additional input absolute-value conversion and output sign correction for signed division.
+
+The update of mul_prod_r has a clear priority. On reset, mul_prod_r is cleared and div_free is set to 1; if division is implemented, div_cntr is also cleared. During normal operation, if the division counter div_cntr is nonzero, division iteration has priority, and the normal multiplication result is not allowed to overwrite mul_prod_r. If the module is not in a division iteration and the current operation is DIV or DIVU while div_free is 1, a new division operation is started. Only when the module is neither performing a division iteration nor starting a new division does it latch the current multiplier output mul_prod into mul_prod_r, under the condition that div_free is 1 or the execute stage is not frozen, !ex_freeze. In this case, div_free is also set to 1. This ensures that the division working register is not corrupted by ordinary multiplier output while the divider is busy.
+
+The result output is selected by combinational logic according to alu_op. When the current operation is signed division DIV, result outputs the sign-corrected value of mul_prod_r[31:0]. When the current operation is unsigned division DIVU, result outputs mul_prod_r[31:0]. When the current operation is multiplication MUL, result also outputs mul_prod_r[31:0]. For all other operations, result defaults to the low 32 bits of the MAC accumulator, mac_r[31:0]. Although the code contains a conditional branch for OR1200_MAC_SHIFTBY, in this version of the source code both branches of the default case assign result = mac_r[31:0]. Therefore, this macro does not change the selected MAC result window in the current implementation.
+
+When OR1200_MAC_IMPLEMENTED is defined, the module implements a MAC operation pipeline. The input mac_op is passed through three consecutive pipeline registers over three clock cycles: mac_op_r1, mac_op_r2, and mac_op_r3. These registers are cleared on reset. The purpose of this three-stage pipeline is to align the MAC operation control signal with the multiplier output latency, so that when the corresponding multiplication result has been registered in mul_prod_r, the accumulator can perform the correct accumulation or subtraction operation according to the delayed mac_op_r3.
+
+The MAC accumulator mac_r is a 64-bit register with a fixed update priority. On reset, mac_r is cleared. If OR1200_MAC_SPR_WE is defined and spr_maclo_we is asserted, mac_r[31:0] is written. If spr_machi_we is asserted, mac_r[63:32] is written. If no SPR write occurs and mac_op_r3 indicates a MAC operation, the module performs mac_r <= mac_r + mul_prod_r. If mac_op_r3 indicates an MSB operation, the module performs mac_r <= mac_r - mul_prod_r. If none of the above conditions is true and macrc_op & !ex_freeze is asserted, mac_r is cleared. In all other cases, mac_r retains its previous value. Therefore, SPR writes have the highest priority, followed by MAC addition or subtraction, and finally MACRC clearing. The role of macrc_op is not to select the returned result, but to clear the accumulator after a MACRC operation when the execute stage is not frozen.
+
+mac_stall_r is the module’s stall request output. When OR1200_MAC_IMPLEMENTED is defined, this signal is cleared on reset and, during normal operation, is determined by the MAC operation state, the MACRC read request, and the optional divider state. Its logic is equivalent to asserting the stall signal when there is a new MAC operation in the current cycle, that is, when |mac_op is 1; when a previous MAC operation is still in the mac_op_r1 or mac_op_r2 pipeline stage and the decode stage is requesting a MAC result read through id_macrc_op; or, if division is implemented, when div_cntr is nonzero, indicating that the divider is still iterating. It is important to note that mac_op_r3 does not participate in the stall condition. Therefore, this logic does not stall unconditionally for every MAC pipeline stage. Instead, it requests a stall for three cases: a new MAC operation, a MACRC read that may occur before pending MAC operations have been applied, and an active division operation. When OR1200_MAC_IMPLEMENTED is not defined, mac_stall_r is tied to zero. In this source structure, the divider-related stall condition is also inside the MAC implementation branch, so this output is generated according to the above logic only when MAC implementation is enabled.
+
+The module uses an asynchronous active-high reset. Several sequential logic blocks are triggered by both posedge rst and posedge clk. On reset, the multiplication result register mul_prod_r is cleared, the divider idle flag div_free is set to 1, and the division counter div_cntr is cleared when division is implemented. When MAC is implemented, the MAC operation pipeline registers mac_op_r1, mac_op_r2, and mac_op_r3 are cleared, and both the MAC accumulator mac_r and the stall signal mac_stall_r are cleared. Reset has priority over all other operations, including multiplication result updates, division iteration, SPR writes, MAC accumulation, and MACRC clearing.
+
+Overall, or1200_mult_mac integrates the OR1200 multiplication, optional division, and optional MAC datapaths in a single module. The multiplication path uses a 32x32 multiplier to produce a 64-bit product, while normal multiplication instructions return only the low 32 bits. The optional division path reuses mul_prod_r for 32 cycles of iterative shift/subtract division, with input absolute-value conversion and output sign correction for signed division. The optional MAC path maintains a 64-bit accumulator, aligns MAC control with the multiplier result through a three-stage mac_op pipeline, and supports multiply-accumulate, multiply-subtract-accumulate, accumulator clearing after MACRC, and SPR read/write access. The result output selects among the division result, the multiplication result, and the low 32 bits of the MAC accumulator according to the current ALU operation, while mac_stall_r requests a pipeline stall when the MAC result is not yet safe to read or when the optional divider is still active.
+
+module or1200_mult_mac(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Multiplier/MAC interface
+    input ex_freeze,
+    input id_macrc_op,
+    input macrc_op,
+    input [31:0] a,
+    input [31:0] b,
+    input [1:0] mac_op,
+    input [3:0] alu_op,
+    output [31:0] result,
+    output mac_stall_r,
+
+    // SPR interface
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - ex_freeze: Freeze control for the execute stage.
+    - id_macrc_op: Decode-stage indication that the current instruction reads the MAC result.
+    - macrc_op: Selects the MAC-result return path used by MOVHI/MACRC handling.
+    - a[31:0]: Primary operand A for the datapath operation.
+    - b[31:0]: Primary operand B for the datapath operation.
+    - mac_op[1:0]: Encoded MAC operation selector.
+    - alu_op[3:0]: Major ALU operation selector.
+    - spr_cs: SPR chip-select for this module.
+    - spr_write: SPR write strobe for this module.
+    - spr_addr[31:0]: SPR address used for register decode.
+    - spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    - result[31:0]: Final result produced by this module.
+    - mac_stall_r: Registered MAC stall indication.
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    reg [31:0] result: Selected result from the multiply/divide/MAC datapath.
+    reg [63:0] mul_prod_r: Registered multiplier/divider datapath result.
+    wire [31:0] result: Selected result from the multiply/divide/MAC datapath.
+    wire [63:0] mul_prod_r: Registered multiplier/divider datapath result.
+    wire [63:0] mul_prod: Combinational multiplier product.
+    wire [1:0] mac_op: Multiply-accumulate operation select.
+    reg [1:0] mac_op_r1: Stage-1 pipeline copy of the MAC operation.
+    reg [1:0] mac_op_r2: Stage-2 pipeline copy of the MAC operation.
+    reg [1:0] mac_op_r3: Stage-3 pipeline copy of the MAC operation.
+    reg mac_stall_r: Registered MAC stall request.
+    reg [63:0] mac_r: MAC accumulator value.
+    wire [1:0] mac_op_r1: Stage-1 pipeline copy of the MAC operation.
+    wire [1:0] mac_op_r2: Stage-2 pipeline copy of the MAC operation.
+    wire [1:0] mac_op_r3: Stage-3 pipeline copy of the MAC operation.
+    wire mac_stall_r: Registered MAC stall request.
+    wire [63:0] mac_r: MAC accumulator value.
+    wire [31:0] x: Operand A after divide-sign preprocessing.
+    wire [31:0] y: Operand B after divide-sign preprocessing.
+    wire spr_maclo_we: SPR write-enable for the low 32 bits of `mac_r`.
+    wire spr_machi_we: SPR write-enable for the high 32 bits of `mac_r`.
+    wire alu_op_div_divu: Flag that the ALU op is DIV or DIVU.
+    wire alu_op_div: Flag that the ALU op is signed DIV.
+    reg div_free: Divider-idle flag.
+    wire [31:0] div_tmp: Intermediate subtraction term for the divider loop.
+    reg [5:0] div_cntr: Divider iteration counter.
+
+Processing Flow
+
+The processing flow of or1200_mult_mac starts with operand preprocessing. The module first derives the internal operands x and y from input operands a and b. For signed division, negative operands are converted to their two’s-complement absolute values before entering the division datapath. When the low-power multiplier option is enabled, the operands are forced to zero if no multiply, divide, or MAC operation is active, reducing unnecessary switching activity at the multiplier inputs.
+
+After operand preprocessing, the 32x32 multiplier computes the product of x and y. When multiplication is implemented, the multiplier output mul_prod is registered into mul_prod_r unless the optional divider is currently using mul_prod_r as its internal working register. For normal multiplication operations, the module later selects the low 32 bits of mul_prod_r as the output result.
+
+If the current operation is DIV or DIVU and the divider is idle, the module starts a new division by loading mul_prod_r with the initial dividend state and setting the division counter to 32. While the counter is nonzero, the module performs one shift/subtract division iteration per cycle. During this period, mul_prod_r is updated by the division algorithm rather than by the multiplier output. When the 32 iterations complete, the quotient is available in mul_prod_r[31:0]; for signed division, the quotient sign is corrected during result selection.
+
+In parallel with the multiplier datapath, MAC control is delayed through three pipeline stages, mac_op_r1, mac_op_r2, and mac_op_r3, so that the MAC operation control aligns with the registered multiplier result. When the delayed operation reaches mac_op_r3, the MAC accumulator mac_r is either incremented by mul_prod_r for MAC or decremented by mul_prod_r for MSB. If a MACRC operation completes and the execute stage is not frozen, the accumulator is cleared unless a higher-priority SPR write or MAC update occurs.
+
+The result output is selected according to alu_op. DIV returns the sign-corrected quotient, DIVU returns the unsigned quotient, MUL returns the low 32 bits of the registered product, and all other operations return the low 32 bits of the MAC accumulator. The module also generates mac_stall_r to stall the processor pipeline when a new MAC operation is active, when a MACRC read may occur before pending MAC operations have completed, or when the optional divider is still iterating.
+
+SPR access is handled alongside the datapath updates. When MAC is implemented, the MAC accumulator can be read through the SPR interface, with spr_addr[0] selecting the low or high half. If SPR writes are enabled by OR1200_MAC_SPR_WE, SPR writes to the accumulator take priority over MAC accumulation and MACRC clearing.

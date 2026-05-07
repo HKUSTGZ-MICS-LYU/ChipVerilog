@@ -1,0 +1,1095 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_ic_fsm'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29 in module or1200_ic_fsm.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+     1/9: $0\saved_addr_r[31:0] [31:13]
+     2/9: $0\saved_addr_r[31:0] [12:4]
+     3/9: $0\saved_addr_r[31:0] [1:0]
+     4/9: $0\saved_addr_r[31:0] [3:2]
+     5/9: $0\load[0:0]
+     6/9: $0\hitmiss_eval[0:0]
+     7/9: $0\cnt[2:0]
+     8/9: $0\state[1:0]
+     9/9: $0\cache_inhibit[0:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ic_fsm.\saved_addr_r' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$249' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\state' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$252' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cnt' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$255' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\hitmiss_eval' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$258' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\load' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$261' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cache_inhibit' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$264' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 10 empty switches in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+Cleaned up 10 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+6. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: 32d7c34cca, CPU: user 0.02s system 0.00s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 56% 4x read_verilog (0 sec), 18% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_fsm'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46 in module or1200_ic_fsm.
+Removed 1 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29 in module or1200_ic_fsm.
+Marked 9 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29 in module or1200_ic_fsm.
+Removed a total of 1 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 6 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+     1/6: $0\cache_inhibit[0:0]
+     2/6: $0\load[0:0]
+     3/6: $0\hitmiss_eval[0:0]
+     4/6: $0\cnt[2:0]
+     5/6: $0\state[1:0]
+     6/6: $0\saved_addr_r[31:0]
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+     1/41: $8\saved_addr_r_next[31:0] [31:4]
+     2/41: $8\saved_addr_r_next[31:0] [1:0]
+     3/41: $5\cnt_next[2:0]
+     4/41: $5\load_next[0:0]
+     5/41: $7\hitmiss_eval_next[0:0]
+     6/41: $6\state_next[1:0]
+     7/41: $8\saved_addr_r_next[31:0] [3:2]
+     8/41: $4\load_next[0:0]
+     9/41: $6\hitmiss_eval_next[0:0]
+    10/41: $4\cnt_next[2:0]
+    11/41: $5\state_next[1:0]
+    12/41: $7\saved_addr_r_next[31:0]
+    13/41: $6\cache_inhibit_next[0:0]
+    14/41: $6\saved_addr_r_next[31:0]
+    15/41: $5\hitmiss_eval_next[0:0]
+    16/41: $5\saved_addr_r_next[31:0] [31:4]
+    17/41: $5\saved_addr_r_next[31:0] [1:0]
+    18/41: $3\cnt_next[2:0]
+    19/41: $4\hitmiss_eval_next[0:0]
+    20/41: $5\saved_addr_r_next[31:0] [3:2]
+    21/41: $4\state_next[1:0]
+    22/41: $5\cache_inhibit_next[0:0]
+    23/41: $4\cache_inhibit_next[0:0]
+    24/41: $3\load_next[0:0]
+    25/41: $3\hitmiss_eval_next[0:0]
+    26/41: $3\state_next[1:0]
+    27/41: $2\cnt_next[2:0]
+    28/41: $4\saved_addr_r_next[31:0]
+    29/41: $3\saved_addr_r_next[31:13]
+    30/41: $3\cache_inhibit_next[0:0]
+    31/41: $2\cache_inhibit_next[0:0]
+    32/41: $2\load_next[0:0]
+    33/41: $2\hitmiss_eval_next[0:0]
+    34/41: $2\saved_addr_r_next[31:0]
+    35/41: $2\state_next[1:0]
+    36/41: $1\cache_inhibit_next[0:0]
+    37/41: $1\load_next[0:0]
+    38/41: $1\hitmiss_eval_next[0:0]
+    39/41: $1\state_next[1:0]
+    40/41: $1\saved_addr_r_next[31:0]
+    41/41: $1\cnt_next[2:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ic_fsm.\saved_addr_r_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+No latch inferred for signal `\or1200_ic_fsm.\state_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+No latch inferred for signal `\or1200_ic_fsm.\cnt_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+No latch inferred for signal `\or1200_ic_fsm.\hitmiss_eval_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+No latch inferred for signal `\or1200_ic_fsm.\load_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+No latch inferred for signal `\or1200_ic_fsm.\cache_inhibit_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ic_fsm.\saved_addr_r' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$376' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\state' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$379' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cnt' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$382' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\hitmiss_eval' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$385' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\load' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$388' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cache_inhibit' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+  created $adff cell `$procdff$391' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$46'.
+Found and cleaned up 9 empty switches in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$29'.
+Cleaned up 9 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: 955b8b511d, CPU: user 0.02s system 0.01s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 41% 4x read_verilog (0 sec), 22% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_ic_fsm'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29 in module or1200_ic_fsm.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+     1/9: $0\saved_addr_r[31:0] [31:13]
+     2/9: $0\saved_addr_r[31:0] [12:4]
+     3/9: $0\saved_addr_r[31:0] [1:0]
+     4/9: $0\saved_addr_r[31:0] [3:2]
+     5/9: $0\load[0:0]
+     6/9: $0\hitmiss_eval[0:0]
+     7/9: $0\cnt[2:0]
+     8/9: $0\state[1:0]
+     9/9: $0\cache_inhibit[0:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ic_fsm.\saved_addr_r' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$249' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\state' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$252' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cnt' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$255' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\hitmiss_eval' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$258' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\load' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$261' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cache_inhibit' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+  created $adff cell `$procdff$264' with positive edge clock and positive level reset.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 10 empty switches in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:89$29'.
+Cleaned up 10 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+Removed 1 unused cells and 76 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_fsm...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 139 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 105 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 104 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 35 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_fsm.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 104 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 103 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 1 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+Removed 0 unused cells and 35 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_fsm.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 103 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell or1200_ic_fsm.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:76$11 ($eq).
+Removed top 2 bits (of 3) from port B of cell or1200_ic_fsm.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_fsm/or1200_ic_fsm.v:149$47 ($sub).
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 103 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== or1200_ic_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      111 wires
+      446 wire bits
+       23 public wires
+      122 public wire bits
+       17 ports
+       82 port bits
+      103 cells
+        1   $add
+        6   $adff
+       18   $and
+        2   $eq
+        1   $logic_and
+        7   $logic_not
+        3   $logic_or
+       52   $mux
+        2   $or
+        9   $pmux
+        1   $reduce_or
+        1   $sub
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_fsm...
+Found and reported 0 problems.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_fsm'.
+Successfully finished Verilog frontend.
+
+8. Executing PREP pass.
+
+8.1. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+
+8.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_fsm
+Removed 0 unused modules.
+
+8.2. Executing PROC pass (convert processes to netlists).
+
+8.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310 in module or1200_ic_fsm.
+Removed 1 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293 in module or1200_ic_fsm.
+Marked 9 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293 in module or1200_ic_fsm.
+Removed a total of 1 dead cases.
+
+8.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 6 assignments to connections.
+
+8.2.4. Executing PROC_INIT pass (extract init attributes).
+
+8.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+
+8.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+8.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+     1/6: $0\cache_inhibit[0:0]
+     2/6: $0\load[0:0]
+     3/6: $0\hitmiss_eval[0:0]
+     4/6: $0\cnt[2:0]
+     5/6: $0\state[1:0]
+     6/6: $0\saved_addr_r[31:0]
+Creating decoders for process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+     1/41: $8\saved_addr_r_next[31:0] [31:4]
+     2/41: $8\saved_addr_r_next[31:0] [1:0]
+     3/41: $5\cnt_next[2:0]
+     4/41: $8\saved_addr_r_next[31:0] [3:2]
+     5/41: $6\state_next[1:0]
+     6/41: $7\hitmiss_eval_next[0:0]
+     7/41: $5\load_next[0:0]
+     8/41: $7\saved_addr_r_next[31:0]
+     9/41: $5\state_next[1:0]
+    10/41: $4\cnt_next[2:0]
+    11/41: $6\hitmiss_eval_next[0:0]
+    12/41: $4\load_next[0:0]
+    13/41: $6\cache_inhibit_next[0:0]
+    14/41: $6\saved_addr_r_next[31:0]
+    15/41: $5\hitmiss_eval_next[0:0]
+    16/41: $5\saved_addr_r_next[31:0] [31:4]
+    17/41: $5\saved_addr_r_next[31:0] [1:0]
+    18/41: $3\cnt_next[2:0]
+    19/41: $4\hitmiss_eval_next[0:0]
+    20/41: $5\saved_addr_r_next[31:0] [3:2]
+    21/41: $4\state_next[1:0]
+    22/41: $5\cache_inhibit_next[0:0]
+    23/41: $4\cache_inhibit_next[0:0]
+    24/41: $3\load_next[0:0]
+    25/41: $3\hitmiss_eval_next[0:0]
+    26/41: $3\state_next[1:0]
+    27/41: $4\saved_addr_r_next[31:0]
+    28/41: $2\cnt_next[2:0]
+    29/41: $3\saved_addr_r_next[31:13]
+    30/41: $3\cache_inhibit_next[0:0]
+    31/41: $2\cache_inhibit_next[0:0]
+    32/41: $2\load_next[0:0]
+    33/41: $2\hitmiss_eval_next[0:0]
+    34/41: $2\saved_addr_r_next[31:0]
+    35/41: $2\state_next[1:0]
+    36/41: $1\saved_addr_r_next[31:0]
+    37/41: $1\state_next[1:0]
+    38/41: $1\hitmiss_eval_next[0:0]
+    39/41: $1\load_next[0:0]
+    40/41: $1\cache_inhibit_next[0:0]
+    41/41: $1\cnt_next[2:0]
+
+8.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ic_fsm.\cache_inhibit_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+No latch inferred for signal `\or1200_ic_fsm.\load_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+No latch inferred for signal `\or1200_ic_fsm.\hitmiss_eval_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+No latch inferred for signal `\or1200_ic_fsm.\cnt_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+No latch inferred for signal `\or1200_ic_fsm.\state_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+No latch inferred for signal `\or1200_ic_fsm.\saved_addr_r_next' from process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+
+8.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ic_fsm.\saved_addr_r' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$640' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\state' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$643' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cnt' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$646' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\hitmiss_eval' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$649' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\load' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$652' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ic_fsm.\cache_inhibit' using process `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+  created $adff cell `$procdff$655' with positive edge clock and positive level reset.
+
+8.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+8.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:132$310'.
+Found and cleaned up 9 empty switches in `\or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+Removing empty process `or1200_ic_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:49$293'.
+Cleaned up 9 empty switches.
+
+8.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.3. Executing FLATTEN pass (flatten design).
+
+8.4. Executing FUTURE pass.
+
+8.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+Removed 0 unused cells and 126 unused wires.
+
+8.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_fsm...
+Found and reported 0 problems.
+
+8.8. Executing OPT pass (performing simple optimizations).
+
+8.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 204 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 139 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 138 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 66 cells.
+
+8.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$352.
+    dead port 2/2 on $mux $procmux$354.
+    dead port 2/2 on $mux $procmux$361.
+    dead port 2/2 on $mux $procmux$363.
+    dead port 2/2 on $mux $procmux$370.
+    dead port 2/2 on $mux $procmux$372.
+    dead port 2/2 on $mux $procmux$378.
+    dead port 2/2 on $mux $procmux$384.
+    dead port 2/2 on $mux $procmux$390.
+    dead port 2/2 on $mux $procmux$396.
+    dead port 2/2 on $mux $procmux$402.
+    dead port 1/2 on $mux $procmux$410.
+    dead port 1/2 on $mux $procmux$413.
+    dead port 2/2 on $mux $procmux$415.
+    dead port 1/2 on $mux $procmux$423.
+    dead port 1/2 on $mux $procmux$426.
+    dead port 2/2 on $mux $procmux$428.
+    dead port 1/2 on $mux $procmux$436.
+    dead port 1/2 on $mux $procmux$439.
+    dead port 2/2 on $mux $procmux$441.
+    dead port 1/2 on $mux $procmux$449.
+    dead port 2/2 on $mux $procmux$451.
+    dead port 1/2 on $mux $procmux$459.
+    dead port 2/2 on $mux $procmux$461.
+    dead port 1/2 on $mux $procmux$469.
+    dead port 2/2 on $mux $procmux$471.
+    dead port 1/2 on $mux $procmux$479.
+    dead port 2/2 on $mux $procmux$481.
+    dead port 1/2 on $mux $procmux$489.
+    dead port 2/2 on $mux $procmux$491.
+    dead port 1/2 on $mux $procmux$499.
+    dead port 2/2 on $mux $procmux$501.
+    dead port 1/2 on $mux $procmux$509.
+    dead port 2/2 on $mux $procmux$511.
+    dead port 2/2 on $mux $procmux$518.
+    dead port 2/2 on $mux $procmux$525.
+    dead port 2/2 on $mux $procmux$532.
+    dead port 2/2 on $mux $procmux$539.
+    dead port 2/2 on $mux $procmux$546.
+    dead port 2/2 on $mux $procmux$553.
+    dead port 2/2 on $mux $procmux$560.
+    dead port 2/2 on $mux $procmux$567.
+    dead port 2/2 on $mux $procmux$574.
+    dead port 2/2 on $mux $procmux$582.
+    dead port 2/2 on $mux $procmux$590.
+    dead port 2/2 on $mux $procmux$598.
+    dead port 2/2 on $mux $procmux$606.
+    dead port 2/2 on $mux $procmux$316.
+    dead port 2/2 on $mux $procmux$318.
+    dead port 2/2 on $mux $procmux$325.
+    dead port 2/2 on $mux $procmux$327.
+    dead port 2/2 on $mux $procmux$334.
+    dead port 2/2 on $mux $procmux$336.
+    dead port 2/2 on $mux $procmux$343.
+    dead port 2/2 on $mux $procmux$345.
+Removed 55 multiplexer ports.
+
+8.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_fsm.
+    New ctrl vector for $pmux cell $procmux$628: { $procmux$575_CMP $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:43$272_Y $auto$opt_reduce.cc:137:opt_pmux$657 }
+    New ctrl vector for $pmux cell $procmux$633: { $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:43$272_Y $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:46$288_Y $auto$opt_reduce.cc:137:opt_pmux$659 }
+  Optimizing cells in module \or1200_ic_fsm.
+Performed a total of 2 changes.
+
+8.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 85 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Computing hashes of 84 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 1 cells.
+
+8.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+Removed 0 unused cells and 121 unused wires.
+
+8.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_fsm.
+Performed a total of 0 changes.
+
+8.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 84 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 0 cells.
+
+8.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+8.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+8.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell or1200_ic_fsm.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:106$309 ($add).
+Removed top 2 bits (of 3) from port B of cell or1200_ic_fsm.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:105$308 ($sub).
+Removed top 1 bits (of 2) from port B of cell or1200_ic_fsm.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ic_fsm/or1200_ic_fsm_t5.v:43$272 ($eq).
+
+8.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+8.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+8.12. Executing OPT pass (performing simple optimizations).
+
+8.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_fsm.
+
+8.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_fsm'.
+Computing hashes of 84 cells of `\or1200_ic_fsm'.
+Finding duplicate cells in `\or1200_ic_fsm'.
+Removed a total of 0 cells.
+
+8.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_fsm..
+
+8.12.4. Finished fast OPT passes.
+
+8.13. Printing statistics.
+
+=== or1200_ic_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       91 wires
+      444 wire bits
+       29 public wires
+      162 public wire bits
+       17 ports
+       82 port bits
+       84 cells
+        1   $add
+        6   $adff
+       12   $and
+        3   $eq
+        5   $logic_and
+        5   $logic_not
+        3   $logic_or
+       33   $mux
+        4   $not
+        2   $or
+        6   $pmux
+        1   $reduce_bool
+        2   $reduce_or
+        1   $sub
+
+8.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_fsm...
+Found and reported 0 problems.
+
+9. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_or1200_ic_fsm" and gate cell "gate_or1200_ic_fsm".
+
+9.1. Executing FLATTEN pass (flatten design).
+
+9.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10. Executing PREP pass.
+
+10.1. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+10.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_or1200_ic_fsm'.
+Removing unused module `\gold_or1200_ic_fsm'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+10.2. Executing PROC pass (convert processes to netlists).
+
+10.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+10.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+10.2.4. Executing PROC_INIT pass (extract init attributes).
+
+10.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+10.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+10.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+10.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+10.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+10.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+10.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.3. Executing FUTURE pass.
+
+10.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+10.7. Executing OPT pass (performing simple optimizations).
+
+10.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 200 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 196 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 4 cells.
+
+10.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+10.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 196 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 4 unused wires.
+
+10.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+10.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 196 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+10.8. Executing WREDUCE pass (reducing word size of cells).
+
+10.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+10.11. Executing OPT pass (performing simple optimizations).
+
+10.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 196 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.11.4. Finished fast OPT passes.
+
+10.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      233 wires
+     1020 wire bits
+       78 public wires
+      409 public wire bits
+       10 ports
+       41 port bits
+      196 cells
+        2   $add
+       12   $adff
+       30   $and
+        1   $assert
+        5   $eq
+        8   $eqx
+        6   $logic_and
+        8   $logic_not
+        6   $logic_or
+       85   $mux
+        5   $not
+        4   $or
+       15   $pmux
+        1   $reduce_and
+        1   $reduce_bool
+        3   $reduce_or
+        2   $scopeinfo
+        2   $sub
+
+10.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+11. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$640 ($adff): ARST=\in_rst, D=\gate.saved_addr_r_next, Q=\gate.saved_addr_r
+Replacing miter.$flatten\gate.$procdff$643 ($adff): ARST=\in_rst, D=\gate.state_next, Q=\gate.state
+Replacing miter.$flatten\gate.$procdff$646 ($adff): ARST=\in_rst, D=\gate.cnt_next, Q=\gate.cnt
+Replacing miter.$flatten\gate.$procdff$649 ($adff): ARST=\in_rst, D=\gate.hitmiss_eval_next, Q=\gate.hitmiss_eval
+Replacing miter.$flatten\gate.$procdff$652 ($adff): ARST=\in_rst, D=\gate.load_next, Q=\gate.load
+Replacing miter.$flatten\gate.$procdff$655 ($adff): ARST=\in_rst, D=\gate.cache_inhibit_next, Q=\gate.cache_inhibit
+Replacing miter.$flatten\gold.$procdff$249 ($adff): ARST=\in_rst, D=$flatten\gold.$0\saved_addr_r[31:0], Q=\gold.saved_addr_r
+Replacing miter.$flatten\gold.$procdff$252 ($adff): ARST=\in_rst, D=$flatten\gold.$0\state[1:0], Q=\gold.state
+Replacing miter.$flatten\gold.$procdff$255 ($adff): ARST=\in_rst, D=$flatten\gold.$0\cnt[2:0], Q=\gold.cnt
+Replacing miter.$flatten\gold.$procdff$258 ($adff): ARST=\in_rst, D=$flatten\gold.$0\hitmiss_eval[0:0], Q=\gold.hitmiss_eval
+Replacing miter.$flatten\gold.$procdff$261 ($adff): ARST=\in_rst, D=$flatten\gold.$0\load[0:0], Q=\gold.load
+Replacing miter.$flatten\gold.$procdff$264 ($adff): ARST=\in_rst, D=$flatten\gold.$0\cache_inhibit[0:0], Q=\gold.cache_inhibit
+
+12. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+13. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Final init constraint equation: { $auto$async2sync.cc:234:execute$704 $auto$async2sync.cc:234:execute$702 $auto$async2sync.cc:234:execute$700 $auto$async2sync.cc:234:execute$698 $auto$async2sync.cc:234:execute$696 $auto$async2sync.cc:234:execute$694 $auto$async2sync.cc:234:execute$692 $auto$async2sync.cc:234:execute$690 $auto$async2sync.cc:234:execute$688 $auto$async2sync.cc:234:execute$686 $auto$async2sync.cc:234:execute$684 $auto$async2sync.cc:234:execute$682 } = 80'00000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 220 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$677 when 1'1.
+
+Solving problem with 51283 variables and 138764 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                      Dec       Hex                                 Bin
+  ---- ---------------------------------------- ----------- --------- -----------------------------------
+  init $auto$async2sync.cc:234:execute$682                0         0    00000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$684                0         0                                  00
+  init $auto$async2sync.cc:234:execute$686                0         0                                 000
+  init $auto$async2sync.cc:234:execute$688                0         0                                   0
+  init $auto$async2sync.cc:234:execute$690                0         0                                   0
+  init $auto$async2sync.cc:234:execute$692                0         0                                   0
+  init $auto$async2sync.cc:234:execute$694                0         0    00000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$696                0         0                                  00
+  init $auto$async2sync.cc:234:execute$698                0         0                                 000
+  init $auto$async2sync.cc:234:execute$700                0         0                                   0
+  init $auto$async2sync.cc:234:execute$702                0         0                                   0
+  init $auto$async2sync.cc:234:execute$704                0         0                                   0
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

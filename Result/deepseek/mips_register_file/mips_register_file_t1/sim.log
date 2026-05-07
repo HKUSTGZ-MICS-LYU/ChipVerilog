@@ -1,0 +1,51 @@
+=== tb_compile_sv2012 ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/iverilog -g2012 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1/work -s register_file_tb_0_v -o /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1/work/simv /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file/register_file_tb_0.v
+--- stderr ---
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file/register_file_tb_0.v:59: syntax error
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file/register_file_tb_0.v:1: error: Syntax error in variable list.
+exit_code=2
+
+=== tb_compile_plain_verilog ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/iverilog -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1/work -s register_file_tb_0_v -o /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1/work/simv /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file/register_file_tb_0.v
+exit_code=0
+
+=== simulation_run ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/vvp -n /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/mips_register_file/mips_register_file_t1/work/simv
+--- stdout ---
+display_all_regs:
+------------------------------
+R0	R1	R2	R3	R4	R5	R6	R7
+    0	    0	    0	    0	    0	    0	    0	    0	
+------------------------------
+write_all_regs(random):
+------------------------------
+R0	R1	R2	R3	R4	R5	R6	R7
+13604	56961	54793	54883	31501	 6541	33893	53778	
+------------------------------
+read_all_regs_from_read_port_1:
+------------------------------
+R0	R1	R2	R3	R4	R5	R6	R7
+    0	56961	54793	54883	31501	 6541	33893	53778	
+------------------------------
+read_all_regs_from_read_port_2:
+------------------------------
+R0	R1	R2	R3	R4	R5	R6	R7
+    0	56961	54793	54883	31501	 6541	33893	53778	
+------------------------------
+write_and_read_all_regs(random):
+------------------------------
+R0	R1	R2	R3	R4	R5	R6	R7
+newly wrote values:
+------------------------------
+25345	19725	29046	19773	22509	30604	27129	42182	
+------------------------------
+read from port 1 (read regs being wrote will hold its value):
+------------------------------
+    0	56961	54793	54883	31501	 6541	33893	53778	
+------------------------------
+read from port 2 (read wrote regs will get its new value):
+------------------------------
+    0	19725	29046	19773	22509	30604	27129	42182	
+------------------------------
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/register_file/register_file_tb_0.v:86: $stop called at 556000 (1ps)
+exit_code=0

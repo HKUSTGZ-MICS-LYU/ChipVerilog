@@ -1,0 +1,43 @@
+The mips_16_core_top module is the top-level integration module of the MIPS_16 processor core. It connects all major pipeline stages and supporting units together to form a complete 16-bit pipelined processor datapath. According to the MIPS_16 specification, the processor uses a classic five-stage static pipeline consisting of IF_stage, ID_stage, EX_stage, MEM_stage, and WB_stage. The specification also states that the processor has a 16-bit data width, eight general-purpose registers, RAW hazard detection, and no forwarding logic . This top-level module implements that structure by instantiating the pipeline stages, register file, and hazard detection unit, then wiring their control and data signals together.
+
+The module has two input ports, clk and rst. The clk signal is the global clock used by the pipeline registers, program counter, register file, and memory-related sequential logic. The rst signal is an active reset input used to initialize the processor state and clear pipeline registers. The only output port is pc, which exposes the current program counter value from the IF_stage. The width of pc is defined by the macro `PC_WIDTH, allowing the program counter width to be configured in the shared definition file.
+
+Internally, the top-level module instantiates the five pipeline stages. The IF_stage is responsible for program counter control and instruction fetching. It receives the stall control signal pipeline_stall_n, as well as branch information from the ID_stage, including branch_offset_imm and branch_taken. It outputs the current pc and the fetched 16-bit instruction. This matches the specification description that the IF_stage contains the PC and instruction memory .
+
+The ID_stage receives the fetched instruction from the IF_stage and performs instruction decoding, central control generation, register read address generation, branch decision generation, and source register reporting for hazard detection. The MIPS_16 specification describes the ID_stage as containing the central control logic and register read logic . In this top-level design, the ID_stage outputs a 57-bit pipeline register bus ID_pipeline_reg_out to the EX_stage. It also communicates with the register file through two read address outputs and two read data inputs. In addition, it outputs decoding_op_src1 and decoding_op_src2 to the hazard detection unit.
+
+The EX_stage receives the 57-bit pipeline bus from the ID_stage and performs ALU execution. The result and the remaining memory/write-back control signals are packed into the 38-bit EX_pipeline_reg_out bus and sent to the MEM_stage. The EX_stage also outputs ex_op_dest, which indicates the destination register of the instruction currently in the EX stage. This signal is used by the hazard detection unit to detect RAW dependencies.
+
+The MEM_stage receives the 38-bit pipeline bus from the EX_stage. It uses the ALU result as the data memory access address and performs memory read or write operations through the data memory module. The specification describes the MEM_stage as a RAM-based memory stage that can later be extended into a D-cache or external memory interface . The MEM_stage outputs a 37-bit pipeline bus MEM_pipeline_reg_out to the WB_stage and also provides mem_op_dest to the hazard detection unit.
+
+The WB_stage receives the 37-bit pipeline bus from the MEM_stage and generates the final register file write-back signals. These include reg_write_en, reg_write_dest, and reg_write_data. Depending on the instruction type, the write-back data may come from the ALU result or from the memory read data. The WB_stage also outputs wb_op_dest, which represents the destination register of the instruction in the write-back stage and is used for hazard detection.
+
+The register_file module provides the processor’s general-purpose registers. According to the specification, the MIPS_16 processor contains an 8-entry, 16-bit register file, where register 0 is special: reading from it always returns zero, and write operations to it are discarded . In this top-level module, the register file receives write-back signals from the WB_stage and provides two read data outputs to the ID_stage. This allows the ID_stage to read source operands while the WB_stage writes completed results back into the register file.
+
+The hazard_detection_unit is responsible for detecting RAW data hazards. Since the MIPS_16 design does not include forwarding logic, the specification states that the processor stalls the pipeline when the source registers of the instruction in the ID_stage match the destination registers of the previous three instructions in the EX_stage, MEM_stage, or WB_stage . In this top-level module, the hazard detection unit compares decoding_op_src1 and decoding_op_src2 from the ID_stage with ex_op_dest, mem_op_dest, and wb_op_dest. If a hazard is detected, it drives pipeline_stall_n low.
+
+The signal pipeline_stall_n is an active-low stall control signal. It is connected to both instruction_fetch_en in the IF_stage and instruction_decode_en in the ID_stage. When pipeline_stall_n is high, the IF_stage and ID_stage operate normally. When it is low, instruction fetch and instruction decode are frozen. At the same time, the ID_stage inserts a bubble into the pipeline, preventing the dependent instruction from entering the EX_stage too early. This implements the stall-based RAW hazard handling described in the specification.
+
+Process Flow
+
+During normal operation, the IF_stage uses the current program counter to fetch a 16-bit instruction from instruction memory. The fetched instruction is sent to the ID_stage, and the PC is either incremented sequentially or updated using the branch offset when a branch is taken.
+
+The ID_stage decodes the instruction, generates control signals, reads source operands from the register file, and determines whether a branch should be taken. It then packs the ALU control signals, operands, memory control signals, and write-back control signals into ID_pipeline_reg_out, which is passed to the EX_stage.
+
+The EX_stage receives the decoded execution information and performs the required ALU operation. The ALU result, memory control information, and write-back control information are then registered into EX_pipeline_reg_out and sent to the MEM_stage.
+
+The MEM_stage performs data memory access when required. For store instructions, it writes data into memory. For load instructions, it reads data from memory. It then forwards the ALU result, memory read data, and write-back control signals to the WB_stage through MEM_pipeline_reg_out.
+
+The WB_stage selects the correct write-back data and sends it to the register file. If write-back is enabled, the register file writes the result into the destination register on the clock edge.
+
+In parallel with this datapath flow, the hazard detection unit continuously monitors source and destination register numbers across pipeline stages. If a RAW hazard is detected, pipeline_stall_n is driven low. This freezes the IF_stage and ID_stage and allows the pipeline to wait until the dependent data is safe to use.
+
+Overall, the mips_16_core_top module is the structural top level of the MIPS_16 processor. It does not implement instruction execution logic directly; instead, it connects the instruction fetch, decode, execute, memory, write-back, register file, and hazard detection modules into a complete pipelined CPU core.
+
+module mips_16_core_top
+(
+	input						clk,
+	input						rst,
+
+	output	[`PC_WIDTH-1:0]		pc
+);

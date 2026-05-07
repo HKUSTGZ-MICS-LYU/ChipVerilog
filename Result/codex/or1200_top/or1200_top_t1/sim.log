@@ -1,0 +1,12 @@
+=== tb_compile_sv2012 ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/iverilog -g2012 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_top/or1200_top_t1/work -s or1200_testbench -o /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_top/or1200_top_t1/work/simv /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_top/or1200_top_t1.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_iwb_biu/or1200_iwb_biu.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top/random_rom_wb.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top/or1200_tb.v
+--- stderr ---
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top/or1200_tb.v:202: warning: Port 3 (pic_ints_i) of or1200_top expects 1 bits, got 20.
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top/or1200_tb.v:202:        : Pruning 19 high bits of the expression.
+exit_code=0
+
+=== simulation_run ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/vvp -n /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_top/or1200_top_t1/work/simv
+--- stdout ---
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_top/or1200_tb.v:178: $stop called at 2000050 (1ps)
+exit_code=0

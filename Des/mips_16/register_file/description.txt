@@ -1,0 +1,37 @@
+The register_file module implements the general-purpose register file of the MIPS_16 processor. According to the MIPS_16 specification, the processor contains an 8-entry, 16-bit register file with one synchronized write port and two read ports. The specification also defines register 0 as a special register: reading from register 0 always returns zero, and write operations to register 0 are effectively discarded by the architecture . In this design, the register_file module provides the register storage required by the ID_stage for operand reads and by the WB_stage for result write-back.
+
+Internally, the module defines an array named reg_array, which contains eight 16-bit registers. The three-bit register address inputs are sufficient to select one of these eight registers. This matches the MIPS_16 architecture, which uses eight general-purpose registers. The register file is connected to the pipeline datapath so that source operands can be read during instruction decoding, while completed instruction results can be written back during the write-back stage.
+
+The write port is controlled by reg_write_en, reg_write_dest, and reg_write_data. The signal reg_write_en enables the write operation, reg_write_dest specifies the destination register address, and reg_write_data carries the 16-bit data to be written. The write operation is synchronous and occurs on the rising edge of clk. When rst is asserted, all eight registers are cleared to zero. When reset is not active and reg_write_en is high, the module writes reg_write_data into the register selected by reg_write_dest.
+
+The module provides two independent read ports. The first read port uses reg_read_addr_1 as its address input and outputs the selected register value through reg_read_data_1. The second read port uses reg_read_addr_2 as its address input and outputs the selected register value through reg_read_data_2. Both read ports are implemented using continuous assignment, so the read behavior is asynchronous. When a read address changes, the corresponding read data output changes according to the selected register after combinational propagation delay.
+
+Register 0 is treated specially in the read logic. If either read address is 0, the corresponding read data output returns zero instead of directly reading the stored value from reg_array[0]. This guarantees that register 0 behaves as a constant-zero register for all instructions. Although the write logic does not explicitly block writes to address 0 in this code, the read logic always forces reads from register 0 to zero, so software-visible reads of register 0 still return zero.
+
+Process Flow
+
+During operation, the register file first receives register read addresses from the ID_stage. These addresses are used to select the source operands required by the instruction currently being decoded. If reg_read_addr_1 is not zero, reg_read_data_1 outputs the value stored in reg_array[reg_read_addr_1]; otherwise, it outputs zero. The second read port behaves in the same way using reg_read_addr_2 and reg_read_data_2.
+
+At the same time, the register file may receive write-back information from the WB_stage. On the rising edge of clk, if rst is asserted, all registers are reset to zero. If reset is not asserted and reg_write_en is high, the module writes the 16-bit value from reg_write_data into the register selected by reg_write_dest.
+
+The two read outputs are continuously available to the rest of the processor datapath. This allows the ID_stage to obtain source operands without waiting for a clock edge, while write-back remains synchronized to the processor clock. As a result, the register_file module supports the pipeline’s normal instruction flow by providing source data during decode and accepting completed results during write-back.
+
+Overall, the register_file module is the central storage block for the MIPS_16 processor’s general-purpose registers. It supports one synchronous write port and two asynchronous read ports, matches the 8-register and 16-bit data-width architecture described in the specification, and provides constant-zero behavior for register 0.
+
+module register_file
+(
+	input				clk,
+	input				rst,
+	
+	// write port
+	input				reg_write_en,
+	input		[2:0]	reg_write_dest,
+	input		[15:0]	reg_write_data,
+	
+	//read port 1
+	input		[2:0]	reg_read_addr_1,
+	output		[15:0]	reg_read_data_1,
+	//read port 2
+	input		[2:0]	reg_read_addr_2,
+	output		[15:0]	reg_read_data_2
+);

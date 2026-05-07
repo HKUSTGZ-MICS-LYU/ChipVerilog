@@ -1,0 +1,1763 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v' to AST representation.
+Generating RTLIL representation for module `\fpu_mul'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180.1-238.9 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_mul
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_mul
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1 in module fpu_mul.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+     1/1: $0\product_shift[5:0]
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+     1/50: $0\product_lsb[0:0]
+     2/50: $0\product_6[105:0]
+     3/50: $0\product_5[105:0]
+     4/50: $0\product_4[105:0]
+     5/50: $0\product_3[105:0]
+     6/50: $0\product_2[105:0]
+     7/50: $0\product_1[105:0]
+     8/50: $0\product[105:0]
+     9/50: $0\sum_8[30:0]
+    10/50: $0\sum_7[36:0]
+    11/50: $0\sum_6[29:0]
+    12/50: $0\sum_5[27:0]
+    13/50: $0\sum_4[36:0]
+    14/50: $0\sum_3[35:0]
+    15/50: $0\sum_2[41:0]
+    16/50: $0\sum_1[35:0]
+    17/50: $0\sum_0[41:0]
+    18/50: $0\product_j[30:0]
+    19/50: $0\product_i[28:0]
+    20/50: $0\product_h[28:0]
+    21/50: $0\product_g[35:0]
+    22/50: $0\product_f[33:0]
+    23/50: $0\product_e[33:0]
+    24/50: $0\product_d[25:0]
+    25/50: $0\product_c[40:0]
+    26/50: $0\product_b[40:0]
+    27/50: $0\product_a[40:0]
+    28/50: $0\mul_b[52:0]
+    29/50: $0\mul_a[52:0]
+    30/50: $0\exponent_et_zero[0:0]
+    31/50: $0\exponent_4[11:0]
+    32/50: $0\exponent_3[11:0]
+    33/50: $0\exponent_gt_prodshift[0:0]
+    34/50: $0\exponent_2[11:0]
+    35/50: $0\exponent_1[11:0]
+    36/50: $0\exponent_under[11:0]
+    37/50: $0\exponent_gt_expoffset[0:0]
+    38/50: $0\exponent_terms[11:0]
+    39/50: $0\in_zero[0:0]
+    40/50: $0\b_is_zero[0:0]
+    41/50: $0\a_is_zero[0:0]
+    42/50: $0\b_is_norm[0:0]
+    43/50: $0\a_is_norm[0:0]
+    44/50: $0\exponent_b[10:0]
+    45/50: $0\exponent_a[10:0]
+    46/50: $0\mantissa_b[51:0]
+    47/50: $0\mantissa_a[51:0]
+    48/50: $0\product_shift_2[5:0]
+    49/50: $0\exponent_5[11:0]
+    50/50: $0\sign[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+Latch inferred for signal `\fpu_mul.\product_shift' from process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51': $auto$proc_dlatch.cc:432:proc_dlatch$685
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_mul.\sign' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$686' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$687' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_shift_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$688' with positive edge clock.
+Creating register for signal `\fpu_mul.\mantissa_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$689' with positive edge clock.
+Creating register for signal `\fpu_mul.\mantissa_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$690' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$691' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$692' with positive edge clock.
+Creating register for signal `\fpu_mul.\a_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$693' with positive edge clock.
+Creating register for signal `\fpu_mul.\b_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$694' with positive edge clock.
+Creating register for signal `\fpu_mul.\a_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$695' with positive edge clock.
+Creating register for signal `\fpu_mul.\b_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$696' with positive edge clock.
+Creating register for signal `\fpu_mul.\in_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$697' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_terms' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$698' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_gt_expoffset' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$699' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_under' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$700' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$701' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$702' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_gt_prodshift' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$703' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$704' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$705' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_et_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$706' with positive edge clock.
+Creating register for signal `\fpu_mul.\mul_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$707' with positive edge clock.
+Creating register for signal `\fpu_mul.\mul_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$708' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$709' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$710' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_c' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$711' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_d' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$712' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_e' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$713' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_f' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$714' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_g' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$715' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_h' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$716' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_i' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$717' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_j' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$718' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_0' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$719' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$720' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$721' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$722' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$723' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$724' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$725' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_7' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$726' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_8' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$727' with positive edge clock.
+Creating register for signal `\fpu_mul.\product' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$728' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$729' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$730' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$731' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$732' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$733' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$734' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_lsb' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$735' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+Found and cleaned up 2 empty switches in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+Cleaned up 3 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 8a33e457af, CPU: user 0.04s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 25% 1x proc_mux (0 sec), 21% 2x read_verilog (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v' to AST representation.
+Generating RTLIL representation for module `\fpu_mul'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_mul
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_mul
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27 in module fpu_mul.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$26 in module fpu_mul.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 1 assignment to connection.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+     1/59: $0\zero_pipe[6:0] [6]
+     2/59: $0\zero_pipe[6:0] [5]
+     3/59: $0\zero_pipe[6:0] [4]
+     4/59: $0\zero_pipe[6:0] [3]
+     5/59: $0\zero_pipe[6:0] [2]
+     6/59: $0\zero_pipe[6:0] [1]
+     7/59: $0\zero_pipe[6:0] [0]
+     8/59: $0\exponent_4_d1[11:0]
+     9/59: $0\exponent_4_d2[11:0]
+    10/59: $0\product_lsb[0:0]
+    11/59: $0\product_6[105:0]
+    12/59: $0\product_5[105:0]
+    13/59: $0\product_4[105:0]
+    14/59: $0\product_3[105:0]
+    15/59: $0\product_2[105:0]
+    16/59: $0\product_1[105:0]
+    17/59: $0\product[105:0]
+    18/59: $0\sum_8[30:0]
+    19/59: $0\sum_7[36:0]
+    20/59: $0\sum_6[29:0]
+    21/59: $0\sum_5[27:0]
+    22/59: $0\sum_4[36:0]
+    23/59: $0\sum_3[35:0]
+    24/59: $0\sum_2[41:0]
+    25/59: $0\sum_1[35:0]
+    26/59: $0\sum_0[41:0]
+    27/59: $0\product_j[30:0]
+    28/59: $0\product_i[28:0]
+    29/59: $0\product_h[28:0]
+    30/59: $0\product_g[35:0]
+    31/59: $0\product_f[33:0]
+    32/59: $0\product_e[33:0]
+    33/59: $0\product_d[25:0]
+    34/59: $0\product_c[40:0]
+    35/59: $0\product_b[40:0]
+    36/59: $0\product_a[40:0]
+    37/59: $0\mul_b[52:0]
+    38/59: $0\mul_a[52:0]
+    39/59: $0\exponent_et_zero[0:0]
+    40/59: $0\exponent_4[11:0]
+    41/59: $0\exponent_3[11:0]
+    42/59: $0\exponent_gt_prodshift[0:0]
+    43/59: $0\exponent_2[11:0]
+    44/59: $0\exponent_1[11:0]
+    45/59: $0\exponent_under[11:0]
+    46/59: $0\exponent_gt_expoffset[0:0]
+    47/59: $0\exponent_terms[11:0]
+    48/59: $0\in_zero[0:0]
+    49/59: $0\b_is_zero[0:0]
+    50/59: $0\a_is_zero[0:0]
+    51/59: $0\b_is_norm[0:0]
+    52/59: $0\a_is_norm[0:0]
+    53/59: $0\exponent_b[10:0]
+    54/59: $0\exponent_a[10:0]
+    55/59: $0\mantissa_b[51:0]
+    56/59: $0\mantissa_a[51:0]
+    57/59: $0\product_shift_2[5:0]
+    58/59: $0\exponent_5[11:0]
+    59/59: $0\sign[0:0]
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$26'.
+     1/1: $1\product_shift[5:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_mul.\product_shift' from process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$26'.
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_mul.\sign' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$299' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$302' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_shift_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$305' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mantissa_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$308' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mantissa_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$311' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$314' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$317' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\a_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$320' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\b_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$323' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\a_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$326' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\b_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$329' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\in_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$332' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_terms' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$335' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_gt_expoffset' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$338' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_under' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$341' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$344' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$347' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_gt_prodshift' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$350' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$353' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$356' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_et_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$359' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mul_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$362' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mul_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$365' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$368' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$371' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_c' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$374' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_d' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$377' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_e' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$380' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_f' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$383' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_g' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$386' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_h' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$389' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_i' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$392' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_j' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$395' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_0' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$398' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$401' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$404' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$407' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$410' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$413' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$416' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_7' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$419' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_8' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$422' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$425' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$428' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$431' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$434' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$437' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$440' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$443' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_lsb' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$446' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\zero_pipe' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$449' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4_d1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$452' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4_d2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+  created $adff cell `$procdff$455' with positive edge clock and positive level reset.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$27'.
+Found and cleaned up 1 empty switch in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$26'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$26'.
+Cleaned up 5 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 081b6354eb, CPU: user 0.04s system 0.01s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 23% 2x read_verilog (0 sec), 17% 1x proc_dff (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v' to AST representation.
+Generating RTLIL representation for module `\fpu_mul'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180.1-238.9 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \fpu_mul
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \fpu_mul
+Removed 0 unused modules.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1 in module fpu_mul.
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+     1/1: $0\product_shift[5:0]
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+     1/50: $0\product_lsb[0:0]
+     2/50: $0\product_6[105:0]
+     3/50: $0\product_5[105:0]
+     4/50: $0\product_4[105:0]
+     5/50: $0\product_3[105:0]
+     6/50: $0\product_2[105:0]
+     7/50: $0\product_1[105:0]
+     8/50: $0\product[105:0]
+     9/50: $0\sum_8[30:0]
+    10/50: $0\sum_7[36:0]
+    11/50: $0\sum_6[29:0]
+    12/50: $0\sum_5[27:0]
+    13/50: $0\sum_4[36:0]
+    14/50: $0\sum_3[35:0]
+    15/50: $0\sum_2[41:0]
+    16/50: $0\sum_1[35:0]
+    17/50: $0\sum_0[41:0]
+    18/50: $0\product_j[30:0]
+    19/50: $0\product_i[28:0]
+    20/50: $0\product_h[28:0]
+    21/50: $0\product_g[35:0]
+    22/50: $0\product_f[33:0]
+    23/50: $0\product_e[33:0]
+    24/50: $0\product_d[25:0]
+    25/50: $0\product_c[40:0]
+    26/50: $0\product_b[40:0]
+    27/50: $0\product_a[40:0]
+    28/50: $0\mul_b[52:0]
+    29/50: $0\mul_a[52:0]
+    30/50: $0\exponent_et_zero[0:0]
+    31/50: $0\exponent_4[11:0]
+    32/50: $0\exponent_3[11:0]
+    33/50: $0\exponent_gt_prodshift[0:0]
+    34/50: $0\exponent_2[11:0]
+    35/50: $0\exponent_1[11:0]
+    36/50: $0\exponent_under[11:0]
+    37/50: $0\exponent_gt_expoffset[0:0]
+    38/50: $0\exponent_terms[11:0]
+    39/50: $0\in_zero[0:0]
+    40/50: $0\b_is_zero[0:0]
+    41/50: $0\a_is_zero[0:0]
+    42/50: $0\b_is_norm[0:0]
+    43/50: $0\a_is_norm[0:0]
+    44/50: $0\exponent_b[10:0]
+    45/50: $0\exponent_a[10:0]
+    46/50: $0\mantissa_b[51:0]
+    47/50: $0\mantissa_a[51:0]
+    48/50: $0\product_shift_2[5:0]
+    49/50: $0\exponent_5[11:0]
+    50/50: $0\sign[0:0]
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+Latch inferred for signal `\fpu_mul.\product_shift' from process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51': $auto$proc_dlatch.cc:432:proc_dlatch$685
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_mul.\sign' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$686' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$687' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_shift_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$688' with positive edge clock.
+Creating register for signal `\fpu_mul.\mantissa_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$689' with positive edge clock.
+Creating register for signal `\fpu_mul.\mantissa_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$690' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$691' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$692' with positive edge clock.
+Creating register for signal `\fpu_mul.\a_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$693' with positive edge clock.
+Creating register for signal `\fpu_mul.\b_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$694' with positive edge clock.
+Creating register for signal `\fpu_mul.\a_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$695' with positive edge clock.
+Creating register for signal `\fpu_mul.\b_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$696' with positive edge clock.
+Creating register for signal `\fpu_mul.\in_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$697' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_terms' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$698' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_gt_expoffset' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$699' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_under' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$700' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$701' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$702' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_gt_prodshift' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$703' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$704' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$705' with positive edge clock.
+Creating register for signal `\fpu_mul.\exponent_et_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$706' with positive edge clock.
+Creating register for signal `\fpu_mul.\mul_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$707' with positive edge clock.
+Creating register for signal `\fpu_mul.\mul_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$708' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$709' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$710' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_c' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$711' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_d' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$712' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_e' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$713' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_f' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$714' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_g' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$715' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_h' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$716' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_i' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$717' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_j' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$718' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_0' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$719' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$720' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$721' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$722' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$723' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$724' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$725' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_7' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$726' with positive edge clock.
+Creating register for signal `\fpu_mul.\sum_8' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$727' with positive edge clock.
+Creating register for signal `\fpu_mul.\product' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$728' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$729' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$730' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$731' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$732' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$733' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$734' with positive edge clock.
+Creating register for signal `\fpu_mul.\product_lsb' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+  created $dff cell `$procdff$735' with positive edge clock.
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:180$51'.
+Found and cleaned up 2 empty switches in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:70$1'.
+Cleaned up 3 empty switches.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.3. Executing FLATTEN pass (flatten design).
+
+2.4. Executing FUTURE pass.
+
+2.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+Removed 1 unused cells and 210 unused wires.
+
+2.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_mul...
+Found and reported 0 problems.
+
+2.8. Executing OPT pass (performing simple optimizations).
+
+2.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 360 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+2.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_mul..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_mul.
+    New ctrl vector for $pmux cell $procmux$52: { $procmux$105_CMP $procmux$104_CMP $procmux$103_CMP $procmux$102_CMP $procmux$101_CMP $procmux$100_CMP $procmux$99_CMP $procmux$98_CMP $procmux$97_CMP $procmux$96_CMP $procmux$95_CMP $procmux$94_CMP $procmux$93_CMP $procmux$92_CMP $procmux$91_CMP $procmux$90_CMP $procmux$89_CMP $procmux$88_CMP $procmux$87_CMP $procmux$86_CMP $procmux$85_CMP $procmux$84_CMP $procmux$83_CMP $procmux$82_CMP $procmux$81_CMP $procmux$80_CMP $procmux$79_CMP $procmux$78_CMP $procmux$77_CMP $procmux$76_CMP $procmux$75_CMP $procmux$74_CMP $procmux$73_CMP $procmux$72_CMP $procmux$71_CMP $procmux$70_CMP $procmux$69_CMP $procmux$68_CMP $procmux$67_CMP $procmux$66_CMP $procmux$65_CMP $procmux$64_CMP $procmux$63_CMP $procmux$62_CMP $procmux$61_CMP $procmux$60_CMP $procmux$59_CMP $procmux$58_CMP $procmux$57_CMP $procmux$56_CMP $procmux$55_CMP $procmux$54_CMP $procmux$53_CMP }
+  Optimizing cells in module \fpu_mul.
+Performed a total of 1 changes.
+
+2.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 360 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+2.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+
+2.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_mul..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_mul.
+Performed a total of 0 changes.
+
+2.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 360 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+2.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+
+2.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+2.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:135$12 ($add).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:135$14 ($add).
+Removed top 22 bits (of 32) from port B of cell fpu_mul.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:136$15 ($gt).
+Removed top 22 bits (of 32) from port A of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:137$16 ($sub).
+Removed top 20 bits (of 32) from port Y of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:137$16 ($sub).
+Removed top 22 bits (of 32) from port B of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:138$17 ($sub).
+Removed top 20 bits (of 32) from port Y of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:138$17 ($sub).
+Removed top 52 bits (of 53) from port B of cell fpu_mul.$procmux$54_CMP0 ($eq).
+Removed top 51 bits (of 52) from port B of cell fpu_mul.$procmux$55_CMP0 ($eq).
+Removed top 50 bits (of 51) from port B of cell fpu_mul.$procmux$56_CMP0 ($eq).
+Removed top 49 bits (of 50) from port B of cell fpu_mul.$procmux$57_CMP0 ($eq).
+Removed top 48 bits (of 49) from port B of cell fpu_mul.$procmux$58_CMP0 ($eq).
+Removed top 47 bits (of 48) from port B of cell fpu_mul.$procmux$59_CMP0 ($eq).
+Removed top 46 bits (of 47) from port B of cell fpu_mul.$procmux$60_CMP0 ($eq).
+Removed top 45 bits (of 46) from port B of cell fpu_mul.$procmux$61_CMP0 ($eq).
+Removed top 44 bits (of 45) from port B of cell fpu_mul.$procmux$62_CMP0 ($eq).
+Removed top 43 bits (of 44) from port B of cell fpu_mul.$procmux$63_CMP0 ($eq).
+Removed top 42 bits (of 43) from port B of cell fpu_mul.$procmux$64_CMP0 ($eq).
+Removed top 41 bits (of 42) from port B of cell fpu_mul.$procmux$65_CMP0 ($eq).
+Removed top 40 bits (of 41) from port B of cell fpu_mul.$procmux$66_CMP0 ($eq).
+Removed top 39 bits (of 40) from port B of cell fpu_mul.$procmux$67_CMP0 ($eq).
+Removed top 38 bits (of 39) from port B of cell fpu_mul.$procmux$68_CMP0 ($eq).
+Removed top 37 bits (of 38) from port B of cell fpu_mul.$procmux$69_CMP0 ($eq).
+Removed top 36 bits (of 37) from port B of cell fpu_mul.$procmux$70_CMP0 ($eq).
+Removed top 35 bits (of 36) from port B of cell fpu_mul.$procmux$71_CMP0 ($eq).
+Removed top 34 bits (of 35) from port B of cell fpu_mul.$procmux$72_CMP0 ($eq).
+Removed top 33 bits (of 34) from port B of cell fpu_mul.$procmux$73_CMP0 ($eq).
+Removed top 32 bits (of 33) from port B of cell fpu_mul.$procmux$74_CMP0 ($eq).
+Removed top 31 bits (of 32) from port B of cell fpu_mul.$procmux$75_CMP0 ($eq).
+Removed top 30 bits (of 31) from port B of cell fpu_mul.$procmux$76_CMP0 ($eq).
+Removed top 29 bits (of 30) from port B of cell fpu_mul.$procmux$77_CMP0 ($eq).
+Removed top 28 bits (of 29) from port B of cell fpu_mul.$procmux$78_CMP0 ($eq).
+Removed top 27 bits (of 28) from port B of cell fpu_mul.$procmux$79_CMP0 ($eq).
+Removed top 26 bits (of 27) from port B of cell fpu_mul.$procmux$80_CMP0 ($eq).
+Removed top 25 bits (of 26) from port B of cell fpu_mul.$procmux$81_CMP0 ($eq).
+Removed top 24 bits (of 25) from port B of cell fpu_mul.$procmux$82_CMP0 ($eq).
+Removed top 23 bits (of 24) from port B of cell fpu_mul.$procmux$83_CMP0 ($eq).
+Removed top 22 bits (of 23) from port B of cell fpu_mul.$procmux$84_CMP0 ($eq).
+Removed top 21 bits (of 22) from port B of cell fpu_mul.$procmux$85_CMP0 ($eq).
+Removed top 20 bits (of 21) from port B of cell fpu_mul.$procmux$86_CMP0 ($eq).
+Removed top 19 bits (of 20) from port B of cell fpu_mul.$procmux$87_CMP0 ($eq).
+Removed top 18 bits (of 19) from port B of cell fpu_mul.$procmux$88_CMP0 ($eq).
+Removed top 17 bits (of 18) from port B of cell fpu_mul.$procmux$89_CMP0 ($eq).
+Removed top 16 bits (of 17) from port B of cell fpu_mul.$procmux$90_CMP0 ($eq).
+Removed top 15 bits (of 16) from port B of cell fpu_mul.$procmux$91_CMP0 ($eq).
+Removed top 14 bits (of 15) from port B of cell fpu_mul.$procmux$92_CMP0 ($eq).
+Removed top 13 bits (of 14) from port B of cell fpu_mul.$procmux$93_CMP0 ($eq).
+Removed top 12 bits (of 13) from port B of cell fpu_mul.$procmux$94_CMP0 ($eq).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$procmux$95_CMP0 ($eq).
+Removed top 10 bits (of 11) from port B of cell fpu_mul.$procmux$96_CMP0 ($eq).
+Removed top 9 bits (of 10) from port B of cell fpu_mul.$procmux$97_CMP0 ($eq).
+Removed top 8 bits (of 9) from port B of cell fpu_mul.$procmux$98_CMP0 ($eq).
+Removed top 7 bits (of 8) from port B of cell fpu_mul.$procmux$99_CMP0 ($eq).
+Removed top 6 bits (of 7) from port B of cell fpu_mul.$procmux$100_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell fpu_mul.$procmux$101_CMP0 ($eq).
+Removed top 4 bits (of 5) from port B of cell fpu_mul.$procmux$102_CMP0 ($eq).
+Removed top 3 bits (of 4) from port B of cell fpu_mul.$procmux$103_CMP0 ($eq).
+Removed top 2 bits (of 3) from port B of cell fpu_mul.$procmux$104_CMP0 ($eq).
+Removed top 1 bits (of 2) from port B of cell fpu_mul.$procmux$105_CMP0 ($eq).
+Removed top 11 bits (of 12) from wire fpu_mul.$logic_not$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:135$11_Y.
+Removed top 11 bits (of 12) from wire fpu_mul.$logic_not$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:135$13_Y.
+Removed top 20 bits (of 32) from wire fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:137$16_Y.
+Removed top 20 bits (of 32) from wire fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_mul/fpu_mul.v:138$17_Y.
+
+2.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+Removed 0 unused cells and 4 unused wires.
+
+2.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.12. Executing OPT pass (performing simple optimizations).
+
+2.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+2.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 360 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+2.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+
+2.12.4. Finished fast OPT passes.
+
+2.13. Printing statistics.
+
+=== fpu_mul ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      367 wires
+     7057 wire bits
+       58 public wires
+     1940 public wire bits
+        8 ports
+      200 port bits
+      360 cells
+       12   $add
+       53   $and
+       50   $dff
+        1   $dlatch
+       52   $eq
+        2   $gt
+        6   $logic_not
+       10   $mul
+      106   $mux
+       54   $not
+        1   $or
+        1   $pmux
+        5   $reduce_or
+        2   $shl
+        1   $shr
+        3   $sub
+        1   $xor
+
+2.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_mul...
+Found and reported 0 problems.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v' to AST representation.
+Generating RTLIL representation for module `\fpu_mul'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \fpu_mul
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \fpu_mul
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766 in module fpu_mul.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$765 in module fpu_mul.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 1 assignment to connection.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+     1/59: $0\zero_pipe[6:0] [6]
+     2/59: $0\zero_pipe[6:0] [5]
+     3/59: $0\zero_pipe[6:0] [4]
+     4/59: $0\zero_pipe[6:0] [3]
+     5/59: $0\zero_pipe[6:0] [2]
+     6/59: $0\zero_pipe[6:0] [1]
+     7/59: $0\zero_pipe[6:0] [0]
+     8/59: $0\exponent_4_d1[11:0]
+     9/59: $0\exponent_4_d2[11:0]
+    10/59: $0\product_lsb[0:0]
+    11/59: $0\product_6[105:0]
+    12/59: $0\product_5[105:0]
+    13/59: $0\product_4[105:0]
+    14/59: $0\product_3[105:0]
+    15/59: $0\product_2[105:0]
+    16/59: $0\product_1[105:0]
+    17/59: $0\product[105:0]
+    18/59: $0\sum_8[30:0]
+    19/59: $0\sum_7[36:0]
+    20/59: $0\sum_6[29:0]
+    21/59: $0\sum_5[27:0]
+    22/59: $0\sum_4[36:0]
+    23/59: $0\sum_3[35:0]
+    24/59: $0\sum_2[41:0]
+    25/59: $0\sum_1[35:0]
+    26/59: $0\sum_0[41:0]
+    27/59: $0\product_j[30:0]
+    28/59: $0\product_i[28:0]
+    29/59: $0\product_h[28:0]
+    30/59: $0\product_g[35:0]
+    31/59: $0\product_f[33:0]
+    32/59: $0\product_e[33:0]
+    33/59: $0\product_d[25:0]
+    34/59: $0\product_c[40:0]
+    35/59: $0\product_b[40:0]
+    36/59: $0\product_a[40:0]
+    37/59: $0\mul_b[52:0]
+    38/59: $0\mul_a[52:0]
+    39/59: $0\exponent_et_zero[0:0]
+    40/59: $0\exponent_4[11:0]
+    41/59: $0\exponent_3[11:0]
+    42/59: $0\exponent_gt_prodshift[0:0]
+    43/59: $0\exponent_2[11:0]
+    44/59: $0\exponent_1[11:0]
+    45/59: $0\exponent_under[11:0]
+    46/59: $0\exponent_gt_expoffset[0:0]
+    47/59: $0\exponent_terms[11:0]
+    48/59: $0\in_zero[0:0]
+    49/59: $0\b_is_zero[0:0]
+    50/59: $0\a_is_zero[0:0]
+    51/59: $0\b_is_norm[0:0]
+    52/59: $0\a_is_norm[0:0]
+    53/59: $0\exponent_b[10:0]
+    54/59: $0\exponent_a[10:0]
+    55/59: $0\mantissa_b[51:0]
+    56/59: $0\mantissa_a[51:0]
+    57/59: $0\product_shift_2[5:0]
+    58/59: $0\exponent_5[11:0]
+    59/59: $0\sign[0:0]
+Creating decoders for process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$765'.
+     1/1: $1\product_shift[5:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_mul.\product_shift' from process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$765'.
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_mul.\sign' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1038' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1041' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_shift_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1044' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mantissa_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1047' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mantissa_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1050' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1053' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1056' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\a_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1059' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\b_is_norm' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1062' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\a_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1065' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\b_is_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1068' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\in_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1071' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_terms' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1074' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_gt_expoffset' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1077' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_under' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1080' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1083' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1086' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_gt_prodshift' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1089' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1092' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1095' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_et_zero' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1098' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mul_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1101' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\mul_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1104' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_a' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1107' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_b' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1110' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_c' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1113' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_d' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1116' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_e' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1119' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_f' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1122' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_g' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1125' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_h' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1128' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_i' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1131' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_j' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1134' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_0' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1137' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1140' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1143' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1146' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1149' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1152' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1155' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_7' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1158' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\sum_8' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1161' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1164' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1167' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1170' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_3' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1173' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_4' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1176' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_5' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1179' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_6' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1182' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\product_lsb' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1185' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4_d2' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1188' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\exponent_4_d1' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1191' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_mul.\zero_pipe' using process `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+  created $adff cell `$procdff$1194' with positive edge clock and positive level reset.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:176$766'.
+Found and cleaned up 1 empty switch in `\fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$765'.
+Removing empty process `fpu_mul.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:116$765'.
+Cleaned up 5 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+Removed 38 unused cells and 284 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_mul...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 180 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Computing hashes of 179 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 1 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_mul..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_mul.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 179 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+Removed 0 unused cells and 1 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_mul..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_mul.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 179 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:287$784 ($sub).
+Removed top 6 bits (of 12) from port B of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:284$781 ($sub).
+Removed top 6 bits (of 12) from port B of cell fpu_mul.$ge$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:275$778 ($ge).
+Removed top 17 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$761 ($add).
+Removed top 12 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$760 ($add).
+Removed top 29 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$759 ($add).
+Removed top 34 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$758 ($add).
+Removed top 29 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$757 ($add).
+Removed top 46 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$756 ($add).
+Removed top 46 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$755 ($add).
+Removed top 65 bits (of 106) from port A of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$754 ($add).
+Removed top 63 bits (of 106) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$754 ($add).
+Removed top 62 bits (of 106) from port Y of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$754 ($add).
+Removed top 2 bits (of 12) from port B of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:100$752 ($sub).
+Removed top 2 bits (of 12) from port A of cell fpu_mul.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:99$751 ($sub).
+Removed top 2 bits (of 12) from port B of cell fpu_mul.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:98$750 ($gt).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:97$749 ($add).
+Removed top 11 bits (of 12) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:97$747 ($add).
+Removed top 1 bits (of 12) from port A of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:97$745 ($add).
+Removed top 1 bits (of 12) from port B of cell fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:97$745 ($add).
+Removed top 5 bits (of 6) from mux cell fpu_mul.$procmux$930 ($mux).
+Removed top 3 bits (of 6) from mux cell fpu_mul.$procmux$932 ($mux).
+Removed top 3 bits (of 6) from mux cell fpu_mul.$procmux$934 ($mux).
+Removed top 3 bits (of 6) from mux cell fpu_mul.$procmux$936 ($mux).
+Removed top 3 bits (of 6) from mux cell fpu_mul.$procmux$938 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$940 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$942 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$944 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$946 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$948 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$950 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$952 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$954 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$956 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$958 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$960 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$962 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$964 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$966 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$968 ($mux).
+Removed top 1 bits (of 6) from mux cell fpu_mul.$procmux$970 ($mux).
+Removed top 62 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$754_Y.
+Removed top 3 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$755_Y.
+Removed top 19 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$756_Y.
+Removed top 3 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$757_Y.
+Removed top 19 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$758_Y.
+Removed top 3 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$759_Y.
+Removed top 19 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$760_Y.
+Removed top 3 bits (of 106) from wire fpu_mul.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$761_Y.
+Removed top 5 bits (of 6) from wire fpu_mul.$procmux$930_Y.
+Removed top 3 bits (of 6) from wire fpu_mul.$procmux$932_Y.
+Removed top 3 bits (of 6) from wire fpu_mul.$procmux$934_Y.
+Removed top 3 bits (of 6) from wire fpu_mul.$procmux$936_Y.
+Removed top 3 bits (of 6) from wire fpu_mul.$procmux$938_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$940_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$942_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$944_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$946_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$948_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$950_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$952_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$954_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$956_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$958_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$960_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$962_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$964_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$966_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$968_Y.
+Removed top 1 bits (of 6) from wire fpu_mul.$procmux$970_Y.
+Removed top 62 bits (of 106) from wire fpu_mul.$shr$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:113$763_Y.
+Removed top 46 bits (of 106) from wire fpu_mul.pp_b.
+Removed top 29 bits (of 106) from wire fpu_mul.pp_c.
+Removed top 63 bits (of 106) from wire fpu_mul.pp_d.
+Removed top 29 bits (of 106) from wire fpu_mul.pp_e.
+Removed top 12 bits (of 106) from wire fpu_mul.pp_f.
+Removed top 46 bits (of 106) from wire fpu_mul.pp_g.
+Removed top 17 bits (of 106) from wire fpu_mul.pp_h.
+Removed top 34 bits (of 106) from wire fpu_mul.pp_j.
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+Removed 0 unused cells and 31 unused wires.
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_mul.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_mul'.
+Computing hashes of 179 cells of `\fpu_mul'.
+Finding duplicate cells in `\fpu_mul'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_mul..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== fpu_mul ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      198 wires
+     6609 wire bits
+       64 public wires
+     2546 public wire bits
+        8 ports
+      200 port bits
+      179 cells
+       12   $add
+       34   $adff
+        1   $ge
+        1   $gt
+        6   $logic_not
+       10   $mul
+      103   $mux
+        1   $or
+        3   $reduce_or
+        2   $shl
+        1   $shr
+        4   $sub
+        1   $xor
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_mul...
+Found and reported 0 problems.
+
+5. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_fpu_mul" and gate cell "gate_fpu_mul".
+
+5.1. Executing FLATTEN pass (flatten design).
+
+5.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_fpu_mul'.
+Removing unused module `\gold_fpu_mul'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.3. Executing FUTURE pass.
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 547 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 546 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 1 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 546 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 1 unused wires.
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 546 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 62 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$755 ($add).
+Removed top 45 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$755 ($add).
+Removed top 45 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$756 ($add).
+Removed top 44 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$756 ($add).
+Removed top 44 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$757 ($add).
+Removed top 28 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$757 ($add).
+Removed top 28 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$758 ($add).
+Removed top 27 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$758 ($add).
+Removed top 27 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$759 ($add).
+Removed top 26 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$759 ($add).
+Removed top 26 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$760 ($add).
+Removed top 11 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$760 ($add).
+Removed top 11 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$761 ($add).
+Removed top 10 bits (of 106) from port Y of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$761 ($add).
+Removed top 10 bits (of 106) from port A of cell miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$762 ($add).
+Removed top 42 bits (of 103) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$755_Y.
+Removed top 25 bits (of 87) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$756_Y.
+Removed top 25 bits (of 103) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$757_Y.
+Removed top 8 bits (of 87) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$758_Y.
+Removed top 23 bits (of 103) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$759_Y.
+Removed top 7 bits (of 103) from wire miter.$flatten\gate.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_mul/fpu_mul_t5.v:112$761_Y.
+Removed top 11 bits (of 106) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1201.
+Removed top 5 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1203.
+Removed top 3 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1204.
+Removed top 3 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1205.
+Removed top 3 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1206.
+Removed top 3 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1207.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1208.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1209.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1210.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1211.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1212.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1213.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1214.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1215.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1216.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1217.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1218.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1219.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1220.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1221.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1222.
+Removed top 1 bits (of 6) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1223.
+Removed top 11 bits (of 12) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$736.
+Removed top 11 bits (of 12) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$737.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$738.
+Removed top 27 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$739.
+Removed top 1 bits (of 56) from wire miter.gate_product_7.
+Removed top 1 bits (of 56) from wire miter.gold_product_7.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 41 unused wires.
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 546 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      573 wires
+    13214 wire bits
+      134 public wires
+     4754 public wire bits
+        6 ports
+      132 port bits
+      546 cells
+       24   $add
+       34   $adff
+       53   $and
+        1   $assert
+       50   $dff
+        1   $dlatch
+       52   $eq
+        3   $eqx
+        1   $ge
+        3   $gt
+       12   $logic_not
+       20   $mul
+      209   $mux
+       55   $not
+        2   $or
+        1   $pmux
+        1   $reduce_and
+        8   $reduce_or
+        2   $scopeinfo
+        4   $shl
+        2   $shr
+        7   $sub
+        1   $xor
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+7. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$1038 ($adff): ARST=\in_rst, D=$flatten\gate.$0\sign[0:0], Q=\gate.sign
+Replacing miter.$flatten\gate.$procdff$1041 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_5[11:0], Q=\gate.exponent_5
+Replacing miter.$flatten\gate.$procdff$1044 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_shift_2[5:0], Q=\gate.product_shift_2
+Replacing miter.$flatten\gate.$procdff$1053 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_a[10:0], Q=\gate.exponent_a
+Replacing miter.$flatten\gate.$procdff$1056 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_b[10:0], Q=\gate.exponent_b
+Replacing miter.$flatten\gate.$procdff$1059 ($adff): ARST=\in_rst, D=$flatten\gate.$0\a_is_norm[0:0], Q=\gate.a_is_norm
+Replacing miter.$flatten\gate.$procdff$1062 ($adff): ARST=\in_rst, D=$flatten\gate.$0\b_is_norm[0:0], Q=\gate.b_is_norm
+Replacing miter.$flatten\gate.$procdff$1083 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_1[11:0], Q=\gate.exponent_1
+Replacing miter.$flatten\gate.$procdff$1086 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_2[11:0], Q=\gate.exponent_2
+Replacing miter.$flatten\gate.$procdff$1089 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_gt_prodshift[0:0], Q=\gate.exponent_gt_prodshift
+Replacing miter.$flatten\gate.$procdff$1092 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_3[11:0], Q=\gate.exponent_3
+Replacing miter.$flatten\gate.$procdff$1095 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_4[11:0], Q=\gate.exponent_4
+Replacing miter.$flatten\gate.$procdff$1098 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_et_zero[0:0], Q=\gate.exponent_et_zero
+Replacing miter.$flatten\gate.$procdff$1107 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_a[40:0], Q=\gate.product_a
+Replacing miter.$flatten\gate.$procdff$1110 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_b[40:0], Q=\gate.product_b
+Replacing miter.$flatten\gate.$procdff$1113 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_c[40:0], Q=\gate.product_c
+Replacing miter.$flatten\gate.$procdff$1116 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_d[25:0], Q=\gate.product_d
+Replacing miter.$flatten\gate.$procdff$1119 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_e[33:0], Q=\gate.product_e
+Replacing miter.$flatten\gate.$procdff$1122 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_f[33:0], Q=\gate.product_f
+Replacing miter.$flatten\gate.$procdff$1125 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_g[35:0], Q=\gate.product_g
+Replacing miter.$flatten\gate.$procdff$1128 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_h[28:0], Q=\gate.product_h
+Replacing miter.$flatten\gate.$procdff$1131 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_i[28:0], Q=\gate.product_i
+Replacing miter.$flatten\gate.$procdff$1134 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_j[30:0], Q=\gate.product_j
+Replacing miter.$flatten\gate.$procdff$1164 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product[105:0], Q=\gate.product
+Replacing miter.$flatten\gate.$procdff$1167 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_1[105:0], Q=\gate.product_1
+Replacing miter.$flatten\gate.$procdff$1170 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_2[105:0], Q=\gate.product_2
+Replacing miter.$flatten\gate.$procdff$1173 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_3[105:0], Q=\gate.product_3
+Replacing miter.$flatten\gate.$procdff$1176 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_4[105:0], Q=\gate.product_4
+Replacing miter.$flatten\gate.$procdff$1179 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_5[105:0], Q=\gate.product_5
+Replacing miter.$flatten\gate.$procdff$1182 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_6[105:0], Q=\gate.product_6
+Replacing miter.$flatten\gate.$procdff$1185 ($adff): ARST=\in_rst, D=$flatten\gate.$0\product_lsb[0:0], Q=\gate.product_lsb
+Replacing miter.$flatten\gate.$procdff$1188 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_4_d2[11:0], Q=\gate.exponent_4_d2
+Replacing miter.$flatten\gate.$procdff$1191 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exponent_4_d1[11:0], Q=\gate.exponent_4_d1
+Replacing miter.$flatten\gate.$procdff$1194 ($adff): ARST=\in_rst, D=$flatten\gate.$0\zero_pipe[6:0], Q=\gate.zero_pipe
+Replacing miter.$flatten\gold.$auto$proc_dlatch.cc:432:proc_dlatch$685 ($dlatch): EN=$flatten\gold.$auto$rtlil.cc:3341:ReduceOr$682, D=$flatten\gold.$0\product_shift[5:0], Q=\gold.product_shift
+
+8. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Final init constraint equation: { \gold.product_lsb \gold.product_6 \gold.product_5 \gold.product_4 \gold.product_3 \gold.product_2 \gold.product_1 \gold.product \gold.sum_8 \gold.sum_7 \gold.sum_6 \gold.sum_5 \gold.sum_4 \gold.sum_3 \gold.sum_2 \gold.sum_1 \gold.sum_0 \gold.product_j \gold.product_i \gold.product_h \gold.product_g \gold.product_f \gold.product_e \gold.product_d \gold.product_c \gold.product_b \gold.product_a \gold.mul_b \gold.mul_a \gold.exponent_et_zero \gold.exponent_4 \gold.exponent_3 \gold.exponent_gt_prodshift \gold.exponent_2 \gold.exponent_1 \gold.exponent_under \gold.exponent_gt_expoffset \gold.exponent_terms \gold.in_zero \gold.b_is_zero \gold.a_is_zero \gold.b_is_norm \gold.a_is_norm \gold.exponent_b \gold.exponent_a \gold.mantissa_b \gold.mantissa_a \gold.product_shift_2 \gold.exponent_5 \gold.sign $auto$async2sync.cc:268:execute$1347 $auto$async2sync.cc:234:execute$1345 $auto$async2sync.cc:234:execute$1343 $auto$async2sync.cc:234:execute$1341 $auto$async2sync.cc:234:execute$1339 $auto$async2sync.cc:234:execute$1337 $auto$async2sync.cc:234:execute$1335 $auto$async2sync.cc:234:execute$1333 $auto$async2sync.cc:234:execute$1331 $auto$async2sync.cc:234:execute$1329 $auto$async2sync.cc:234:execute$1327 $auto$async2sync.cc:234:execute$1325 $auto$async2sync.cc:234:execute$1323 $auto$async2sync.cc:234:execute$1321 $auto$async2sync.cc:234:execute$1319 $auto$async2sync.cc:234:execute$1317 $auto$async2sync.cc:234:execute$1315 $auto$async2sync.cc:234:execute$1313 $auto$async2sync.cc:234:execute$1311 $auto$async2sync.cc:234:execute$1309 $auto$async2sync.cc:234:execute$1307 $auto$async2sync.cc:234:execute$1305 $auto$async2sync.cc:234:execute$1303 $auto$async2sync.cc:234:execute$1301 $auto$async2sync.cc:234:execute$1299 $auto$async2sync.cc:234:execute$1297 $auto$async2sync.cc:234:execute$1295 $auto$async2sync.cc:234:execute$1293 $auto$async2sync.cc:234:execute$1291 $auto$async2sync.cc:234:execute$1289 $auto$async2sync.cc:234:execute$1287 $auto$async2sync.cc:234:execute$1285 $auto$async2sync.cc:234:execute$1283 $auto$async2sync.cc:234:execute$1281 $auto$async2sync.cc:234:execute$1279 } = 2950'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 615 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1240 when 1'1.
+
+Solving problem with 1659638 variables and 4767997 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                       Dec       Hex                                                                                                           Bin
+  ---- ----------------------------------------- ----------- --------- -------------------------------------------------------------------------------------------------------------
+  init $auto$async2sync.cc:234:execute$1279                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1281                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1283                0         0                                                                                                        000000
+  init $auto$async2sync.cc:234:execute$1285                0         0                                                                                                   00000000000
+  init $auto$async2sync.cc:234:execute$1287                0         0                                                                                                   00000000000
+  init $auto$async2sync.cc:234:execute$1289                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1291                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1293                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1295                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1297                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1299                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1301                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1303                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1305               --        --                                                                     00000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1307               --        --                                                                     00000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1309               --        --                                                                     00000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1311                0         0                                                                                    00000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1313               --        --                                                                            0000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1315               --        --                                                                            0000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1317               --        --                                                                          000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1319                0         0                                                                                 00000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1321                0         0                                                                                 00000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1323                0         0                                                                               0000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1325               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1327               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1329               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1331               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1333               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1335               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1337               --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1339                0         0                                                                                                             0
+  init $auto$async2sync.cc:234:execute$1341                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1343                0         0                                                                                                  000000000000
+  init $auto$async2sync.cc:234:execute$1345                0         0                                                                                                       0000000
+  init $auto$async2sync.cc:268:execute$1347                0         0                                                                                                        000000
+  init \gold.a_is_norm                                     0         0                                                                                                             0
+  init \gold.a_is_zero                                     0         0                                                                                                             0
+  init \gold.b_is_norm                                     0         0                                                                                                             0
+  init \gold.b_is_zero                                     0         0                                                                                                             0
+  init \gold.exponent_1                                    0         0                                                                                                  000000000000
+  init \gold.exponent_2                                    0         0                                                                                                  000000000000
+  init \gold.exponent_3                                    0         0                                                                                                  000000000000
+  init \gold.exponent_4                                    0         0                                                                                                  000000000000
+  init \gold.exponent_5                                    0         0                                                                                                  000000000000
+  init \gold.exponent_a                                    0         0                                                                                                   00000000000
+  init \gold.exponent_b                                    0         0                                                                                                   00000000000
+  init \gold.exponent_et_zero                              0         0                                                                                                             0
+  init \gold.exponent_gt_expoffset                         0         0                                                                                                             0
+  init \gold.exponent_gt_prodshift                         0         0                                                                                                             0
+  init \gold.exponent_terms                                0         0                                                                                                  000000000000
+  init \gold.exponent_under                                0         0                                                                                                  000000000000
+  init \gold.in_zero                                       0         0                                                                                                             0
+  init \gold.mantissa_a                                   --        --                                                          0000000000000000000000000000000000000000000000000000
+  init \gold.mantissa_b                                   --        --                                                          0000000000000000000000000000000000000000000000000000
+  init \gold.mul_a                                        --        --                                                         00000000000000000000000000000000000000000000000000000
+  init \gold.mul_b                                        --        --                                                         00000000000000000000000000000000000000000000000000000
+  init \gold.product                                      --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_1                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_2                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_3                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_4                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_5                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_6                                    --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.product_a                                    --        --                                                                     00000000000000000000000000000000000000000
+  init \gold.product_b                                    --        --                                                                     00000000000000000000000000000000000000000
+  init \gold.product_c                                    --        --                                                                     00000000000000000000000000000000000000000
+  init \gold.product_d                                     0         0                                                                                    00000000000000000000000000
+  init \gold.product_e                                    --        --                                                                            0000000000000000000000000000000000
+  init \gold.product_f                                    --        --                                                                            0000000000000000000000000000000000
+  init \gold.product_g                                    --        --                                                                          000000000000000000000000000000000000
+  init \gold.product_h                                     0         0                                                                                 00000000000000000000000000000
+  init \gold.product_i                                     0         0                                                                                 00000000000000000000000000000
+  init \gold.product_j                                     0         0                                                                               0000000000000000000000000000000
+  init \gold.product_lsb                                   0         0                                                                                                             0
+  init \gold.product_shift_2                               0         0                                                                                                        000000
+  init \gold.sign                                          0         0                                                                                                             0
+  init \gold.sum_0                                        --        --                                                                    000000000000000000000000000000000000000000
+  init \gold.sum_1                                        --        --                                                                          000000000000000000000000000000000000
+  init \gold.sum_2                                        --        --                                                                    000000000000000000000000000000000000000000
+  init \gold.sum_3                                        --        --                                                                          000000000000000000000000000000000000
+  init \gold.sum_4                                        --        --                                                                         0000000000000000000000000000000000000
+  init \gold.sum_5                                         0         0                                                                                  0000000000000000000000000000
+  init \gold.sum_6                                         0         0                                                                                000000000000000000000000000000
+  init \gold.sum_7                                        --        --                                                                         0000000000000000000000000000000000000
+  init \gold.sum_8                                         0         0                                                                               0000000000000000000000000000000
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

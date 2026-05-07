@@ -1,0 +1,81 @@
+or1200_operandmuxes is an operand selection and registration module placed before the execution stage of the OpenRISC OR1200 processor. It selects the two operands required by the execution stage according to sel_a and sel_b, and registers the selected A and B operands into operand_a and operand_b, respectively. The module supports operand selection from register file read data, execution-stage forwarding data, write-back-stage forwarding data, and immediate data. The immediate value is only used in the selection of operand B, not operand A.
+
+This module is not only a combinational multiplexer, but also includes operand holding logic for pipeline freeze scenarios. When the ID stage is frozen while the EX stage is not frozen, the values on the register file read ports or forwarding paths may change in later cycles. To prevent the operands already supplied to the execution stage from being overwritten by such changes, the module uses the saved_a and saved_b flags to capture the currently selected operands only once in this special window, and allows new operands to be written only after the freeze condition is released.
+
+The module inputs include the clock clk, the asynchronous active-high reset rst, the ID-stage freeze signal id_freeze, the EX-stage freeze signal ex_freeze, the register file read data rf_dataa and rf_datab, the execution-stage forwarding data ex_forw, the write-back-stage forwarding data wb_forw, the sign-extended immediate value simm, and the operand selection signals sel_a and sel_b. The module outputs include the registered operand operand_a, the registered operand operand_b, and the combinationally selected B operand muxed_b.
+
+The combinational selection logic for operand A is controlled by sel_a. The code uses casex(sel_a) to select the source of muxed_a. When sel_a matches OR1200_SEL_EX_FORW, muxed_a takes ex_forw. When sel_a matches OR1200_SEL_WB_FORW, muxed_a takes wb_forw. In all other cases, muxed_a defaults to the register file read-port A data, rf_dataa. Therefore, the possible sources of operand A are rf_dataa, ex_forw, and wb_forw; the immediate value simm is not a selectable source for operand A.
+
+The combinational selection logic for operand B is controlled by sel_b. The code uses casex(sel_b) to select the source of muxed_b. When sel_b matches OR1200_SEL_IMM, muxed_b takes the immediate value simm. When sel_b matches OR1200_SEL_EX_FORW, muxed_b takes ex_forw. When sel_b matches OR1200_SEL_WB_FORW, muxed_b takes wb_forw. In all other cases, muxed_b defaults to the register file read-port B data, rf_datab. Therefore, the possible sources of operand B are rf_datab, simm, ex_forw, and wb_forw.
+
+operand_a and operand_b are registered sequential outputs, not direct connections to the combinational mux outputs. muxed_a and muxed_b change combinationally as the input sources and selection signals change, while operand_a and operand_b are updated only on the rising edge of clk according to the freeze controls and saved flags. The reset signal rst is asynchronous and active high. When rst is high, operand_a and operand_b are cleared to zero, and saved_a and saved_b are also cleared.
+
+For operand A, on each rising edge of clk, if rst is high, the module clears operand_a and saved_a. If reset is not asserted and the condition !ex_freeze && id_freeze && !saved_a is true, the module writes the current muxed_a value into operand_a and sets saved_a to 1, indicating that operand A has been captured once in the window where ID is frozen and EX is not frozen. If reset is not asserted and the condition !ex_freeze && !saved_a is true, the module normally writes the current muxed_a value into operand_a. If reset is not asserted and the condition !ex_freeze && !id_freeze is true, the module clears saved_a, allowing a new operand to be written in later cycles. When ex_freeze is high, operand_a and saved_a remain unchanged unless an asynchronous reset occurs.
+
+For operand B, the sequential behavior is the same as for operand A, except that the data source is muxed_b instead of muxed_a, and the saved flag is saved_b instead of saved_a. On reset, operand_b and saved_b are cleared. When !ex_freeze && id_freeze && !saved_b is true, the module writes the current muxed_b value into operand_b and sets saved_b. When !ex_freeze && !saved_b is true, the module normally writes the current muxed_b value into operand_b. When !ex_freeze && !id_freeze is true, the module clears saved_b. When ex_freeze is high, operand_b and saved_b remain unchanged unless reset occurs.
+
+It is important to note that saved_a and saved_b are not cleared merely when id_freeze is deasserted. They are cleared only when both !ex_freeze and !id_freeze are true. In other words, the corresponding saved flag is cleared only when both the ID stage and the EX stage are not frozen. If the ID stage has already been unfrozen but the EX stage is still frozen, the saved flag retains its previous value.
+
+The muxed_b signal is exported as a module output and represents the combinationally selected B operand. It differs from operand_b: muxed_b is an unregistered combinational result and changes immediately with changes in sel_b, rf_datab, simm, ex_forw, and wb_forw; operand_b, by contrast, is a registered result that updates only on a rising clock edge and is controlled by ex_freeze, id_freeze, and saved_b.
+
+The selection logic in this module uses casex. Under normal design assumptions, sel_a and sel_b should be definite binary encodings, so the selected source is determined by the encoding of the selection signal and there is no additional dynamic priority relationship. However, in simulation, if sel_a or sel_b contains X or Z bits, casex treats those bits as don’t-care bits, which may lead to matching behavior different from a normal case statement. Therefore, when verifying, analyzing, or rewriting this module, the casex semantics should either be preserved or explicitly handled.
+
+Overall, or1200_operandmuxes selects and registers two operands for the execution stage. Operand A can come from the register file A port, the execution-stage forwarding path, or the write-back-stage forwarding path. Operand B can come from the register file B port, the immediate value, the execution-stage forwarding path, or the write-back-stage forwarding path. The module uses saved_a and saved_b to preserve the current operands when the ID stage is frozen and the EX stage is not frozen, preventing changes in the input sources during the freeze period from incorrectly overwriting the operands. Once both the ID and EX stages return to the unfrozen state, the saved flags are cleared and the module resumes normal operand update behavior.
+
+module or1200_operandmuxes(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f
+    input id_freeze,
+    input ex_freeze,
+    input [31:0] rf_dataa,
+    input [31:0] rf_datab,
+    input [31:0] ex_forw,
+    input [31:0] wb_forw,
+    input [31:0] simm,
+    input [1:0] sel_a,
+    input [1:0] sel_b,
+    output [31:0] operand_a,
+    output [31:0] operand_b,
+    output [31:0] muxed_b
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - id_freeze: Freeze control for the decode stage.
+    - ex_freeze: Freeze control for the execute stage.
+    - rf_dataa[31:0]: Register-file source data A.
+    - rf_datab[31:0]: Register-file source data B.
+    - ex_forw[31:0]: Forwarded execute-stage result used for operand bypassing.
+    - wb_forw[31:0]: Forwarded writeback result used for operand bypassing.
+    - simm[31:0]: Expanded immediate operand supplied to execute-stage muxing.
+    - sel_a[1:0]: Source selector for execute-stage operand A.
+    - sel_b[1:0]: Source selector for execute-stage operand B.
+Output port:
+    - operand_a[31:0]: Registered execute-stage operand A.
+    - operand_b[31:0]: Registered execute-stage operand B.
+    - muxed_b[31:0]: Combinationally selected operand-B value before execute-stage registration.
+Internal reg/wire signals:
+    reg [31:0] operand_a: Selected operand A value.
+    reg [31:0] operand_b: Selected operand B value.
+    reg [31:0] muxed_a: Muxed operand-A value.
+    reg [31:0] muxed_b: Muxed operand-B value.
+    reg saved_a: Flag indicating operand A has been captured and held during an id_freeze/ex_advance window.
+    reg saved_b: Flag indicating operand B has been captured and held during an id_freeze/ex_advance window.
+
+Processing Flow
+
+The processing flow of or1200_operandmuxes can be described in two layers: a combinational selection layer and a sequential registration layer.
+
+First, the module continuously computes the combinational operand candidates. For operand A, sel_a selects one of rf_dataa, ex_forw, or wb_forw, and the selected value is assigned to muxed_a. For operand B, sel_b selects one of rf_datab, simm, ex_forw, or wb_forw, and the selected value is assigned to muxed_b. The muxed_b value is also exported directly as a module output, so it reflects the current combinational B-side selection before registration.
+
+Second, on each rising edge of clk, the module updates the registered operands and saved flags according to reset and freeze conditions. If rst is asserted, operand_a, operand_b, saved_a, and saved_b are cleared immediately because the reset is asynchronous and active high. If reset is not asserted and ex_freeze is high, the registered operands and saved flags remain unchanged. If reset is not asserted and ex_freeze is low, the module may update the operand registers or saved flags depending on id_freeze and the current saved state.
+
+When ex_freeze is low and id_freeze is also low, the pipeline is in the normal non-frozen update state. In this case, if the corresponding saved flag is not set, the selected mux value is written into the corresponding operand register. The saved flag is also cleared, ensuring that the module is ready to accept new operands in subsequent cycles.
+
+When ex_freeze is low and id_freeze is high, the ID stage is frozen while the EX stage is not frozen. If the corresponding saved flag is not yet set, the module captures the current mux value into the operand register and sets the saved flag. Once the saved flag is set, the operand register is no longer overwritten by later changes in the mux input while the ID freeze condition remains active.
+
+When the ID stage later becomes unfrozen, the saved flag is cleared only if the EX stage is also not frozen. This means the release condition for the saved state is !ex_freeze && !id_freeze, not merely !id_freeze. After the saved flag is cleared, the module returns to normal operand update behavior.

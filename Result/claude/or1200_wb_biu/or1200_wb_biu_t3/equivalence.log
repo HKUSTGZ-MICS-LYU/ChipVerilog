@@ -1,0 +1,217 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v' to AST representation.
+Generating RTLIL representation for module `\or1200_wb_biu'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_wb_biu
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_wb_biu
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:327$61 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:313$60 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:300$55 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:287$46 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:266$37 in module or1200_wb_biu.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:153$17 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11 in module or1200_wb_biu.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1 in module or1200_wb_biu.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:327$61'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:313$60'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:300$55'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:287$46'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:266$37'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35'.
+Found async reset \rst in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:153$17'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11'.
+Found async reset \wb_rst_i in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:327$61'.
+     1/1: $0\wb_cab_o[0:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:313$60'.
+     1/1: $0\wb_sel_o[3:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:300$55'.
+     1/1: $0\wb_we_o[0:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:287$46'.
+     1/1: $0\wb_stb_o[0:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:266$37'.
+     1/1: $0\wb_cyc_o[0:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35'.
+     1/1: $0\aborted_r[0:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:153$17'.
+     1/1: $0\valid_div[1:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11'.
+     1/1: $0\wb_dat_o[31:0]
+Creating decoders for process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1'.
+     1/1: $0\wb_adr_o[31:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_wb_biu.\wb_cab_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:327$61'.
+  created $adff cell `$procdff$73' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_sel_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:313$60'.
+  created $adff cell `$procdff$76' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_we_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:300$55'.
+  created $adff cell `$procdff$79' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_stb_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:287$46'.
+  created $adff cell `$procdff$82' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_cyc_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:266$37'.
+  created $adff cell `$procdff$85' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\aborted_r' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35'.
+  created $adff cell `$procdff$88' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\valid_div' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:153$17'.
+  created $adff cell `$procdff$91' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_dat_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11'.
+  created $adff cell `$procdff$94' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_wb_biu.\wb_adr_o' using process `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1'.
+  created $adff cell `$procdff$97' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:327$61'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:313$60'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:300$55'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:287$46'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:266$37'.
+Found and cleaned up 2 empty switches in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:250$35'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:153$17'.
+Found and cleaned up 1 empty switch in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:139$11'.
+Found and cleaned up 1 empty switch in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_wb_biu/or1200_wb_biu.v:113$1'.
+Cleaned up 4 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_wb_biu.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: 13e493e7fa, CPU: user 0.01s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 69% 4x read_verilog (0 sec), 12% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3.v' to AST representation.
+Generating RTLIL representation for module `\or1200_wb_biu'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_wb_biu
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_wb_biu
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3.v:8$1'.
+Removing empty process `or1200_wb_biu.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_wb_biu/or1200_wb_biu_t3.v:8$1'.
+Cleaned up 1 empty switch.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_wb_biu.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: 2e7c5d3fa3, CPU: user 0.01s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 76% 4x read_verilog (0 sec), 11% 1x opt_expr (0 sec), ...
+exit_code=0

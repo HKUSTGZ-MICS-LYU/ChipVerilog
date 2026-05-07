@@ -1,0 +1,172 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16 in module fpu_round.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+     1/6: $0\round_out[63:0]
+     2/6: $0\exponent_final[11:0]
+     3/6: $0\sum_final[55:0]
+     4/6: $0\exponent_round[11:0]
+     5/6: $0\sum_round_2[55:0]
+     6/6: $0\sum_round[55:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$43' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$44' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$45' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round_2' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$46' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$47' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$48' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Cleaned up 1 empty switch.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 4773ea1e98, CPU: user 0.01s system 0.00s, MEM: 22.86 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 34% 2x read_verilog (0 sec), 21% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1 in module fpu_round.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+     1/4: $0\exponent_rounded[10:0]
+     2/4: $0\mantissa_rounded[55:0]
+     3/4: $0\exponent_final[10:0]
+     4/4: $0\round_out[63:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+  created $adff cell `$procdff$17' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+  created $adff cell `$procdff$20' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_round.\mantissa_rounded' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+  created $adff cell `$procdff$23' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_round.\exponent_rounded' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+  created $adff cell `$procdff$26' with positive edge clock and positive level reset.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/fpu_round/fpu_round_t3.v:18$1'.
+Cleaned up 2 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: f5eae7e72d, CPU: user 0.01s system 0.00s, MEM: 22.86 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 37% 2x read_verilog (0 sec), 19% 1x opt_expr (0 sec), ...
+exit_code=0

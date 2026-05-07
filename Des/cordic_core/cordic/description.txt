@@ -1,0 +1,81 @@
+Module cordic is a configurable first-quadrant CORDIC core used for trigonometric coordinate rotation and vectoring operations. The core implements the CORDIC algorithm as a sequence of micro-rotations. Each micro-rotation uses a precomputed arctangent table value and performs only comparison, addition, subtraction, and arithmetic shift operations. This matches the intended CORDIC implementation described in the source code and spec, where the calculation is decomposed into simple FPGA-friendly operations.
+
+The behavior and interface of cordic depend on compile-time Verilog define options. The source can generate one of three architectures: COMBINATORIAL, ITERATE, or PIPELINE. In COMBINATORIAL mode, the CORDIC stages are connected as a combinational cascade. In ITERATE mode, a single rotator is reused over multiple clock cycles, and an init signal is used to load the initial input values. In PIPELINE mode, the CORDIC stages are registered so that a new input sample can be accepted every clock cycle after the pipeline is filled. In the provided source configuration, PIPELINE is enabled, while ITERATE and COMBINATORIAL are disabled. Therefore, the current instance of cordic should be described as a pipelined CORDIC implementation rather than an iterative or combinational one.
+
+The source also supports two mutually exclusive CORDIC function modes: ROTATE and VECTOR. In ROTATE mode, the datapath rotates the input vector while driving the residual angle accumulator toward zero. This mode is used to compute sine and cosine when the input vector is initialized with x_i = CORDIC_1, y_i = 0, and theta_i equal to the input angle. After the CORDIC stages complete, x_o corresponds to the cosine result and y_o corresponds to the sine result, assuming the input has been properly pre-scaled to compensate for CORDIC gain. In VECTOR mode, the datapath drives the y component toward zero and accumulates the corresponding angle, allowing arctangent-style computation from an input vector. In the provided source configuration, ROTATE is enabled and VECTOR is disabled, so the active design is a rotation-mode CORDIC core.
+
+The current configuration also enables RADIAN_16, so the angle input and output use a signed fixed-point radian representation with THETA_BITS + 1 bits. With the default setting THETA_BITS = 16, theta_i and theta_o are 17-bit signed values. The x and y datapath signals use XY_BITS + 1 signed bits. With the default setting XY_BITS = 16, x_i, y_i, x_o, and y_o are also 17-bit signed values. The default number of configured iterations is ITERATIONS = 16, with ITERATION_BITS = 4 used to index the arctangent lookup table.
+
+In the current default PIPELINE + ROTATE + RADIAN_16 configuration, the fixed input ports of cordic are clk, rst, x_i, y_i, and theta_i. The clk signal defines the sequential update timing for the registered pipeline stages. The rst signal clears the internal stage registers to zero. The x_i and y_i inputs provide the initial vector values. For sine and cosine generation in ROTATE mode, x_i should normally be set to the inverse CORDIC gain constant CORDIC_1, while y_i should be set to zero. The theta_i input provides the initial angle to be rotated through the CORDIC datapath.
+
+The fixed output ports in the current configuration are x_o, y_o, and theta_o. The x_o output carries the final x-coordinate produced by the configured CORDIC stage sequence. In sine/cosine usage, this output corresponds to cosine after gain compensation. The y_o output carries the final y-coordinate and corresponds to sine after gain compensation. The theta_o output carries the final residual angle accumulator value. In ROTATE mode, this value is expected to approach zero as the input vector is rotated by successive micro-rotations.
+
+The init input should not be described as a fixed port of the current module instance. It exists only when ITERATE is defined. In iterative mode, init loads x_i, y_i, and theta_i into the reused rotator datapath and resets the iteration sequence. Since the provided configuration enables PIPELINE instead of ITERATE, init is not present in the active cordic interface.
+
+The valid_in and valid_out handshake signals should also not be described as fixed ports in the current configuration. They are present only when VALID_FLAG is defined. In the provided source, VALID_FLAG is commented out, so the default cordic interface does not include valid handshake ports. If VALID_FLAG is enabled, the intended behavior is to shift a valid bit through a register chain so that valid_out aligns with the corresponding output data after the pipeline latency. However, the valid-flag block in the provided code appears to contain implementation issues: the valid shift signal is declared as a wire even though it is assigned inside an always block, and the assign valid_out statement appears to be missing an equals sign. These issues should be corrected before using the valid handshake logic.
+
+Internally, the rotator submodule forms the basic CORDIC micro-rotation stage. It receives the current x value, y value, and angle accumulator value, computes shifted versions of x and y using the current iteration index, and updates the x, y, and z values according to the selected rotation direction. The shifted values implement division by powers of two, which is the key simplification used by the CORDIC algorithm. The rotator stores each stage result in internal registers x_1, y_1, and z_1.
+
+In ROTATE mode, the sign of the current angle accumulator z_i determines the direction of each micro-rotation. If z_i is negative, the stage updates x by adding the shifted y value, updates y by subtracting the shifted x value, and adds the current arctangent table value to z. Otherwise, the stage updates x by subtracting the shifted y value, updates y by adding the shifted x value, and subtracts the current arctangent table value from z. This process progressively reduces the residual angle while rotating the vector.
+
+In VECTOR mode, when enabled, the sign of the current y value determines the direction of each micro-rotation. The datapath attempts to drive y toward zero while accumulating the corresponding angle in z. This mode is used for arctangent-style computation. Because VECTOR is not enabled in the provided source configuration, this behavior is part of the configurable capability of the code but not part of the active compiled instance.
+
+In the pipelined architecture, the module declares per-stage arrays for the x, y, and z datapath values. The first array entries are assigned from x_i, y_i, and theta_i, and the final array entries drive x_o, y_o, and theta_o. A generate loop instantiates rotator stages between these array entries, and each stage is assigned its own iteration index and corresponding arctangent table value. This structure allows the pipeline to process a new input every clock cycle, with the output appearing after the pipeline latency.
+
+The source defines a tanangle function that provides the precomputed arctangent constants for each CORDIC stage. When RADIAN_16 is enabled, the constants are represented in the 17-bit signed radian format. When DEGREE_8_8 is enabled instead, a different table is used for degree-format angles. If the angle format, bit width, or number of iterations is changed, the arctangent lookup table may need to be regenerated to preserve numerical accuracy.
+
+The CORDIC algorithm introduces a fixed gain. The source defines both CORDIC_GAIN and CORDIC_1, where CORDIC_1 is the inverse gain value used to pre-scale the x input for normalized sine/cosine generation. Without this gain compensation, the output vector magnitude will include the CORDIC gain and the sine/cosine results will not be normalized.
+
+The core directly supports first-quadrant operation only. It does not by itself perform full-circle quadrant correction. To use the core for angles or vectors outside the first quadrant, external coarse rotation logic is required before the CORDIC core, and sign or angle correction is required after the CORDIC core. This limitation should be explicitly included in the functional description because otherwise the module may be incorrectly understood as a complete full-circle trigonometric unit.
+
+There are also several source-level caveats that should be reflected in a precise design description. First, the generate loop in the provided pipelined implementation instantiates stages using i < ITERATIONS-1, so with ITERATIONS = 16 it creates 15 rotator instances rather than 16. This should be reviewed against the intended iteration count. Second, the optional valid-flag logic appears to require syntax and type fixes before use. Third, in the iterative implementation, the feedback signal z is declared with XY_BITS width even though it conceptually represents the theta accumulator; this is harmless only when XY_BITS and THETA_BITS are equal, as they are in the default configuration.
+
+module cordic (
+    input wire clk,
+    input wire rst,
+    `ifdef ITERATE
+    input wire init,
+    `endif
+    input wire signed [`XY_BITS:0]    x_i,
+    input wire signed [`XY_BITS:0]    y_i,
+    input wire signed [`THETA_BITS:0] theta_i,
+    
+    output wire signed [`XY_BITS:0]    x_o,
+    output wire signed [`XY_BITS:0]    y_o,
+    output wire signed [`THETA_BITS:0] theta_o
+    `ifdef VALID_FLAG
+    ,input wire valid_in, output wire valid_out
+    `endif  
+    );
+
+Input ports:
+    clk: Clock signal that defines sequential update timing for the CORDIC datapath.
+    rst: Reset signal that initializes internal rotator state registers to zero.
+    signed [`XY_BITS:0] x_i: Input x-coordinate or initial x datapath value. In ROTATE mode for sine/cosine generation, this is normally set to `CORDIC_1 for CORDIC gain compensation.
+    signed [`XY_BITS:0] y_i: Input y-coordinate or initial y datapath value. In ROTATE mode for sine/cosine generation, this is normally set to zero.
+    signed [`THETA_BITS:0] theta_i: Input angle or initial angle accumulator value.
+    init: Conditional input port present only when ITERATE is defined. It loads the input values and starts the iterative CORDIC sequence.
+    valid_in: Conditional input port present only when VALID_FLAG is defined. It marks the input sample as valid for latency alignment.
+
+Output ports:
+    signed [`XY_BITS:0] x_o: Output x-coordinate after the CORDIC micro-rotation sequence. In ROTATE mode with gain compensation, this corresponds to cosine.
+    signed [`XY_BITS:0] y_o: Output y-coordinate after the CORDIC micro-rotation sequence. In ROTATE mode with gain compensation, this corresponds to sine.
+    signed [`THETA_BITS:0] theta_o: Output angle accumulator value. In ROTATE mode, this is the residual angle; in VECTOR mode, this is the accumulated arctangent result.
+    valid_out: Conditional output port present only when VALID_FLAG is defined. It marks the corresponding output sample as valid after datapath latency.
+
+
+Processing Flow
+
+The cordic module processes input data through a sequence of CORDIC micro-rotation steps. Each step uses the current x value, y value, and angle accumulator value, together with a precomputed arctangent table entry for the current iteration. The datapath replaces multiplication and division operations with arithmetic shifts, additions, and subtractions.
+
+In the provided default configuration, the module is built as a pipelined ROTATE-mode CORDIC core. On each clock cycle, the input values x_i, y_i, and theta_i are applied to the first pipeline stage. The first stage assigns these values to the initial internal stage nodes x[0], y[0], and z[0]. Each following rotator stage receives the previous stage’s x, y, and z values, performs one CORDIC micro-rotation, and registers the updated values for the next stage.
+
+For each stage, the rotator first produces shifted versions of the current x and y values. These shifted values represent division by 2^iteration, where iteration is the stage index. The stage then selects the micro-rotation direction according to the active CORDIC mode. In the current ROTATE configuration, the sign of the current angle accumulator z_i determines the direction. If z_i is negative, the stage rotates in one direction and adds the corresponding arctangent table value to the angle accumulator. If z_i is non-negative, the stage rotates in the opposite direction and subtracts the arctangent table value. This process progressively reduces the residual angle toward zero.
+
+As the pipeline advances, the updated x, y, and z values move from one stage to the next on successive clock cycles. After the configured pipeline latency, the final stage values appear at x_o, y_o, and theta_o. In sine/cosine usage, when x_i is initialized to the inverse CORDIC gain constant CORDIC_1, y_i is initialized to zero, and theta_i is set to the desired input angle, the final x_o value represents the cosine result and the final y_o value represents the sine result. The theta_o value represents the remaining residual angle after the micro-rotation sequence.
+
+If the source is compiled in VECTOR mode instead of ROTATE mode, the processing flow is similar, but the micro-rotation direction is selected from the sign of the current y value rather than the sign of the angle accumulator. In this mode, the datapath attempts to drive y toward zero while accumulating the corresponding angle in z. The resulting theta_o can be used as an arctangent-style result.
+
+If the source is compiled in ITERATE mode instead of PIPELINE mode, the processing flow changes from a multi-stage pipeline to a single reused rotator. In that configuration, the init signal loads the initial x_i, y_i, and theta_i values and resets the iteration counter. On each following clock cycle, the rotator feeds its previous output back to its input and advances the iteration index until the configured number of CORDIC iterations has completed. In this mode, the result is available only after the required number of iteration cycles.
+
+If VALID_FLAG is enabled, valid_in is shifted through a valid-bit pipeline alongside the datapath. The corresponding valid_out signal indicates when the output values are aligned with a valid input sample. In the provided default configuration, VALID_FLAG is not enabled, so the active module interface does not include valid_in or valid_out.

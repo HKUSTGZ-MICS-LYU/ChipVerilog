@@ -1,0 +1,1767 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v' to AST representation.
+Warning: Encountered `translate_off' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using a portable and standards-compliant construct such as `ifdef is recommended!
+Warning: Encountered `full_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `full_case' attribute or the SystemVerilog `unique' or `unique0' keywords is recommended!
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\i2c_master_byte_ctrl'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v' to AST representation.
+Generating RTLIL representation for module `\i2c_master_bit_ctrl'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+
+5.2. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+Removed 0 unused modules.
+
+6. Executing PROC pass (convert processes to netlists).
+
+6.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28 in module i2c_master_bit_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16 in module i2c_master_bit_ctrl.
+Marked 10 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12 in module i2c_master_byte_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7 in module i2c_master_byte_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5 in module i2c_master_byte_ctrl.
+Removed a total of 0 dead cases.
+
+6.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 19 redundant assignments.
+Promoted 1 assignment to connection.
+
+6.4. Executing PROC_INIT pass (extract init attributes).
+
+6.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+
+6.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+     1/5: $0\cmd_ack[0:0]
+     2/5: $0\sda_chk[0:0]
+     3/5: $0\c_state[17:0]
+     4/5: $0\sda_oen[0:0]
+     5/5: $0\scl_oen[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+     1/1: $0\dout[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+     1/1: $0\al[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+     1/1: $0\cmd_stop[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+     1/1: $0\busy[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+     1/2: $0\sto_condition[0:0]
+     2/2: $0\sta_condition[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+     1/4: $0\dSDA[0:0]
+     2/4: $0\dSCL[0:0]
+     3/4: $0\sSDA[0:0]
+     4/4: $0\sSCL[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+     1/2: $0\fSDA[2:0]
+     2/2: $0\fSCL[2:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+     1/1: $0\filter_cnt[13:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+     1/2: $0\cSDA[1:0]
+     2/2: $0\cSCL[1:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+     1/2: $0\clk_en[0:0]
+     2/2: $0\cnt[15:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+     1/1: $0\slave_wait[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+     1/7: $0\cmd_ack[0:0]
+     2/7: $0\ld[0:0]
+     3/7: $0\shift[0:0]
+     4/7: $0\core_txd[0:0]
+     5/7: $0\c_state[4:0]
+     6/7: $0\core_cmd[3:0]
+     7/7: $0\ack_out[0:0]
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+     1/1: $0\dcnt[2:0]
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+     1/1: $0\sr[7:0]
+
+6.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_ack' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$452' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\scl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$457' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$462' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\c_state' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$467' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_chk' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$472' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dout' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+  created $dff cell `$procdff$473' with positive edge clock.
+Creating register for signal `\i2c_master_bit_ctrl.\al' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+  created $adff cell `$procdff$478' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_stop' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+  created $adff cell `$procdff$483' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\busy' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+  created $adff cell `$procdff$488' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sta_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+  created $adff cell `$procdff$493' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sto_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+  created $adff cell `$procdff$498' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$503' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$508' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$513' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$518' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+  created $adff cell `$procdff$523' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+  created $adff cell `$procdff$528' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\filter_cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+  created $adff cell `$procdff$533' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+  created $adff cell `$procdff$538' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+  created $adff cell `$procdff$543' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\clk_en' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+  created $adff cell `$procdff$548' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+  created $adff cell `$procdff$553' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\slave_wait' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+  created $adff cell `$procdff$558' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dscl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+  created $dff cell `$procdff$559' with positive edge clock.
+Creating register for signal `\i2c_master_byte_ctrl.\cmd_ack' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$564' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ack_out' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$569' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\core_cmd' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$574' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\core_txd' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$579' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\shift' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$584' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ld' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$589' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\c_state' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$594' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\dcnt' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+  created $adff cell `$procdff$599' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\sr' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+  created $adff cell `$procdff$604' with positive edge clock and positive level reset.
+
+6.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+Found and cleaned up 15 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Found and cleaned up 3 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Found and cleaned up 3 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+Cleaned up 39 empty switches.
+
+6.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_bit_ctrl.
+Optimizing module i2c_master_byte_ctrl.
+
+7. Executing JSON backend.
+
+Warnings: 3 unique messages, 3 total
+End of script. Logfile hash: 5def4937aa, CPU: user 0.02s system 0.01s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 49% 5x read_verilog (0 sec), 22% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v' to AST representation.
+Generating RTLIL representation for module `\i2c_master_byte_ctrl'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v' to AST representation.
+Warning: Encountered `translate_off' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using a portable and standards-compliant construct such as `ifdef is recommended!
+Warning: Encountered `full_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `full_case' attribute or the SystemVerilog `unique' or `unique0' keywords is recommended!
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\i2c_master_bit_ctrl'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+
+5.2. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+Removed 0 unused modules.
+
+6. Executing PROC pass (convert processes to netlists).
+
+6.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39 in module i2c_master_bit_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$27 in module i2c_master_bit_ctrl.
+Marked 9 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20 in module i2c_master_byte_ctrl.
+Removed a total of 0 dead cases.
+
+6.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 16 redundant assignments.
+Promoted 1 assignment to connection.
+
+6.4. Executing PROC_INIT pass (extract init attributes).
+
+6.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$27'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+
+6.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+     1/5: $0\cmd_ack[0:0]
+     2/5: $0\c_state[17:0]
+     3/5: $0\sda_chk[0:0]
+     4/5: $0\sda_oen[0:0]
+     5/5: $0\scl_oen[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$100'.
+     1/1: $0\dout[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90'.
+     1/1: $0\al[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87'.
+     1/1: $0\cmd_stop[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82'.
+     1/1: $0\busy[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+     1/2: $0\sto_condition[0:0]
+     2/2: $0\sta_condition[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+     1/4: $0\dSDA[0:0]
+     2/4: $0\dSCL[0:0]
+     3/4: $0\sSDA[0:0]
+     4/4: $0\sSCL[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+     1/2: $0\fSDA[2:0]
+     2/2: $0\fSCL[2:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50'.
+     1/1: $0\filter_cnt[13:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+     1/2: $0\cSDA[1:0]
+     2/2: $0\cSCL[1:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+     1/2: $0\clk_en[0:0]
+     2/2: $0\cnt[15:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$27'.
+     1/1: $0\slave_wait[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$26'.
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+     1/6: $0\cmd_ack[0:0]
+     2/6: $0\op_read[0:0]
+     3/6: $0\state[2:0]
+     4/6: $0\dcnt[2:0]
+     5/6: $0\sr[7:0]
+     6/6: $0\ack_out[0:0]
+
+6.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_ack' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+  created $adff cell `$procdff$427' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\scl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+  created $adff cell `$procdff$432' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+  created $adff cell `$procdff$437' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_chk' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+  created $adff cell `$procdff$442' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\c_state' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+  created $adff cell `$procdff$447' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dout' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$100'.
+  created $dff cell `$procdff$448' with positive edge clock.
+Creating register for signal `\i2c_master_bit_ctrl.\al' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90'.
+  created $adff cell `$procdff$453' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_stop' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87'.
+  created $adff cell `$procdff$458' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\busy' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82'.
+  created $adff cell `$procdff$463' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sta_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+  created $adff cell `$procdff$468' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sto_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+  created $adff cell `$procdff$473' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+  created $adff cell `$procdff$478' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+  created $adff cell `$procdff$483' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+  created $adff cell `$procdff$488' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+  created $adff cell `$procdff$493' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+  created $adff cell `$procdff$498' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+  created $adff cell `$procdff$503' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\filter_cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50'.
+  created $adff cell `$procdff$508' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+  created $adff cell `$procdff$513' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+  created $adff cell `$procdff$518' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\clk_en' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+  created $adff cell `$procdff$523' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+  created $adff cell `$procdff$528' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\slave_wait' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$27'.
+  created $adff cell `$procdff$533' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dscl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$26'.
+  created $dff cell `$procdff$534' with positive edge clock.
+Creating register for signal `\i2c_master_byte_ctrl.\cmd_ack' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$539' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ack_out' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$544' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\sr' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$549' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\dcnt' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$554' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\state' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$559' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\op_read' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+  created $adff cell `$procdff$564' with positive edge clock and positive level reset.
+
+6.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$103'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$100'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$100'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$90'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$87'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$82'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$74'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$62'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$58'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$50'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$48'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$39'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$27'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$26'.
+Found and cleaned up 16 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$20'.
+Cleaned up 34 empty switches.
+
+6.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_bit_ctrl.
+Optimizing module i2c_master_byte_ctrl.
+
+7. Executing JSON backend.
+
+Warnings: 3 unique messages, 3 total
+End of script. Logfile hash: 8de57df645, CPU: user 0.03s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 48% 5x read_verilog (0 sec), 23% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v' to AST representation.
+Warning: Encountered `translate_off' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using a portable and standards-compliant construct such as `ifdef is recommended!
+Warning: Encountered `full_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `full_case' attribute or the SystemVerilog `unique' or `unique0' keywords is recommended!
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\i2c_master_byte_ctrl'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v' to AST representation.
+Generating RTLIL representation for module `\i2c_master_bit_ctrl'.
+Successfully finished Verilog frontend.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+Removed 0 unused modules.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28 in module i2c_master_bit_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16 in module i2c_master_bit_ctrl.
+Marked 10 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12 in module i2c_master_byte_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7 in module i2c_master_byte_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5 in module i2c_master_byte_ctrl.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 19 redundant assignments.
+Promoted 1 assignment to connection.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+     1/5: $0\cmd_ack[0:0]
+     2/5: $0\sda_chk[0:0]
+     3/5: $0\c_state[17:0]
+     4/5: $0\sda_oen[0:0]
+     5/5: $0\scl_oen[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+     1/1: $0\dout[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+     1/1: $0\al[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+     1/1: $0\cmd_stop[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+     1/1: $0\busy[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+     1/2: $0\sto_condition[0:0]
+     2/2: $0\sta_condition[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+     1/4: $0\dSDA[0:0]
+     2/4: $0\dSCL[0:0]
+     3/4: $0\sSDA[0:0]
+     4/4: $0\sSCL[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+     1/2: $0\fSDA[2:0]
+     2/2: $0\fSCL[2:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+     1/1: $0\filter_cnt[13:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+     1/2: $0\cSDA[1:0]
+     2/2: $0\cSCL[1:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+     1/2: $0\clk_en[0:0]
+     2/2: $0\cnt[15:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+     1/1: $0\slave_wait[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+     1/7: $0\cmd_ack[0:0]
+     2/7: $0\ld[0:0]
+     3/7: $0\shift[0:0]
+     4/7: $0\core_txd[0:0]
+     5/7: $0\c_state[4:0]
+     6/7: $0\core_cmd[3:0]
+     7/7: $0\ack_out[0:0]
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+     1/1: $0\dcnt[2:0]
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+     1/1: $0\sr[7:0]
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_ack' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$452' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\scl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$457' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$462' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\c_state' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$467' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_chk' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+  created $adff cell `$procdff$472' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dout' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+  created $dff cell `$procdff$473' with positive edge clock.
+Creating register for signal `\i2c_master_bit_ctrl.\al' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+  created $adff cell `$procdff$478' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_stop' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+  created $adff cell `$procdff$483' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\busy' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+  created $adff cell `$procdff$488' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sta_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+  created $adff cell `$procdff$493' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sto_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+  created $adff cell `$procdff$498' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$503' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$508' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$513' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+  created $adff cell `$procdff$518' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+  created $adff cell `$procdff$523' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+  created $adff cell `$procdff$528' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\filter_cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+  created $adff cell `$procdff$533' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+  created $adff cell `$procdff$538' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+  created $adff cell `$procdff$543' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\clk_en' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+  created $adff cell `$procdff$548' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+  created $adff cell `$procdff$553' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\slave_wait' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+  created $adff cell `$procdff$558' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dscl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+  created $dff cell `$procdff$559' with positive edge clock.
+Creating register for signal `\i2c_master_byte_ctrl.\cmd_ack' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$564' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ack_out' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$569' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\core_cmd' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$574' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\core_txd' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$579' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\shift' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$584' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ld' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$589' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\c_state' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+  created $adff cell `$procdff$594' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\dcnt' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+  created $adff cell `$procdff$599' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\sr' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+  created $adff cell `$procdff$604' with positive edge clock and positive level reset.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$92'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$89'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$79'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$76'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$71'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$63'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$51'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$47'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$39'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$37'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$28'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$16'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$15'.
+Found and cleaned up 15 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:201$12'.
+Found and cleaned up 3 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:184$7'.
+Found and cleaned up 3 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:173$5'.
+Cleaned up 39 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_bit_ctrl.
+Optimizing module i2c_master_byte_ctrl.
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module i2c_master_bit_ctrl.
+
+5.4. Executing FUTURE pass.
+
+5.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+5.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 48 unused cells and 198 unused wires.
+
+5.7. Executing CHECK pass (checking for obvious problems).
+Checking module i2c_master_byte_ctrl...
+Found and reported 0 problems.
+
+5.8. Executing OPT pass (performing simple optimizations).
+
+5.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+5.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 287 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 210 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 77 cells.
+
+5.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i2c_master_byte_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+5.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i2c_master_byte_ctrl.
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$132: { $flatten\bit_controller.$procmux$125_CMP $flatten\bit_controller.$procmux$124_CMP $flatten\bit_controller.$procmux$123_CMP $flatten\bit_controller.$procmux$122_CMP $flatten\bit_controller.$procmux$121_CMP $flatten\bit_controller.$procmux$119_CMP $flatten\bit_controller.$procmux$118_CMP $flatten\bit_controller.$procmux$117_CMP $flatten\bit_controller.$procmux$115_CMP $flatten\bit_controller.$procmux$114_CMP $flatten\bit_controller.$procmux$113_CMP $flatten\bit_controller.$procmux$111_CMP $flatten\bit_controller.$procmux$110_CMP $flatten\bit_controller.$procmux$109_CMP $auto$opt_reduce.cc:137:opt_pmux$607 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$163: { $auto$opt_reduce.cc:137:opt_pmux$613 $auto$opt_reduce.cc:137:opt_pmux$611 $auto$opt_reduce.cc:137:opt_pmux$609 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$187: { $auto$opt_reduce.cc:137:opt_pmux$617 $auto$opt_reduce.cc:137:opt_pmux$615 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$96: $auto$opt_reduce.cc:137:opt_pmux$619
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$107: { $flatten\bit_controller.$procmux$109_CMP $auto$opt_reduce.cc:137:opt_pmux$621 }
+  Optimizing cells in module \i2c_master_byte_ctrl.
+Performed a total of 5 changes.
+
+5.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 218 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 215 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 3 cells.
+
+5.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 80 unused wires.
+
+5.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+5.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i2c_master_byte_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+5.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i2c_master_byte_ctrl.
+Performed a total of 0 changes.
+
+5.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 215 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 0 cells.
+
+5.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+
+5.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+5.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+5.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from port B of cell i2c_master_byte_ctrl.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_byte_ctrl/i2c_master_byte_ctrl.v:192$9 ($sub).
+Removed top 1 bits (of 5) from port B of cell i2c_master_byte_ctrl.$procmux$284_CMP0 ($eq).
+Removed top 4 bits (of 5) from port B of cell i2c_master_byte_ctrl.$procmux$296_CMP0 ($eq).
+Removed top 3 bits (of 5) from port B of cell i2c_master_byte_ctrl.$procmux$309_CMP0 ($eq).
+Removed top 2 bits (of 5) from port B of cell i2c_master_byte_ctrl.$procmux$315_CMP0 ($eq).
+Removed top 1 bits (of 5) from mux cell i2c_master_byte_ctrl.$procmux$345 ($mux).
+Removed top 1 bits (of 5) from mux cell i2c_master_byte_ctrl.$procmux$351 ($mux).
+Removed top 2 bits (of 5) from mux cell i2c_master_byte_ctrl.$procmux$357 ($mux).
+Removed top 2 bits (of 4) from mux cell i2c_master_byte_ctrl.$procmux$384 ($mux).
+Removed top 1 bits (of 4) from mux cell i2c_master_byte_ctrl.$procmux$408 ($mux).
+Removed top 3 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$155_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$153_CMP0 ($eq).
+Removed top 4 bits (of 18) from mux cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$151 ($pmux).
+Removed top 17 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$124_CMP0 ($eq).
+Removed top 16 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$123_CMP0 ($eq).
+Removed top 15 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$122_CMP0 ($eq).
+Removed top 14 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$121_CMP0 ($eq).
+Removed top 12 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$119_CMP0 ($eq).
+Removed top 11 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$118_CMP0 ($eq).
+Removed top 10 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$117_CMP0 ($eq).
+Removed top 9 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$116_CMP0 ($eq).
+Removed top 8 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$115_CMP0 ($eq).
+Removed top 7 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$114_CMP0 ($eq).
+Removed top 6 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$113_CMP0 ($eq).
+Removed top 5 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$112_CMP0 ($eq).
+Removed top 4 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$111_CMP0 ($eq).
+Removed top 3 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$110_CMP0 ($eq).
+Removed top 2 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$109_CMP0 ($eq).
+Removed top 1 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$108_CMP0 ($eq).
+Removed top 13 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$100_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:346$78 ($eq).
+Removed top 31 bits (of 32) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$46 ($sub).
+Removed top 18 bits (of 32) from port Y of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$46 ($sub).
+Removed top 15 bits (of 16) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:226$36 ($sub).
+Removed top 4 bits (of 18) from wire i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$151_Y.
+Removed top 5 bits (of 18) from wire i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$157_Y.
+Removed top 18 bits (of 32) from wire i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$46_Y.
+Removed top 1 bits (of 5) from wire i2c_master_byte_ctrl.$procmux$345_Y.
+Removed top 1 bits (of 5) from wire i2c_master_byte_ctrl.$procmux$351_Y.
+Removed top 2 bits (of 5) from wire i2c_master_byte_ctrl.$procmux$357_Y.
+Removed top 2 bits (of 4) from wire i2c_master_byte_ctrl.$procmux$384_Y.
+Removed top 1 bits (of 4) from wire i2c_master_byte_ctrl.$procmux$408_Y.
+
+5.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 8 unused wires.
+
+5.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.12. Executing OPT pass (performing simple optimizations).
+
+5.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+5.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 215 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 214 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 1 cells.
+
+5.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 1 unused wires.
+
+5.12.4. Finished fast OPT passes.
+
+5.13. Printing statistics.
+
+=== i2c_master_byte_ctrl ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      246 wires
+      671 wire bits
+       68 public wires
+      182 public wire bits
+       22 ports
+       51 port bits
+      214 cells
+       31   $adff
+       18   $and
+        2   $dff
+       26   $eq
+        4   $logic_not
+        4   $logic_or
+       81   $mux
+        8   $not
+       10   $or
+       11   $pmux
+        4   $reduce_and
+       11   $reduce_or
+        1   $scopeinfo
+        3   $sub
+
+5.14. Executing CHECK pass (checking for obvious problems).
+Checking module i2c_master_byte_ctrl...
+Found and reported 0 problems.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v' to AST representation.
+Generating RTLIL representation for module `\i2c_master_byte_ctrl'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v' to AST representation.
+Generating RTLIL representation for module `\i2c_master_bit_ctrl'.
+Successfully finished Verilog frontend.
+
+10. Executing PREP pass.
+
+10.1. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1.1. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+
+10.1.2. Analyzing design hierarchy..
+Top module:  \i2c_master_byte_ctrl
+Used module:     \i2c_master_bit_ctrl
+Removed 0 unused modules.
+
+10.2. Executing PROC pass (convert processes to netlists).
+
+10.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679 in module i2c_master_bit_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677 in module i2c_master_bit_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668 in module i2c_master_bit_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$656 in module i2c_master_bit_ctrl.
+Marked 9 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649 in module i2c_master_byte_ctrl.
+Removed a total of 0 dead cases.
+
+10.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 16 redundant assignments.
+Promoted 1 assignment to connection.
+
+10.2.4. Executing PROC_INIT pass (extract init attributes).
+
+10.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+Found async reset \nReset in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$656'.
+Found async reset \nReset in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+
+10.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+10.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+     1/5: $0\cmd_ack[0:0]
+     2/5: $0\sda_chk[0:0]
+     3/5: $0\c_state[17:0]
+     4/5: $0\sda_oen[0:0]
+     5/5: $0\scl_oen[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$729'.
+     1/1: $0\dout[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719'.
+     1/1: $0\al[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716'.
+     1/1: $0\cmd_stop[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711'.
+     1/1: $0\busy[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+     1/2: $0\sto_condition[0:0]
+     2/2: $0\sta_condition[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+     1/4: $0\dSDA[0:0]
+     2/4: $0\dSCL[0:0]
+     3/4: $0\sSDA[0:0]
+     4/4: $0\sSCL[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+     1/2: $0\fSCL[2:0]
+     2/2: $0\fSDA[2:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679'.
+     1/1: $0\filter_cnt[13:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+     1/2: $0\cSDA[1:0]
+     2/2: $0\cSCL[1:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+     1/2: $0\clk_en[0:0]
+     2/2: $0\cnt[15:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$656'.
+     1/1: $0\slave_wait[0:0]
+Creating decoders for process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$655'.
+Creating decoders for process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+     1/6: $0\cmd_ack[0:0]
+     2/6: $0\state[2:0]
+     3/6: $0\op_read[0:0]
+     4/6: $0\dcnt[2:0]
+     5/6: $0\sr[7:0]
+     6/6: $0\ack_out[0:0]
+
+10.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+10.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_ack' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+  created $adff cell `$procdff$1056' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\scl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+  created $adff cell `$procdff$1061' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+  created $adff cell `$procdff$1066' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\c_state' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+  created $adff cell `$procdff$1071' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sda_chk' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+  created $adff cell `$procdff$1076' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dout' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$729'.
+  created $dff cell `$procdff$1077' with positive edge clock.
+Creating register for signal `\i2c_master_bit_ctrl.\al' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719'.
+  created $adff cell `$procdff$1082' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cmd_stop' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716'.
+  created $adff cell `$procdff$1087' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\busy' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711'.
+  created $adff cell `$procdff$1092' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sto_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+  created $adff cell `$procdff$1097' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sta_condition' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+  created $adff cell `$procdff$1102' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+  created $adff cell `$procdff$1107' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+  created $adff cell `$procdff$1112' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+  created $adff cell `$procdff$1117' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\sSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+  created $adff cell `$procdff$1122' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+  created $adff cell `$procdff$1127' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\fSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+  created $adff cell `$procdff$1132' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\filter_cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679'.
+  created $adff cell `$procdff$1137' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSDA' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+  created $adff cell `$procdff$1142' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cSCL' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+  created $adff cell `$procdff$1147' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\cnt' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+  created $adff cell `$procdff$1152' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\clk_en' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+  created $adff cell `$procdff$1157' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\slave_wait' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$656'.
+  created $adff cell `$procdff$1162' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_bit_ctrl.\dscl_oen' using process `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$655'.
+  created $dff cell `$procdff$1163' with positive edge clock.
+Creating register for signal `\i2c_master_byte_ctrl.\cmd_ack' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1168' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\ack_out' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1173' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\sr' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1178' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\dcnt' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1183' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\op_read' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1188' with positive edge clock and positive level reset.
+Creating register for signal `\i2c_master_byte_ctrl.\state' using process `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+  created $adff cell `$procdff$1193' with positive edge clock and positive level reset.
+
+10.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+10.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:384$732'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$729'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:358$729'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:348$719'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:340$716'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:329$711'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:310$703'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:280$691'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:261$687'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:254$679'.
+Found and cleaned up 1 empty switch in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:235$677'.
+Found and cleaned up 2 empty switches in `\i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:208$668'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:198$656'.
+Removing empty process `i2c_master_bit_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:193$655'.
+Found and cleaned up 16 empty switches in `\i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+Removing empty process `i2c_master_byte_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:88$649'.
+Cleaned up 34 empty switches.
+
+10.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_bit_ctrl.
+Optimizing module i2c_master_byte_ctrl.
+
+10.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module i2c_master_bit_ctrl.
+
+10.4. Executing FUTURE pass.
+
+10.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 43 unused cells and 179 unused wires.
+
+10.7. Executing CHECK pass (checking for obvious problems).
+Checking module i2c_master_byte_ctrl...
+Found and reported 0 problems.
+
+10.8. Executing OPT pass (performing simple optimizations).
+
+10.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 288 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 205 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 83 cells.
+
+10.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i2c_master_byte_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i2c_master_byte_ctrl.
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$772: { $flatten\bit_controller.$procmux$765_CMP $flatten\bit_controller.$procmux$764_CMP $flatten\bit_controller.$procmux$763_CMP $flatten\bit_controller.$procmux$762_CMP $flatten\bit_controller.$procmux$761_CMP $flatten\bit_controller.$procmux$759_CMP $flatten\bit_controller.$procmux$758_CMP $flatten\bit_controller.$procmux$757_CMP $flatten\bit_controller.$procmux$755_CMP $flatten\bit_controller.$procmux$754_CMP $flatten\bit_controller.$procmux$753_CMP $flatten\bit_controller.$procmux$751_CMP $flatten\bit_controller.$procmux$750_CMP $flatten\bit_controller.$procmux$749_CMP $auto$opt_reduce.cc:137:opt_pmux$1196 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$803: { $auto$opt_reduce.cc:137:opt_pmux$1202 $auto$opt_reduce.cc:137:opt_pmux$1200 $auto$opt_reduce.cc:137:opt_pmux$1198 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$827: { $auto$opt_reduce.cc:137:opt_pmux$1206 $auto$opt_reduce.cc:137:opt_pmux$1204 }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$736: $auto$opt_reduce.cc:137:opt_pmux$1208
+    New ctrl vector for $pmux cell $procmux$973: { $procmux$1018_CMP $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:81$638_Y $auto$opt_reduce.cc:137:opt_pmux$1210 $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:80$635_Y $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:85$643_Y }
+    New ctrl vector for $pmux cell $flatten\bit_controller.$procmux$747: { $flatten\bit_controller.$procmux$749_CMP $auto$opt_reduce.cc:137:opt_pmux$1212 }
+  Optimizing cells in module \i2c_master_byte_ctrl.
+Performed a total of 6 changes.
+
+10.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 214 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 211 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 210 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 4 cells.
+
+10.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 87 unused wires.
+
+10.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i2c_master_byte_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i2c_master_byte_ctrl.
+    New ctrl vector for $pmux cell $procmux$930: { $procmux$1018_CMP $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:81$638_Y $auto$opt_reduce.cc:137:opt_pmux$1214 $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:80$635_Y $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:85$643_Y }
+  Optimizing cells in module \i2c_master_byte_ctrl.
+Performed a total of 1 changes.
+
+10.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 211 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Computing hashes of 210 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 1 cells.
+
+10.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 1 unused wires.
+
+10.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.8.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.8.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \i2c_master_byte_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.8.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \i2c_master_byte_ctrl.
+Performed a total of 0 changes.
+
+10.8.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 210 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 0 cells.
+
+10.8.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+
+10.8.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.8.20. Finished fast OPT passes. (There is nothing left to do.)
+
+10.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from mux cell i2c_master_byte_ctrl.$procmux$950 ($mux).
+Removed top 2 bits (of 3) from port B of cell i2c_master_byte_ctrl.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:170$652 ($sub).
+Removed top 2 bits (of 4) from mux cell i2c_master_byte_ctrl.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:85$644 ($mux).
+Removed top 1 bits (of 3) from port B of cell i2c_master_byte_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:83$640 ($eq).
+Removed top 1 bits (of 3) from port B of cell i2c_master_byte_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:82$639 ($eq).
+Removed top 2 bits (of 3) from port B of cell i2c_master_byte_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:81$638 ($eq).
+Removed top 3 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$795_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$793_CMP0 ($eq).
+Removed top 4 bits (of 18) from mux cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$791 ($pmux).
+Removed top 17 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$764_CMP0 ($eq).
+Removed top 16 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$763_CMP0 ($eq).
+Removed top 15 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$762_CMP0 ($eq).
+Removed top 14 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$761_CMP0 ($eq).
+Removed top 12 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$759_CMP0 ($eq).
+Removed top 11 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$758_CMP0 ($eq).
+Removed top 10 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$757_CMP0 ($eq).
+Removed top 8 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$755_CMP0 ($eq).
+Removed top 7 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$754_CMP0 ($eq).
+Removed top 6 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$753_CMP0 ($eq).
+Removed top 4 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$751_CMP0 ($eq).
+Removed top 3 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$750_CMP0 ($eq).
+Removed top 2 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$749_CMP0 ($eq).
+Removed top 13 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$740_CMP0 ($eq).
+Removed top 9 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$739_CMP0 ($eq).
+Removed top 5 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$738_CMP0 ($eq).
+Removed top 1 bits (of 18) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$737_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:346$718 ($eq).
+Removed top 31 bits (of 32) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$686 ($sub).
+Removed top 18 bits (of 32) from port Y of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$686 ($sub).
+Removed top 15 bits (of 16) from port B of cell i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:226$676 ($sub).
+Removed top 4 bits (of 18) from wire i2c_master_byte_ctrl.$flatten\bit_controller.$procmux$791_Y.
+Removed top 18 bits (of 32) from wire i2c_master_byte_ctrl.$flatten\bit_controller.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/i2c/i2c_master_bit_ctrl/i2c_master_bit_ctrl.v:258$686_Y.
+Removed top 2 bits (of 3) from wire i2c_master_byte_ctrl.$procmux$950_Y.
+Removed top 1 bits (of 3) from wire i2c_master_byte_ctrl.$procmux$952_Y.
+Removed top 2 bits (of 4) from wire i2c_master_byte_ctrl.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/i2c_master_byte_ctrl/i2c_master_byte_ctrl_t1.v:85$644_Y.
+
+10.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+Removed 0 unused cells and 5 unused wires.
+
+10.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+10.12. Executing OPT pass (performing simple optimizations).
+
+10.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module i2c_master_byte_ctrl.
+
+10.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\i2c_master_byte_ctrl'.
+Computing hashes of 210 cells of `\i2c_master_byte_ctrl'.
+Finding duplicate cells in `\i2c_master_byte_ctrl'.
+Removed a total of 0 cells.
+
+10.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \i2c_master_byte_ctrl..
+
+10.12.4. Finished fast OPT passes.
+
+10.13. Printing statistics.
+
+=== i2c_master_byte_ctrl ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      242 wires
+      631 wire bits
+       68 public wires
+      180 public wire bits
+       22 ports
+       51 port bits
+      210 cells
+       28   $adff
+       18   $and
+        2   $dff
+       26   $eq
+        1   $logic_and
+        5   $logic_not
+        5   $logic_or
+       78   $mux
+        8   $not
+       10   $or
+       10   $pmux
+        4   $reduce_and
+       11   $reduce_or
+        1   $scopeinfo
+        3   $sub
+
+10.14. Executing CHECK pass (checking for obvious problems).
+Checking module i2c_master_byte_ctrl...
+Found and reported 0 problems.
+
+11. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_i2c_master_byte_ctrl" and gate cell "gate_i2c_master_byte_ctrl".
+
+11.1. Executing FLATTEN pass (flatten design).
+
+11.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+Removed 0 unused cells and 2 unused wires.
+
+12. Executing PREP pass.
+
+12.1. Executing HIERARCHY pass (managing design hierarchy).
+
+12.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+12.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_i2c_master_byte_ctrl'.
+Removing unused module `\gold_i2c_master_byte_ctrl'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+12.2. Executing PROC pass (convert processes to netlists).
+
+12.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+12.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+12.2.4. Executing PROC_INIT pass (extract init attributes).
+
+12.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+12.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+12.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+12.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+12.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+12.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.3. Executing FUTURE pass.
+
+12.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+12.7. Executing OPT pass (performing simple optimizations).
+
+12.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 436 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 434 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 432 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 4 cells.
+
+12.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+12.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+    New input vector for $reduce_and cell $auto$miter.cc:263:create_miter_equiv$1238: { $auto$miter.cc:241:create_miter_equiv$1221 $auto$miter.cc:241:create_miter_equiv$1223 $auto$miter.cc:241:create_miter_equiv$1225 $auto$miter.cc:241:create_miter_equiv$1227 $auto$miter.cc:241:create_miter_equiv$1229 $auto$miter.cc:241:create_miter_equiv$1233 $auto$miter.cc:241:create_miter_equiv$1237 }
+  Optimizing cells in module \miter.
+Performed a total of 1 changes.
+
+12.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 432 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 431 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 1 cells.
+
+12.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 5 unused wires.
+
+12.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+12.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+12.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 431 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+12.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+12.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 4 bits (of 18) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1215.
+Removed top 24 bits (of 32) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1216.
+Removed top 2 bits (of 3) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1217.
+Removed top 2 bits (of 4) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1219.
+Removed top 4 bits (of 18) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$622.
+Removed top 6 bits (of 18) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$623.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$624.
+Removed top 1 bits (of 5) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$625.
+Removed top 1 bits (of 5) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$626.
+Removed top 3 bits (of 5) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$627.
+Removed top 3 bits (of 4) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$628.
+Removed top 1 bits (of 4) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$629.
+
+12.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 12 unused wires.
+
+12.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+12.11. Executing OPT pass (performing simple optimizations).
+
+12.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 431 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+12.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.11.4. Finished fast OPT passes.
+
+12.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      523 wires
+     1373 wire bits
+      168 public wires
+      430 public wire bits
+       14 ports
+       36 port bits
+      431 cells
+       59   $adff
+       36   $and
+        1   $assert
+        4   $dff
+       52   $eq
+        7   $eqx
+        1   $logic_and
+        8   $logic_not
+        8   $logic_or
+      158   $mux
+       17   $not
+       18   $or
+       21   $pmux
+        9   $reduce_and
+       22   $reduce_or
+        4   $scopeinfo
+        6   $sub
+
+12.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+13. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$1168 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\cmd_ack[0:0], Q=\gate.cmd_ack
+Replacing miter.$flatten\gate.$procdff$1173 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\ack_out[0:0], Q=\gate.ack_out
+Replacing miter.$flatten\gate.$procdff$1178 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\sr[7:0], Q=\gate.sr
+Replacing miter.$flatten\gate.$procdff$1183 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\dcnt[2:0], Q=\gate.dcnt
+Replacing miter.$flatten\gate.$procdff$1188 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\op_read[0:0], Q=\gate.op_read
+Replacing miter.$flatten\gate.$procdff$1193 ($adff): ARST=\in_nReset, D=$flatten\gate.$0\state[2:0], Q=\gate.state
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1056 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\cmd_ack[0:0], Q=\gate.bit_controller.cmd_ack
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1061 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\scl_oen[0:0], Q=\gate.bit_controller.scl_oen
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1066 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sda_oen[0:0], Q=\gate.bit_controller.sda_oen
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1071 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\c_state[17:0], Q=\gate.bit_controller.c_state
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1076 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sda_chk[0:0], Q=\gate.bit_controller.sda_chk
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1082 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\al[0:0], Q=\gate.bit_controller.al
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1087 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\cmd_stop[0:0], Q=\gate.bit_controller.cmd_stop
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1092 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\busy[0:0], Q=\gate.bit_controller.busy
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1097 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sto_condition[0:0], Q=\gate.bit_controller.sto_condition
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1102 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sta_condition[0:0], Q=\gate.bit_controller.sta_condition
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1107 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\dSDA[0:0], Q=\gate.bit_controller.dSDA
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1112 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\dSCL[0:0], Q=\gate.bit_controller.dSCL
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1117 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sSDA[0:0], Q=\gate.bit_controller.sSDA
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1122 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\sSCL[0:0], Q=\gate.bit_controller.sSCL
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1127 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\fSDA[2:0], Q=\gate.bit_controller.fSDA
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1132 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\fSCL[2:0], Q=\gate.bit_controller.fSCL
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1137 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\filter_cnt[13:0], Q=\gate.bit_controller.filter_cnt
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1142 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\cSDA[1:0], Q=\gate.bit_controller.cSDA
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1147 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\cSCL[1:0], Q=\gate.bit_controller.cSCL
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1152 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\cnt[15:0], Q=\gate.bit_controller.cnt
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1157 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\clk_en[0:0], Q=\gate.bit_controller.clk_en
+Replacing miter.$flatten\gate.\bit_controller.$procdff$1162 ($adff): ARST=\in_nReset, D=$flatten\gate.\bit_controller.$0\slave_wait[0:0], Q=\gate.bit_controller.slave_wait
+Replacing miter.$flatten\gold.$procdff$564 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\cmd_ack[0:0], Q=\gold.cmd_ack
+Replacing miter.$flatten\gold.$procdff$569 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\ack_out[0:0], Q=\gold.ack_out
+Replacing miter.$flatten\gold.$procdff$574 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\core_cmd[3:0], Q=\gold.core_cmd
+Replacing miter.$flatten\gold.$procdff$579 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\core_txd[0:0], Q=\gold.core_txd
+Replacing miter.$flatten\gold.$procdff$584 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\shift[0:0], Q=\gold.shift
+Replacing miter.$flatten\gold.$procdff$589 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\ld[0:0], Q=\gold.ld
+Replacing miter.$flatten\gold.$procdff$594 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\c_state[4:0], Q=\gold.c_state
+Replacing miter.$flatten\gold.$procdff$599 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\dcnt[2:0], Q=\gold.dcnt
+Replacing miter.$flatten\gold.$procdff$604 ($adff): ARST=\in_nReset, D=$flatten\gold.$0\sr[7:0], Q=\gold.sr
+Replacing miter.$flatten\gold.\bit_controller.$procdff$452 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\cmd_ack[0:0], Q=\gold.bit_controller.cmd_ack
+Replacing miter.$flatten\gold.\bit_controller.$procdff$457 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\scl_oen[0:0], Q=\gold.bit_controller.scl_oen
+Replacing miter.$flatten\gold.\bit_controller.$procdff$462 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sda_oen[0:0], Q=\gold.bit_controller.sda_oen
+Replacing miter.$flatten\gold.\bit_controller.$procdff$467 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\c_state[17:0], Q=\gold.bit_controller.c_state
+Replacing miter.$flatten\gold.\bit_controller.$procdff$472 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sda_chk[0:0], Q=\gold.bit_controller.sda_chk
+Replacing miter.$flatten\gold.\bit_controller.$procdff$478 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\al[0:0], Q=\gold.bit_controller.al
+Replacing miter.$flatten\gold.\bit_controller.$procdff$483 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\cmd_stop[0:0], Q=\gold.bit_controller.cmd_stop
+Replacing miter.$flatten\gold.\bit_controller.$procdff$488 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\busy[0:0], Q=\gold.bit_controller.busy
+Replacing miter.$flatten\gold.\bit_controller.$procdff$493 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sta_condition[0:0], Q=\gold.bit_controller.sta_condition
+Replacing miter.$flatten\gold.\bit_controller.$procdff$498 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sto_condition[0:0], Q=\gold.bit_controller.sto_condition
+Replacing miter.$flatten\gold.\bit_controller.$procdff$503 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sSCL[0:0], Q=\gold.bit_controller.sSCL
+Replacing miter.$flatten\gold.\bit_controller.$procdff$508 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\sSDA[0:0], Q=\gold.bit_controller.sSDA
+Replacing miter.$flatten\gold.\bit_controller.$procdff$513 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\dSCL[0:0], Q=\gold.bit_controller.dSCL
+Replacing miter.$flatten\gold.\bit_controller.$procdff$518 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\dSDA[0:0], Q=\gold.bit_controller.dSDA
+Replacing miter.$flatten\gold.\bit_controller.$procdff$523 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\fSCL[2:0], Q=\gold.bit_controller.fSCL
+Replacing miter.$flatten\gold.\bit_controller.$procdff$528 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\fSDA[2:0], Q=\gold.bit_controller.fSDA
+Replacing miter.$flatten\gold.\bit_controller.$procdff$533 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\filter_cnt[13:0], Q=\gold.bit_controller.filter_cnt
+Replacing miter.$flatten\gold.\bit_controller.$procdff$538 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\cSCL[1:0], Q=\gold.bit_controller.cSCL
+Replacing miter.$flatten\gold.\bit_controller.$procdff$543 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\cSDA[1:0], Q=\gold.bit_controller.cSDA
+Replacing miter.$flatten\gold.\bit_controller.$procdff$548 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\clk_en[0:0], Q=\gold.bit_controller.clk_en
+Replacing miter.$flatten\gold.\bit_controller.$procdff$553 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\cnt[15:0], Q=\gold.bit_controller.cnt
+Replacing miter.$flatten\gold.\bit_controller.$procdff$558 ($adff): ARST=\in_nReset, D=$flatten\gold.\bit_controller.$0\slave_wait[0:0], Q=\gold.bit_controller.slave_wait
+
+14. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+15. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Final init constraint equation: { \gold.bit_controller.dscl_oen \gold.bit_controller.dout \gate.bit_controller.dscl_oen \gate.bit_controller.dout $auto$async2sync.cc:234:execute$1372 $auto$async2sync.cc:234:execute$1370 $auto$async2sync.cc:234:execute$1368 $auto$async2sync.cc:234:execute$1366 $auto$async2sync.cc:234:execute$1364 $auto$async2sync.cc:234:execute$1362 $auto$async2sync.cc:234:execute$1360 $auto$async2sync.cc:234:execute$1358 $auto$async2sync.cc:234:execute$1356 $auto$async2sync.cc:234:execute$1354 $auto$async2sync.cc:234:execute$1352 $auto$async2sync.cc:234:execute$1350 $auto$async2sync.cc:234:execute$1348 $auto$async2sync.cc:234:execute$1346 $auto$async2sync.cc:234:execute$1344 $auto$async2sync.cc:234:execute$1342 $auto$async2sync.cc:234:execute$1340 $auto$async2sync.cc:234:execute$1338 $auto$async2sync.cc:234:execute$1336 $auto$async2sync.cc:234:execute$1334 $auto$async2sync.cc:234:execute$1332 $auto$async2sync.cc:234:execute$1330 $auto$async2sync.cc:234:execute$1328 $auto$async2sync.cc:234:execute$1326 $auto$async2sync.cc:234:execute$1324 $auto$async2sync.cc:234:execute$1322 $auto$async2sync.cc:234:execute$1320 $auto$async2sync.cc:234:execute$1318 $auto$async2sync.cc:234:execute$1316 $auto$async2sync.cc:234:execute$1314 $auto$async2sync.cc:234:execute$1312 $auto$async2sync.cc:234:execute$1310 $auto$async2sync.cc:234:execute$1308 $auto$async2sync.cc:234:execute$1306 $auto$async2sync.cc:234:execute$1304 $auto$async2sync.cc:234:execute$1302 $auto$async2sync.cc:234:execute$1300 $auto$async2sync.cc:234:execute$1298 $auto$async2sync.cc:234:execute$1296 $auto$async2sync.cc:234:execute$1294 $auto$async2sync.cc:234:execute$1292 $auto$async2sync.cc:234:execute$1290 $auto$async2sync.cc:234:execute$1288 $auto$async2sync.cc:234:execute$1286 $auto$async2sync.cc:234:execute$1284 $auto$async2sync.cc:234:execute$1282 $auto$async2sync.cc:234:execute$1280 $auto$async2sync.cc:234:execute$1278 $auto$async2sync.cc:234:execute$1276 $auto$async2sync.cc:234:execute$1274 $auto$async2sync.cc:234:execute$1272 $auto$async2sync.cc:234:execute$1270 $auto$async2sync.cc:234:execute$1268 $auto$async2sync.cc:234:execute$1266 $auto$async2sync.cc:234:execute$1264 $auto$async2sync.cc:234:execute$1262 $auto$async2sync.cc:234:execute$1260 $auto$async2sync.cc:234:execute$1258 $auto$async2sync.cc:234:execute$1256 } = 192'000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 549 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1239 when 1'1.
+
+Solving problem with 81251 variables and 225564 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                       Dec       Hex                   Bin
+  ---- ----------------------------------------- ----------- --------- ---------------------
+  init $auto$async2sync.cc:234:execute$1256                0         0                     0
+  init $auto$async2sync.cc:234:execute$1258                0         0                     0
+  init $auto$async2sync.cc:234:execute$1260                0         0              00000000
+  init $auto$async2sync.cc:234:execute$1262                0         0                   000
+  init $auto$async2sync.cc:234:execute$1264                0         0                     0
+  init $auto$async2sync.cc:234:execute$1266                0         0                   000
+  init $auto$async2sync.cc:234:execute$1268                0         0                     0
+  init $auto$async2sync.cc:234:execute$1270                0         0                     0
+  init $auto$async2sync.cc:234:execute$1272                0         0                     0
+  init $auto$async2sync.cc:234:execute$1274                0         0    000000000000000000
+  init $auto$async2sync.cc:234:execute$1276                0         0                     0
+  init $auto$async2sync.cc:234:execute$1278                0         0                     0
+  init $auto$async2sync.cc:234:execute$1280                0         0                     0
+  init $auto$async2sync.cc:234:execute$1282                0         0                     0
+  init $auto$async2sync.cc:234:execute$1284                0         0                     0
+  init $auto$async2sync.cc:234:execute$1286                0         0                     0
+  init $auto$async2sync.cc:234:execute$1288                0         0                     0
+  init $auto$async2sync.cc:234:execute$1290                0         0                     0
+  init $auto$async2sync.cc:234:execute$1292                0         0                     0
+  init $auto$async2sync.cc:234:execute$1294                0         0                     0
+  init $auto$async2sync.cc:234:execute$1296                0         0                   000
+  init $auto$async2sync.cc:234:execute$1298                0         0                   000
+  init $auto$async2sync.cc:234:execute$1300                0         0        00000000000000
+  init $auto$async2sync.cc:234:execute$1302                0         0                    00
+  init $auto$async2sync.cc:234:execute$1304                0         0                    00
+  init $auto$async2sync.cc:234:execute$1306                0         0      0000000000000000
+  init $auto$async2sync.cc:234:execute$1308                0         0                     0
+  init $auto$async2sync.cc:234:execute$1310                0         0                     0
+  init $auto$async2sync.cc:234:execute$1312                0         0                     0
+  init $auto$async2sync.cc:234:execute$1314                0         0                     0
+  init $auto$async2sync.cc:234:execute$1316                0         0                  0000
+  init $auto$async2sync.cc:234:execute$1318                0         0                     0
+  init $auto$async2sync.cc:234:execute$1320                0         0                     0
+  init $auto$async2sync.cc:234:execute$1322                0         0                     0
+  init $auto$async2sync.cc:234:execute$1324                0         0                 00000
+  init $auto$async2sync.cc:234:execute$1326                0         0                   000
+  init $auto$async2sync.cc:234:execute$1328                0         0              00000000
+  init $auto$async2sync.cc:234:execute$1330                0         0                     0
+  init $auto$async2sync.cc:234:execute$1332                0         0                     0
+  init $auto$async2sync.cc:234:execute$1334                0         0                     0
+  init $auto$async2sync.cc:234:execute$1336                0         0    000000000000000000
+  init $auto$async2sync.cc:234:execute$1338                0         0                     0
+  init $auto$async2sync.cc:234:execute$1340                0         0                     0
+  init $auto$async2sync.cc:234:execute$1342                0         0                     0
+  init $auto$async2sync.cc:234:execute$1344                0         0                     0
+  init $auto$async2sync.cc:234:execute$1346                0         0                     0
+  init $auto$async2sync.cc:234:execute$1348                0         0                     0
+  init $auto$async2sync.cc:234:execute$1350                0         0                     0
+  init $auto$async2sync.cc:234:execute$1352                0         0                     0
+  init $auto$async2sync.cc:234:execute$1354                0         0                     0
+  init $auto$async2sync.cc:234:execute$1356                0         0                     0
+  init $auto$async2sync.cc:234:execute$1358                0         0                   000
+  init $auto$async2sync.cc:234:execute$1360                0         0                   000
+  init $auto$async2sync.cc:234:execute$1362                0         0        00000000000000
+  init $auto$async2sync.cc:234:execute$1364                0         0                    00
+  init $auto$async2sync.cc:234:execute$1366                0         0                    00
+  init $auto$async2sync.cc:234:execute$1368                0         0                     0
+  init $auto$async2sync.cc:234:execute$1370                0         0      0000000000000000
+  init $auto$async2sync.cc:234:execute$1372                0         0                     0
+  init \gate.bit_controller.dout                           0         0                     0
+  init \gate.bit_controller.dscl_oen                       0         0                     0
+  init \gold.bit_controller.dout                           0         0                     0
+  init \gold.bit_controller.dscl_oen                       0         0                     0
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

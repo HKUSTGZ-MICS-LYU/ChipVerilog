@@ -1,0 +1,198 @@
+Functional Overview:
+Module `fpu_mul` computes double-precision floating-point multiplication by forming the significand product, adjusting exponent/sign, and normalizing the result path.
+
+Module name:
+    fpu_mul
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Active-high pipeline enable; all state updates occur only when asserted.
+    input [1:0] rmode: IEEE-754 rounding mode: 2'b00=nearest, 2'b01=zero, 2'b10=+inf, 2'b11=-inf.
+    input [63:0] opa, opb: IEEE-754 double-precision input operands.
+
+Output port:
+    output ready: Asserted when the fixed-latency pipeline completes and the result is valid.
+    output [63:0] outfp: Final IEEE-754 multiplication result after normalization and rounding.
+Internal reg/wire signals:
+    reg product_shift: Normalization shift flag for the product path.
+    reg [1:0] rm_1: Stage-1 pipeline copy of the rounding mode.
+    reg [1:0] rm_2: Stage-2 pipeline copy of the rounding mode.
+    reg [1:0] rm_3: Stage-3 pipeline copy of the rounding mode.
+    reg [1:0] rm_4: Stage-4 pipeline copy of the rounding mode.
+    reg [1:0] rm_5: Stage-5 pipeline copy of the rounding mode.
+    reg [1:0] rm_6: Stage-6 pipeline copy of the rounding mode.
+    reg [1:0] rm_7: Stage-7 pipeline copy of the rounding mode.
+    reg [1:0] rm_8: Stage-8 pipeline copy of the rounding mode.
+    reg [1:0] rm_9: Stage-9 pipeline copy of the rounding mode.
+    reg [1:0] rm_10: Stage-10 pipeline copy of the rounding mode.
+    reg [1:0] rm_11: Stage-11 pipeline copy of the rounding mode.
+    reg [1:0] rm_12: Stage-12 pipeline copy of the rounding mode.
+    reg [1:0] rm_13: Stage-13 pipeline copy of the rounding mode.
+    reg [1:0] rm_14: Stage-14 pipeline copy of the rounding mode.
+    reg [1:0] rm_15: Stage-15 pipeline copy of the rounding mode.
+    reg sign: Result sign bit.
+    reg sign_1: Stage-1 pipeline copy of the result sign bit.
+    reg sign_2: Stage-2 pipeline copy of the result sign bit.
+    reg sign_3: Stage-3 pipeline copy of the result sign bit.
+    reg sign_4: Stage-4 pipeline copy of the result sign bit.
+    reg sign_5: Stage-5 pipeline copy of the result sign bit.
+    reg sign_6: Stage-6 pipeline copy of the result sign bit.
+    reg sign_7: Stage-7 pipeline copy of the result sign bit.
+    reg sign_8: Stage-8 pipeline copy of the result sign bit.
+    reg sign_9: Stage-9 pipeline copy of the result sign bit.
+    reg sign_10: Stage-10 pipeline copy of the result sign bit.
+    reg sign_11: Stage-11 pipeline copy of the result sign bit.
+    reg sign_12: Stage-12 pipeline copy of the result sign bit.
+    reg sign_13: Stage-13 pipeline copy of the result sign bit.
+    reg sign_14: Stage-14 pipeline copy of the result sign bit.
+    reg sign_15: Stage-15 pipeline copy of the result sign bit.
+    reg sign_16: Stage-16 pipeline copy of the result sign bit.
+    reg sign_17: Stage-17 pipeline copy of the result sign bit.
+    reg sign_18: Stage-18 pipeline copy of the result sign bit.
+    reg sign_19: Stage-19 pipeline copy of the result sign bit.
+    reg sign_20: Stage-20 pipeline copy of the result sign bit.
+    reg [51:0] mantissa_a1: Stage-1 pipeline copy of the mantissa A.
+    reg [51:0] mantissa_a2: Stage-2 pipeline copy of the mantissa A.
+    reg [51:0] mantissa_b1: Stage-1 pipeline copy of the mantissa B.
+    reg [51:0] mantissa_b2: Stage-2 pipeline copy of the mantissa B.
+    reg [10:0] exponent_a: Exponent A.
+    reg [10:0] exponent_b: Exponent B.
+    reg ready: Ready flag.
+    reg count_ready: Ready flag for the completion counter path.
+    reg count_ready_0: Stage-0 pipeline copy of the ready flag for the completion counter path.
+    reg [4:0] count: Count counter.
+    reg a_is_zero: A is zero flag.
+    reg b_is_zero: B is zero flag.
+    reg a_is_inf: A is infinity flag.
+    reg b_is_inf: B is infinity flag.
+    reg in_inf_1: Stage-1 pipeline copy of the in infinity flag.
+    reg in_inf_2: Stage-2 pipeline copy of the in infinity flag.
+    reg in_zero_1: Stage-1 pipeline copy of the in zero flag.
+    reg [11:0] exponent_terms_1: Stage-1 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_2: Stage-2 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_3: Stage-3 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_4: Stage-4 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_5: Stage-5 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_6: Stage-6 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_7: Stage-7 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_8: Stage-8 pipeline copy of the exponent terms.
+    reg [11:0] exponent_terms_9: Stage-9 pipeline copy of the exponent terms.
+    reg exponent_gt_expoffset: Exponent greater-than-exponent offset flag.
+    reg [11:0] exponent_1: Stage-1 pipeline copy of the exponent.
+    wire [11:0] exponent = 0: Exponent.
+    reg [11:0] exponent_2: Stage-2 pipeline copy of the exponent.
+    reg [11:0] exponent_2_0: Stage-0 pipeline copy of the exponent 2.
+    reg [11:0] exponent_2_1: Stage-1 pipeline copy of the exponent 2.
+    reg exponent_gt_prodshift: Exponent greater-than-product-shift flag.
+    reg exponent_is_infinity: Exponent is infinity flag.
+    reg [11:0] exponent_3: Stage-3 pipeline copy of the exponent.
+    reg [11:0] exponent_4: Stage-4 pipeline copy of the exponent.
+    reg set_mantissa_zero: Set mantissa zero.
+    reg set_mz_1: Stage-1 pipeline copy of the set mz flag.
+    reg [52:0] mul_a: Multiply A.
+    reg [52:0] mul_a1: Multiply A 1.
+    reg [52:0] mul_a2: Multiply A 2.
+    reg [52:0] mul_a3: Multiply A 3.
+    reg [52:0] mul_a4: Multiply A 4.
+    reg [52:0] mul_a5: Multiply A 5.
+    reg [52:0] mul_a6: Multiply A 6.
+    reg [52:0] mul_a7: Multiply A 7.
+    reg [52:0] mul_a8: Multiply A 8.
+    reg [52:0] mul_b: Multiply B.
+    reg [52:0] mul_b1: Multiply B 1.
+    reg [52:0] mul_b2: Multiply B 2.
+    reg [52:0] mul_b3: Multiply B 3.
+    reg [52:0] mul_b4: Multiply B 4.
+    reg [52:0] mul_b5: Multiply B 5.
+    reg [52:0] mul_b6: Multiply B 6.
+    reg [52:0] mul_b7: Multiply B 7.
+    reg [52:0] mul_b8: Multiply B 8.
+    reg [40:0] product_a: Product A.
+    reg [16:0] product_a_2: Stage-2 pipeline copy of the product A.
+    reg [16:0] product_a_3: Stage-3 pipeline copy of the product A.
+    reg [16:0] product_a_4: Stage-4 pipeline copy of the product A.
+    reg [16:0] product_a_5: Stage-5 pipeline copy of the product A.
+    reg [16:0] product_a_6: Stage-6 pipeline copy of the product A.
+    reg [16:0] product_a_7: Stage-7 pipeline copy of the product A.
+    reg [16:0] product_a_8: Stage-8 pipeline copy of the product A.
+    reg [16:0] product_a_9: Stage-9 pipeline copy of the product A.
+    reg [16:0] product_a_10: Stage-10 pipeline copy of the product A.
+    reg [40:0] product_b: Product B.
+    reg [40:0] product_c: Product c.
+    reg [25:0] product_d: Product D.
+    reg [33:0] product_e: Product E.
+    reg [33:0] product_f: Product f.
+    reg [35:0] product_g: Product g.
+    reg [28:0] product_h: Product h.
+    reg [28:0] product_i: Partial product i.
+    reg [30:0] product_j: Product J.
+    reg [41:0] sum_0: Stage-0 pipeline copy of the sum.
+    reg [6:0] sum_0_2: Stage-2 pipeline copy of the sum 0.
+    reg [6:0] sum_0_3: Stage-3 pipeline copy of the sum 0.
+    reg [6:0] sum_0_4: Stage-4 pipeline copy of the sum 0.
+    reg [6:0] sum_0_5: Stage-5 pipeline copy of the sum 0.
+    reg [6:0] sum_0_6: Stage-6 pipeline copy of the sum 0.
+    reg [6:0] sum_0_7: Stage-7 pipeline copy of the sum 0.
+    reg [6:0] sum_0_8: Stage-8 pipeline copy of the sum 0.
+    reg [6:0] sum_0_9: Stage-9 pipeline copy of the sum 0.
+    reg [35:0] sum_1: Stage-1 pipeline copy of the sum.
+    reg [9:0] sum_1_2: Stage-2 pipeline copy of the sum 1.
+    reg [9:0] sum_1_3: Stage-3 pipeline copy of the sum 1.
+    reg [9:0] sum_1_4: Stage-4 pipeline copy of the sum 1.
+    reg [9:0] sum_1_5: Stage-5 pipeline copy of the sum 1.
+    reg [9:0] sum_1_6: Stage-6 pipeline copy of the sum 1.
+    reg [9:0] sum_1_7: Stage-7 pipeline copy of the sum 1.
+    reg [9:0] sum_1_8: Stage-8 pipeline copy of the sum 1.
+    reg [41:0] sum_2: Stage-2 pipeline copy of the sum.
+    reg [6:0] sum_2_2: Stage-2 pipeline copy of the sum 2.
+    reg [6:0] sum_2_3: Stage-3 pipeline copy of the sum 2.
+    reg [6:0] sum_2_4: Stage-4 pipeline copy of the sum 2.
+    reg [6:0] sum_2_5: Stage-5 pipeline copy of the sum 2.
+    reg [6:0] sum_2_6: Stage-6 pipeline copy of the sum 2.
+    reg [6:0] sum_2_7: Stage-7 pipeline copy of the sum 2.
+    reg [35:0] sum_3: Stage-3 pipeline copy of the sum.
+    reg [36:0] sum_4: Stage-4 pipeline copy of the sum.
+    reg [9:0] sum_4_2: Stage-2 pipeline copy of the sum 4.
+    reg [9:0] sum_4_3: Stage-3 pipeline copy of the sum 4.
+    reg [9:0] sum_4_4: Stage-4 pipeline copy of the sum 4.
+    reg [9:0] sum_4_5: Stage-5 pipeline copy of the sum 4.
+    reg [27:0] sum_5: Stage-5 pipeline copy of the sum.
+    reg [6:0] sum_5_2: Stage-2 pipeline copy of the sum 5.
+    reg [6:0] sum_5_3: Stage-3 pipeline copy of the sum 5.
+    reg [6:0] sum_5_4: Stage-4 pipeline copy of the sum 5.
+    reg [29:0] sum_6: Stage-6 pipeline copy of the sum.
+    reg [36:0] sum_7: Stage-7 pipeline copy of the sum.
+    reg [16:0] sum_7_2: Stage-2 pipeline copy of the sum 7.
+    reg [30:0] sum_8: Stage-8 pipeline copy of the sum.
+    reg [105:0] product: Product.
+    reg [105:0] product_1: Stage-1 pipeline copy of the product.
+    reg [52:0] product_2: Stage-2 pipeline copy of the product.
+    reg [52:0] product_3: Stage-3 pipeline copy of the product.
+    reg [53:0] product_4: Stage-4 pipeline copy of the product.
+    reg [53:0] product_5: Stage-5 pipeline copy of the product.
+    reg [53:0] product_6: Stage-6 pipeline copy of the product.
+    reg [53:0] product_7: Stage-7 pipeline copy of the product.
+    reg product_overflow: Product overflow.
+    reg [11:0] exponent_5: Stage-5 pipeline copy of the exponent.
+    reg [11:0] exponent_6: Stage-6 pipeline copy of the exponent.
+    reg [11:0] exponent_7: Stage-7 pipeline copy of the exponent.
+    reg [11:0] exponent_8: Stage-8 pipeline copy of the exponent.
+    reg [11:0] exponent_9: Stage-9 pipeline copy of the exponent.
+    reg round_nearest_mode: Round nearest mode.
+    reg round_posinf_mode: Round posinf mode.
+    reg round_neginf_mode: Round neginf mode.
+    reg round_nearest_trigger: Round nearest trigger.
+    reg round_nearest_exception: Round nearest exception.
+    reg round_nearest_enable: Round nearest enable flag.
+    reg round_posinf_trigger: Round posinf trigger.
+    reg round_posinf_enable: Round posinf enable flag.
+    reg round_neginf_trigger: Round neginf trigger.
+    reg round_neginf_enable: Round neginf enable flag.
+    reg round_enable: Round enable flag.
+    wire [63:0] outfp = { sign, exponent_9[10:0], product_7[51:0]}: Outfp.
+
+Implementation:
+- The module computes double-precision floating-point multiplication by forming the significand product, adjusting exponent/sign, and normalizing the result path.
+- Rounding is applied based on guard and remainder bits of the product.
+- The mul_a and mul_b are 53-bit values storing the mantissa with implicit leading 1 for normalized inputs.

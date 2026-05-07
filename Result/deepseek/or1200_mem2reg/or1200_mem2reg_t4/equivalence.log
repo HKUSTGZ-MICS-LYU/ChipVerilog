@@ -1,0 +1,897 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_mem2reg'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305.1-320.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325.1-350.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2 in module or1200_mem2reg.
+Removed 1 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1 in module or1200_mem2reg.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1 in module or1200_mem2reg.
+Removed a total of 1 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 2 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+     1/3: $1\regdata[31:0] [31:16]
+     2/3: $1\regdata[31:0] [7:0]
+     3/3: $1\regdata[31:0] [15:8]
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+     1/1: $1\aligned[31:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_mem2reg.\regdata' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+No latch inferred for signal `\or1200_mem2reg.\aligned' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+Found and cleaned up 1 empty switch in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+Cleaned up 2 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+6. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: b66370baab, CPU: user 0.01s system 0.00s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 71% 4x read_verilog (0 sec), 8% 1x opt_expr (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v' to AST representation.
+Generating RTLIL representation for module `\or1200_mem2reg'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed 2 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1 in module or1200_mem2reg.
+Marked 5 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1 in module or1200_mem2reg.
+Removed a total of 2 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 10 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+     1/18: $3\sel_byte1[3:0]
+     2/18: $3\sel_byte0[3:0]
+     3/18: $5\regdata_ll[7:0]
+     4/18: $3\regdata_lh[7:0]
+     5/18: $2\sel_byte1[3:0]
+     6/18: $2\sel_byte0[3:0]
+     7/18: $4\regdata_ll[7:0]
+     8/18: $2\regdata_lh[7:0]
+     9/18: $3\regdata_ll[7:0]
+    10/18: $2\regdata_ll[7:0]
+    11/18: $1\sel_byte3[3:0]
+    12/18: $1\sel_byte2[3:0]
+    13/18: $1\sel_byte1[3:0]
+    14/18: $1\sel_byte0[3:0]
+    15/18: $1\regdata_ll[7:0]
+    16/18: $1\regdata_lh[7:0]
+    17/18: $1\regdata_hl[7:0]
+    18/18: $1\regdata_hh[7:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_mem2reg.\regdata' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_hh' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_hl' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_lh' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_ll' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\aligned' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte0' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte1' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte2' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte3' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 5 empty switches in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$1'.
+Cleaned up 5 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: 10ab16afdf, CPU: user 0.01s system 0.00s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 55% 4x read_verilog (0 sec), 15% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_mem2reg'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305.1-320.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325.1-350.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2 in module or1200_mem2reg.
+Removed 1 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1 in module or1200_mem2reg.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1 in module or1200_mem2reg.
+Removed a total of 1 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 2 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+     1/3: $1\regdata[31:0] [31:16]
+     2/3: $1\regdata[31:0] [7:0]
+     3/3: $1\regdata[31:0] [15:8]
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+     1/1: $1\aligned[31:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_mem2reg.\regdata' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+No latch inferred for signal `\or1200_mem2reg.\aligned' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:325$2'.
+Found and cleaned up 1 empty switch in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mem2reg/or1200_mem2reg.v:305$1'.
+Cleaned up 2 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+Removed 0 unused cells and 8 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_mem2reg...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 20 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Computing hashes of 12 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 8 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_mem2reg..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_mem2reg.
+    New ctrl vector for $pmux cell $procmux$4: { $auto$opt_reduce.cc:137:opt_pmux$29 $auto$opt_reduce.cc:137:opt_pmux$27 }
+    New ctrl vector for $pmux cell $procmux$16: { $procmux$14_CMP $procmux$13_CMP $auto$opt_reduce.cc:137:opt_pmux$31 }
+    New ctrl vector for $pmux cell $procmux$10: { $auto$opt_reduce.cc:137:opt_pmux$35 $auto$opt_reduce.cc:137:opt_pmux$33 }
+  Optimizing cells in module \or1200_mem2reg.
+Performed a total of 3 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 17 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Computing hashes of 16 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 1 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+Removed 0 unused cells and 9 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_mem2reg..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_mem2reg.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 16 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 4) from port B of cell or1200_mem2reg.$procmux$11_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell or1200_mem2reg.$procmux$12_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell or1200_mem2reg.$procmux$13_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell or1200_mem2reg.$procmux$14_CMP0 ($eq).
+Removed top 1 bits (of 2) from port B of cell or1200_mem2reg.$procmux$24_CMP0 ($eq).
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 16 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== or1200_mem2reg ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       17 wires
+      114 wire bits
+        5 public wires
+      102 public wire bits
+        4 ports
+       70 port bits
+       16 cells
+        7   $eq
+        1   $logic_not
+        4   $pmux
+        4   $reduce_or
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_mem2reg...
+Found and reported 0 problems.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v' to AST representation.
+Generating RTLIL representation for module `\or1200_mem2reg'.
+Successfully finished Verilog frontend.
+
+8. Executing PREP pass.
+
+8.1. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1.1. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+
+8.1.2. Analyzing design hierarchy..
+Top module:  \or1200_mem2reg
+Removed 0 unused modules.
+
+8.2. Executing PROC pass (convert processes to netlists).
+
+8.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed 2 dead cases from process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36 in module or1200_mem2reg.
+Marked 5 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36 in module or1200_mem2reg.
+Removed a total of 2 dead cases.
+
+8.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 10 assignments to connections.
+
+8.2.4. Executing PROC_INIT pass (extract init attributes).
+
+8.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+8.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+8.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+     1/18: $3\sel_byte1[3:0]
+     2/18: $3\sel_byte0[3:0]
+     3/18: $5\regdata_ll[7:0]
+     4/18: $3\regdata_lh[7:0]
+     5/18: $2\sel_byte1[3:0]
+     6/18: $2\sel_byte0[3:0]
+     7/18: $4\regdata_ll[7:0]
+     8/18: $2\regdata_lh[7:0]
+     9/18: $3\regdata_ll[7:0]
+    10/18: $2\regdata_ll[7:0]
+    11/18: $1\sel_byte3[3:0]
+    12/18: $1\sel_byte2[3:0]
+    13/18: $1\sel_byte1[3:0]
+    14/18: $1\sel_byte0[3:0]
+    15/18: $1\regdata_ll[7:0]
+    16/18: $1\regdata_lh[7:0]
+    17/18: $1\regdata_hl[7:0]
+    18/18: $1\regdata_hh[7:0]
+
+8.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_mem2reg.\regdata' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\aligned' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte3' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte2' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte1' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\sel_byte0' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_ll' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_lh' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_hl' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+No latch inferred for signal `\or1200_mem2reg.\regdata_hh' from process `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+
+8.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+8.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+8.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 5 empty switches in `\or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+Removing empty process `or1200_mem2reg.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_mem2reg/or1200_mem2reg_t4.v:24$36'.
+Cleaned up 5 empty switches.
+
+8.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.3. Executing FLATTEN pass (flatten design).
+
+8.4. Executing FUTURE pass.
+
+8.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+Removed 30 unused cells and 65 unused wires.
+
+8.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_mem2reg...
+Found and reported 0 problems.
+
+8.8. Executing OPT pass (performing simple optimizations).
+
+8.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 53 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Computing hashes of 25 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 28 cells.
+
+8.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_mem2reg..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$116.
+    dead port 2/2 on $mux $procmux$56.
+    dead port 2/2 on $mux $procmux$105.
+    dead port 2/2 on $mux $procmux$63.
+    dead port 2/2 on $mux $procmux$87.
+    dead port 2/2 on $mux $procmux$95.
+Removed 6 multiplexer ports.
+
+8.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_mem2reg.
+Performed a total of 0 changes.
+
+8.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 19 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Computing hashes of 16 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 3 cells.
+
+8.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+Removed 0 unused cells and 37 unused wires.
+
+8.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_mem2reg..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_mem2reg.
+    New ctrl vector for $pmux cell $procmux$144: { $procmux$149_CMP $auto$opt_reduce.cc:137:opt_pmux$169 $auto$opt_reduce.cc:137:opt_pmux$167 }
+    New ctrl vector for $pmux cell $procmux$151: { $procmux$149_CMP $procmux$106_CMP $auto$opt_reduce.cc:137:opt_pmux$171 }
+  Optimizing cells in module \or1200_mem2reg.
+Performed a total of 2 changes.
+
+8.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 19 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Computing hashes of 18 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 1 cells.
+
+8.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+Removed 0 unused cells and 1 unused wires.
+
+8.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.8.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.8.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_mem2reg..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.8.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_mem2reg.
+Performed a total of 0 changes.
+
+8.8.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 18 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 0 cells.
+
+8.8.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+8.8.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.8.20. Finished fast OPT passes. (There is nothing left to do.)
+
+8.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell or1200_mem2reg.$procmux$103_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell or1200_mem2reg.$procmux$106_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell or1200_mem2reg.$procmux$117_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell or1200_mem2reg.$procmux$145_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell or1200_mem2reg.$procmux$146_CMP0 ($eq).
+Removed top 3 bits (of 4) from port B of cell or1200_mem2reg.$procmux$149_CMP0 ($eq).
+
+8.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+8.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+8.12. Executing OPT pass (performing simple optimizations).
+
+8.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mem2reg.
+
+8.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_mem2reg'.
+Computing hashes of 18 cells of `\or1200_mem2reg'.
+Finding duplicate cells in `\or1200_mem2reg'.
+Removed a total of 0 cells.
+
+8.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_mem2reg..
+
+8.12.4. Finished fast OPT passes.
+
+8.13. Printing statistics.
+
+=== or1200_mem2reg ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       24 wires
+      173 wire bits
+       10 public wires
+      138 public wire bits
+        4 ports
+       70 port bits
+       18 cells
+        8   $eq
+        1   $logic_not
+        7   $pmux
+        2   $reduce_or
+
+8.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_mem2reg...
+Found and reported 0 problems.
+
+9. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_or1200_mem2reg" and gate cell "gate_or1200_mem2reg".
+
+9.1. Executing FLATTEN pass (flatten design).
+
+9.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10. Executing PREP pass.
+
+10.1. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+10.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_or1200_mem2reg'.
+Removing unused module `\gold_or1200_mem2reg'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+10.2. Executing PROC pass (convert processes to netlists).
+
+10.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+10.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+10.2.4. Executing PROC_INIT pass (extract init attributes).
+
+10.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+10.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+10.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+10.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+10.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+10.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+10.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.3. Executing FUTURE pass.
+
+10.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+10.7. Executing OPT pass (performing simple optimizations).
+
+10.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 39 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 31 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 29 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 10 cells.
+
+10.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+10.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 29 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 10 unused wires.
+
+10.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+10.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 29 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+10.8. Executing WREDUCE pass (reducing word size of cells).
+
+10.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+10.11. Executing OPT pass (performing simple optimizations).
+
+10.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 29 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.11.4. Finished fast OPT passes.
+
+10.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       38 wires
+      381 wire bits
+       21 public wires
+      343 public wire bits
+        4 ports
+       39 port bits
+       29 cells
+        1   $assert
+        8   $eq
+        1   $eqx
+        1   $logic_not
+        1   $not
+       11   $pmux
+        4   $reduce_or
+        2   $scopeinfo
+
+10.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+11. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up SAT problem:
+Final constraint equation: { } = { }
+Imported 29 cells to SAT database.
+Import proof for assert: $auto$miter.cc:241:create_miter_equiv$173 when 1'1.
+
+Solving problem with 1311 variables and 3587 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  no model variables selected for display.
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

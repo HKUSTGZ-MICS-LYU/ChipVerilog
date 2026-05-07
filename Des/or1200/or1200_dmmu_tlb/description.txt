@@ -1,0 +1,88 @@
+or1200_dmmu_tlb implements the data-side TLB entry storage, SPR access path, entry decoding, and hit-comparison logic for the OR1200 data MMU. The module receives a virtual address through vaddr and supports data-side address-translation lookup through tlb_en. It outputs the TLB hit indication hit, the physical page number ppn, the user and supervisor read/write permission bits uwe, ure, swe, and sre, as well as the cache-inhibit attribute ci. At the same time, the SPR interface allows software to read and write the TLB match registers and translate registers.
+
+The module itself does not contain an explicit control FSM, nor does it define explicit resettable registers at the top level. TLB entries are stored in the underlying RAM instances. In the generic RAM implementation, rst is passed to the RAM instances. In the OR1200_RAM_MODELS_VIRTEX branch, rst is not directly used by this module. The decoding from RAM outputs to vpn, v, ppn, permission bits, ci, and hit is implemented with combinational assignments, but the timing of the RAM read data depends on the selected RAM implementation.
+
+Internally, the TLB is divided into two storage arrays. The match RAM stores the virtual page number vpn[31:19] and the valid bit v, with the entry format {vpn[31:19], v}. The translate RAM stores the physical page number ppn[31:13], the four permission bits swe, sre, uwe, and ure, and the cache-inhibit bit ci, with the entry format {ppn[31:13], swe, sre, uwe, ure, ci}.
+
+The match RAM enable signal tlb_mr_en is asserted in two cases: when a normal address-translation request is active through tlb_en, or when the SPR interface accesses the match-register area, indicated by spr_cs being asserted and spr_addr[7] being 0. The translate RAM enable signal tlb_tr_en is also asserted in two cases: when a normal address-translation request is active through tlb_en, or when the SPR interface accesses the translate-register area, indicated by spr_cs being asserted and spr_addr[7] being 1.
+
+Writes to the TLB arrays are performed only through SPR write accesses. The match RAM write enable tlb_mr_we is asserted only when spr_cs and spr_write are asserted and spr_addr[7] is 0. The translate RAM write enable tlb_tr_we is asserted only when spr_cs and spr_write are asserted and spr_addr[7] is 1. Therefore, normal address translation never modifies the TLB contents.
+
+The TLB access index is selected through tlb_index. During normal address translation, the index comes from vaddr[18:13]. During any SPR access, as long as spr_cs is asserted, the index comes from spr_addr[5:0]. Therefore, if spr_cs and tlb_en are asserted at the same time, the SPR address index has priority, and tlb_index selects spr_addr[5:0] rather than vaddr[18:13].
+
+The match RAM output is decoded into vpn and v. The vpn value is taken from tlb_mr_ram_out[13:1], while v is taken from tlb_mr_ram_out[0]. The translate RAM output is decoded into ppn, the permission bits, and ci. Specifically, ppn is taken from tlb_tr_ram_out[23:5], swe, sre, uwe, and ure are taken from tlb_tr_ram_out[4], [3], [2], and [1] respectively, and ci is taken from tlb_tr_ram_out[0].
+
+The hit logic compares the vpn read from the match RAM with the virtual page number portion of the current virtual address, vaddr[31:19], and also requires the valid bit v to be set. In other words, hit is generated as (vpn == vaddr[31:19]) & v. It is important to note that hit is not explicitly gated by tlb_en. The tlb_en signal controls RAM enable during normal lookup, but hit itself is generated combinationally from the current match RAM output and vaddr[31:19].
+
+When software writes the match-register area through SPR, the module writes spr_dat_i[31:19] into the match RAM as the virtual page number and writes spr_dat_i[0] as the valid bit. When software writes the translate-register area through SPR, the module writes spr_dat_i[31:13] as the physical page number ppn, writes spr_dat_i[9], spr_dat_i[8], spr_dat_i[7], and spr_dat_i[6] as swe, sre, uwe, and ure respectively, and writes spr_dat_i[1] as ci.
+
+When software reads the TLB through SPR, spr_dat_o returns data in different formats depending on the accessed area. If the match-register area is read, meaning spr_cs is asserted, spr_write is deasserted, and spr_addr[7] is 0, spr_dat_o returns the match-register format containing vpn, an index field masked by the valid bit v, reserved zero fields, and the valid bit v. The index field is not simply the raw tlb_index; it is returned as tlb_index & {OR1200_DTLB_INDXW{v}}, so the index field is cleared when v is 0.
+
+If the translate-register area is read, meaning spr_cs is asserted, spr_write is deasserted, and spr_addr[7] is 1, spr_dat_o returns the translate-register format containing ppn, reserved zero fields, swe, sre, uwe, ure, additional reserved zero fields, and ci. In this readback format, ci is returned at bit 1, while bit 0 is hardwired to 0. If the current access is not a valid SPR read access, spr_dat_o returns 32'h00000000.
+
+The module supports two underlying RAM implementation styles. When OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates Virtex-specific RAM modules. Otherwise, it instantiates the generic OR1200 single-port RAM modules or1200_spram_64x14 and or1200_spram_64x24. Regardless of the selected RAM implementation, a compatible implementation should preserve the software-visible register layout, index-selection behavior, write behavior, and lookup semantics.
+
+Overall, or1200_dmmu_tlb implements “DTLB entry storage, SPR-programmable access, entry decoding, and hit comparison.” It does not directly generate TLB miss exceptions, page-fault exceptions, or permission exceptions. Instead, it provides hit, ppn, the permission bits, and ci to the surrounding DMMU logic, which performs the exception checks and subsequent handling.
+
+module or1200_dmmu_tlb(
+    // Rst and clk
+    input clk,
+    input rst,
+
+    // I/F for translation
+    input tlb_en,
+    input [31:0] vaddr,
+    output hit,
+    output [31:13] ppn,
+    output uwe,
+    output ure,
+    output swe,
+    output sre,
+    output ci,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // SPR access
+    input spr_cs,
+    input spr_write,
+    input [31:0] spr_addr,
+    input [31:0] spr_dat_i,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    tlb_en: Enables the TLB lookup for the current access.
+    vaddr[31:0]: Virtual address presented to the TLB.
+    mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    spr_cs: SPR chip-select for this module.
+    spr_write: SPR write strobe for this module.
+    spr_addr[31:0]: SPR address used for register decode.
+    spr_dat_i[31:0]: Write data from the SPR/control path.
+Output port:
+    hit: Hit indication for the current TLB/cache lookup.
+    ppn[31:13]: Physical page number returned by the TLB.
+    uwe: User-mode write permission bit returned by the DTLB.
+    ure: User-mode read permission bit returned by the DTLB.
+    swe: Supervisor-mode write permission bit returned by the DTLB.
+    sre: Supervisor-mode read permission bit returned by the DTLB.
+    ci: Cache-inhibit attribute returned by the TLB or memory-mapping logic.
+    mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    spr_dat_o[31:0]: Read data returned on the SPR bus.
+
+Processing Flow
+
+During a normal translation lookup, tlb_en is asserted and spr_cs is deasserted. In this case, the TLB index is selected from vaddr[18:13], and both the match RAM and translate RAM are enabled. The match RAM returns the stored virtual page number and valid bit for the selected entry, while the translate RAM returns the corresponding physical page number, permission bits, and cache-inhibit bit. The module then compares the stored vpn with vaddr[31:19] and combines the comparison result with the valid bit v to generate hit. In parallel, the translate RAM output is decoded into ppn, swe, sre, uwe, ure, and ci.
+
+During an SPR write access, spr_cs and spr_write are asserted. The selected array is determined by spr_addr[7]: when spr_addr[7] is 0, the write targets the match RAM; when spr_addr[7] is 1, the write targets the translate RAM. The TLB index is taken from spr_addr[5:0]. For match-register writes, the module stores spr_dat_i[31:19] as the virtual page number and spr_dat_i[0] as the valid bit. For translate-register writes, the module stores spr_dat_i[31:13] as the physical page number, spr_dat_i[9:6] as the permission bits, and spr_dat_i[1] as the cache-inhibit bit.
+
+During an SPR read access, spr_cs is asserted and spr_write is deasserted. The TLB index is again taken from spr_addr[5:0], and the selected readback format depends on spr_addr[7]. If spr_addr[7] is 0, spr_dat_o returns the match-register format, including the stored vpn, the valid-bit-masked index field, reserved zero fields, and the valid bit. If spr_addr[7] is 1, spr_dat_o returns the translate-register format, including the stored ppn, permission bits, reserved zero fields, and ci at bit 1. If the access is not a valid SPR read, spr_dat_o returns zero.
+
+One important behavior in the processing flow is that SPR access has priority in index selection. Whenever spr_cs is asserted, tlb_index is selected from spr_addr[5:0], even if tlb_en is also asserted. Another important point is that hit is not explicitly gated by tlb_en; it is always formed from the current match RAM output and vaddr[31:19].

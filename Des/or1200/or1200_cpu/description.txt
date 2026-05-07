@@ -1,0 +1,169 @@
+This module is the top-level integrated module of the data path and control path of the OR1200 processor core. It is responsible for connecting sub-modules such as fetching, decoding, register file, operand selection, ALU, MAC/multiplier, LSU, exception handling, PC generation, debugging unit and SPR access into a complete CPU. The module provides external command-side and data-side bus interfaces, initiates requests to the instruction subsystem and data access subsystem respectively, and receives returned data, handshake and error information; it also exports debugging, MMU/cache enable, supervisory state and SPR interface signals.
+
+The top layer itself hardly saves independent timing status. Timing updates mainly occur inside lower-level sub-modules and are uniformly driven by the rising edge of clk and reset by rst. The top-level responsibility is to connect these state machines and pipeline registers, and export key status register bits as function enable: dc_en, ic_en, dmmu_en, immu_en, supv and except_prefix respectively come from the data cache, instruction cache, data MMU, instruction MMU, supervision state and exception vector prefix related bits in the system status register SR, so these outputs are combined to reflect the current SR content. The debug exception stop vector du_except comes directly from the exceptions module's except_stop. The register file write enable we is determined by the write-back control rfwb_op[0]; the SPR chip select and write enable are generated uniformly by the SPRS/control path.
+
+From a functional point of view, the control module first decodes the fetched instructions and generates control signals such as register read address, immediate data, branch offset, memory access offset, ALU/MAC/LSU opcode, writeback selection, SPR address immediate data, multi-cycle information, system calls, traps, illegal instructions, etc. The source operands output by the register file then go through operand selection and forward logic to generate the final execution operands sent to the ALU and LSU. ALU completes arithmetic logic, comparison, shift and customized instructions; MAC/multiplier completes multiplication and multiplication-accumulation operations; LSU initiates data access based on memory access type, address and write data. The writeback demultiplexer selects rf_dataw between ALU results, LSU return data, SPR read results, and link addresses based on rfwb_op and writes it back to the register file while providing the forward results to the previous stage.
+
+In terms of control flow, genpc generates the next instruction fetch address based on branch type, flag bit, abnormal start, abnormal return EPC and software write PC request; the if unit receives instructions from the instruction bus and caches instructions that have been returned but not yet consumed when the pipeline freezes; the except module uniformly collects instruction fetch, memory access, illegal instructions, alignment, TLB/MMU, system calls, traps, interrupts and ticks and other exception sources, generates except_type, except_start, flushpipe and extended flush control, and maintains them. Exception-related registers such as EPC, EEAR, and ESR. The freezing logic combines conditions such as IF/LSU stall, multi-cycle execution, debug shutdown, abnormal flushing, and MAC busy to control whether the pipeline at all levels maintains the current state. The debug unit interacts with the CPU's internal registers and SPR space through du_stall, du_read/du_write and du_addr/du_dat_cpu, and can trigger hardware breakpoints or abnormal stops.
+
+Therefore, the overall semantics of this module are: after the reset is released, the sub-module's internal state machine and pipeline registers jointly drive the CPU's normal instruction fetching, decoding, execution, memory access and write-back; when debugging shutdown, bus waiting, multi-cycle operation or exception occurs, the corresponding sub-module preempts the normal execution path through the freezing or flushing mechanism. The top level does not change these priorities, it is only responsible for connecting them correctly according to the implementation of OR1200.
+
+This module is the top-level CPU integration point for the OR1200 processor datapath and control path. It wires together the major blocks needed to execute instructions and connect the processor to:
+- instruction-side bus / cache / IMMU
+- data-side bus / cache / DMMU
+- debug unit
+- special-purpose register (SPR) space
+- interrupt and tick exception sources
+
+module or1200_cpu(
+    // Clk & Rst
+    input clk,
+    input rst,
+
+    // Insn interface
+    output ic_en,
+    output [31:0] icpu_adr_o,
+    output icpu_cycstb_o,
+    output [3:0] icpu_sel_o,
+    output [3:0] icpu_tag_o,
+    input [31:0] icpu_dat_i,
+    input icpu_ack_i,
+    input icpu_rty_i,
+    input icpu_err_i,
+    input [31:0] icpu_adr_i,
+    input [3:0] icpu_tag_i,
+    output immu_en,
+
+    // Debug unit
+    output [31:0] ex_insn,
+    output ex_freeze,
+    output [31:0] id_pc,
+    output [2:0] branch_op,
+    output [31:0] spr_dat_npc,
+    output [31:0] rf_dataw,
+    input du_stall,
+    input [31:0] du_addr,
+    input [31:0] du_dat_du,
+    input du_read,
+    input du_write,
+    input [13:0] du_dsr,
+    input du_hwbkpt,
+    output [12:0] du_except,
+    output [31:0] du_dat_cpu,
+
+    // Data interface
+    output dc_en,
+    output [31:0] dcpu_adr_o,
+    output dcpu_cycstb_o,
+    output dcpu_we_o,
+    output [3:0] dcpu_sel_o,
+    output [3:0] dcpu_tag_o,
+    output [31:0] dcpu_dat_o,
+    input [31:0] dcpu_dat_i,
+    input dcpu_ack_i,
+    input dcpu_rty_i,
+    input dcpu_err_i,
+    input [3:0] dcpu_tag_i,
+    output dmmu_en,
+
+    // Interrupt & tick exceptions
+    input sig_int,
+    input sig_tick,
+
+    // SPR interface
+    output supv,
+    output [31:0] spr_addr,
+    output [31:0] spr_dat_cpu,
+    input [31:0] spr_dat_pic,
+    input [31:0] spr_dat_tt,
+    input [31:0] spr_dat_pm,
+    input [31:0] spr_dat_dmmu,
+    input [31:0] spr_dat_immu,
+    input [31:0] spr_dat_du,
+    output [31:0] spr_cs,
+    output spr_we
+);
+
+Input ports:
+    clk: Primary clock; sequential state in this module updates on its rising edge.
+    rst: Reset input that returns local state elements to their defined reset values.
+    icpu_dat_i[31:0]: Data bus for the CPU-to-instruction-memory interface.
+    icpu_ack_i: Acknowledge/transfer-complete indication for the CPU-to-instruction-memory interface.
+    icpu_rty_i: Retry/wait indication for the CPU-to-instruction-memory interface.
+    icpu_err_i: Error termination indication for the CPU-to-instruction-memory interface.
+    icpu_adr_i[31:0]: Address bus for the CPU-to-instruction-memory interface.
+    icpu_tag_i[3:0]: Tag field carried on the CPU-to-instruction-memory interface.
+    du_stall: Debug-unit stall request into the pipeline.
+    du_addr[31:0]: Debug-unit internal access address.
+    du_dat_du[31:0]: Write data supplied by the debug unit.
+    du_read: Debug-unit read strobe for CPU-internal accesses.
+    du_write: Debug-unit write strobe for CPU-internal accesses.
+    du_dsr[13:0]: Debug-stop register contents forwarded to exception/debug control.
+    du_hwbkpt: Hardware-breakpoint request generated by the debug unit.
+    dcpu_dat_i[31:0]: Data bus for the CPU-to-data-memory interface.
+    dcpu_ack_i: Acknowledge/transfer-complete indication for the CPU-to-data-memory interface.
+    dcpu_rty_i: Retry/wait indication for the CPU-to-data-memory interface.
+    dcpu_err_i: Error termination indication for the CPU-to-data-memory interface.
+    dcpu_tag_i[3:0]: Tag field carried on the CPU-to-data-memory interface.
+    spr_dat_pic[31:0]: SPR read data returned by the PIC block.
+    spr_dat_tt[31:0]: SPR read data returned by the tick-timer block.
+    spr_dat_pm[31:0]: SPR read data returned by the power-management block.
+    spr_dat_dmmu[31:0]: SPR read data returned by the DMMU block.
+    spr_dat_immu[31:0]: SPR read data returned by the IMMU block.
+    spr_dat_du[31:0]: SPR read data returned by the debug-unit block.
+    sig_int: Raw interrupt exception source.
+    sig_tick: Raw tick-timer exception source.
+Output port:
+    ic_en: Instruction-cache enable control.
+    icpu_adr_o[31:0]: Address bus for the CPU-to-instruction-memory interface.
+    icpu_cycstb_o: Combined cycle-and-strobe request for the CPU-to-instruction-memory interface.
+    icpu_sel_o[3:0]: Byte-lane select for the CPU-to-instruction-memory interface.
+    icpu_tag_o[3:0]: Tag field carried on the CPU-to-instruction-memory interface.
+    immu_en: Instruction-MMU enable control.
+    ex_insn[31:0]: Instruction word in the execute stage.
+    ex_freeze: Freeze control for the execute stage.
+    id_pc[31:0]: Program-counter value in the decode stage.
+    branch_op[2:0]: Encoded branch/jump operation selector.
+    du_except[12:0]: Encoded exception-stop vector observed by the debug unit.
+    du_dat_cpu[31:0]: Read data returned from CPU-internal state to the debug unit.
+    rf_dataw[31:0]: Register-file writeback data.
+    dcpu_adr_o[31:0]: Address bus for the CPU-to-data-memory interface.
+    dcpu_cycstb_o: Combined cycle-and-strobe request for the CPU-to-data-memory interface.
+    dcpu_we_o: Write-enable / write-versus-read qualifier for the CPU-to-data-memory interface.
+    dcpu_sel_o[3:0]: Byte-lane select for the CPU-to-data-memory interface.
+    dcpu_tag_o[3:0]: Tag field carried on the CPU-to-data-memory interface.
+    dcpu_dat_o[31:0]: Data bus for the CPU-to-data-memory interface.
+    dc_en: Data-cache enable control.
+    dmmu_en: Data-MMU enable control.
+    supv: Current supervisor-mode status used for privileged behavior and permission checks.
+    spr_addr[31:0]: SPR address used for register decode.
+    spr_dat_cpu[31:0]: SPR write data forwarded from the CPU top-level integration.
+    spr_dat_npc[31:0]: SPR read data for the next-program-counter register.
+    spr_cs[31:0]: SPR chip-select for this module.
+    spr_we: SPR write enable generated by the control path.
+
+This module is the top-level integration module for the datapath and control path of the OR1200 processor core. It primarily wires together the major CPU submodules, including program-counter generation, instruction fetch, decode/control logic, register file, operand selection and forwarding, ALU, multiplier/MAC unit, SPR access block, load/store unit, write-back mux, pipeline freeze logic, exception handling, and configuration registers. Together, these submodules form the complete CPU execution path.
+
+The module provides the instruction-side interface, data-side interface, debug interface, SPR interface, and interrupt/tick exception inputs. The instruction-side interface contains the fetch address, request, byte-select, tag, returned instruction data, acknowledge, retry, and error signals. The data-side interface contains the data access address, request, read/write control, byte-select, tag, write data, returned read data, acknowledge, retry, and error signals. The module also exports debug-related information such as the execute-stage instruction, execute-stage freeze status, decode-stage PC, branch operation type, register write-back data, debug exception stop vector, and data returned from CPU-internal state to the debug unit.
+
+From a timing perspective, this top-level file does not directly implement independent pipeline registers or state machines with always blocks. Instead, it distributes clk and rst to the instantiated submodules. The actual sequential state, pipeline registers, exception state, and control state are implemented mainly inside the lower-level submodules. Therefore, clk and rst should be understood as the clock and reset signals for the integrated CPU subsystem rather than as signals that only update local top-level state.
+
+Several external status outputs are derived combinationally from bits of the system status register SR. dc_en is assigned from sr[3] and indicates data-cache enable. ic_en is assigned from sr[4] and indicates instruction-cache enable. dmmu_en is assigned from sr[5] and indicates data-MMU enable. immu_en is assigned from sr[6] and indicates instruction-MMU enable. supv is assigned from sr[0] and indicates the current supervisor-mode state. The signal except_prefix is derived from sr[14], but it is not a module output port; it is an internal signal passed to or1200_genpc to affect exception-vector address selection. The debug exception output du_except is directly assigned from the exception module’s except_stop signal.
+
+In the control path, or1200_ctrl receives the instruction from the fetch stage, pipeline freeze and flush controls, branch result information, and debug breakpoint information. It decodes instructions and generates register read addresses, register write address, immediate values, branch offset, LSU address offset, ALU/MAC/LSU operation codes, write-back selection, SPR immediate address, multi-cycle execution information, system-call and trap indications, illegal-instruction indication, RFE control, delay-slot control, and MAC-related control signals.
+
+The register file or1200_rf uses the read/write addresses, read enables, write enable, write-back data, and pipeline freeze signals to perform register accesses. The register-file write enable we is derived from rfwb_op[0], and the write-back data rf_dataw is provided by the write-back mux. The register file is also exposed through the system SPR group access path, using spr_cs[0] as the relevant chip select and spr_we as the write enable.
+
+The operand selection module or1200_operandmuxes selects the final execution operands from register-file outputs, immediate values, execute-stage forwarding data, and write-back-stage forwarding data. These operands are then supplied to the ALU, multiplier/MAC unit, and LSU. The ALU performs arithmetic, logical, comparison, shift/rotate, and custom-instruction-related operations, and it also produces forwarded flag and carry values with their write-enable signals. The multiplier/MAC unit performs multiplication and multiply-accumulate operations and is also connected to the MAC-related SPR access path.
+
+The SPR access module or1200_sprs centralizes CPU-internal SPR accesses, debug-unit accesses, SR/EPCR/EEAR/ESR-related paths, and SPR read-data selection from the PIC, tick timer, power-management block, DMMU, IMMU, debug unit, register file, MAC unit, and configuration registers. The signals spr_addr, spr_dat_cpu, spr_cs, and spr_we are generated or collected by this SPR module rather than being directly generated by the top level or by the decode/control module alone.
+
+The LSU generates data-side memory accesses based on the address base, address offset, memory operation type, and store data. It drives the data access address, request, read/write control, byte-select, tag, and write-data signals, while receiving returned data, acknowledge, retry, and error signals from the data-side interface. It also produces LSU stall, address-alignment exception, DTLB miss, DMMU fault, and data-bus-error signals for use by the freeze and exception logic.
+
+The write-back mux or1200_wbmux selects the register-file write-back data rf_dataw from the ALU result, LSU returned data, SPR read data, or link address according to rfwb_op. It also produces write-back-stage forwarding data and a forwarding-valid signal for use by the operand selection logic.
+
+The program-counter generation module or1200_genpc generates the next instruction fetch address and instruction-side request signals based on the branch operation, exception type, exception-start signal, exception-vector prefix, branch offset, link-register restore value, flag value, branch-taken result, saved link address, EPCR, SPR write-to-PC request, freeze control, and refetch control. The instruction fetch module or1200_if receives returned instruction data, acknowledge, error, address, and tag information from the instruction-side interface. It outputs the fetch-stage instruction, fetch-stage PC, fetch-stage stall signal, and instruction-side exception signals according to freeze, flush, refetch, RFE, and exception-related controls.
+
+The exception module or1200_except collects instruction-bus error, data-bus error, illegal instruction, address alignment exception, DTLB/ITLB miss, DMMU/IMMU fault, interrupt, system call, trap, tick exception, and pipeline-state information. It generates the exception type, exception-start indication, exception-started indication, pipeline flush, extended flush, debug stop vector, exception-register write enables and values, and execution-abort signal. The exception-register-related outputs are connected to the SPR module so that system and exception state can be read or written through the SPR path.
+
+The freeze logic or1200_freeze generates freeze controls for the genpc, IF, ID, EX, and WB stages. It combines conditions such as multi-cycle execution, pipeline flush, extended flush, LSU stall, IF stall, LSU unstall, forced delay-slot fetch, execution abort, debug stall, MAC stall, and instruction-side acknowledge/error status.

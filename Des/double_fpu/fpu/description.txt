@@ -1,0 +1,70 @@
+Module fpu is the top-level controller for a double-precision floating-point unit. It integrates the add, subtract, multiply, divide, rounding, and exception-handling blocks to produce IEEE-754 double-precision results.
+The module accepts two 64-bit operands, an operation code, and a rounding mode. It detects a rising edge on enable, captures the operands and control fields into internal registers, routes the operation to the appropriate arithmetic datapath, sends the selected intermediate result through rounding and exception handling, and finally publishes the result and status flags when the fixed-latency operation completes.
+The supported operations are addition, subtraction, multiplication, and division. The supported rounding modes are round-to-nearest-even, round-toward-zero, round-toward-positive-infinity, and round-toward-negative-infinity.
+
+Supported operations:
+    fpu_op = 3'b000 : addition
+    fpu_op = 3'b001 : subtraction
+    fpu_op = 3'b010 : multiplication
+    fpu_op = 3'b011 : division
+
+Supported rounding modes:
+    rmode = 2'b00 : round to nearest
+    rmode = 2'b01 : round toward zero
+    rmode = 2'b10 : round toward positive infinity
+    rmode = 2'b11 : round toward negative infinity
+
+module fpu (
+    input clk,
+    input rst,
+    input enable,
+    input [1:0] rmode,
+    input [2:0] fpu_op,
+    input [63:0] opa,
+    input [63:0] opb,
+    output reg [63:0] out,
+    output reg ready,
+    output reg underflow,
+    output reg overflow,
+    output reg inexact,
+    output reg exception,
+    output reg invalid
+);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Rising-edge start signal; a new operation is latched only when enable transitions from 0 to 1.
+    input [1:0] rmode: Control signal that selects operation mode, command, or multiplexed path.
+        - 2'b00 = round to nearest.
+        - 2'b01 = round to zero.
+        - 2'b10 = round toward positive infinity.
+        - 2'b11 = round toward negative infinity.
+    input [2:0] fpu_op: Control signal that selects operation mode, command, or multiplexed path.
+        - 3'b000 = addition.
+        - 3'b001 = subtraction.
+        - 3'b010 = multiplication.
+        - 3'b011 = division.
+        - other codes are treated as unused.
+    input [63:0] opa, opb: Two 64-bit IEEE-754 double-precision input operands.
+
+Output port:
+    output [63:0] out: Output signal driven by the module toward surrounding logic.
+    output ready: Asserted when the fixed-latency operation completes and the result is valid.
+    output underflow: Output signal driven by the module toward surrounding logic.
+    output overflow: Output signal driven by the module toward surrounding logic.
+    output inexact: Output signal driven by the module toward surrounding logic.
+    output exception: Output signal driven by the module toward surrounding logic.
+    output invalid: Asserted when an IEEE-754 invalid operation is detected.
+
+Processing Flow:
+1. Reset: When rst is asserted, the internal registers, counters, result output, ready signal, and status flags are cleared.
+2. Input Capture: When enable starts an operation, opa, opb, fpu_op, and rmode are latched into internal registers.
+3. Operation Decode: The registered fpu_op value selects addition, subtraction, multiplication, or division.
+4. Add/Subtract Routing: For add/subtract operations, the signs of opa and opb determine whether the addition or subtraction datapath is used for magnitude arithmetic.
+5. Arithmetic Execution: The selected arithmetic datapath generates intermediate sign, exponent, and mantissa values.
+6. Intermediate Selection: The top-level logic selects the correct intermediate result from the active arithmetic datapath.
+7. Rounding: The selected sign, exponent, and mantissa are rounded according to rmode.
+8. Exception Handling: The exception logic checks for special cases and exception conditions such as overflow, underflow, inexact result, and invalid operation.
+9. Final Output Selection: If an exception or special case requires an override, out is assigned from the exception result. Otherwise, out is assigned from the rounded normal result.
+10. Ready and Flags:When the selected operation completes, ready is asserted. At this time, out, underflow, overflow, inexact, exception, and invalid are valid.

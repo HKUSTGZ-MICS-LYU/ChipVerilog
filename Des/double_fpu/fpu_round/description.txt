@@ -1,0 +1,56 @@
+Module `fpu_round` applies IEEE-754 rounding-mode rules to intermediate mantissa/exponent values and produces the final rounded data word. fpu_round.v receives the intermediate floating-point result from the arithmetic stage, decodes the selected rounding mode, decides whether the retained mantissa must be incremented, propagates a carry from the rounding increment into the exponent when necessary, and packs the rounded sign, exponent, and mantissa into a 64-bit floating-point result for the exception stage.
+
+This module applies the selected rounding rule to an intermediate floating-point result. It accepts a sign bit, a 56-bit mantissa bundle, and a 12-bit exponent. It may increment the mantissa, renormalize if the increment overflows, update the exponent accordingly, and then emits a rounded IEEE-754 64-bit result plus the final 12-bit exponent.
+
+This module performs the rounding stage of the floating-point datapath. Its inputs are sign_term, mantissa_term, and exponent_term, which come from the previous arithmetic stage. mantissa_term is 56 bits wide and contains a fixed leading bit position, the leading integer bit, the 52-bit mantissa, and 2 remainder bits. exponent_term is a 12-bit extended exponent whose extra bit allows detection of exponent overflow beyond the 11-bit IEEE field. The outputs are the final rounded 64-bit value round_out and the rounded exponent exponent_final, which is passed on to the exceptions stage .
+
+The module supports four rounding modes: round to nearest, round to zero, round to positive infinity, and round to negative infinity. For round-to-nearest mode,  Rounding is performed by adding rounding_amount to mantissa_term, where rounding_amount has a single 1 aligned with the least significant mantissa bit. For round-to-zero mode, no active increment is performed, so the result is effectively truncated. For round-to-positive-infinity mode, the result is incremented if the sign is positive and either remainder bit is 1. For round-to-negative-infinity mode, the result is incremented if the sign is negative and either remainder bit is 1 .
+
+If rounding causes the mantissa to overflow, the rounded value is shifted right by one and the exponent is incremented. Otherwise, the exponent remains unchanged. The final round_out consists of the result sign, the rounded 11-bit exponent, and the rounded 52-bit mantissa. This module only performs normal rounding. It does not resolve infinity, NaN, overflow/underflow replacement, or exception flags; those are handled in the exceptions module.
+
+All intermediate registers and outputs are updated on the rising edge of the clock. When rst is asserted, all rounding-related registers and outputs are cleared.
+
+module fpu_round (
+    input clk,
+    input rst,
+    input enable,
+    input [1:0] round_mode,
+    input sign_term,
+    input [55:0] mantissa_term,
+    input [11:0] exponent_term,
+    output reg [63:0] round_out,
+    output reg [11:0] exponent_final
+);
+
+Input ports:
+    input clk: Clock signal that defines sequential update timing for this logic.
+    input rst: Reset signal that initializes state elements to known values.
+    input enable: Present but not used; the pipeline updates every clock cycle regardless of this signal.
+    input [1:0] round_mode: Selects the IEEE-754 rounding mode: 2'b00=nearest, 2'b01=zero, 2'b10=+inf, 2'b11=-inf.
+    input sign_term: Sign bit of the intermediate floating-point result from the arithmetic stage.
+    input [55:0] mantissa_term: Data input that provides operand or payload values to the datapath.
+    input [11:0] exponent_term: Data input that provides operand or payload values to the datapath.
+
+Output port:
+    output [63:0] round_out: Output signal driven by the module toward surrounding logic. rounded 64-bit IEEE-754 result.
+    output [11:0] exponent_final: Data output that carries computed results or status information. exponent after rounding overflow adjustment.
+
+Internal reg/wire signals:
+    wire [55:0] rounding_amount = { 53'b0, 1'b1, 2'b0}: Rounding amount.
+    wire round_nearest = (round_mode == 2'b00): Round nearest flag.
+    wire round_to_zero = (round_mode == 2'b01): Round to zero flag.
+    wire round_to_pos_inf = (round_mode == 2'b10): Round to positive-infinity flag.
+    wire round_to_neg_inf = (round_mode == 2'b11): Round to negative-infinity flag.
+    wire round_nearest_trigger = round_nearest &  mantissa_term[1]: Round nearest trigger flag.
+    wire round_to_pos_inf_trigger = !sign_term & |mantissa_term[1:0]: Round to pos infinity trigger flag.
+    wire round_to_neg_inf_trigger = sign_term & |mantissa_term[1:0]: Round to neg infinity trigger flag.
+    wire round_trigger = ( round_nearest & round_nearest_trigger) | (round_to_pos_inf & round_to_pos_inf_trigger) | (round_to_neg_inf & round_to_neg_inf_trigger): Round trigger flag.
+    reg [55:0] sum_round: Sum round.
+    wire sum_round_overflow = sum_round[55]: Sum round overflow flag.
+    reg [55:0] sum_round_2: Stage-2 pipeline copy of the sum round.
+    reg [11:0] exponent_round: Exponent round.
+    reg [55:0] sum_final: Sum final.
+    reg [11:0] exponent_final: Exponent final.
+    reg [63:0] round_out: Round output register.
+
+

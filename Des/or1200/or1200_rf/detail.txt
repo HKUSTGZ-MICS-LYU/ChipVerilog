@@ -1,0 +1,44 @@
+1. SPR-visible GPR access
+- An SPR access is considered valid for the register file when spr_cs is asserted and the SPR address identifies the RF subrange.
+- For an SPR read, the module redirects port A’s read address to spr_addr[4:0] and returns the result on spr_dat_o.
+- For an SPR write, the module redirects the write address and write data to spr_addr[4:0] and spr_dat_i.
+- This allows architectural reads/writes of general-purpose registers via SPR instructions or debug access.
+
+2. Operand read behavior
+- dataa normally reflects read port A.
+- datab normally reflects read port B.
+- If id_freeze is asserted and the corresponding saved flag is not yet set, the current read value is captured into temporary saved registers and then replayed until the freeze is released.
+- This prevents operand changes caused by changing addresses or RAM timing while decode is stalled.
+- the saved value is cleared when id_freeze is deasserted
+
+3. Write behavior
+- rf_we is asserted as ((spr_valid & spr_write) | (we & ~wb_freeze)) & rf_we_allow & (supv | (|rf_addrw)).
+- A local rf_we_allow bit blocks writes during flushpipe conditions. It is updated when writeback is not frozen.
+- Normal writes are additionally qualified by supervision/zero-register rules via (supv | (|rf_addrw)).
+
+4. Memory implementation options
+The module supports multiple implementation styles under synthesis defines:
+- True two-port RAM pair.
+- Dual-port RAM pair.
+- Generic flip-flop based register file.
+- FPGA-specific RAM model.
+Regardless of implementation style, the architectural behavior must remain identical:
+- two read operands,
+- one write path,
+- r0 read as zero,
+- consistent freeze/save semantics,
+- SPR access support.
+
+5. Enable behavior
+- Read enable A is active when operand A is requested and ID is not frozen, or during a valid SPR access.
+- Read enable B is active when operand B is requested and ID is not frozen, or during a valid SPR access.
+- These enables are used to reduce activity and to match memory macro timing assumptions.
+
+6. Required functional guarantees
+An implementation conforming to this spec shall:
+- Present two logical read ports and one logical write port for a 32x32 register file.
+- Return zero for register index 0.
+- Allow SPR reads/writes to the GPR bank using the RF SPR address subrange.
+- Suppress ordinary pipeline writes during writeback freeze or flushed cycles.
+- Preserve operand values across decode-stage freezes using saved temporary registers or equivalent behavior.
+- Preserve the same architecture-visible behavior independent of the selected memory macro style.

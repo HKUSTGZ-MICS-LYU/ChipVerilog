@@ -1,0 +1,93 @@
+or1200_ic_fsm is the instruction-cache fetch-control finite state machine in OR1200. It is mainly responsible for handling Cache hit/miss evaluation during instruction fetch requests, external BIU read requests, first-word acknowledge generation, Cache line refill, cache-inhibit access handling, and write-enable control for the ICache RAM and Tag RAM. The module updates its state on the rising edge of clk and uses an asynchronous active-high reset rst. After reset, the FSM enters the IDLE state and clears internal registers such as saved_addr_r, cnt, hitmiss_eval, load, and cache_inhibit. The external output saved_addr always comes from the registered value saved_addr_r, rather than directly from the current input start_addr.
+
+The FSM defines four states: IDLE, CFETCH, LREFILL3, and IFETCH. However, in the current implementation, only IDLE, CFETCH, and LREFILL3 are actually used. Although IFETCH is defined, it does not appear in the state-transition logic. IDLE is the idle state used to wait for a new fetch request. CFETCH is the main fetch-processing state, where the FSM performs the first hit/miss evaluation, handles cache-inhibit accesses, waits for BIU responses, and decides whether to enter the refill flow. LREFILL3 is used to complete the remaining Cache line word refill after the first word of a missed line has returned.
+
+In the IDLE state, if both ic_en and icqmem_cycstb_i are asserted, this indicates a new instruction fetch request. The FSM enters the CFETCH state, saves start_addr into saved_addr_r, sets hitmiss_eval and load, and clears cache_inhibit. Here, hitmiss_eval indicates that the FSM is in the initial hit/miss evaluation phase, while load indicates that the current fetch or refill operation is still in progress. If there is no valid fetch request while in IDLE, the FSM remains idle and clears transient control flags such as hitmiss_eval, load, and cache_inhibit.
+
+biu_read is the read-request control signal sent to the external BIU. It is generated combinationally as (hitmiss_eval & tagcomp_miss) | (!hitmiss_eval & load). In other words, during the initial hit/miss evaluation phase, if the tag comparison indicates a miss, biu_read is asserted to start an external read. After the initial evaluation phase has ended, if load is still asserted, biu_read remains asserted to wait for or continue the external load/refill process. It should be noted that biu_read itself does not directly check the FSM state, nor does it directly check icqmem_ci_i or cache_inhibit; it is determined only by hitmiss_eval, tagcomp_miss, and load.
+
+icram_we and tag_we control writes to the ICache RAM and Tag RAM. Both are asserted only when biu_read and biudata_valid are asserted and cache_inhibit is deasserted. Therefore, only valid BIU return data from cacheable accesses is written into the ICache RAM and Tag RAM. For cache-inhibit accesses, once cache_inhibit has been latched to 1, returned data will not be written into the Cache. It is important to note that cache_inhibit is a registered signal, not a purely combinational equivalent of the current icqmem_ci_i; therefore, its effect on write enables and state transitions reflects the latched sequential behavior.
+
+In the CFETCH state, the FSM handles the main flow of the current fetch request. If the current request is valid and icqmem_ci_i is 1, the access is cache-inhibited, and the FSM sets cache_inhibit. This signal is later used to prevent Cache writes and to terminate the transaction once external return data has been received. If hitmiss_eval is 1, the FSM also refreshes saved_addr_r[31:13] using the current start_addr[31:13], but it does not update the entire lower address field at this point.
+
+The high-priority conditions in the CFETCH state include the instruction cache being disabled, the request being withdrawn during the initial evaluation phase, a BIU error response, and completion of a cache-inhibit access after valid return data is received. If any of these conditions occurs, the FSM returns to IDLE and clears hitmiss_eval, load, and cache_inhibit. These conditions have priority over miss refill and hit processing, so the current transaction is terminated directly in cases of error, cancellation, cache disable, or cache-inhibit completion.
+
+If none of the above high-priority return conditions is triggered in CFETCH, and both tagcomp_miss and biudata_valid are asserted, this means that the current access missed and the first external return word after the miss has arrived. The FSM then enters LREFILL3, increments saved_addr_r[3:2] so that the address points to the next word in the Cache line, clears hitmiss_eval, loads cnt = OR1200_ICLS - 2, and clears cache_inhibit. For a 16-byte Cache line containing four 32-bit words, after the first missed word has returned, the remaining words still need to be received. cnt is used as the countdown control value for those subsequent return words.
+
+If the FSM detects in CFETCH that the current access is not a miss and the current request is not cache-inhibited, namely when !tagcomp_miss & !icqmem_ci_i is true, the request is a normal Cache hit. In this case, the module updates saved_addr_r with the current start_addr and clears cache_inhibit. A key point is that this branch does not modify state, nor does it clear hitmiss_eval or load. Therefore, after a Cache hit, the FSM does not explicitly return to IDLE in the RTL; instead, it remains in the CFETCH state. In continuous fetch scenarios, as long as icqmem_cycstb_i remains asserted, the FSM can stay in CFETCH and continue processing subsequent hit requests. It returns to IDLE only when a request is withdrawn, the instruction cache is disabled, a BIU error occurs, or a cache-inhibit access completes.
+
+If the current request is withdrawn in CFETCH, meaning icqmem_cycstb_i becomes 0, the FSM also returns to IDLE and clears hitmiss_eval, load, and cache_inhibit. If none of the termination, miss, hit, or cancellation conditions is satisfied, the FSM clears hitmiss_eval, indicating that the initial hit/miss evaluation phase has ended. After that, as long as load remains asserted, biu_read continues to be asserted through the !hitmiss_eval & load term, allowing the FSM to wait for or maintain the external BIU access.
+
+The LREFILL3 state is used to complete the refill of the remaining Cache line words after a miss. In this state, if biudata_valid is asserted and cnt is nonzero, the FSM decrements cnt and increments saved_addr_r[3:2], thereby advancing the word write position within the Cache line. If biudata_valid is asserted and cnt is already zero, the current Cache line refill is complete. The FSM returns to IDLE, clears hitmiss_eval and load, and updates saved_addr_r with the current start_addr. If biudata_valid is not asserted, the FSM remains in LREFILL3 and continues waiting.
+
+The module also generates three first-word-related feedback signals. first_hit_ack is asserted only when the FSM is in CFETCH, hitmiss_eval is asserted, tagcomp_miss is 0, cache_inhibit is 0, and icqmem_ci_i is 0. Therefore, it strictly indicates a non-cache-inhibit Cache hit during the initial hit/miss evaluation phase, allowing the upper layer to use the data already present in the Cache. first_miss_ack is asserted whenever biudata_valid is 1 in the CFETCH state. Functionally, it is mainly used to indicate that the first external word after a miss has arrived, but the actual RTL condition does not check tagcomp_miss or cache_inhibit, so it may also cover valid external return data for a cache-inhibit access. first_miss_err is asserted whenever biudata_error is 1 in the CFETCH state. It indicates an external BIU error response during CFETCH, and it is likewise not limited by tagcomp_miss to miss-only cases.
+
+burst indicates that the current external access belongs to a Cache line refill burst. It is asserted when the FSM is in CFETCH, the access is a tag miss, and cache_inhibit is 0; it is also asserted throughout the entire LREFILL3 state. Since LREFILL3 is itself the state for refilling the remaining Cache line words, once the FSM enters this state, burst remains high without further checking tagcomp_miss or cache_inhibit.
+
+From the address-handling perspective, saved_addr_r captures start_addr when a new request is accepted in IDLE. After the first missed word returns, the FSM increments saved_addr_r[3:2]. Then, in LREFILL3, each time a valid return word is received and cnt is nonzero, saved_addr_r[3:2] is incremented again. Thus, saved_addr_r[3:2] serves as the word index within the Cache line and controls the write position for subsequent returned words in the ICache line. For a 16-byte Cache line, this corresponds to the four 32-bit word positions.
+
+Overall, or1200_ic_fsm is the control core of the instruction-cache fetch path. It accepts new fetch requests in IDLE, performs hit/miss evaluation and generates first-word acknowledge signals in CFETCH, fetches external data through the BIU on a miss, and enters LREFILL3 to complete the refill of the remaining Cache line words. The module uses icram_we and tag_we to ensure that only valid return data from cacheable accesses is written into the Cache, while cache_inhibit prevents cache-inhibit accesses from polluting the Cache. Two important details must be kept in mind: after a Cache hit, the FSM does not explicitly return to IDLE in the RTL and may remain in CFETCH to support continuous fetches; and the actual RTL conditions for first_miss_ack and first_miss_err are not limited by tagcomp_miss, so they more accurately represent valid BIU return and BIU error return during CFETCH, rather than signals that strictly belong only to miss cases.
+
+module or1200_ic_fsm(
+    // Clock and reset
+    input clk,
+    input rst,
+
+    // Internal i/f to top level IC
+    input ic_en,
+    input icqmem_cycstb_i,
+    input icqmem_ci_i,
+    input tagcomp_miss,
+    input biudata_valid,
+    input biudata_error,
+    input [31:0] start_addr,
+    output [31:0] saved_addr,
+    output [3:0] icram_we,
+    output biu_read,
+    output first_hit_ack,
+    output first_miss_ack,
+    output first_miss_err,
+    output burst,
+    output tag_we
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - ic_en: Instruction-cache enable control.
+    - icqmem_cycstb_i: Combined cycle-and-strobe request for the instruction-cache/QMEM interface.
+    - icqmem_ci_i: Cache-inhibit attribute for the instruction-cache/QMEM interface.
+    - tagcomp_miss: Combinational tag-compare miss indication.
+    - biudata_valid: Indicates that returned BIU read data is valid.
+    - biudata_error: Indicates that the current BIU access terminated with an error.
+    - start_addr[31:0]: Starting address captured for the current cache transaction.
+Output port:
+    - saved_addr[31:0]: Saved request address held by the FSM during refill or replay.
+    - icram_we[3:0]: Byte-write enable for the instruction-cache RAM.
+    - biu_read: Read request issued by the cache/controller FSM to the external BIU.
+    - first_hit_ack: One-cycle acknowledge for a cache hit or immediately satisfied access.
+    - first_miss_ack: One-cycle acknowledge for the first returned word of a miss/refill access.
+    - first_miss_err: One-cycle error indication for the first word of a miss/refill access.
+    - burst: Indicates that the current external transfer belongs to a burst/refill sequence.
+    - tag_we: Write enable for the tag RAM.
+Internal reg/wire signals:
+    reg [31:0] saved_addr_r: One-cycle registered copy of the saved address.
+    reg [1:0] state: State.
+    reg [2:0] cnt: Count counter.
+    reg hitmiss_eval: Hit/miss evaluation flag.
+    reg load: Load flag.
+    reg cache_inhibit: Cache inhibit.
+
+Processing Flow
+
+The processing flow of or1200_ic_fsm begins in the IDLE state. After reset, the FSM stays in IDLE until both ic_en and icqmem_cycstb_i are asserted. When a valid instruction fetch request is accepted, the FSM saves start_addr into saved_addr_r, sets hitmiss_eval and load, clears cache_inhibit, and moves to the CFETCH state.
+
+In CFETCH, the FSM first evaluates whether the current access is a normal cacheable access, a cache-inhibit access, a Cache hit, or a Cache miss. If the access is marked as cache-inhibit by icqmem_ci_i, the FSM latches this information into cache_inhibit, so that the returned data will not be written into the ICache RAM or Tag RAM once the inhibit state has taken effect. If the request is withdrawn, the instruction cache is disabled, a BIU error occurs, or a cache-inhibit access completes with valid returned data, the FSM terminates the current transaction and returns to IDLE.
+
+If the access is a normal Cache hit during the initial evaluation phase, first_hit_ack is asserted to indicate that the requested instruction word is available from the Cache. In this case, the FSM updates saved_addr_r with the current start_addr, but it does not explicitly transition back to IDLE. Instead, it remains in CFETCH, which allows the FSM to continue handling sequential fetch requests as long as the request interface remains active.
+
+If the access is a Cache miss, biu_read is asserted to request data from the external BIU. When the first returned word arrives in CFETCH, first_miss_ack is asserted. At the same time, the FSM advances the word index in saved_addr_r[3:2], initializes the refill counter with OR1200_ICLS - 2, clears hitmiss_eval, and enters LREFILL3 to complete the remaining Cache line refill.
+
+In LREFILL3, the FSM waits for additional valid words from the BIU. For each valid returned word while the refill counter is nonzero, the FSM decrements cnt and increments saved_addr_r[3:2], so that each returned word is written into the next word position of the Cache line. When the final word is received, the FSM returns to IDLE, clears hitmiss_eval and load, and updates saved_addr_r with the current start_addr.
+
+Throughout this flow, burst is asserted during the cacheable miss/refill sequence: it is high in CFETCH when a tag miss is detected and the access is not cache-inhibited, and it remains high throughout LREFILL3. The write enables icram_we and tag_we are asserted only when a BIU read is active, valid data is returned, and the access is not cache-inhibited, ensuring that only cacheable refill data is written into the instruction Cache.

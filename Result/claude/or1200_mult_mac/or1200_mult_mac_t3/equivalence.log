@@ -1,0 +1,279 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_mult_mac'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121.1-137.9 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v' to AST representation.
+Generating RTLIL representation for module `\or1200_gmultp2_32x32'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:30.1-31.10 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:36.1-37.10 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\or1200_amultp2_32x32'.
+Successfully finished Verilog frontend.
+
+6. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1. Analyzing design hierarchy..
+Top module:  \or1200_mult_mac
+Used module:     \or1200_gmultp2_32x32
+
+6.2. Analyzing design hierarchy..
+Top module:  \or1200_mult_mac
+Used module:     \or1200_gmultp2_32x32
+Removing unused module `\or1200_amultp2_32x32'.
+Removed 1 unused modules.
+
+7. Executing PROC pass (convert processes to netlists).
+
+7.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+7.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:50$40 in module or1200_gmultp2_32x32.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:250$29 in module or1200_mult_mac.
+Marked 5 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22 in module or1200_mult_mac.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:220$21 in module or1200_mult_mac.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:211$20 in module or1200_mult_mac.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:202$19 in module or1200_mult_mac.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16 in module or1200_mult_mac.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121$15 in module or1200_mult_mac.
+Removed a total of 0 dead cases.
+
+7.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 5 redundant assignments.
+Promoted 4 assignments to connections.
+
+7.4. Executing PROC_INIT pass (extract init attributes).
+
+7.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \RST in `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:50$40'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:250$29'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:220$21'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:211$20'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:202$19'.
+Found async reset \rst in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+
+7.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+7.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:50$40'.
+     1/1: $0\p1[63:0]
+Creating decoders for process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:43$38'.
+Creating decoders for process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:36$37'.
+Creating decoders for process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:30$36'.
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:250$29'.
+     1/1: $0\mac_stall_r[0:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22'.
+     1/2: $0\mac_r[63:0] [63:32]
+     2/2: $0\mac_r[63:0] [31:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:220$21'.
+     1/1: $0\mac_op_r3[1:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:211$20'.
+     1/1: $0\mac_op_r2[1:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:202$19'.
+     1/1: $0\mac_op_r1[1:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+     1/2: $0\div_free[0:0]
+     2/2: $0\mul_prod_r[63:0]
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121$15'.
+     1/1: $1\result[31:0]
+
+7.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_gmultp2_32x32.\yi' from process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:36$37'.
+No latch inferred for signal `\or1200_gmultp2_32x32.\xi' from process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:30$36'.
+No latch inferred for signal `\or1200_mult_mac.\result' from process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121$15'.
+
+7.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_gmultp2_32x32.\p1' using process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:50$40'.
+  created $adff cell `$procdff$79' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_gmultp2_32x32.\p0' using process `\or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:43$38'.
+  created $dff cell `$procdff$80' with positive edge clock.
+Creating register for signal `\or1200_mult_mac.\mac_stall_r' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:250$29'.
+  created $adff cell `$procdff$83' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\mac_r' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22'.
+  created $adff cell `$procdff$86' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\mac_op_r3' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:220$21'.
+  created $adff cell `$procdff$89' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\mac_op_r2' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:211$20'.
+  created $adff cell `$procdff$92' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\mac_op_r1' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:202$19'.
+  created $adff cell `$procdff$95' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\mul_prod_r' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+  created $adff cell `$procdff$98' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_mult_mac.\div_free' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+  created $adff cell `$procdff$101' with positive edge clock and positive level reset.
+
+7.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+7.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:50$40'.
+Removing empty process `or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:43$38'.
+Removing empty process `or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:36$37'.
+Removing empty process `or1200_gmultp2_32x32.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:30$36'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:250$29'.
+Found and cleaned up 5 empty switches in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:229$22'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:220$21'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:211$20'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:202$19'.
+Found and cleaned up 1 empty switch in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:164$16'.
+Found and cleaned up 1 empty switch in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121$15'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_mult_mac/or1200_mult_mac.v:121$15'.
+Cleaned up 7 empty switches.
+
+7.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_gmultp2_32x32.
+Optimizing module or1200_mult_mac.
+
+8. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: 0c0eed4a9c, CPU: user 0.02s system 0.00s, MEM: 35.32 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 67% 6x read_verilog (0 sec), 9% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v' to AST representation.
+Generating RTLIL representation for module `\or1200_mult_mac'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v' to AST representation.
+Generating RTLIL representation for module `\or1200_gmultp2_32x32'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:30.1-31.10 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_gmultp2_32x32/or1200_gmultp2_32x32.v:36.1-37.10 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\or1200_amultp2_32x32'.
+Successfully finished Verilog frontend.
+
+6. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1. Analyzing design hierarchy..
+Top module:  \or1200_mult_mac
+
+6.2. Analyzing design hierarchy..
+Top module:  \or1200_mult_mac
+Removing unused module `\or1200_amultp2_32x32'.
+Removing unused module `\or1200_gmultp2_32x32'.
+Removed 2 unused modules.
+
+7. Executing PROC pass (convert processes to netlists).
+
+7.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+7.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1 in module or1200_mult_mac.
+Removed a total of 0 dead cases.
+
+7.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+7.4. Executing PROC_INIT pass (extract init attributes).
+
+7.5. Executing PROC_ARST pass (detect async resets in processes).
+
+7.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+7.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+     1/4: $0\product_temp[63:0]
+     2/4: $0\mac_acc[63:0]
+     3/4: $0\mac_stall[0:0]
+     4/4: $0\result[31:0]
+
+7.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+7.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_mult_mac.\result' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+  created $dff cell `$procdff$52' with positive edge clock.
+Creating register for signal `\or1200_mult_mac.\mac_stall' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+  created $dff cell `$procdff$53' with positive edge clock.
+Creating register for signal `\or1200_mult_mac.\mac_acc' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+  created $dff cell `$procdff$54' with positive edge clock.
+Creating register for signal `\or1200_mult_mac.\product_temp' using process `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+  created $dff cell `$procdff$55' with positive edge clock.
+
+7.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+7.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+Removing empty process `or1200_mult_mac.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_mult_mac/or1200_mult_mac_t3.v:15$1'.
+Cleaned up 3 empty switches.
+
+7.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_mult_mac.
+
+8. Executing JSON backend.
+
+End of script. Logfile hash: 9351c81ecd, CPU: user 0.01s system 0.01s, MEM: 35.32 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 66% 6x read_verilog (0 sec), 9% 2x write_json (0 sec), ...
+exit_code=0

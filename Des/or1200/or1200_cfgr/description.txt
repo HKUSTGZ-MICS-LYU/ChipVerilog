@@ -1,0 +1,84 @@
+
+Module `or1200_cfgr` returns OR1200 configuration register values for SPR reads, including implemented-unit and cache/MMU capability fields.
+
+This module implements the read-only architectural configuration register space for the OR1200 core. The file header states that it implements “VR, UPR and Configuration Registers” and that it is “According to OR1K architectural and OR1200 specifications.”
+
+Its job is to decode SPR addresses and return the corresponding 32-bit configuration word.
+
+The module returns OR1200 configuration register values for SPR reads, including implemented-unit and cache/MMU capability fields.
+
+This module implements the read-only SPR access interface to the version register, unit presence register and configuration register of the OR1200. The module has no clock and reset inputs, and does not save runtime state; spr_dat_o is completely decoded from the spr_addr combination, so the read data output is a combinational function of spr_addr.
+
+When the configuration register function is turned on, the module returns fixed information registers such as VR, UPR, CPUCFGR, DMMUCFGR, IMMUCFGR, DCCFGR, ICCFGR and DCFGR based on the low-order selection of spr_addr. The value of each field comes directly from the compile-time macro definition, indicating static capability information such as the processor version, implementation features, MMU/cache size and organization, debugging capabilities, etc. If the system group full address decoding is enabled, the access is considered valid only when spr_addr[31:4] is all 0; otherwise, 0 is output. Also output 0 if the address does not hit any implemented register.
+
+When the complete configuration register function is not implemented, the module only retains two read-only registers VR and UPR, which are also output in the combined decoding mode; all other addresses return 0. Since this module has no write path, there are no write priorities, timing update rules, or reset initialization procedures. It is essentially a constant ROM/lookup table logic driven by the SPR address.
+
+module or1200_cfgr(
+    // RISC Internal Interface
+    input [31:0] spr_addr,
+    output [31:0] spr_dat_o
+);
+
+Input ports:
+    - spr_addr[31:0]: SPR address used for register decode.
+Output port:
+    - spr_dat_o[31:0]: Read data returned on the SPR bus.
+Internal reg/wire signals:
+    reg [31:0] spr_dat_o: SPR data output.
+
+1. Functional Requirements
+1.1 Read-only decode
+The module shall be purely combinational and shall decode spr_addr to produce the requested configuration word.
+No write path exists in this module.
+
+1.2 Address decode scope
+If OR1200_SYS_FULL_DECODE is enabled, the module shall only respond when spr_addr[31:4] is zero.
+Otherwise it directly decodes spr_addr[3:0].
+
+1.3 Required implemented registers when OR1200_CFGR_IMPLEMENTED is defined
+The RTL returns the following architectural words:
+- VR: Version Register
+- UPR: Unit Present Register
+- CPUCFGR: CPU Configuration Register
+- DMMUCFGR: Data MMU Configuration Register
+- IMMUCFGR: Instruction MMU Configuration Register
+- DCCFGR: Data Cache Configuration Register
+- ICCFGR: Instruction Cache Configuration Register
+- DCFGR: Debug Configuration Register
+
+For each register, individual bitfields are assigned from constants in or1200_defines.v.
+
+1.4 Minimum implemented registers when OR1200_CFGR_IMPLEMENTED is not defined
+The fallback implementation still supports:
+- VR
+- UPR
+All other locations return 0.
+
+1.5 Default response
+For unknown addresses, the module shall return 32'h0000_0000.
+
+2. Register Semantics
+2.1 Version Register (VR)
+The module shall assemble the VR output from the revision, reserved, configuration, and version fields:
+- OR1200_VR_REV
+- OR1200_VR_RES1
+- OR1200_VR_CFG
+- OR1200_VR_VER
+
+2.2 Unit Present Register (UPR)
+The module shall report which major units are implemented, including fields such as:
+- UP (UPR present)
+- DCP / ICP (data and instruction cache presence)
+- DMP / IMP (data and instruction MMU presence)
+- MP (MAC/multiplier presence)
+- DUP (debug unit presence)
+- PCUP / PMP / PICP / TTP
+- CUP and reserved fields
+
+2.3 CPU and subsystem configuration registers
+The module shall provide OR1200 implementation constants describing CPU arithmetic capabilities, MMU topology, and cache organization.
+
+3. Implementation Notes
+- The RTL is a single always @(spr_addr) combinational decoder.
+- Register fields are not computed dynamically; they are assembled from compile-time constants.
+- The block does not depend on the pipeline state, clock, or reset.

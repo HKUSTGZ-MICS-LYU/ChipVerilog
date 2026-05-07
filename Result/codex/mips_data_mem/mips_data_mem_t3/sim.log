@@ -1,0 +1,26 @@
+=== tb_compile_sv2012 ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/iverilog -g2012 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3/work -s data_mem_tb_0_v -o /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3/work/simv /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem/data_mem_tb_0.v
+--- stderr ---
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem/data_mem_tb_0.v:38: syntax error
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem/data_mem_tb_0.v:1: error: Syntax error in variable list.
+exit_code=2
+
+=== tb_compile_plain_verilog ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/iverilog -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16 -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem -I /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3/work -s data_mem_tb_0_v -o /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3/work/simv /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3.v /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem/data_mem_tb_0.v
+exit_code=0
+
+=== simulation_run ===
+$ /hpc/home/connect.ytan910/lib/iverilog/bin/vvp -n /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_data_mem/mips_data_mem_t3/work/simv
+--- stdout ---
+write_memory. random_addr, random data:
+------------------------------
+wrote address:
+ 36	  9	 13	101	  1	118	237	249	
+------------------------------
+wrote data:
+56961	54883	 6541	53778	19725	19773	30604	42182	
+------------------------------
+read data from addresses above and check
+all data read correctly
+/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/data_mem/data_mem_tb_0.v:68: $stop called at 266000 (1ps)
+exit_code=0

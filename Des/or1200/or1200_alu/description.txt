@@ -1,0 +1,73 @@
+
+Module `or1200_alu` performs OR1200 execute-stage arithmetic, logic, shift, compare, and flag-generation operations.
+
+This module is the OR1200's integer ALU combinatorial execution unit and is a purely combinational ALU with no clocked state elements, with all outputs determined by the current combination of inputs. The module receives two main operands a, b, and the result mult_mac_result from the multiplication/MAC unit; selects specific operations based on alu_op, shrot_op, comp_op and custom instruction fields cust5_op/cust5_limm, and outputs the final result result. At the same time, it also generates the forward value of the flag bit and carry bit in the status register and its write enable, which is used by the upper layer to update SR[FLAG] and SR[CY] when needed.
+
+The generation rules of result are completely determined by alu_op. The module supports addition, subtraction, AND, OR, XOR, immediate passthrough, movhi, high-bit load, shift/rotate, comparison, conditional move, multiplication/division result transparent transmission, as well as FF1 and several l.cust5 example instructions. FF1 returns the first bit position in a that is 1 starting from the lowest bit, ranging from 1 to 32; if a is 0, 0 is returned. MOVHI does not perform "immediate left shift by 16 bits" when macrc_op is 1, but returns mult_mac_result directly; therefore macrc_op overrides the MOVHI immediate path and selects mult_mac_result. Conditional move CMOV uses the input flag as a condition. When the flag is 1, it outputs a, otherwise it outputs b. The shift/rotation logic is further subdivided by shrot_op: logical left shift and logical right shift are supported. Optional implementation supports circular right shift. The default branch is arithmetic right shift. The comparison logic first transforms the sign bit according to comp_op[3], thereby reusing the same comparison network to complete signed/unsigned comparison, and then selects equal to, not equal to, greater than, greater than or equal to, less than, less than or equal to comp_op[2:0], and outputs the comparison result on flagforw.
+
+The module independently generates "new value" and "write enable" for the flag bit and carry bit respectively. flagforw is equal to the comparison result when comparing instructions; if the additional flag modification option is enabled, ADD, ADDC and AND will also write whether the result is zero to flagforw, and raise flag_we at the same time. Otherwise only comparison instructions will write FLAG. Similarly, if carry support is enabled in the implementation, ADD outputs cy_sum, ADDC outputs cy_csum, and pulls cy_we high on the corresponding instruction; other instructions have cyforw 0 and cy_we 0. Addition and addition with carry obtain the result and carry respectively by use a 33-bit adder to produce both result and carry-out, so there are no additional timing states. The custom l.cust5 example implements three types of operations: byte insertion, bit setting and bit clearing; a missed cust5_op retains the original value of a by default. The entire module has no internal latches or pipeline registers, all behavior is pure combinational logic, and the output is a pure combinational function of the inputs.
+
+This module is the main arithmetic, logic, compare, shift/rotate, and selected custom-instruction execution block of the OR1200 integer datapath. It accepts two 32-bit operands plus a multiplier/MAC result path and produces:
+- the 32-bit execution result
+- the forwarded compare flag value and flag write-enable
+- the forwarded carry value and carry write-enable
+
+module or1200_alu(
+    input [31:0] a,
+    input [31:0] b,
+    input [31:0] mult_mac_result,
+    input macrc_op,
+    input [3:0] alu_op,
+    input [1:0] shrot_op,
+    input [3:0] comp_op,
+    input [4:0] cust5_op,
+    input [5:0] cust5_limm,
+    output [31:0] result,
+    output flagforw,
+    output flag_we,
+    output cyforw,
+    output cy_we,
+    input carry,
+    input flag
+);
+
+Input ports:
+    - a[31:0]: Primary operand A for the datapath operation.
+    - b[31:0]: Primary operand B for the datapath operation.
+    - mult_mac_result[31:0]: Result returned from the multiplier/MAC datapath.
+    - macrc_op: Selects the MAC-result return path used by MOVHI/MACRC handling.
+    - alu_op[3:0]: Major ALU operation selector.
+    - shrot_op[1:0]: Shift/rotate sub-operation selector.
+    - comp_op[3:0]: Compare sub-operation selector.
+    - cust5_op[4:0]: Minor opcode for l.cust5 custom operations.
+    - cust5_limm[5:0]: Immediate field used by l.cust5 custom operations.
+    - carry: Incoming carry flag from the status-register path.
+    - flag: Incoming flag bit used by compare and conditional-move logic.
+Output port:
+    - result[31:0]: Final result produced by this module.
+    - flagforw: Forwarded next value for the SR flag bit.
+    - flag_we: Write-enable for the SR flag bit.
+    - cyforw: Forwarded next value for the SR carry bit.
+    - cy_we: Write-enable for the SR carry bit.
+
+The implementation must preserve the original OR1200 preprocessor-controlled structure. It must use the original feature macros, including `OR1200_IMPL_ADDC`, `OR1200_IMPL_CY`, `OR1200_IMPL_ALU_ROTATE`, `OR1200_MULT_IMPLEMENTED`, `OR1200_IMPL_DIV`, `OR1200_IMPL_ALU_COMP1`, `OR1200_IMPL_ALU_COMP2`, `OR1200_ADDITIONAL_FLAG_MODIFIERS`, `OR1200_CASE_DEFAULT`, and `OR1200_WARNINGS`. These `ifdef` conditions must not be replaced by parameters, localparams, or runtime feature selects.
+
+The module is purely combinational and contains no clocked state elements or pipeline registers. The generated RTL should preserve the original combinational style, including `casex` behavior where the original RTL uses `casex`. Do not replace `casex` with `case` or `casez` if strict equivalence is required. Do not add default branches where the original RTL does not have them, and do not rewrite expressions in ways that may change Verilog width behavior, X propagation, macro-controlled inclusion, or formal equivalence.
+
+The main result is selected by `alu_op`. `OR1200_ALUOP_ADD` returns `result_sum`. `OR1200_ALUOP_ADDC` returns `result_csum` only when `OR1200_IMPL_ADDC` is defined. `OR1200_ALUOP_SUB` returns `a - b`. `OR1200_ALUOP_AND` returns `a & b`. `OR1200_ALUOP_OR` returns `a | b`. `OR1200_ALUOP_XOR` returns `a ^ b`. `OR1200_ALUOP_IMM` returns `b`. `OR1200_ALUOP_SHROT` returns `shifted_rotated`. `OR1200_ALUOP_CUST5` returns `result_cust5`. `OR1200_ALUOP_CMOV` returns `a` when the input `flag` is set and returns `b` otherwise. CMOV must use the input `flag`, not `flagforw`.
+
+For `OR1200_ALUOP_MOVHI`, the result is `mult_mac_result` when `macrc_op` is asserted; otherwise the result is `b << 16`. Do not rewrite this expression into a different form if strict source-level equivalence is required. `OR1200_ALUOP_MUL` returns `mult_mac_result` only when `OR1200_MULT_IMPLEMENTED` is defined. `OR1200_ALUOP_DIV` and `OR1200_ALUOP_DIVU` return `mult_mac_result` only when both `OR1200_MULT_IMPLEMENTED` and `OR1200_IMPL_DIV` are defined.
+
+The FF1 operation returns the first asserted bit position in `a`, scanning from bit 0 upward. If `a[0]` is set, the result is 1; if `a[1]` is set, the result is 2; this continues up to `a[31]`, which returns 32. If no bit in `a` is set, the result is 0. The priority behavior must match the standard OR1200 RTL.
+
+The ADD datapath must use a 33-bit sum expression equivalent to `assign cy_sum_result_sum = a + b;`, with `cy_sum` taken from bit 32 and `result_sum` taken from bits 31 down to 0. When `OR1200_IMPL_ADDC` is defined, the ADDC datapath must use `assign cy_csum_result_csum = a + b + {32'd0, carry};`, with `cy_csum` taken from bit 32 and `result_csum` taken from bits 31 down to 0. The AND datapath is `result_and = a & b`.
+
+The compare operands must be formed by sign-bit normalization: `comp_a = {a[31] ^ comp_op[3], a[30:0]}` and `comp_b = {b[31] ^ comp_op[3], b[30:0]}`. The implementation must preserve both standard compare implementations. When `OR1200_IMPL_ALU_COMP1` is defined, it must compute `a_eq_b` and `a_lt_b`, then derive the compare result. When `OR1200_IMPL_ALU_COMP2` is defined, it must directly compare `comp_a` and `comp_b`. The compare operation must support `OR1200_COP_SFEQ`, `OR1200_COP_SFNE`, `OR1200_COP_SFGT`, `OR1200_COP_SFGE`, `OR1200_COP_SFLT`, and `OR1200_COP_SFLE`.
+
+The shift/rotate block is selected by `shrot_op`. `OR1200_SHROTOP_SLL` performs `a << b[4:0]`. `OR1200_SHROTOP_SRL` performs `a >> b[4:0]`. When `OR1200_IMPL_ALU_ROTATE` is defined, `OR1200_SHROTOP_ROR` performs `(a << (6'd32 - {1'b0, b[4:0]})) | (a >> b[4:0])`. The default shift path performs arithmetic right shift using the original expression `({32{a[31]}} << (6'd32 - {1'b0, b[4:0]})) | a >> b[4:0]`. Do not replace this expression with `$signed(a) >>> b[4:0]`, and do not add special zero-shift handling for ROR.
+
+The `l.cust5` custom instruction block uses `cust5_op`. When `cust5_op` is `5'h1`, it inserts `b[7:0]` into one byte lane of `a` according to `cust5_limm[1:0]`: lane 0 gives `{a[31:8], b[7:0]}`, lane 1 gives `{a[31:16], b[7:0], a[7:0]}`, lane 2 gives `{a[31:24], b[7:0], a[15:0]}`, and lane 3 gives `{b[7:0], a[23:0]}`. When `cust5_op` is `5'h2`, the result is `a | (1 << cust5_limm)`. When `cust5_op` is `5'h3`, the result is `a & (32'hffffffff ^ (1 << cust5_limm))`. For other `cust5_op` values, the result is `a`. Do not truncate `cust5_limm` to `cust5_limm[4:0]` in the bit set or bit clear expressions.
+
+The flag forwarding logic writes the compare result for `OR1200_ALUOP_COMP`: `flagforw = flagcomp` and `flag_we = 1'b1`. When `OR1200_ADDITIONAL_FLAG_MODIFIERS` is defined, ADD also writes the zero-detect of `result_sum`, ADDC writes the zero-detect of `result_csum` when `OR1200_IMPL_ADDC` is defined, and AND writes the zero-detect of `result_and`. These additional flag-modifying operations also assert `flag_we`. In all other cases, `flagforw` defaults to zero and `flag_we` defaults to zero.
+
+The carry forwarding logic is enabled only when `OR1200_IMPL_CY` is defined. ADD sets `cyforw = cy_sum` and asserts `cy_we`. ADDC sets `cyforw = cy_csum` and asserts `cy_we` only when `OR1200_IMPL_ADDC` is also defined. In all other cases, `cyforw` defaults to zero and `cy_we` defaults to zero.

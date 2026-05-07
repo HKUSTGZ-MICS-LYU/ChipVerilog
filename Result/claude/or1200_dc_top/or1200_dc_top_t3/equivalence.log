@@ -1,0 +1,301 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_top'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175.1-180.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_dc_fsm'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_ram/or1200_dc_ram.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_ram/or1200_dc_ram.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_ram'.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_tag/or1200_dc_tag.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_tag/or1200_dc_tag.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_tag'.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\dc_ram_sub'.
+Generating RTLIL representation for module `\dc_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_1024x32_bw'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Successfully finished Verilog frontend.
+
+8. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1. Analyzing design hierarchy..
+Top module:  \or1200_dc_top
+Used module:     \or1200_dc_tag
+Used module:         \dc_tag_sub
+Used module:     \or1200_dc_ram
+Used module:         \dc_ram_sub
+Used module:     \or1200_dc_fsm
+
+8.2. Analyzing design hierarchy..
+Top module:  \or1200_dc_top
+Used module:     \or1200_dc_tag
+Used module:         \dc_tag_sub
+Used module:     \or1200_dc_ram
+Used module:         \dc_ram_sub
+Used module:     \or1200_dc_fsm
+Removing unused module `\or1200_spram_256x21'.
+Removing unused module `\or1200_spram_1024x32_bw'.
+Removed 2 unused modules.
+Warning: Resizing cell port or1200_dc_tag.dc_tag0.addrb from 9 bits to 1 bits.
+Warning: Resizing cell port or1200_dc_tag.dc_tag0.dina from 20 bits to 1 bits.
+Warning: Resizing cell port or1200_dc_tag.dc_tag0.addra from 9 bits to 1 bits.
+Warning: Resizing cell port or1200_dc_ram.dc_ram.doutb from 32 bits to 1 bits.
+
+9. Executing PROC pass (convert processes to netlists).
+
+9.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+9.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116 in module dc_tag_sub.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105 in module dc_ram_sub.
+Marked 10 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77 in module or1200_dc_fsm.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175$27 in module or1200_dc_top.
+Removed a total of 0 dead cases.
+
+9.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 9 assignments to connections.
+
+9.4. Executing PROC_INIT pass (extract init attributes).
+
+9.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+
+9.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+9.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:26$124'.
+Creating decoders for process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_EN[19:0]$123
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_DATA[19:0]$122
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_ADDR[0:0]$121
+Creating decoders for process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:12$113'.
+Creating decoders for process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_EN[31:0]$112
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_DATA[31:0]$111
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_ADDR[10:0]$110
+Creating decoders for process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+     1/10: $0\saved_addr_r[31:0] [12:4]
+     2/10: $0\saved_addr_r[31:0] [3:2]
+     3/10: $0\saved_addr_r[31:0] [1:0]
+     4/10: $0\saved_addr_r[31:0] [31:13]
+     5/10: $0\load[0:0]
+     6/10: $0\store[0:0]
+     7/10: $0\hitmiss_eval[0:0]
+     8/10: $0\cnt[2:0]
+     9/10: $0\state[2:0]
+    10/10: $0\cache_inhibit[0:0]
+Creating decoders for process `\or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175$27'.
+     1/1: $1\tagcomp_miss[0:0]
+
+9.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_dc_top.\tagcomp_miss' from process `\or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175$27'.
+
+9.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dc_tag_sub.\doutb' using process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:26$124'.
+  created $dff cell `$procdff$363' with positive edge clock.
+Creating register for signal `\dc_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_ADDR' using process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+  created $dff cell `$procdff$364' with positive edge clock.
+Creating register for signal `\dc_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_DATA' using process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+  created $dff cell `$procdff$365' with positive edge clock.
+Creating register for signal `\dc_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$115_EN' using process `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+  created $dff cell `$procdff$366' with positive edge clock.
+Creating register for signal `\dc_ram_sub.\doutb' using process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:12$113'.
+  created $dff cell `$procdff$367' with positive edge clock.
+Creating register for signal `\dc_ram_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_ADDR' using process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+  created $dff cell `$procdff$368' with positive edge clock.
+Creating register for signal `\dc_ram_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_DATA' using process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+  created $dff cell `$procdff$369' with positive edge clock.
+Creating register for signal `\dc_ram_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$104_EN' using process `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+  created $dff cell `$procdff$370' with positive edge clock.
+Creating register for signal `\or1200_dc_fsm.\saved_addr_r' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$373' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\state' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$376' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\cnt' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$379' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\hitmiss_eval' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$382' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\store' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$385' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\load' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$388' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_dc_fsm.\cache_inhibit' using process `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+  created $adff cell `$procdff$391' with positive edge clock and positive level reset.
+
+9.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+9.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:26$124'.
+Found and cleaned up 1 empty switch in `\dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+Removing empty process `dc_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:25$116'.
+Removing empty process `dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:12$113'.
+Found and cleaned up 1 empty switch in `\dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+Removing empty process `dc_ram_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v:11$105'.
+Found and cleaned up 14 empty switches in `\or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+Removing empty process `or1200_dc_fsm.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v:102$77'.
+Found and cleaned up 1 empty switch in `\or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175$27'.
+Removing empty process `or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_top/or1200_dc_top.v:175$27'.
+Cleaned up 17 empty switches.
+
+9.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dc_tag_sub.
+Optimizing module dc_ram_sub.
+Optimizing module or1200_dc_tag.
+Optimizing module or1200_dc_ram.
+Optimizing module or1200_dc_fsm.
+Optimizing module or1200_dc_top.
+
+10. Executing JSON backend.
+
+Warnings: 5 unique messages, 5 total
+End of script. Logfile hash: 4efaeb1a5d, CPU: user 0.03s system 0.01s, MEM: 26.75 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 66% 8x read_verilog (0 sec), 13% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_top'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_fsm/or1200_dc_fsm.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_dc_fsm'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_ram/or1200_dc_ram.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_ram/or1200_dc_ram.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_ram'.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_tag/or1200_dc_tag.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_dc_tag/or1200_dc_tag.v' to AST representation.
+Generating RTLIL representation for module `\or1200_dc_tag'.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\dc_ram_sub'.
+Generating RTLIL representation for module `\dc_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_1024x32_bw'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Successfully finished Verilog frontend.
+
+8. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1. Analyzing design hierarchy..
+Top module:  \or1200_dc_top
+
+8.2. Analyzing design hierarchy..
+Top module:  \or1200_dc_top
+Removing unused module `\or1200_spram_256x21'.
+Removing unused module `\or1200_spram_1024x32_bw'.
+Removing unused module `\dc_tag_sub'.
+Removing unused module `\dc_ram_sub'.
+Removing unused module `\or1200_dc_tag'.
+Removing unused module `\or1200_dc_ram'.
+Removing unused module `\or1200_dc_fsm'.
+Removed 7 unused modules.
+
+9. Executing PROC pass (convert processes to netlists).
+
+9.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3.v:9$1'.
+Removing empty process `or1200_dc_top.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/claude/or1200_dc_top/or1200_dc_top_t3.v:9$1'.
+Cleaned up 2 empty switches.
+
+9.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+9.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+9.4. Executing PROC_INIT pass (extract init attributes).
+
+9.5. Executing PROC_ARST pass (detect async resets in processes).
+
+9.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+9.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+9.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+9.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+9.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+9.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+9.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_dc_top.
+
+10. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: bac30a7d5d, CPU: user 0.02s system 0.00s, MEM: 26.75 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 93% 8x read_verilog (0 sec), 2% 1x opt_expr (0 sec), ...
+exit_code=0

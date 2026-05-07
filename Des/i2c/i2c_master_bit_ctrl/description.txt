@@ -1,0 +1,129 @@
+Module `i2c_master_bit_ctrl` is the bit-level controller of the OpenCores I2C master core. It receives simple bit commands from the byte-level controller and translates them into timed SCL/SDA open-drain control sequences.
+
+The module supports generation of I2C START and STOP conditions, single-bit WRITE cycles, single-bit READ cycles, bus-busy detection, arbitration-lost detection, slave clock stretching, multi-master clock synchronization, SDA/SCL input synchronization, and glitch filtering.
+
+The external SCL and SDA lines are controlled using open-drain semantics. The outputs `scl_o` and `sda_o` are constant low drive values, while `scl_oen` and `sda_oen` are active-low output-enable controls. Driving the output-enable low pulls the corresponding I2C line low; releasing the output-enable high allows the external pull-up resistor to bring the line high.
+
+In the overall I2C master architecture, this module corresponds to the Bit Command Controller. It is commanded by the Byte Command Controller and directly controls the SCL and SDA line behavior. This matches the specification’s architecture, where the Bit Command Controller performs actual START, STOP, read, and write bit-level signal generation, while the Byte Command Controller sequences byte-level operations.
+
+module i2c_master_bit_ctrl (
+    input             clk,      // system clock
+    input             rst,      // synchronous active high reset
+    input             nReset,   // asynchronous active low reset
+    input             ena,      // core enable signal
+
+    input      [15:0] clk_cnt,  // clock prescale value
+
+    input      [ 3:0] cmd,      // command (from byte controller)
+           cmd_ack,  // command complete acknowledge
+           busy,     // i2c bus busy
+           al,       // i2c bus arbitration lost
+
+    input             din,
+           dout,
+
+    input             scl_i,    // i2c clock line input
+    output            scl_o,    // i2c clock line output
+           scl_oen,  // i2c clock line output enable (active low)
+    input             sda_i,    // i2c data line input
+    output            sda_o,    // i2c data line output
+           sda_oen   // i2c data line output enable (active low)
+);
+
+Input ports:
+    clk:System clock. All synchronous state updates are driven by the rising edge of `clk`.
+    rst:Synchronous active-high reset. When asserted, internal state, counters, filtered inputs, bus-status flags, and the command FSM are reset on the rising edge of `clk`.
+    nReset:Asynchronous active-low reset. When deasserted low, most sequential state elements are immediately initialized independent of `clk`.
+    ena:Core enable signal. It gates normal timing/filter operation. When `ena` is low, the clock divider is reloaded and the input filter counter is reset, preventing normal bit-timing progression.
+    clk_cnt[15:0]:Clock prescale value. This value is loaded into the internal clock divider counter `cnt` to generate the `clk_en` tick used to advance the bit-level FSM. It is also used to derive the SDA/SCL input filter sampling interval through `filter_cnt`.
+    cmd[3:0]:Bit-level command from the byte controller. When the FSM is idle, this field is decoded as one of the supported commands:
+        - `I2C_CMD_START`
+        - `I2C_CMD_STOP`
+        - `I2C_CMD_WRITE`
+        - `I2C_CMD_READ`
+        Any unsupported or idle command leaves the FSM in the idle state.
+    din:Data bit to transmit during a WRITE operation. Because SDA is driven through an active-low open-drain output enable, `din = 0` causes SDA to be driven low, while `din = 1` releases SDA high.
+    scl_i:External I2C SCL line input from the pad or top-level tri-state/open-drain buffer. This input is synchronized, filtered, and used for clock stretching, clock synchronization, START/STOP detection, and read sampling.
+    sda_i:External I2C SDA line input from the pad or top-level tri-state/open-drain buffer. This input is synchronized, filtered, and used for START/STOP detection, arbitration checks, and read data sampling.
+
+Output ports:
+    cmd_ack: One-clock-cycle command-complete acknowledge. It is asserted for one `clk` cycle when the current bit-level START, STOP, READ, or WRITE command finishes.
+    busy: I2C bus busy indicator. It is set after a START condition is detected and cleared after a STOP condition is detected.
+    al: Arbitration-lost indicator. It is asserted when the controller releases SDA high but the filtered SDA line is observed low during arbitration checking, or when a STOP condition is detected during an active command while that STOP was not requested by this controller.
+    dout: Received data bit. It captures the filtered SDA value on the rising edge of the filtered SCL signal.
+    output scl_o: Constant-low SCL drive value. The module assigns this signal to `1'b0`; actual SCL line control is performed by `scl_oen`.
+    scl_oen: Active-low SCL output enable for open-drain operation.
+        - `0`: drive SCL low
+        - `1`: release SCL so the external pull-up can drive it high
+    output sda_o: Constant-low SDA drive value. The module assigns this signal to `1'b0`; actual SDA line control is performed by `sda_oen`.
+    sda_oen: Active-low SDA output enable for open-drain operation.
+        - `0`: drive SDA low
+        - `1`: release SDA so the external pull-up can drive it high
+
+Implementation details:
+
+1. Open-drain output model: The module never drives SCL or SDA high directly. It assigns both `scl_o` and `sda_o` to constant `1'b0`. The line is pulled low when the corresponding output enable is asserted low, and released when the output enable is high. This matches I2C open-drain bus behavior, where external pull-up resistors provide the high level.
+
+2. Clock divider and bit timing: The internal counter `cnt` generates `clk_en`. When reset is active, when the counter reaches zero, when the core is disabled, or when multi-master clock synchronization occurs, `cnt` is loaded from `clk_cnt` and `clk_en` is asserted. Otherwise, the counter decrements each clock cycle. If `slave_wait` is asserted, the counter holds its value and `clk_en` remains low, inserting wait states while SCL is stretched low.
+
+3. Slave clock stretching: `slave_wait` is asserted when the master has just released SCL high through `scl_oen`, but the filtered SCL input `sSCL` remains low. This indicates that a slave or another bus participant is holding SCL low. While `slave_wait` remains active, the timing counter is paused until SCL is released.
+
+4. Multi-master clock synchronization: `scl_sync` detects a falling edge on the filtered SCL input while this master has released SCL high. This means another master has forced SCL low. The module reloads its counter and restarts its low-period timing to synchronize with the shared bus clock.
+
+5. Input synchronization and filtering: Raw `scl_i` and `sda_i` are first captured into two-stage registers `cSCL` and `cSDA`. A filter counter then controls when samples are shifted into `fSCL` and `fSDA`. The filtered outputs `sSCL` and `sSDA` are generated using a majority function over the three-sample histories. This reduces the effect of short glitches on the I2C lines.
+
+6. START and STOP detection: A START condition is detected when filtered SDA falls while filtered SCL is high: `sta_condition = ~sSDA & dSDA & sSCL`. A STOP condition is detected when filtered SDA rises while filtered SCL is high: `sto_condition = sSDA & ~dSDA & sSCL`
+
+7. Bus busy tracking: The `busy` flag is set when a START condition is detected and remains set until a STOP condition is detected.
+
+8. Arbitration-lost detection: The `al` flag is asserted in two cases:
+    - During SDA arbitration checking, the module expects SDA to be released high but observes filtered SDA low.
+    - A STOP condition is detected while the FSM is active and the current command is not a requested STOP.
+    When arbitration is lost, the main FSM returns to idle and releases both SCL and SDA.
+
+9. Read data sampling: `dout` captures the filtered SDA value on the rising edge of the filtered SCL signal. This allows the byte controller to collect received bits during READ operations.
+
+10. Command FSM: The FSM advances only when `clk_en` is asserted. In the idle state, it decodes `cmd` and enters the corresponding START, STOP, READ, or WRITE sequence. Each sequence drives `scl_oen`, `sda_oen`, and `sda_chk` according to the required I2C timing phase. At the end of a command sequence, the FSM returns to idle and pulses `cmd_ack` for one clock cycle.
+
+11. START command behavior: The START sequence releases SDA and SCL, then pulls SDA low while SCL is high to create a valid I2C START condition. It then pulls SCL low and asserts `cmd_ack`.
+
+12. STOP command behavior: The STOP sequence drives SDA low, releases SCL high, then releases SDA high while SCL is high to create a valid I2C STOP condition. It then asserts `cmd_ack`.
+
+13. READ command behavior: The READ sequence releases SDA so the slave can drive the data bit. SCL is released high for the sample window, then driven low again. The sampled value is captured into `dout` by the SCL rising-edge sampling logic. The command ends with `cmd_ack`.
+
+14. WRITE command behavior: The WRITE sequence sets SDA according to `din`, releases SCL high, enables SDA arbitration checking during the high phase, then pulls SCL low again. The command ends with `cmd_ack`.
+
+15. Reset behavior: On asynchronous reset `nReset = 0`, the FSM returns to idle, output enables are released high, command acknowledge is cleared, arbitration lost is cleared, busy is cleared, counters and filters are reset, and filtered SCL/SDA are initialized high. On synchronous reset `rst = 1`, the same logical reset behavior is applied on the next rising edge of `clk`.
+
+
+Processing Flow:
+
+The processing flow of `i2c_master_bit_ctrl` starts with reset and initialization. When the asynchronous active-low reset `nReset` is asserted, or when the synchronous active-high reset `rst` is asserted on a clock edge, the module returns to a known idle state. The command FSM is reset to `idle`, `cmd_ack` is cleared, the SCL and SDA output enables are released high, arbitration checking is disabled, status flags are cleared, counters are reset or reloaded, and the filtered SCL/SDA signals are initialized to the idle-high bus state.
+
+After reset, the module continuously samples the external I2C bus inputs. The raw `scl_i` and `sda_i` signals are first captured into two-stage registers `cSCL` and `cSDA` on the rising edge of `clk`. This capture stage reduces metastability risk before the bus signals are used by the rest of the controller.
+
+The captured SCL and SDA values are then passed through a digital input filtering stage. A filter counter, `filter_cnt`, derives its sampling interval from `clk_cnt >> 2`. Whenever this counter expires, new synchronized samples are shifted into the three-sample histories `fSCL` and `fSDA`. The module then computes the filtered bus signals `sSCL` and `sSDA` using majority logic over these histories. These filtered signals are treated as the stable internal versions of the I2C SCL and SDA lines.
+
+The module also maintains delayed versions of the filtered bus signals in `dSCL` and `dSDA`. By comparing the current filtered values against the delayed values, the controller detects important I2C bus events. A START condition is detected when SDA transitions from high to low while SCL is high. A STOP condition is detected when SDA transitions from low to high while SCL is high. Based on these detected conditions, the `busy` flag is set after START and cleared after STOP.
+
+In parallel with bus-status detection, the module handles clock stretching and multi-master clock synchronization. If the controller releases SCL high through `scl_oen`, but the filtered SCL input `sSCL` remains low, the module asserts `slave_wait`. This indicates that a slave or another bus participant is holding SCL low. While `slave_wait` is active, the timing counter is paused and the bit-level FSM does not advance. If SCL falls externally while this master has released it high, the module asserts `scl_sync`, reloads the timing counter, and synchronizes its local low-period timing to the shared bus clock.
+
+Bit-level timing is generated by the internal counter `cnt`. This counter is loaded from the prescale input `clk_cnt` and decremented on each clock cycle. When the counter expires, the module asserts `clk_en`, which acts as the timing enable for the command FSM. The FSM only advances to the next bit-timing phase when `clk_en` is asserted. If the core is disabled through `ena`, the counter is reloaded and normal FSM timing does not progress.
+
+Arbitration checking is performed during write operations. When the FSM reaches the stable high phase of a WRITE bit, it asserts `sda_chk`. If the controller expects SDA to be released high but the filtered SDA input is observed low, the module asserts the arbitration-lost flag `al`. The module also treats an unexpected STOP condition during an active command as arbitration lost, unless the current command is itself a STOP command. When arbitration is lost, the FSM returns to `idle` and releases both SCL and SDA.
+
+Read data sampling is performed from the filtered SDA line. Whenever the filtered SCL signal has a rising edge, the module captures the filtered SDA value into `dout`. During READ operations, this sampled bit is used by the byte-level controller as the received data bit.
+
+The command FSM remains in the `idle` state until a valid command is received and `clk_en` allows the FSM to advance. In `idle`, the module decodes the `cmd` input as START, STOP, READ, WRITE, or no operation. A recognized command moves the FSM into the corresponding command sequence, while an unsupported or idle command leaves the FSM in `idle`.
+
+For a START command, the FSM releases SDA and SCL as needed, then pulls SDA low while SCL is high to generate a valid I2C START condition. After that, it pulls SCL low, returns to `idle`, and asserts `cmd_ack` for one clock cycle to indicate command completion.
+
+For a STOP command, the FSM first ensures SDA is low, then releases SCL high. Once SCL is high, the FSM releases SDA high to generate a valid I2C STOP condition. The FSM then returns to `idle` and pulses `cmd_ack`.
+
+For a READ command, the FSM releases SDA so the external slave can drive the data bit. It releases SCL high for the read window, then pulls SCL low again. The actual SDA value is captured separately into `dout` on the rising edge of filtered SCL. After the read bit cycle completes, the FSM returns to `idle` and asserts `cmd_ack`.
+
+For a WRITE command, the FSM drives or releases SDA according to the value of `din`. Because SDA uses active-low open-drain output enable semantics, `din = 0` causes SDA to be driven low, while `din = 1` releases SDA high. The FSM then releases SCL high, enables SDA arbitration checking during the stable high phase, pulls SCL low again, returns to `idle`, and pulses `cmd_ack`.
+
+Throughout all command sequences, the module uses open-drain output behavior. The `scl_o` and `sda_o` outputs are constant low drive values, while `scl_oen` and `sda_oen` control whether the lines are actively pulled low or released. When an output enable is low, the corresponding line is driven low. When an output enable is high, the line is released and the external pull-up resistor brings it high.
+
+At the end of every START, STOP, READ, or WRITE sequence, `cmd_ack` is asserted for exactly one `clk` cycle. This acknowledge pulse allows the byte-level controller to determine that the current bit-level operation has completed and that the next bit command can be issued.

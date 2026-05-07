@@ -1,0 +1,71 @@
+
+or1200_ic_tag is a tag RAM wrapper module for the OR1200 processor’s instruction cache. It is used to store and read the tag field and valid bit corresponding to each instruction cache line, indexed by the address input addr. The externally visible storage format of this module is 20 bits wide: datain[19:1] corresponds to tag[18:0], and datain[0] corresponds to the valid bit tag_v. During a read, the module uses the same format to split the data returned by the underlying RAM into the tag and valid bit. Therefore, the core function of this module is to store the address tag of an instruction cache line together with its validity status.
+
+This module itself does not perform tag comparison and does not determine whether a cache hit or miss occurs. The division of the fetch address into index and tag fields, the timing for writing a new tag, the timing for clearing the valid bit, and the logic for determining cache hits based on tag and tag_v are all handled by the upper-level instruction cache control logic. or1200_ic_tag only provides a tag/valid storage interface and hides different underlying RAM implementations behind a unified interface.
+
+When OR1200_NO_IC is defined, the instruction cache is not implemented. In this case, the module does not instantiate a tag RAM, but instead drives tag = 0 and tag_v = 0 permanently, which is equivalent to treating all instruction cache lines as invalid. In this mode, clk, rst, addr, en, we, and datain do not affect the output values. If OR1200_BIST is also enabled, the MBIST test-chain output mbist_so_o is directly connected to the input mbist_si_i, forming a pass-through path.
+
+When OR1200_NO_IC is not defined and OR1200_RAM_MODELS_VIRTEX is defined, the module uses a Virtex/FPGA-specific RAM implementation by instantiating ic_tag_sub. In this path, clk is used as the RAM read/write clock, en is used as the write-port enable, we is used as the write enable, addr is connected to both the write address and the read address, and datain is used as the write data. The RAM read data is doutb[19:0], where doutb[19:1] is assigned to tag, and doutb[0] is assigned to tag_v. Thus, in this implementation, the least significant bit stores the valid bit, and the upper 19 bits store the tag.
+
+When neither OR1200_NO_IC nor OR1200_RAM_MODELS_VIRTEX is defined, the module uses the generic RAM implementation path. In this path, a specific single-port RAM macro is selected according to the instruction cache size configuration: OR1200_IC_1W_512B selects or1200_spram_32x24, OR1200_IC_1W_4KB selects or1200_spram_256x21, and OR1200_IC_1W_8KB selects or1200_spram_512x20. These RAM macros are connected through a unified interface: clk provides the RAM clock, rst is passed to the underlying RAM, ce is connected to en, we is connected to the write enable, oe is tied to 1'b1, addr provides the access address, di receives datain, and doq outputs {tag, tag_v}.
+
+One important detail in the generic RAM path is that the physical widths of the selected RAM macros are not always identical. For example, or1200_spram_32x24 is 24 bits wide, or1200_spram_256x21 is 21 bits wide, while the external interface of this module explicitly uses only the 20-bit datain and {tag, tag_v} signals. Therefore, the information actually relied on by the external logic is the 20-bit value {tag[18:0], tag_v}. Any extra bits are not directly used by this wrapper interface. The actual behavior of zero extension, truncation, or tool warnings during port connection depends on the definitions of the underlying RAM macros and the Verilog tool’s width-matching rules.
+
+The roles of clk and rst must also be understood according to the selected implementation path. clk is passed to the underlying RAM to support RAM read/write timing, but this wrapper itself contains no always block and no explicitly defined local register state. rst is only passed to the or1200_spram_* macros in the generic RAM path. It has no practical effect in the OR1200_NO_IC path, and it is not connected to ic_tag_sub in the Virtex-specific RAM path. Therefore, this module should not be understood as defining a uniform reset behavior by itself; the actual reset effect depends on the selected RAM implementation.
+
+During a write operation, the upper-level logic selects the tag RAM entry to access through addr and controls the underlying RAM write through en and we. The write data comes from datain[19:0], where the upper 19 bits are the tag and the least significant bit is the valid bit. If the upper-level logic needs to invalidate a cache line, it can write a tag word whose valid bit is 0, namely by setting datain[0] = 1'b0. This module does not provide a separate invalidate input port and does not contain dedicated invalidation control logic.
+
+During a read operation, the module reads the tag word of the selected entry from the underlying RAM and splits it into the tag and tag_v outputs. The exact read timing, such as whether the read data is synchronous or combinational and whether there is a one-cycle latency, is not explicitly defined by this wrapper. Instead, it depends on the selected underlying RAM macro. The upper-level instruction cache logic must use these output signals according to the timing behavior of the corresponding RAM implementation.
+
+When OR1200_BIST is enabled, the module includes additional MBIST-related ports. In the no-cache mode, the MBIST signals are passed through. In the generic RAM mode, the MBIST signals are passed to the underlying RAM macro. However, in the Virtex-specific RAM mode, the code does not connect the MBIST signals to ic_tag_sub. Therefore, MBIST support is not handled identically across all implementation paths.
+
+Overall, or1200_ic_tag provides a configurable and replaceable tag/valid storage wrapper for the OR1200 instruction cache. It hides differences among RAM implementations and allows the upper-level cache control logic to access the tag RAM through the unified addr, en, we, datain, tag, and tag_v interface. The module itself does not include cache hit detection, replacement policy, cache-line data management, or an independent control flow. Its responsibility is limited to storing the instruction cache tag and valid bit and splitting the stored value into the corresponding output signals.
+
+module or1200_ic_tag(
+    // Clock and reset
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [8:0] addr,
+    input en,
+    input we,
+    input [19:0] datain,
+    output tag_v,
+    output [18:0] tag
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+    - addr[8:0]: Array index/address input.
+    - en: Access enable for the local storage block.
+    - we: Write-enable for the local storage block.
+    - datain[19:0]: Write data presented to the local storage block.
+Output port:
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+    - tag_v: Valid bit read from the tag storage.
+    - tag[18:0]: Tag bits read from the cache/TLB tag storage.
+Internal reg/wire signals:
+    wire [19:0] doutb: Doutb.
+
+Processing Flow
+
+The processing flow of or1200_ic_tag is mainly determined by the compile-time configuration macros. The module first selects one of three implementation paths: no instruction cache, Virtex-specific RAM, or generic RAM. After the implementation path is selected, the module either drives fixed invalid outputs or forwards the access signals to the selected underlying RAM macro.
+
+If OR1200_NO_IC is defined, the instruction cache is disabled or not implemented. In this case, no tag RAM is instantiated. The module directly outputs tag = 0 and tag_v = 0, so every cache line is treated as invalid. If MBIST is enabled, the MBIST scan input is simply passed through to the MBIST scan output. No read or write operation is performed in this mode.
+
+If the instruction cache is enabled and OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates the Virtex-specific RAM block ic_tag_sub. The input signals clk, en, we, addr, and datain are connected to this RAM block. During a write access, the selected RAM entry is updated with datain, where datain[19:1] contains the tag and datain[0] contains the valid bit. During a read access, the RAM returns doutb[19:0], which is then split into tag = doutb[19:1] and tag_v = doutb[0].
+
+If the instruction cache is enabled and the generic RAM path is used, the module selects one of the or1200_spram_* RAM macros according to the configured instruction cache size. The access enable en, write enable we, address addr, and write data datain are forwarded to the selected RAM macro. The RAM output is connected as {tag, tag_v}, preserving the same external data format in which the upper 19 bits are the tag and the least significant bit is the valid bit.
+
+In all enabled-cache configurations, the module does not interpret the tag value or the valid bit. It only stores and returns them. The upper-level instruction cache logic is responsible for deciding when to write a new tag, when to invalidate an entry by writing a zero valid bit, and how to compare the returned tag and tag_v against the current fetch address to determine a cache hit or miss.

@@ -1,0 +1,1056 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v' to AST representation.
+Generating RTLIL representation for module `\fpu_add'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_add
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_add
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7 in module fpu_add.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+     1/23: $0\denorm_to_norm[0:0]
+     2/23: $0\exponent[10:0]
+     3/23: $0\sum[55:0]
+     4/23: $0\small_shift_3[55:0]
+     5/23: $0\small_shift[55:0]
+     6/23: $0\small_add[55:0]
+     7/23: $0\large_add[55:0]
+     8/23: $0\exponent_diff[10:0]
+     9/23: $0\large_norm_small_denorm[0:0]
+    10/23: $0\large_is_denorm[0:0]
+    11/23: $0\small_is_denorm[0:0]
+    12/23: $0\mantissa_large[51:0]
+    13/23: $0\mantissa_small[51:0]
+    14/23: $0\exponent_large[10:0]
+    15/23: $0\exponent_small[10:0]
+    16/23: $0\expa_gt_expb[0:0]
+    17/23: $0\mantissa_b[51:0]
+    18/23: $0\mantissa_a[51:0]
+    19/23: $0\exponent_b[10:0]
+    20/23: $0\exponent_a[10:0]
+    21/23: $0\exponent_2[10:0]
+    22/23: $0\sum_2[55:0]
+    23/23: $0\sign[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_add.\sign' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$150' with positive edge clock.
+Creating register for signal `\fpu_add.\sum_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$151' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$152' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$153' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$154' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$155' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$156' with positive edge clock.
+Creating register for signal `\fpu_add.\expa_gt_expb' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$157' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$158' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$159' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$160' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$161' with positive edge clock.
+Creating register for signal `\fpu_add.\small_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$162' with positive edge clock.
+Creating register for signal `\fpu_add.\large_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$163' with positive edge clock.
+Creating register for signal `\fpu_add.\large_norm_small_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$164' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_diff' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$165' with positive edge clock.
+Creating register for signal `\fpu_add.\large_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$166' with positive edge clock.
+Creating register for signal `\fpu_add.\small_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$167' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$168' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift_3' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$169' with positive edge clock.
+Creating register for signal `\fpu_add.\sum' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$170' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$171' with positive edge clock.
+Creating register for signal `\fpu_add.\denorm_to_norm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$172' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+Removing empty process `fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+Cleaned up 2 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: f9934be920, CPU: user 0.02s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 29% 2x read_verilog (0 sec), 21% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v' to AST representation.
+Generating RTLIL representation for module `\fpu_add'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_add
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_add
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7 in module fpu_add.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+     1/23: $0\denorm_to_norm[0:0]
+     2/23: $0\exponent[10:0]
+     3/23: $0\sum[55:0]
+     4/23: $0\small_shift_3[55:0]
+     5/23: $0\small_shift[55:0]
+     6/23: $0\small_add[55:0]
+     7/23: $0\large_add[55:0]
+     8/23: $0\exponent_diff[10:0]
+     9/23: $0\large_norm_small_denorm[0:0]
+    10/23: $0\large_is_denorm[0:0]
+    11/23: $0\small_is_denorm[0:0]
+    12/23: $0\mantissa_large[51:0]
+    13/23: $0\mantissa_small[51:0]
+    14/23: $0\exponent_large[10:0]
+    15/23: $0\exponent_small[10:0]
+    16/23: $0\expa_gt_expb[0:0]
+    17/23: $0\mantissa_b[51:0]
+    18/23: $0\mantissa_a[51:0]
+    19/23: $0\exponent_b[10:0]
+    20/23: $0\exponent_a[10:0]
+    21/23: $0\exponent_2[10:0]
+    22/23: $0\sum_2[55:0]
+    23/23: $0\sign[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_add.\sign' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$155' with positive edge clock.
+Creating register for signal `\fpu_add.\sum_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$156' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$157' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$158' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$159' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$160' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$161' with positive edge clock.
+Creating register for signal `\fpu_add.\expa_gt_expb' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$162' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$163' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$164' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$165' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$166' with positive edge clock.
+Creating register for signal `\fpu_add.\small_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$167' with positive edge clock.
+Creating register for signal `\fpu_add.\large_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$168' with positive edge clock.
+Creating register for signal `\fpu_add.\large_norm_small_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$169' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_diff' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$170' with positive edge clock.
+Creating register for signal `\fpu_add.\large_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$171' with positive edge clock.
+Creating register for signal `\fpu_add.\small_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$172' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$173' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift_3' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$174' with positive edge clock.
+Creating register for signal `\fpu_add.\sum' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$175' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$176' with positive edge clock.
+Creating register for signal `\fpu_add.\denorm_to_norm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+  created $dff cell `$procdff$177' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+Removing empty process `fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$7'.
+Cleaned up 3 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 46d63a10b5, CPU: user 0.01s system 0.00s, MEM: 35.46 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 30% 2x read_verilog (0 sec), 20% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v' to AST representation.
+Generating RTLIL representation for module `\fpu_add'.
+Successfully finished Verilog frontend.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \fpu_add
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \fpu_add
+Removed 0 unused modules.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7 in module fpu_add.
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+     1/23: $0\denorm_to_norm[0:0]
+     2/23: $0\exponent[10:0]
+     3/23: $0\sum[55:0]
+     4/23: $0\small_shift_3[55:0]
+     5/23: $0\small_shift[55:0]
+     6/23: $0\small_add[55:0]
+     7/23: $0\large_add[55:0]
+     8/23: $0\exponent_diff[10:0]
+     9/23: $0\large_norm_small_denorm[0:0]
+    10/23: $0\large_is_denorm[0:0]
+    11/23: $0\small_is_denorm[0:0]
+    12/23: $0\mantissa_large[51:0]
+    13/23: $0\mantissa_small[51:0]
+    14/23: $0\exponent_large[10:0]
+    15/23: $0\exponent_small[10:0]
+    16/23: $0\expa_gt_expb[0:0]
+    17/23: $0\mantissa_b[51:0]
+    18/23: $0\mantissa_a[51:0]
+    19/23: $0\exponent_b[10:0]
+    20/23: $0\exponent_a[10:0]
+    21/23: $0\exponent_2[10:0]
+    22/23: $0\sum_2[55:0]
+    23/23: $0\sign[0:0]
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_add.\sign' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$150' with positive edge clock.
+Creating register for signal `\fpu_add.\sum_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$151' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$152' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$153' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$154' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$155' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$156' with positive edge clock.
+Creating register for signal `\fpu_add.\expa_gt_expb' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$157' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$158' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$159' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$160' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$161' with positive edge clock.
+Creating register for signal `\fpu_add.\small_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$162' with positive edge clock.
+Creating register for signal `\fpu_add.\large_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$163' with positive edge clock.
+Creating register for signal `\fpu_add.\large_norm_small_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$164' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_diff' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$165' with positive edge clock.
+Creating register for signal `\fpu_add.\large_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$166' with positive edge clock.
+Creating register for signal `\fpu_add.\small_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$167' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$168' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift_3' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$169' with positive edge clock.
+Creating register for signal `\fpu_add.\sum' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$170' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$171' with positive edge clock.
+Creating register for signal `\fpu_add.\denorm_to_norm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+  created $dff cell `$procdff$172' with positive edge clock.
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+Removing empty process `fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:41$7'.
+Cleaned up 2 empty switches.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.3. Executing FLATTEN pass (flatten design).
+
+2.4. Executing FUTURE pass.
+
+2.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 75 unused wires.
+
+2.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_add...
+Found and reported 0 problems.
+
+2.8. Executing OPT pass (performing simple optimizations).
+
+2.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 99 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 2 cells.
+
+2.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_add..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port A of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:88$27: \sum -> { 1'0 \sum [54:0] }
+      Replacing known input bits on port B of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:88$27: { 1'0 \sum [55:1] } -> { 2'01 \sum [54:1] }
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_add.
+Performed a total of 0 changes.
+
+2.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+2.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 2 unused wires.
+
+2.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_add..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_add.
+Performed a total of 0 changes.
+
+2.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+2.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+
+2.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+2.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 31 bits (of 32) from port B of cell fpu_add.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:31$2 ($gt).
+Removed top 31 bits (of 32) from port B of cell fpu_add.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:80$15 ($gt).
+Removed top 1 bits (of 56) from mux cell fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:88$27 ($mux).
+Removed top 31 bits (of 32) from port B of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$28 ($add).
+Removed top 20 bits (of 32) from port Y of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$28 ($add).
+Removed top 21 bits (of 32) from mux cell fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$30 ($mux).
+Removed top 31 bits (of 32) from port B of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$32 ($add).
+Removed top 20 bits (of 32) from port Y of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$32 ($add).
+Removed top 21 bits (of 32) from mux cell fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$34 ($mux).
+Removed top 1 bits (of 12) from port Y of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$28 ($add).
+Removed top 1 bits (of 12) from port Y of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$32 ($add).
+Removed top 21 bits (of 32) from wire fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$28_Y.
+Removed top 21 bits (of 32) from wire fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$32_Y.
+Removed top 1 bits (of 56) from wire fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:88$27_Y.
+Removed top 21 bits (of 32) from wire fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:89$30_Y.
+Removed top 21 bits (of 32) from wire fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_add/fpu_add.v:91$34_Y.
+
+2.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 5 unused wires.
+
+2.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.12. Executing OPT pass (performing simple optimizations).
+
+2.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+2.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+2.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+
+2.12.4. Finished fast OPT passes.
+
+2.13. Printing statistics.
+
+=== fpu_add ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      105 wires
+     2542 wire bits
+       34 public wires
+      819 public wire bits
+        8 ports
+      199 port bits
+       97 cells
+        3   $add
+        2   $and
+       23   $dff
+        3   $gt
+        1   $logic_and
+        5   $logic_not
+       54   $mux
+        1   $or
+        2   $reduce_or
+        1   $shr
+        2   $sub
+
+2.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_add...
+Found and reported 0 problems.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v' to AST representation.
+Generating RTLIL representation for module `\fpu_add'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \fpu_add
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \fpu_add
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184 in module fpu_add.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+     1/23: $0\denorm_to_norm[0:0]
+     2/23: $0\exponent[10:0]
+     3/23: $0\sum[55:0]
+     4/23: $0\small_shift_3[55:0]
+     5/23: $0\small_shift[55:0]
+     6/23: $0\small_add[55:0]
+     7/23: $0\large_add[55:0]
+     8/23: $0\exponent_diff[10:0]
+     9/23: $0\large_norm_small_denorm[0:0]
+    10/23: $0\large_is_denorm[0:0]
+    11/23: $0\small_is_denorm[0:0]
+    12/23: $0\mantissa_large[51:0]
+    13/23: $0\mantissa_small[51:0]
+    14/23: $0\exponent_large[10:0]
+    15/23: $0\exponent_small[10:0]
+    16/23: $0\expa_gt_expb[0:0]
+    17/23: $0\mantissa_b[51:0]
+    18/23: $0\mantissa_a[51:0]
+    19/23: $0\exponent_b[10:0]
+    20/23: $0\exponent_a[10:0]
+    21/23: $0\exponent_2[10:0]
+    22/23: $0\sum_2[55:0]
+    23/23: $0\sign[0:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_add.\sign' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$332' with positive edge clock.
+Creating register for signal `\fpu_add.\sum_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$333' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_2' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$334' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$335' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$336' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_a' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$337' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_b' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$338' with positive edge clock.
+Creating register for signal `\fpu_add.\expa_gt_expb' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$339' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$340' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$341' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_small' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$342' with positive edge clock.
+Creating register for signal `\fpu_add.\mantissa_large' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$343' with positive edge clock.
+Creating register for signal `\fpu_add.\small_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$344' with positive edge clock.
+Creating register for signal `\fpu_add.\large_is_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$345' with positive edge clock.
+Creating register for signal `\fpu_add.\large_norm_small_denorm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$346' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent_diff' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$347' with positive edge clock.
+Creating register for signal `\fpu_add.\large_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$348' with positive edge clock.
+Creating register for signal `\fpu_add.\small_add' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$349' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$350' with positive edge clock.
+Creating register for signal `\fpu_add.\small_shift_3' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$351' with positive edge clock.
+Creating register for signal `\fpu_add.\sum' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$352' with positive edge clock.
+Creating register for signal `\fpu_add.\exponent' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$353' with positive edge clock.
+Creating register for signal `\fpu_add.\denorm_to_norm' using process `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+  created $dff cell `$procdff$354' with positive edge clock.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+Removing empty process `fpu_add.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:47$184'.
+Cleaned up 3 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 77 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_add...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 98 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 1 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_add..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port A of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:102$199: \sum -> { 1'0 \sum [54:0] }
+      Replacing known input bits on port B of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:102$199: { 1'0 \sum [55:1] } -> { 2'01 \sum [54:1] }
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_add.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 1 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_add..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_add.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 10 bits (of 11) from port B of cell fpu_add.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:41$179 ($gt).
+Removed top 10 bits (of 11) from port B of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:105$203 ($add).
+Removed top 10 bits (of 11) from port B of cell fpu_add.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:103$200 ($add).
+Removed top 1 bits (of 56) from mux cell fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:102$199 ($mux).
+Removed top 1 bits (of 56) from wire fpu_add.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_add/fpu_add_t3.v:102$199_Y.
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+Removed 0 unused cells and 1 unused wires.
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_add.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_add'.
+Computing hashes of 97 cells of `\fpu_add'.
+Finding duplicate cells in `\fpu_add'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_add..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== fpu_add ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      105 wires
+     2500 wire bits
+       34 public wires
+      819 public wire bits
+        8 ports
+      199 port bits
+       97 cells
+        3   $add
+        3   $and
+       23   $dff
+        2   $gt
+        5   $logic_not
+       54   $mux
+        1   $or
+        1   $reduce_bool
+        2   $reduce_or
+        1   $shr
+        2   $sub
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_add...
+Found and reported 0 problems.
+
+5. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_fpu_add" and gate cell "gate_fpu_add".
+
+5.1. Executing FLATTEN pass (flatten design).
+
+5.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_fpu_add'.
+Removing unused module `\gold_fpu_add'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.3. Executing FUTURE pass.
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 202 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 202 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.8. Finished fast OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 56) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$355.
+Removed top 1 bits (of 56) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$175.
+Removed top 25 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$176.
+Removed top 3 bits (of 11) from wire miter.$flatten\gold.$procmux$105_Y.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 4 unused wires.
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 202 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      226 wires
+     5314 wire bits
+       80 public wires
+     1906 public wire bits
+        6 ports
+      132 port bits
+      202 cells
+        6   $add
+        5   $and
+        1   $assert
+       46   $dff
+        3   $eqx
+        5   $gt
+        1   $logic_and
+       10   $logic_not
+      108   $mux
+        1   $not
+        2   $or
+        1   $reduce_and
+        1   $reduce_bool
+        4   $reduce_or
+        2   $scopeinfo
+        2   $shr
+        4   $sub
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+7. Executing ASYNC2SYNC pass.
+
+8. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Final init constraint equation: { \gold.denorm_to_norm \gold.exponent \gold.sum \gold.small_shift_3 \gold.small_shift \gold.small_add \gold.large_add \gold.exponent_diff \gold.large_norm_small_denorm \gold.large_is_denorm \gold.small_is_denorm \gold.mantissa_large \gold.mantissa_small \gold.exponent_large \gold.exponent_small \gold.expa_gt_expb \gold.mantissa_b \gold.mantissa_a \gold.exponent_b \gold.exponent_a \gold.exponent_2 \gold.sum_2 \gold.sign \gate.denorm_to_norm \gate.exponent \gate.sum \gate.small_shift_3 \gate.small_shift \gate.small_add \gate.large_add \gate.exponent_diff \gate.large_norm_small_denorm \gate.large_is_denorm \gate.small_is_denorm \gate.mantissa_large \gate.mantissa_small \gate.exponent_large \gate.exponent_small \gate.expa_gt_expb \gate.mantissa_b \gate.mantissa_a \gate.exponent_b \gate.exponent_a \gate.exponent_2 \gate.sum_2 \gate.sign } = 1254'000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 202 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$363 when 1'1.
+
+Solving problem with 242485 variables and 652738 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+
+End of script. Logfile hash: 780a065492, CPU: user 10.52s system 0.32s, MEM: 217.36 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 98% 1x sat (10 sec), 0% 14x opt_clean (0 sec), ...
+exit_code=0

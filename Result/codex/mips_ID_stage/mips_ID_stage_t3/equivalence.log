@@ -1,0 +1,979 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v' to AST representation.
+Generating RTLIL representation for module `\ID_stage'.
+Successfully finished Verilog frontend.
+
+3. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1. Analyzing design hierarchy..
+Top module:  \ID_stage
+
+3.2. Analyzing design hierarchy..
+Top module:  \ID_stage
+Removed 0 unused modules.
+Module ID_stage directly or indirectly displays text -> setting "keep" attribute.
+
+4. Executing PROC pass (convert processes to netlists).
+
+4.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14 in module ID_stage.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1 in module ID_stage.
+Removed a total of 0 dead cases.
+
+4.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 5 assignments to connections.
+
+4.4. Executing PROC_INIT pass (extract init attributes).
+
+4.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+
+4.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+     1/4: $3\branch_taken[0:0]
+     2/4: $2\branch_taken[0:0]
+     3/4: $1\branch_taken[0:0]
+     4/4: $display$0x55ccdc649080:268$17_EN
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+     1/1: $0\pipeline_reg_out[56:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+     1/9: $2\alu_src2_mux[0:0]
+     2/9: $2\ex_alu_cmd[2:0]
+     3/9: $2\write_back_result_mux[0:0]
+     4/9: $2\write_back_en[0:0]
+     5/9: $1\alu_src2_mux[0:0]
+     6/9: $1\ex_alu_cmd[2:0]
+     7/9: $1\write_back_result_mux[0:0]
+     8/9: $1\write_back_en[0:0]
+     9/9: $display$0x55ccdc649080:206$8_EN
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+     1/1: $0\instruction_reg[15:0]
+
+4.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\ID_stage.\branch_taken' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+No latch inferred for signal `\ID_stage.\write_back_en' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\write_back_result_mux' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\ex_alu_cmd' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\alu_src2_mux' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+
+4.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ID_stage.\pipeline_reg_out' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+  created $adff cell `$procdff$151' with positive edge clock and positive level reset.
+Creating register for signal `\ID_stage.\instruction_reg' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+  created $adff cell `$procdff$154' with positive edge clock and positive level reset.
+
+4.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+Found and cleaned up 2 empty switches in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+Cleaned up 6 empty switches.
+
+4.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+5. Executing JSON backend.
+
+End of script. Logfile hash: 994cf142e1, CPU: user 0.01s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 47% 3x read_verilog (0 sec), 20% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v' to AST representation.
+Generating RTLIL representation for module `\ID_stage'.
+Successfully finished Verilog frontend.
+
+3. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1. Analyzing design hierarchy..
+Top module:  \ID_stage
+
+3.2. Analyzing design hierarchy..
+Top module:  \ID_stage
+Removed 0 unused modules.
+
+4. Executing PROC pass (convert processes to netlists).
+
+4.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$19 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$18 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4 in module ID_stage.
+Removed a total of 0 dead cases.
+
+4.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 9 assignments to connections.
+
+4.4. Executing PROC_INIT pass (extract init attributes).
+
+4.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$18'.
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4'.
+
+4.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$19'.
+     1/1: $1\branch_taken[0:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$18'.
+     1/1: $0\pipeline_reg_out[56:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+     1/8: $1\write_back_en_comb[0:0]
+     2/8: $1\ex_alu_cmd_comb[2:0]
+     3/8: $1\write_back_result_mux_comb[0:0]
+     4/8: $1\write_back_dest_comb[2:0]
+     5/8: $1\mem_write_data_comb[15:0]
+     6/8: $1\mem_write_en_comb[0:0]
+     7/8: $1\ex_alu_src2_comb[15:0]
+     8/8: $1\ex_alu_src1_comb[15:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4'.
+     1/1: $0\instruction_reg[15:0]
+
+4.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\ID_stage.\branch_taken' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$19'.
+No latch inferred for signal `\ID_stage.\ex_alu_cmd_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\ex_alu_src1_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\ex_alu_src2_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\mem_write_en_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\mem_write_data_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\write_back_en_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\write_back_dest_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+No latch inferred for signal `\ID_stage.\write_back_result_mux_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+
+4.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ID_stage.\pipeline_reg_out' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$18'.
+  created $adff cell `$procdff$93' with positive edge clock and positive level reset.
+Creating register for signal `\ID_stage.\instruction_reg' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4'.
+  created $adff cell `$procdff$96' with positive edge clock and positive level reset.
+
+4.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$19'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$19'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$18'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$17'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$4'.
+Cleaned up 3 empty switches.
+
+4.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+5. Executing JSON backend.
+
+End of script. Logfile hash: 528f448995, CPU: user 0.01s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 52% 3x read_verilog (0 sec), 15% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v' to AST representation.
+Generating RTLIL representation for module `\ID_stage'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \ID_stage
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \ID_stage
+Removed 0 unused modules.
+Module ID_stage directly or indirectly displays text -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14 in module ID_stage.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1 in module ID_stage.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 5 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+     1/4: $3\branch_taken[0:0]
+     2/4: $2\branch_taken[0:0]
+     3/4: $1\branch_taken[0:0]
+     4/4: $display$0x55785de65b30:268$17_EN
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+     1/1: $0\pipeline_reg_out[56:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+     1/9: $2\alu_src2_mux[0:0]
+     2/9: $2\ex_alu_cmd[2:0]
+     3/9: $2\write_back_result_mux[0:0]
+     4/9: $2\write_back_en[0:0]
+     5/9: $1\alu_src2_mux[0:0]
+     6/9: $1\ex_alu_cmd[2:0]
+     7/9: $1\write_back_result_mux[0:0]
+     8/9: $1\write_back_en[0:0]
+     9/9: $display$0x55785de65b30:206$8_EN
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+     1/1: $0\instruction_reg[15:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\ID_stage.\branch_taken' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+No latch inferred for signal `\ID_stage.\write_back_en' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\write_back_result_mux' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\ex_alu_cmd' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+No latch inferred for signal `\ID_stage.\alu_src2_mux' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ID_stage.\pipeline_reg_out' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+  created $adff cell `$procdff$151' with positive edge clock and positive level reset.
+Creating register for signal `\ID_stage.\instruction_reg' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+  created $adff cell `$procdff$154' with positive edge clock and positive level reset.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:253$15'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:229$14'.
+Found and cleaned up 2 empty switches in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:99$7'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:75$1'.
+Cleaned up 6 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.3. Executing FLATTEN pass (flatten design).
+
+3.4. Executing FUTURE pass.
+
+3.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+Removed 0 unused cells and 47 unused wires.
+
+3.7. Executing CHECK pass (checking for obvious problems).
+Checking module ID_stage...
+Found and reported 0 problems.
+
+3.8. Executing OPT pass (performing simple optimizations).
+
+3.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 102 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Computing hashes of 57 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 45 cells.
+
+3.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \ID_stage..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$31.
+    dead port 2/2 on $mux $procmux$33.
+    dead port 2/2 on $mux $procmux$39.
+    dead port 1/2 on $mux $procmux$64.
+    dead port 1/2 on $mux $procmux$115.
+    dead port 1/2 on $mux $procmux$81.
+    dead port 1/2 on $mux $procmux$98.
+Removed 7 multiplexer ports.
+
+3.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \ID_stage.
+    New ctrl vector for $pmux cell $procmux$51: { $auto$opt_reduce.cc:137:opt_pmux$158 $auto$opt_reduce.cc:137:opt_pmux$156 }
+    New ctrl vector for $pmux cell $procmux$103: $auto$opt_reduce.cc:137:opt_pmux$160
+    New ctrl vector for $pmux cell $procmux$68: { $procmux$112_CMP $procmux$111_CMP $procmux$110_CMP $procmux$109_CMP $procmux$108_CMP $procmux$107_CMP $procmux$106_CMP $auto$opt_reduce.cc:137:opt_pmux$162 }
+    New ctrl vector for $pmux cell $procmux$130: $auto$opt_reduce.cc:137:opt_pmux$164
+    New ctrl vector for $pmux cell $procmux$86: { $auto$opt_reduce.cc:137:opt_pmux$166 $procmux$104_CMP }
+  Optimizing cells in module \ID_stage.
+Performed a total of 5 changes.
+
+3.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 56 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+3.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+Removed 0 unused cells and 52 unused wires.
+
+3.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \ID_stage..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+3.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \ID_stage.
+Performed a total of 0 changes.
+
+3.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 56 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+3.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+
+3.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+3.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 28 bits (of 32) from mux cell ID_stage.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:93$4 ($mux).
+Removed top 29 bits (of 32) from mux cell ID_stage.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:96$6 ($mux).
+Removed top 31 bits (of 32) from mux cell ID_stage.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:214$10 ($mux).
+Removed top 31 bits (of 32) from mux cell ID_stage.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/ID_stage/ID_stage.v:215$12 ($mux).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$107_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$108_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$109_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$110_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell ID_stage.$procmux$111_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell ID_stage.$procmux$112_CMP0 ($eq).
+Removed top 3 bits (of 4) from port B of cell ID_stage.$procmux$113_CMP0 ($eq).
+
+3.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+Removed 0 unused cells and 4 unused wires.
+
+3.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.12. Executing OPT pass (performing simple optimizations).
+
+3.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+3.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 56 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+3.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+
+3.12.4. Finished fast OPT passes.
+
+3.13. Printing statistics.
+
+=== ID_stage ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       72 wires
+      286 wire bits
+       32 public wires
+      229 public wire bits
+       13 ports
+      127 port bits
+       56 cells
+        2   $adff
+       16   $eq
+        4   $logic_not
+        3   $logic_or
+       20   $mux
+        3   $pmux
+        2   $print
+        6   $reduce_or
+
+3.14. Executing CHECK pass (checking for obvious problems).
+Checking module ID_stage...
+Found and reported 0 problems.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/mips_16/mips_16_defs.v' to AST representation.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v' to AST representation.
+Generating RTLIL representation for module `\ID_stage'.
+Successfully finished Verilog frontend.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \ID_stage
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \ID_stage
+Removed 0 unused modules.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$185 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$184 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183 in module ID_stage.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170 in module ID_stage.
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 9 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$184'.
+Found async reset \rst in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170'.
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$185'.
+     1/1: $1\branch_taken[0:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$184'.
+     1/1: $0\pipeline_reg_out[56:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+     1/8: $1\write_back_en_comb[0:0]
+     2/8: $1\ex_alu_cmd_comb[2:0]
+     3/8: $1\mem_write_en_comb[0:0]
+     4/8: $1\mem_write_data_comb[15:0]
+     5/8: $1\write_back_dest_comb[2:0]
+     6/8: $1\write_back_result_mux_comb[0:0]
+     7/8: $1\ex_alu_src1_comb[15:0]
+     8/8: $1\ex_alu_src2_comb[15:0]
+Creating decoders for process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170'.
+     1/1: $0\instruction_reg[15:0]
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\ID_stage.\branch_taken' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$185'.
+No latch inferred for signal `\ID_stage.\ex_alu_src2_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\ex_alu_src1_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\ex_alu_cmd_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\write_back_result_mux_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\write_back_dest_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\write_back_en_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\mem_write_data_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+No latch inferred for signal `\ID_stage.\mem_write_en_comb' from process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ID_stage.\pipeline_reg_out' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$184'.
+  created $adff cell `$procdff$259' with positive edge clock and positive level reset.
+Creating register for signal `\ID_stage.\instruction_reg' using process `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170'.
+  created $adff cell `$procdff$262' with positive edge clock and positive level reset.
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$185'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:177$185'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:160$184'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:87$183'.
+Found and cleaned up 1 empty switch in `\ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170'.
+Removing empty process `ID_stage.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/mips_ID_stage/mips_ID_stage_t3.v:67$170'.
+Cleaned up 3 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.3. Executing FLATTEN pass (flatten design).
+
+6.4. Executing FUTURE pass.
+
+6.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+Removed 0 unused cells and 36 unused wires.
+
+6.7. Executing CHECK pass (checking for obvious problems).
+Checking module ID_stage...
+Found and reported 0 problems.
+
+6.8. Executing OPT pass (performing simple optimizations).
+
+6.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 50 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Computing hashes of 37 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 13 cells.
+
+6.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \ID_stage..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \ID_stage.
+    New ctrl vector for $pmux cell $procmux$193: $auto$opt_reduce.cc:137:opt_pmux$264
+    New ctrl vector for $pmux cell $procmux$251: $auto$opt_reduce.cc:137:opt_pmux$266
+  Optimizing cells in module \ID_stage.
+Performed a total of 2 changes.
+
+6.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 39 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+6.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+Removed 0 unused cells and 13 unused wires.
+
+6.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \ID_stage..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \ID_stage.
+Performed a total of 0 changes.
+
+6.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 39 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+6.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+
+6.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+6.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 3 bits (of 4) from port B of cell ID_stage.$procmux$203_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell ID_stage.$procmux$202_CMP0 ($eq).
+Removed top 2 bits (of 4) from port B of cell ID_stage.$procmux$201_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$200_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$199_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$198_CMP0 ($eq).
+Removed top 1 bits (of 4) from port B of cell ID_stage.$procmux$197_CMP0 ($eq).
+
+6.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+
+6.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.12. Executing OPT pass (performing simple optimizations).
+
+6.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ID_stage.
+
+6.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\ID_stage'.
+Computing hashes of 39 cells of `\ID_stage'.
+Finding duplicate cells in `\ID_stage'.
+Removed a total of 0 cells.
+
+6.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \ID_stage..
+
+6.12.4. Finished fast OPT passes.
+
+6.13. Printing statistics.
+
+=== ID_stage ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       56 wires
+      285 wire bits
+       31 public wires
+      243 public wire bits
+       13 ports
+      127 port bits
+       39 cells
+        2   $adff
+       16   $eq
+        1   $logic_and
+        2   $logic_not
+        3   $logic_or
+       12   $mux
+        1   $pmux
+        2   $reduce_or
+
+6.14. Executing CHECK pass (checking for obvious problems).
+Checking module ID_stage...
+Found and reported 0 problems.
+
+7. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_ID_stage" and gate cell "gate_ID_stage".
+
+7.1. Executing FLATTEN pass (flatten design).
+
+7.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8. Executing PREP pass.
+
+8.1. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+8.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_ID_stage'.
+Removing unused module `\gold_ID_stage'.
+Removed 2 unused modules.
+Module miter directly or indirectly displays text -> setting "keep" attribute.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+8.2. Executing PROC pass (convert processes to netlists).
+
+8.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+8.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+8.2.4. Executing PROC_INIT pass (extract init attributes).
+
+8.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+8.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+8.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+8.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+8.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+8.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+8.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.3. Executing FUTURE pass.
+
+8.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+8.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+8.7. Executing OPT pass (performing simple optimizations).
+
+8.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 107 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 105 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 2 cells.
+
+8.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+    New input vector for $reduce_and cell $auto$miter.cc:263:create_miter_equiv$281: { $auto$miter.cc:241:create_miter_equiv$268 $auto$miter.cc:241:create_miter_equiv$270 $auto$miter.cc:241:create_miter_equiv$272 $auto$miter.cc:241:create_miter_equiv$274 $auto$miter.cc:241:create_miter_equiv$276 $auto$miter.cc:241:create_miter_equiv$280 }
+  Optimizing cells in module \miter.
+Performed a total of 1 changes.
+
+8.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 105 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+8.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 2 unused wires.
+
+8.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+8.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 105 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+8.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+8.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+8.8. Executing WREDUCE pass (reducing word size of cells).
+
+8.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+8.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+8.11. Executing OPT pass (performing simple optimizations).
+
+8.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+8.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 105 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+8.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+8.11.4. Finished fast OPT passes.
+
+8.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      155 wires
+      781 wire bits
+       84 public wires
+      676 public wire bits
+        7 ports
+       52 port bits
+      105 cells
+        4   $adff
+        1   $assert
+       32   $eq
+        6   $eqx
+        1   $logic_and
+        5   $logic_not
+        6   $logic_or
+       32   $mux
+        1   $not
+        4   $pmux
+        2   $print
+        1   $reduce_and
+        8   $reduce_or
+        2   $scopeinfo
+
+8.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+9. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$259 ($adff): ARST=\in_rst, D={ \gate.ex_alu_cmd_comb \in_reg_read_data_1 \gate.ex_alu_src2_comb \gate.mem_write_en_comb \gate.mem_write_data_comb \gate.write_back_en_comb \gate.ir_dest_with_bubble \gate.write_back_result_mux_comb }, Q=\gate.pipeline_reg_out
+Replacing miter.$flatten\gate.$procdff$262 ($adff): ARST=\in_rst, D=$flatten\gate.$0\instruction_reg[15:0], Q=\gate.instruction_reg
+Replacing miter.$flatten\gold.$procdff$151 ($adff): ARST=\in_rst, D={ \gold.ex_alu_cmd \in_reg_read_data_1 \gold.ex_alu_src2 \gold.decoding_op_is_store \in_reg_read_data_2 \gold.write_back_en \gold.ir_dest_with_bubble \gold.write_back_result_mux }, Q=\gold.pipeline_reg_out
+Replacing miter.$flatten\gold.$procdff$154 ($adff): ARST=\in_rst, D=$flatten\gold.$0\instruction_reg[15:0], Q=\gold.instruction_reg
+
+10. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+11. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Final init constraint equation: { $auto$async2sync.cc:234:execute$293 $auto$async2sync.cc:234:execute$291 $auto$async2sync.cc:234:execute$289 $auto$async2sync.cc:234:execute$287 } = 146'00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 111 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$282 when 1'1.
+
+Solving problem with 30817 variables and 82662 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                      Dec       Hex                                                          Bin
+  ---- ---------------------------------------- ----------- --------- ------------------------------------------------------------
+  init $auto$async2sync.cc:234:execute$287               --        --    000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$289                0         0                                             0000000000000000
+  init $auto$async2sync.cc:234:execute$291               --        --    000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$293                0         0                                             0000000000000000
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

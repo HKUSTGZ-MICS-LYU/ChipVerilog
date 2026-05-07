@@ -1,0 +1,849 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_tag/or1200_ic_tag.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_tag/or1200_ic_tag.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_tag'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\ic_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Generating RTLIL representation for module `\or1200_spram_32x24'.
+Generating RTLIL representation for module `\or1200_spram_512x20'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+
+5.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+Removing unused module `\or1200_spram_512x20'.
+Removing unused module `\or1200_spram_32x24'.
+Removing unused module `\or1200_spram_256x21'.
+Removed 3 unused modules.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.addrb from 9 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.dina from 20 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.addra from 9 bits to 1 bits.
+
+6. Executing PROC pass (convert processes to netlists).
+
+6.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2 in module ic_tag_sub.
+Removed a total of 0 dead cases.
+
+6.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 4 assignments to connections.
+
+6.4. Executing PROC_INIT pass (extract init attributes).
+
+6.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$9
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA[19:0]$8
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR[0:0]$7
+
+6.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ic_tag_sub.\doutb' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+  created $dff cell `$procdff$51' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$52' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$53' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$54' with positive edge clock.
+
+6.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Found and cleaned up 1 empty switch in `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Cleaned up 1 empty switch.
+
+6.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ic_tag_sub.
+Optimizing module or1200_ic_tag.
+
+7. Executing JSON backend.
+
+Warnings: 3 unique messages, 3 total
+End of script. Logfile hash: 9444c14e1e, CPU: user 0.01s system 0.00s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 77% 5x read_verilog (0 sec), 6% 1x opt_expr (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_tag'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\ic_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Generating RTLIL representation for module `\or1200_spram_32x24'.
+Generating RTLIL representation for module `\or1200_spram_512x20'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+
+5.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+Removing unused module `\or1200_spram_512x20'.
+Removing unused module `\or1200_spram_32x24'.
+Removing unused module `\or1200_spram_256x21'.
+Removed 3 unused modules.
+Warning: Resizing cell port or1200_ic_tag.u_ic_tag_sub.datain from 20 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.u_ic_tag_sub.addr from 9 bits to 1 bits.
+
+6. Executing PROC pass (convert processes to netlists).
+
+6.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2 in module ic_tag_sub.
+Removed a total of 0 dead cases.
+
+6.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 4 assignments to connections.
+
+6.4. Executing PROC_INIT pass (extract init attributes).
+
+6.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$9
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA[19:0]$8
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR[0:0]$7
+
+6.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ic_tag_sub.\doutb' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+  created $dff cell `$procdff$51' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$52' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$53' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$54' with positive edge clock.
+
+6.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Found and cleaned up 1 empty switch in `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Cleaned up 1 empty switch.
+
+6.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ic_tag_sub.
+Optimizing module or1200_ic_tag.
+
+7. Executing JSON backend.
+
+Warnings: 2 unique messages, 2 total
+End of script. Logfile hash: 41ed0db481, CPU: user 0.01s system 0.01s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 72% 5x read_verilog (0 sec), 8% 1x opt_expr (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_tag/or1200_ic_tag.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ic_tag/or1200_ic_tag.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_tag'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\ic_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Generating RTLIL representation for module `\or1200_spram_32x24'.
+Generating RTLIL representation for module `\or1200_spram_512x20'.
+Successfully finished Verilog frontend.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+Removing unused module `\or1200_spram_512x20'.
+Removing unused module `\or1200_spram_32x24'.
+Removing unused module `\or1200_spram_256x21'.
+Removed 3 unused modules.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.addrb from 9 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.dina from 20 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.ic_tag0.addra from 9 bits to 1 bits.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2 in module ic_tag_sub.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 4 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$9
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA[19:0]$8
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR[0:0]$7
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ic_tag_sub.\doutb' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+  created $dff cell `$procdff$51' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_ADDR' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$52' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_DATA' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$53' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+  created $dff cell `$procdff$54' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$10'.
+Found and cleaned up 1 empty switch in `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$2'.
+Cleaned up 1 empty switch.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ic_tag_sub.
+Optimizing module or1200_ic_tag.
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module ic_tag_sub.
+
+5.4. Executing FUTURE pass.
+
+5.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+5.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+Removed 3 unused cells and 18 unused wires.
+
+5.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_tag...
+Found and reported 0 problems.
+
+5.8. Executing OPT pass (performing simple optimizations).
+
+5.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+5.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+5.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_tag..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+5.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_tag.
+    Consolidated identical input bits for $mux cell $flatten\ic_tag0.$procmux$43:
+      Old ports: A=20'00000000000000000000, B=20'11111111111111111111, Y=$flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5
+      New ports: A=1'0, B=1'1, Y=$flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0]
+      New connections: $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [19:1] = { $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] $flatten\ic_tag0.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$1_EN[19:0]$5 [0] }
+  Optimizing cells in module \or1200_ic_tag.
+Performed a total of 1 changes.
+
+5.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+5.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+5.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+5.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_tag..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+5.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_tag.
+Performed a total of 0 changes.
+
+5.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+5.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+5.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+5.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+5.9. Executing WREDUCE pass (reducing word size of cells).
+
+5.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+5.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.12. Executing OPT pass (performing simple optimizations).
+
+5.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+5.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 7 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+5.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+5.12.4. Finished fast OPT passes.
+
+5.13. Printing statistics.
+
+=== or1200_ic_tag ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       22 wires
+      162 wire bits
+       17 public wires
+      100 public wire bits
+        8 ports
+       53 port bits
+        7 cells
+        1   $dff
+        1   $logic_and
+        1   $mem_v2
+        3   $mux
+        1   $scopeinfo
+
+5.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_tag...
+Found and reported 0 problems.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ic_tag'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v' to AST representation.
+Generating RTLIL representation for module `\ic_tag_sub'.
+Generating RTLIL representation for module `\or1200_spram_256x21'.
+Generating RTLIL representation for module `\or1200_spram_32x24'.
+Generating RTLIL representation for module `\or1200_spram_512x20'.
+Successfully finished Verilog frontend.
+
+10. Executing PREP pass.
+
+10.1. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+
+10.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ic_tag
+Used module:     \ic_tag_sub
+Removing unused module `\or1200_spram_512x20'.
+Removing unused module `\or1200_spram_32x24'.
+Removing unused module `\or1200_spram_256x21'.
+Removed 3 unused modules.
+Warning: Resizing cell port or1200_ic_tag.u_ic_tag_sub.datain from 20 bits to 1 bits.
+Warning: Resizing cell port or1200_ic_tag.u_ic_tag_sub.addr from 9 bits to 1 bits.
+
+10.2. Executing PROC pass (convert processes to netlists).
+
+10.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58 in module ic_tag_sub.
+Removed a total of 0 dead cases.
+
+10.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 4 assignments to connections.
+
+10.2.4. Executing PROC_INIT pass (extract init attributes).
+
+10.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+10.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+10.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$66'.
+Creating decoders for process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+     1/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$63
+     2/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_DATA[19:0]$64
+     3/3: $1$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_ADDR[0:0]$65
+
+10.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+10.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\ic_tag_sub.\doutb' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$66'.
+  created $dff cell `$procdff$107' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+  created $dff cell `$procdff$108' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_DATA' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+  created $dff cell `$procdff$109' with positive edge clock.
+Creating register for signal `\ic_tag_sub.$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_ADDR' using process `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+  created $dff cell `$procdff$110' with positive edge clock.
+
+10.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+10.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:17$66'.
+Found and cleaned up 1 empty switch in `\ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+Removing empty process `ic_tag_sub.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$58'.
+Cleaned up 1 empty switch.
+
+10.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module ic_tag_sub.
+Optimizing module or1200_ic_tag.
+
+10.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module ic_tag_sub.
+
+10.4. Executing FUTURE pass.
+
+10.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+10.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+Removed 3 unused cells and 13 unused wires.
+
+10.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_tag...
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.addra is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.dina is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.clkb is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.addrb is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.wea is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.ena is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.clka is used but has no driver.
+Found and reported 7 problems.
+
+10.8. Executing OPT pass (performing simple optimizations).
+
+10.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+10.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+10.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_tag..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_tag.
+    Consolidated identical input bits for $mux cell $flatten\u_ic_tag_sub.$procmux$99:
+      Old ports: A=20'00000000000000000000, B=20'11111111111111111111, Y=$flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59
+      New ports: A=1'0, B=1'1, Y=$flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0]
+      New connections: $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [19:1] = { $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] $flatten\u_ic_tag_sub.$0$memwr$\mem$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/or1200_ic_tag/or1200_ic_tag_t5/_generated_support.v:16$57_EN[19:0]$59 [0] }
+  Optimizing cells in module \or1200_ic_tag.
+Performed a total of 1 changes.
+
+10.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+10.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+10.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+10.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ic_tag..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ic_tag.
+Performed a total of 0 changes.
+
+10.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 8 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+10.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+10.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+10.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+10.9. Executing WREDUCE pass (reducing word size of cells).
+
+10.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+10.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+10.12. Executing OPT pass (performing simple optimizations).
+
+10.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ic_tag.
+
+10.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ic_tag'.
+Computing hashes of 7 cells of `\or1200_ic_tag'.
+Finding duplicate cells in `\or1200_ic_tag'.
+Removed a total of 0 cells.
+
+10.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ic_tag..
+
+10.12.4. Finished fast OPT passes.
+
+10.13. Printing statistics.
+
+=== or1200_ic_tag ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       27 wires
+      167 wire bits
+       22 public wires
+      105 public wire bits
+        8 ports
+       53 port bits
+        7 cells
+        1   $dff
+        1   $logic_and
+        1   $mem_v2
+        3   $mux
+        1   $scopeinfo
+
+10.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ic_tag...
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.clka is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.addrb is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.addra is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.dina is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.clkb is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.wea is used but has no driver.
+Warning: Wire or1200_ic_tag.\u_ic_tag_sub.ena is used but has no driver.
+Found and reported 7 problems.
+
+11. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_or1200_ic_tag" and gate cell "gate_or1200_ic_tag".
+
+11.1. Executing FLATTEN pass (flatten design).
+
+11.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+Removed 0 unused cells and 4 unused wires.
+
+12. Executing PREP pass.
+
+12.1. Executing HIERARCHY pass (managing design hierarchy).
+
+12.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+12.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_or1200_ic_tag'.
+Removing unused module `\gold_or1200_ic_tag'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+12.2. Executing PROC pass (convert processes to netlists).
+
+12.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+12.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+12.2.4. Executing PROC_INIT pass (extract init attributes).
+
+12.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+12.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+12.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+12.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+12.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+12.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.3. Executing FUTURE pass.
+
+12.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+12.7. Executing OPT pass (performing simple optimizations).
+
+12.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 17 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+12.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+12.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+12.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 17 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+12.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.7.8. Finished fast OPT passes. (There is nothing left to do.)
+
+12.8. Executing WREDUCE pass (reducing word size of cells).
+
+12.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+12.11. Executing OPT pass (performing simple optimizations).
+
+12.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+12.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 17 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+12.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+12.11.4. Finished fast OPT passes.
+
+12.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       59 wires
+      364 wire bits
+       50 public wires
+      279 public wire bits
+        7 ports
+       34 port bits
+       17 cells
+        1   $assert
+        2   $dff
+        2   $eqx
+        1   $logic_and
+        2   $mem_v2
+        3   $mux
+        1   $not
+        1   $reduce_and
+        4   $scopeinfo
+
+12.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+13. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.\u_ic_tag_sub.$procdff$107 ($dff): EN={ }, D={ }, Q=\gate.u_ic_tag_sub.doutb
+
+14. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+15. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+--- stderr ---
+ERROR: Failed to import cell gate.u_ic_tag_sub.mem (type $mem_v2) to SAT database.
+exit_code=1

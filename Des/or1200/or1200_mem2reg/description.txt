@@ -1,0 +1,57 @@
+or1200_mem2reg is a register write-back data formatting module in the OR1200 processor load data path. Its function is to take the 32-bit data returned from memory after a load instruction, select the byte, halfword, or word that actually needs to be written back to the register according to the address offset and load operation type, and convert it into a standard 32-bit register write-back result.
+
+The input memdata is the 32-bit data returned from memory or the data bus. The input addr[1:0] indicates the byte offset of the current load access within this 32-bit data word, and is used to determine where the target data is located in the returned data. The input lsu_op indicates the LSU load operation type, distinguishing byte loads, halfword loads, word loads, signed loads, and unsigned loads. The module outputs regdata, which is the final 32-bit result to be written back to the register file.
+
+The module follows the byte ordering rule used by the OR1200 load data path. Within a 32-bit returned data word, addr[1:0] = 2'b00 means that the target byte is located in the most significant byte of memdata; addr[1:0] = 2'b01 means that the target byte is located in the next most significant byte; addr[1:0] = 2'b10 means that the target byte is located in the next least significant byte; and addr[1:0] = 2'b11 means that the target byte is located in the least significant byte. In other words, the address offset determines which byte position in the 32-bit returned data is selected as the target data.
+
+For an unsigned byte load, the module selects the target 8-bit byte according to addr[1:0], places it into the low 8 bits of regdata, and fills the upper 24 bits of regdata with zeros. In this way, the original 8-bit unsigned data is extended into a 32-bit unsigned result.
+
+For a signed byte load, the module also selects the target 8-bit byte according to addr[1:0] and places it into the low 8 bits of regdata. The difference is that the upper 24 bits are not filled with zeros; instead, they are filled by sign-extending the most significant bit of the target byte. If the most significant bit of the target byte is 0, the upper 24 bits are filled with 0s. If the most significant bit is 1, the upper 24 bits are filled with 1s. This ensures that the 8-bit signed value preserves its correct signed numerical meaning after being written into a 32-bit register.
+
+For an unsigned halfword load, the module selects the target 16-bit halfword from the 32-bit returned data, places it into the low 16 bits of regdata, and fills the upper 16 bits with zeros. A legal halfword access should be aligned on a halfword boundary, so there are normally only two valid offsets: when addr[1:0] = 2'b00, the target halfword is located in the upper 16 bits of memdata; when addr[1:0] = 2'b10, the target halfword is located in the lower 16 bits of memdata.
+
+For a signed halfword load, the module also selects the target 16-bit halfword and places it into the low 16 bits of regdata. The upper 16 bits are filled by sign-extending the most significant bit of the target halfword. If the most significant bit of the target halfword is 0, the upper 16 bits are filled with 0s. If the most significant bit is 1, the upper 16 bits are filled with 1s. This ensures that the 16-bit signed value preserves its correct signed numerical meaning after being written into a 32-bit register.
+
+For a word load, the legal access should be aligned on a 32-bit word boundary, meaning addr[1:0] = 2'b00. In this case, the complete 32-bit memdata returned from memory is the value that needs to be written back to the register, and the module outputs this 32-bit data as regdata. In other words, for a legal word load, the module does not need to perform byte selection, halfword selection, zero extension, or sign extension; it directly forms the complete 32-bit write-back result.
+
+The module itself is not responsible for address legality checking or misaligned access exception handling. Byte loads may access any byte offset. Halfword loads should be guaranteed by the upstream LSU to satisfy halfword alignment requirements. Word loads should be guaranteed by the upstream LSU to satisfy word alignment requirements. If the access type and address offset do not match, or if a misaligned access occurs, the corresponding detection and exception handling should be completed by the LSU or processor exception logic before this module.
+
+From the data processing perspective, the module first determines the position of the target data within the 32-bit returned data according to the address offset, and then determines the width of the data to be extracted according to the load operation type: an 8-bit byte, a 16-bit halfword, or a 32-bit word. It then places the selected data into the low part of the 32-bit write-back result. For an unsigned load, the upper bits are filled with zeros. For a signed load, the upper bits are filled with the sign bit of the selected target data. For a word load, the complete 32-bit data is output.
+
+Therefore, the complete function of or1200_mem2reg can be summarized as follows: in the load data return stage of OR1200, it selects the target data from the 32-bit memory return value based on the address offset, and converts a byte, halfword, or word load into the 32-bit register write-back format according to the load type. It is responsible for generating the architecturally correct load write-back value, but it is not responsible for access legality checking, misaligned access exception detection, or memory access control.
+
+module or1200_mem2reg(
+    input [1:0] addr,
+    input [3:0] lsu_op,
+    input [31:0] memdata,
+    output [31:0] regdata
+);
+
+Input ports:
+    - addr[1:0]: Array index/address input.
+    - lsu_op[3:0]: Encoded load/store operation selector.
+    - memdata[31:0]: Memory-side data word before alignment or extension.
+Output port:
+    - regdata[31:0]: Register-side aligned data word.
+Internal reg/wire signals:
+    reg [7:0] regdata_hh: Register-data [31:24] byte.
+    reg [7:0] regdata_hl: Register-data [23:16] byte.
+    reg [7:0] regdata_lh: Register-data [15:8] byte.
+    reg [7:0] regdata_ll: Register-data [7:0] byte.
+    reg [31:0] aligned: Aligned load-data word before byte extraction.
+    reg [3:0] sel_byte0: Byte-selector control for output lane 0.
+    reg [3:0] sel_byte1: Byte-selector control for output lane 1.
+    reg [3:0] sel_byte2: Byte-selector control for output lane 2.
+    reg [3:0] sel_byte3: Byte-selector control for output lane 3.
+    reg [31:0] regdata: Register data.
+    reg [31:0] aligned: Aligned load-data word before byte extraction.
+
+Processing Flow
+
+The processing flow of or1200_mem2reg can be described as follows. First, the module receives the 32-bit memory return data together with the byte offset of the load access and the load operation type. The byte offset determines where the target data is located within the returned 32-bit word, while the load operation type determines whether the target data width is a byte, a halfword, or a full word.
+
+Next, the module selects the target data from the 32-bit memory return value. For a byte load, one of the four bytes is selected according to the byte offset. For a halfword load, one of the two aligned halfwords is selected according to the byte offset. For a word load, the complete 32-bit returned data is selected, assuming the access is word-aligned.
+
+After the target data has been selected, the module formats it into a 32-bit register write-back value. For unsigned byte and halfword loads, the selected data is placed in the low bits of the output and the remaining upper bits are filled with zeros. For signed byte and halfword loads, the selected data is placed in the low bits of the output and the remaining upper bits are filled with copies of the selected data’s sign bit. For a legal word load, the selected 32-bit word is output directly.
+
+Finally, the formatted 32-bit value is provided as regdata for register file write-back. The module does not perform alignment checking or exception generation during this process; it assumes that any illegal or misaligned access has already been handled by the upstream LSU or exception logic.

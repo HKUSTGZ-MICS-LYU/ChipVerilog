@@ -1,0 +1,1759 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v' to AST representation.
+Generating RTLIL representation for module `\fpu_exceptions'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158 in module fpu_exceptions.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1 in module fpu_exceptions.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+     1/7: $0\invalid[0:0]
+     2/7: $0\exception[0:0]
+     3/7: $0\inexact[0:0]
+     4/7: $0\overflow[0:0]
+     5/7: $0\underflow[0:0]
+     6/7: $0\ex_enable[0:0]
+     7/7: $0\out[63:0]
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+     1/57: $0\out_2[63:0]
+     2/57: $0\out_1[63:0]
+     3/57: $0\out_0[63:0]
+     4/57: $0\out_inf[62:0]
+     5/57: $0\inf_round_down[62:0]
+     6/57: $0\NaN_output[62:0]
+     7/57: $0\NaN_output_0[62:0]
+     8/57: $0\SNaN_trigger[0:0]
+     9/57: $0\NaN_out_trigger[0:0]
+    10/57: $0\enable_trigger[0:0]
+    11/57: $0\except_trigger[0:0]
+    12/57: $0\inexact_trigger[0:0]
+    13/57: $0\overflow_trigger[0:0]
+    14/57: $0\invalid_trigger[0:0]
+    15/57: $0\underflow_trigger[0:0]
+    16/57: $0\div_uf[0:0]
+    17/57: $0\mul_uf[0:0]
+    18/57: $0\inf_round_down_trigger[0:0]
+    19/57: $0\round_to_neg_inf[0:0]
+    20/57: $0\round_to_pos_inf[0:0]
+    21/57: $0\round_to_zero[0:0]
+    22/57: $0\round_nearest[0:0]
+    23/57: $0\out_neg_inf[0:0]
+    24/57: $0\out_pos_inf[0:0]
+    25/57: $0\out_inf_trigger[0:0]
+    26/57: $0\addsub_inf[0:0]
+    27/57: $0\addsub_inf_invalid[0:0]
+    28/57: $0\sub_inf[0:0]
+    29/57: $0\add_inf[0:0]
+    30/57: $0\div_inf[0:0]
+    31/57: $0\mul_inf[0:0]
+    32/57: $0\mul_0_by_inf[0:0]
+    33/57: $0\div_by_inf[0:0]
+    34/57: $0\div_inf_by_inf[0:0]
+    35/57: $0\div_0_by_0[0:0]
+    36/57: $0\div_by_0[0:0]
+    37/57: $0\a_NaN[0:0]
+    38/57: $0\SNaN_input[0:0]
+    39/57: $0\NaN_input[0:0]
+    40/57: $0\opb_inf[0:0]
+    41/57: $0\opa_inf[0:0]
+    42/57: $0\opb_neg_inf[0:0]
+    43/57: $0\opa_neg_inf[0:0]
+    44/57: $0\opb_pos_inf[0:0]
+    45/57: $0\opa_pos_inf[0:0]
+    46/57: $0\opb_SNaN[0:0]
+    47/57: $0\opa_SNaN[0:0]
+    48/57: $0\opb_QNaN[0:0]
+    49/57: $0\opa_QNaN[0:0]
+    50/57: $0\divide[0:0]
+    51/57: $0\multiply[0:0]
+    52/57: $0\add[0:0]
+    53/57: $0\input_et_zero[0:0]
+    54/57: $0\opb_et_zero[0:0]
+    55/57: $0\opa_et_zero[0:0]
+    56/57: $0\in_et_zero[0:0]
+    57/57: $0\subtract[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_exceptions.\out' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$479' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\ex_enable' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$480' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\underflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$481' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\overflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$482' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inexact' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$483' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\exception' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$484' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$485' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\subtract' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$486' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\in_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$487' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$488' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$489' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\input_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$490' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\add' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$491' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\multiply' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$492' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\divide' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$493' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$494' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$495' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$496' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$497' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$498' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$499' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$500' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$501' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$502' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$503' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$504' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\SNaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$505' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\a_NaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$506' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$507' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_0_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$508' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_inf_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$509' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$510' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_0_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$511' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$512' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$513' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\add_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$514' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\sub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$515' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\addsub_inf_invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$516' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\addsub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$517' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_inf_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$518' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$519' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$520' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_nearest' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$521' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$522' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$523' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$524' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inf_round_down_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$525' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$526' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$527' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\underflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$528' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\invalid_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$529' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\overflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$530' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inexact_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$531' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\except_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$532' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\enable_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$533' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_out_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$534' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\SNaN_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$535' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_output_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$536' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_output' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$537' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inf_round_down' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$538' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$539' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$540' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_1' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$541' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_2' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$542' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+Found and cleaned up 2 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+Cleaned up 4 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: d88362bea6, CPU: user 0.02s system 0.01s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 36% 2x read_verilog (0 sec), 26% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v' to AST representation.
+Generating RTLIL representation for module `\fpu_exceptions'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1 in module fpu_exceptions.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+     1/64: $0\out_2[63:0]
+     2/64: $0\out_1[63:0]
+     3/64: $0\out_0[63:0]
+     4/64: $0\out_inf[62:0]
+     5/64: $0\inf_round_down[62:0]
+     6/64: $0\NaN_output[62:0]
+     7/64: $0\NaN_output_0[62:0]
+     8/64: $0\SNaN_trigger[0:0]
+     9/64: $0\NaN_out_trigger[0:0]
+    10/64: $0\enable_trigger[0:0]
+    11/64: $0\except_trigger[0:0]
+    12/64: $0\inexact_trigger[0:0]
+    13/64: $0\overflow_trigger[0:0]
+    14/64: $0\invalid_trigger[0:0]
+    15/64: $0\underflow_trigger[0:0]
+    16/64: $0\div_uf[0:0]
+    17/64: $0\mul_uf[0:0]
+    18/64: $0\inf_round_down_trigger[0:0]
+    19/64: $0\round_to_neg_inf[0:0]
+    20/64: $0\round_to_pos_inf[0:0]
+    21/64: $0\round_to_zero[0:0]
+    22/64: $0\round_nearest[0:0]
+    23/64: $0\out_neg_inf[0:0]
+    24/64: $0\out_pos_inf[0:0]
+    25/64: $0\out_inf_trigger[0:0]
+    26/64: $0\addsub_inf[0:0]
+    27/64: $0\addsub_inf_invalid[0:0]
+    28/64: $0\sub_inf[0:0]
+    29/64: $0\add_inf[0:0]
+    30/64: $0\div_inf[0:0]
+    31/64: $0\mul_inf[0:0]
+    32/64: $0\mul_0_by_inf[0:0]
+    33/64: $0\div_by_inf[0:0]
+    34/64: $0\div_inf_by_inf[0:0]
+    35/64: $0\div_0_by_0[0:0]
+    36/64: $0\div_by_0[0:0]
+    37/64: $0\a_NaN[0:0]
+    38/64: $0\SNaN_input[0:0]
+    39/64: $0\NaN_input[0:0]
+    40/64: $0\opb_inf[0:0]
+    41/64: $0\opa_inf[0:0]
+    42/64: $0\opb_neg_inf[0:0]
+    43/64: $0\opa_neg_inf[0:0]
+    44/64: $0\opb_pos_inf[0:0]
+    45/64: $0\opa_pos_inf[0:0]
+    46/64: $0\opb_SNaN[0:0]
+    47/64: $0\opa_SNaN[0:0]
+    48/64: $0\opb_QNaN[0:0]
+    49/64: $0\opa_QNaN[0:0]
+    50/64: $0\divide[0:0]
+    51/64: $0\multiply[0:0]
+    52/64: $0\add[0:0]
+    53/64: $0\input_et_zero[0:0]
+    54/64: $0\opb_et_zero[0:0]
+    55/64: $0\opa_et_zero[0:0]
+    56/64: $0\in_et_zero[0:0]
+    57/64: $0\invalid[0:0]
+    58/64: $0\exception[0:0]
+    59/64: $0\inexact[0:0]
+    60/64: $0\overflow[0:0]
+    61/64: $0\underflow[0:0]
+    62/64: $0\ex_enable[0:0]
+    63/64: $0\out[63:0]
+    64/64: $0\subtract[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_exceptions.\subtract' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$326' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$329' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\ex_enable' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$332' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\underflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$335' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\overflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$338' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inexact' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$341' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\exception' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$344' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$347' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\in_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$350' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$353' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$356' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\input_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$359' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\add' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$362' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\multiply' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$365' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\divide' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$368' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$371' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$374' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$377' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$380' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$383' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$386' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$389' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$392' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$395' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$398' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$401' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\SNaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$404' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\a_NaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$407' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$410' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_0_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$413' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_inf_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$416' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$419' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_0_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$422' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$425' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$428' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\add_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$431' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\sub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$434' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\addsub_inf_invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$437' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\addsub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$440' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_inf_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$443' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$446' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$449' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_nearest' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$452' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$455' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$458' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$461' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inf_round_down_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$464' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$467' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$470' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\underflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$473' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\invalid_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$476' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\overflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$479' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inexact_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$482' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\except_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$485' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\enable_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$488' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_out_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$491' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\SNaN_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$494' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_output_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$497' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_output' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$500' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inf_round_down' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$503' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$506' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$509' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_1' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$512' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_2' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+  created $adff cell `$procdff$515' with positive edge clock and positive level reset.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 8 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$1'.
+Cleaned up 8 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 742597f4f6, CPU: user 0.03s system 0.01s, MEM: 41.16 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 34% 2x read_verilog (0 sec), 20% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v' to AST representation.
+Generating RTLIL representation for module `\fpu_exceptions'.
+Successfully finished Verilog frontend.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+Removed 0 unused modules.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158 in module fpu_exceptions.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1 in module fpu_exceptions.
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+     1/7: $0\invalid[0:0]
+     2/7: $0\exception[0:0]
+     3/7: $0\inexact[0:0]
+     4/7: $0\overflow[0:0]
+     5/7: $0\underflow[0:0]
+     6/7: $0\ex_enable[0:0]
+     7/7: $0\out[63:0]
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+     1/57: $0\out_2[63:0]
+     2/57: $0\out_1[63:0]
+     3/57: $0\out_0[63:0]
+     4/57: $0\out_inf[62:0]
+     5/57: $0\inf_round_down[62:0]
+     6/57: $0\NaN_output[62:0]
+     7/57: $0\NaN_output_0[62:0]
+     8/57: $0\SNaN_trigger[0:0]
+     9/57: $0\NaN_out_trigger[0:0]
+    10/57: $0\enable_trigger[0:0]
+    11/57: $0\except_trigger[0:0]
+    12/57: $0\inexact_trigger[0:0]
+    13/57: $0\overflow_trigger[0:0]
+    14/57: $0\invalid_trigger[0:0]
+    15/57: $0\underflow_trigger[0:0]
+    16/57: $0\div_uf[0:0]
+    17/57: $0\mul_uf[0:0]
+    18/57: $0\inf_round_down_trigger[0:0]
+    19/57: $0\round_to_neg_inf[0:0]
+    20/57: $0\round_to_pos_inf[0:0]
+    21/57: $0\round_to_zero[0:0]
+    22/57: $0\round_nearest[0:0]
+    23/57: $0\out_neg_inf[0:0]
+    24/57: $0\out_pos_inf[0:0]
+    25/57: $0\out_inf_trigger[0:0]
+    26/57: $0\addsub_inf[0:0]
+    27/57: $0\addsub_inf_invalid[0:0]
+    28/57: $0\sub_inf[0:0]
+    29/57: $0\add_inf[0:0]
+    30/57: $0\div_inf[0:0]
+    31/57: $0\mul_inf[0:0]
+    32/57: $0\mul_0_by_inf[0:0]
+    33/57: $0\div_by_inf[0:0]
+    34/57: $0\div_inf_by_inf[0:0]
+    35/57: $0\div_0_by_0[0:0]
+    36/57: $0\div_by_0[0:0]
+    37/57: $0\a_NaN[0:0]
+    38/57: $0\SNaN_input[0:0]
+    39/57: $0\NaN_input[0:0]
+    40/57: $0\opb_inf[0:0]
+    41/57: $0\opa_inf[0:0]
+    42/57: $0\opb_neg_inf[0:0]
+    43/57: $0\opa_neg_inf[0:0]
+    44/57: $0\opb_pos_inf[0:0]
+    45/57: $0\opa_pos_inf[0:0]
+    46/57: $0\opb_SNaN[0:0]
+    47/57: $0\opa_SNaN[0:0]
+    48/57: $0\opb_QNaN[0:0]
+    49/57: $0\opa_QNaN[0:0]
+    50/57: $0\divide[0:0]
+    51/57: $0\multiply[0:0]
+    52/57: $0\add[0:0]
+    53/57: $0\input_et_zero[0:0]
+    54/57: $0\opb_et_zero[0:0]
+    55/57: $0\opa_et_zero[0:0]
+    56/57: $0\in_et_zero[0:0]
+    57/57: $0\subtract[0:0]
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_exceptions.\out' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$479' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\ex_enable' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$480' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\underflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$481' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\overflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$482' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inexact' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$483' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\exception' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$484' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+  created $dff cell `$procdff$485' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\subtract' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$486' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\in_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$487' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$488' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$489' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\input_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$490' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\add' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$491' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\multiply' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$492' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\divide' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$493' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$494' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$495' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$496' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$497' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$498' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$499' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$500' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$501' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opa_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$502' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\opb_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$503' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$504' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\SNaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$505' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\a_NaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$506' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$507' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_0_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$508' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_inf_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$509' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$510' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_0_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$511' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$512' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$513' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\add_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$514' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\sub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$515' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\addsub_inf_invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$516' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\addsub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$517' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_inf_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$518' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$519' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$520' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_nearest' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$521' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$522' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$523' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\round_to_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$524' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inf_round_down_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$525' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\mul_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$526' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\div_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$527' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\underflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$528' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\invalid_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$529' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\overflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$530' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inexact_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$531' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\except_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$532' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\enable_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$533' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_out_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$534' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\SNaN_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$535' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_output_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$536' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\NaN_output' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$537' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\inf_round_down' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$538' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$539' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$540' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_1' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$541' with positive edge clock.
+Creating register for signal `\fpu_exceptions.\out_2' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+  created $dff cell `$procdff$542' with positive edge clock.
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:215$158'.
+Found and cleaned up 2 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:87$1'.
+Cleaned up 4 empty switches.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.3. Executing FLATTEN pass (flatten design).
+
+2.4. Executing FUTURE pass.
+
+2.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 9 unused cells and 201 unused wires.
+
+2.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_exceptions...
+Found and reported 0 problems.
+
+2.8. Executing OPT pass (performing simple optimizations).
+
+2.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 339 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Computing hashes of 316 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Computing hashes of 310 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 29 cells.
+
+2.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_exceptions..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_exceptions.
+Performed a total of 0 changes.
+
+2.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 310 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+2.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 0 unused cells and 29 unused wires.
+
+2.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_exceptions..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_exceptions.
+Performed a total of 0 changes.
+
+2.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 310 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+2.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+
+2.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+2.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:154$11 ($eq).
+Removed top 1 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:155$12 ($eq).
+Removed top 1 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:156$13 ($eq).
+Removed top 21 bits (of 32) from port B of cell fpu_exceptions.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:182$109 ($gt).
+Removed top 1 bits (of 2) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:186$115 ($eq).
+Removed top 12 bits (of 63) from mux cell fpu_exceptions.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:205$152 ($mux).
+Removed top 1 bits (of 64) from mux cell fpu_exceptions.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:209$155 ($mux).
+Removed top 12 bits (of 63) from wire fpu_exceptions.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_exceptions/fpu_exceptions.v:205$152_Y.
+
+2.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 0 unused cells and 1 unused wires.
+
+2.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.12. Executing OPT pass (performing simple optimizations).
+
+2.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+2.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 310 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+2.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+
+2.12.4. Finished fast OPT passes.
+
+2.13. Printing statistics.
+
+=== fpu_exceptions ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      323 wires
+     2473 wire bits
+       75 public wires
+      850 public wire bits
+       17 ports
+      284 port bits
+      310 cells
+       53   $and
+       62   $dff
+        8   $eq
+        1   $gt
+       19   $logic_not
+      130   $mux
+       31   $or
+        6   $reduce_or
+
+2.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_exceptions...
+Found and reported 0 problems.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v' to AST representation.
+Generating RTLIL representation for module `\fpu_exceptions'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \fpu_exceptions
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544 in module fpu_exceptions.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+     1/64: $0\input_et_zero[0:0]
+     2/64: $0\round_nearest[0:0]
+     3/64: $0\out_2[63:0]
+     4/64: $0\out_1[63:0]
+     5/64: $0\out_0[63:0]
+     6/64: $0\out_inf[62:0]
+     7/64: $0\inf_round_down[62:0]
+     8/64: $0\NaN_output[62:0]
+     9/64: $0\NaN_output_0[62:0]
+    10/64: $0\SNaN_trigger[0:0]
+    11/64: $0\NaN_out_trigger[0:0]
+    12/64: $0\enable_trigger[0:0]
+    13/64: $0\except_trigger[0:0]
+    14/64: $0\inexact_trigger[0:0]
+    15/64: $0\overflow_trigger[0:0]
+    16/64: $0\invalid_trigger[0:0]
+    17/64: $0\underflow_trigger[0:0]
+    18/64: $0\div_uf[0:0]
+    19/64: $0\mul_uf[0:0]
+    20/64: $0\inf_round_down_trigger[0:0]
+    21/64: $0\round_to_neg_inf[0:0]
+    22/64: $0\round_to_pos_inf[0:0]
+    23/64: $0\round_to_zero[0:0]
+    24/64: $0\out_neg_inf[0:0]
+    25/64: $0\out_pos_inf[0:0]
+    26/64: $0\out_inf_trigger[0:0]
+    27/64: $0\addsub_inf[0:0]
+    28/64: $0\addsub_inf_invalid[0:0]
+    29/64: $0\sub_inf[0:0]
+    30/64: $0\add_inf[0:0]
+    31/64: $0\div_inf[0:0]
+    32/64: $0\mul_inf[0:0]
+    33/64: $0\mul_0_by_inf[0:0]
+    34/64: $0\div_by_inf[0:0]
+    35/64: $0\div_inf_by_inf[0:0]
+    36/64: $0\div_0_by_0[0:0]
+    37/64: $0\div_by_0[0:0]
+    38/64: $0\a_NaN[0:0]
+    39/64: $0\SNaN_input[0:0]
+    40/64: $0\NaN_input[0:0]
+    41/64: $0\opb_inf[0:0]
+    42/64: $0\opa_inf[0:0]
+    43/64: $0\opb_neg_inf[0:0]
+    44/64: $0\opa_neg_inf[0:0]
+    45/64: $0\opb_pos_inf[0:0]
+    46/64: $0\opa_pos_inf[0:0]
+    47/64: $0\opb_SNaN[0:0]
+    48/64: $0\opa_SNaN[0:0]
+    49/64: $0\opb_QNaN[0:0]
+    50/64: $0\opa_QNaN[0:0]
+    51/64: $0\divide[0:0]
+    52/64: $0\multiply[0:0]
+    53/64: $0\add[0:0]
+    54/64: $0\opb_et_zero[0:0]
+    55/64: $0\opa_et_zero[0:0]
+    56/64: $0\in_et_zero[0:0]
+    57/64: $0\invalid[0:0]
+    58/64: $0\exception[0:0]
+    59/64: $0\inexact[0:0]
+    60/64: $0\overflow[0:0]
+    61/64: $0\underflow[0:0]
+    62/64: $0\ex_enable[0:0]
+    63/64: $0\out[63:0]
+    64/64: $0\subtract[0:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_exceptions.\subtract' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$869' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$872' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\ex_enable' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$875' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\underflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$878' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\overflow' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$881' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inexact' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$884' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\exception' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$887' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$890' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\in_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$893' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$896' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$899' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\add' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$902' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\multiply' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$905' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\divide' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$908' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$911' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_QNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$914' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$917' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_SNaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$920' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$923' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$926' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$929' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$932' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opa_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$935' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\opb_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$938' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$941' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\SNaN_input' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$944' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\a_NaN' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$947' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$950' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_0_by_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$953' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_inf_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$956' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$959' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_0_by_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$962' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$965' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$968' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\add_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$971' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\sub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$974' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\addsub_inf_invalid' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$977' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\addsub_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$980' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_inf_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$983' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$986' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$989' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$992' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_pos_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$995' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_to_neg_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$998' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inf_round_down_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1001' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\mul_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1004' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\div_uf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1007' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\underflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1010' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\invalid_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1013' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\overflow_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1016' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inexact_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1019' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\except_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1022' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\enable_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1025' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_out_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1028' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\SNaN_trigger' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1031' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_output_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1034' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\NaN_output' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1037' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\inf_round_down' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1040' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_inf' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1043' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_0' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1046' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_1' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1049' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\out_2' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1052' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\round_nearest' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1055' with positive edge clock and positive level reset.
+Creating register for signal `\fpu_exceptions.\input_et_zero' using process `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+  created $adff cell `$procdff$1058' with positive edge clock and positive level reset.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 8 empty switches in `\fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+Removing empty process `fpu_exceptions.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:83$544'.
+Cleaned up 8 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 32 unused cells and 234 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_exceptions...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 270 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Computing hashes of 240 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Computing hashes of 229 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Computing hashes of 227 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 43 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_exceptions..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_exceptions.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 227 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 0 unused cells and 43 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_exceptions..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_exceptions.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 227 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:158$552 ($eq).
+Removed top 1 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:157$551 ($eq).
+Removed top 2 bits (of 3) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:156$550 ($eq).
+Removed top 1 bits (of 2) from port B of cell fpu_exceptions.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/deepseek/fpu_exceptions/fpu_exceptions_t2.v:189$659 ($eq).
+Removed top 1 bits (of 64) from mux cell fpu_exceptions.$procmux$724 ($mux).
+Removed top 12 bits (of 63) from mux cell fpu_exceptions.$procmux$747 ($mux).
+Removed top 12 bits (of 63) from mux cell fpu_exceptions.$procmux$751 ($mux).
+Removed top 12 bits (of 63) from mux cell fpu_exceptions.$procmux$753 ($mux).
+Removed top 12 bits (of 63) from wire fpu_exceptions.$procmux$747_Y.
+Removed top 12 bits (of 63) from wire fpu_exceptions.$procmux$751_Y.
+Removed top 12 bits (of 63) from wire fpu_exceptions.$procmux$753_Y.
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+Removed 0 unused cells and 3 unused wires.
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_exceptions.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_exceptions'.
+Computing hashes of 227 cells of `\fpu_exceptions'.
+Finding duplicate cells in `\fpu_exceptions'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_exceptions..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== fpu_exceptions ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      240 wires
+     2138 wire bits
+       71 public wires
+      846 public wire bits
+       17 ports
+      284 port bits
+      227 cells
+       58   $adff
+        8   $eq
+        1   $gt
+       43   $logic_and
+       18   $logic_not
+       28   $logic_or
+       68   $mux
+        2   $reduce_bool
+        1   $reduce_or
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_exceptions...
+Found and reported 0 problems.
+
+5. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_fpu_exceptions" and gate cell "gate_fpu_exceptions".
+
+5.1. Executing FLATTEN pass (flatten design).
+
+5.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_fpu_exceptions'.
+Removing unused module `\gold_fpu_exceptions'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.3. Executing FUTURE pass.
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 549 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 533 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 16 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 533 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 16 unused wires.
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 533 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 12 bits (of 63) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1059.
+Removed top 12 bits (of 63) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1060.
+Removed top 12 bits (of 63) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1061.
+Removed top 12 bits (of 63) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$543.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 4 unused wires.
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 533 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      580 wires
+     4958 wire bits
+      171 public wires
+     2051 public wire bits
+       11 ports
+      215 port bits
+      533 cells
+       58   $adff
+       53   $and
+        1   $assert
+       62   $dff
+        8   $eq
+        7   $eqx
+        1   $gt
+       43   $logic_and
+       31   $logic_not
+       28   $logic_or
+      198   $mux
+        1   $not
+       31   $or
+        1   $reduce_and
+        2   $reduce_bool
+        6   $reduce_or
+        2   $scopeinfo
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+7. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$1001 ($adff): ARST=\in_rst, D=$flatten\gate.$0\inf_round_down_trigger[0:0], Q=\gate.inf_round_down_trigger
+Replacing miter.$flatten\gate.$procdff$1004 ($adff): ARST=\in_rst, D=$flatten\gate.$0\mul_uf[0:0], Q=\gate.mul_uf
+Replacing miter.$flatten\gate.$procdff$1007 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_uf[0:0], Q=\gate.div_uf
+Replacing miter.$flatten\gate.$procdff$1010 ($adff): ARST=\in_rst, D=$flatten\gate.$0\underflow_trigger[0:0], Q=\gate.underflow_trigger
+Replacing miter.$flatten\gate.$procdff$1013 ($adff): ARST=\in_rst, D=$flatten\gate.$0\invalid_trigger[0:0], Q=\gate.invalid_trigger
+Replacing miter.$flatten\gate.$procdff$1016 ($adff): ARST=\in_rst, D=$flatten\gate.$0\overflow_trigger[0:0], Q=\gate.overflow_trigger
+Replacing miter.$flatten\gate.$procdff$1019 ($adff): ARST=\in_rst, D=$flatten\gate.$0\inexact_trigger[0:0], Q=\gate.inexact_trigger
+Replacing miter.$flatten\gate.$procdff$1022 ($adff): ARST=\in_rst, D=$flatten\gate.$0\except_trigger[0:0], Q=\gate.except_trigger
+Replacing miter.$flatten\gate.$procdff$1025 ($adff): ARST=\in_rst, D=$flatten\gate.$0\enable_trigger[0:0], Q=\gate.enable_trigger
+Replacing miter.$flatten\gate.$procdff$1028 ($adff): ARST=\in_rst, D=$flatten\gate.$0\NaN_out_trigger[0:0], Q=\gate.NaN_out_trigger
+Replacing miter.$flatten\gate.$procdff$1031 ($adff): ARST=\in_rst, D=$flatten\gate.$0\SNaN_trigger[0:0], Q=\gate.SNaN_trigger
+Replacing miter.$flatten\gate.$procdff$1034 ($adff): ARST=\in_rst, D=$flatten\gate.$0\NaN_output_0[62:0], Q=\gate.NaN_output_0
+Replacing miter.$flatten\gate.$procdff$1037 ($adff): ARST=\in_rst, D=$flatten\gate.$0\NaN_output[62:0], Q=\gate.NaN_output
+Replacing miter.$flatten\gate.$procdff$1040 ($adff): ARST=\in_rst, D=$flatten\gate.$0\inf_round_down[62:0], Q=\gate.inf_round_down
+Replacing miter.$flatten\gate.$procdff$1043 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_inf[62:0], Q=\gate.out_inf
+Replacing miter.$flatten\gate.$procdff$1046 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_0[63:0], Q=\gate.out_0
+Replacing miter.$flatten\gate.$procdff$1049 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_1[63:0], Q=\gate.out_1
+Replacing miter.$flatten\gate.$procdff$1052 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_2[63:0], Q=\gate.out_2
+Replacing miter.$flatten\gate.$procdff$869 ($adff): ARST=\in_rst, D=$flatten\gate.$0\subtract[0:0], Q=\gate.subtract
+Replacing miter.$flatten\gate.$procdff$872 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out[63:0], Q=\gate.out
+Replacing miter.$flatten\gate.$procdff$875 ($adff): ARST=\in_rst, D=$flatten\gate.$0\ex_enable[0:0], Q=\gate.ex_enable
+Replacing miter.$flatten\gate.$procdff$878 ($adff): ARST=\in_rst, D=$flatten\gate.$0\underflow[0:0], Q=\gate.underflow
+Replacing miter.$flatten\gate.$procdff$881 ($adff): ARST=\in_rst, D=$flatten\gate.$0\overflow[0:0], Q=\gate.overflow
+Replacing miter.$flatten\gate.$procdff$884 ($adff): ARST=\in_rst, D=$flatten\gate.$0\inexact[0:0], Q=\gate.inexact
+Replacing miter.$flatten\gate.$procdff$887 ($adff): ARST=\in_rst, D=$flatten\gate.$0\exception[0:0], Q=\gate.exception
+Replacing miter.$flatten\gate.$procdff$890 ($adff): ARST=\in_rst, D=$flatten\gate.$0\invalid[0:0], Q=\gate.invalid
+Replacing miter.$flatten\gate.$procdff$893 ($adff): ARST=\in_rst, D=$flatten\gate.$0\in_et_zero[0:0], Q=\gate.in_et_zero
+Replacing miter.$flatten\gate.$procdff$896 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opa_et_zero[0:0], Q=\gate.opa_et_zero
+Replacing miter.$flatten\gate.$procdff$899 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opb_et_zero[0:0], Q=\gate.opb_et_zero
+Replacing miter.$flatten\gate.$procdff$902 ($adff): ARST=\in_rst, D=$flatten\gate.$0\add[0:0], Q=\gate.add
+Replacing miter.$flatten\gate.$procdff$905 ($adff): ARST=\in_rst, D=$flatten\gate.$0\multiply[0:0], Q=\gate.multiply
+Replacing miter.$flatten\gate.$procdff$908 ($adff): ARST=\in_rst, D=$flatten\gate.$0\divide[0:0], Q=\gate.divide
+Replacing miter.$flatten\gate.$procdff$923 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opa_pos_inf[0:0], Q=\gate.opa_pos_inf
+Replacing miter.$flatten\gate.$procdff$926 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opb_pos_inf[0:0], Q=\gate.opb_pos_inf
+Replacing miter.$flatten\gate.$procdff$929 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opa_neg_inf[0:0], Q=\gate.opa_neg_inf
+Replacing miter.$flatten\gate.$procdff$932 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opb_neg_inf[0:0], Q=\gate.opb_neg_inf
+Replacing miter.$flatten\gate.$procdff$935 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opa_inf[0:0], Q=\gate.opa_inf
+Replacing miter.$flatten\gate.$procdff$938 ($adff): ARST=\in_rst, D=$flatten\gate.$0\opb_inf[0:0], Q=\gate.opb_inf
+Replacing miter.$flatten\gate.$procdff$941 ($adff): ARST=\in_rst, D=$flatten\gate.$0\NaN_input[0:0], Q=\gate.NaN_input
+Replacing miter.$flatten\gate.$procdff$944 ($adff): ARST=\in_rst, D=$flatten\gate.$0\SNaN_input[0:0], Q=\gate.SNaN_input
+Replacing miter.$flatten\gate.$procdff$947 ($adff): ARST=\in_rst, D=$flatten\gate.$0\a_NaN[0:0], Q=\gate.a_NaN
+Replacing miter.$flatten\gate.$procdff$950 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_by_0[0:0], Q=\gate.div_by_0
+Replacing miter.$flatten\gate.$procdff$953 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_0_by_0[0:0], Q=\gate.div_0_by_0
+Replacing miter.$flatten\gate.$procdff$956 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_inf_by_inf[0:0], Q=\gate.div_inf_by_inf
+Replacing miter.$flatten\gate.$procdff$959 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_by_inf[0:0], Q=\gate.div_by_inf
+Replacing miter.$flatten\gate.$procdff$962 ($adff): ARST=\in_rst, D=$flatten\gate.$0\mul_0_by_inf[0:0], Q=\gate.mul_0_by_inf
+Replacing miter.$flatten\gate.$procdff$965 ($adff): ARST=\in_rst, D=$flatten\gate.$0\mul_inf[0:0], Q=\gate.mul_inf
+Replacing miter.$flatten\gate.$procdff$968 ($adff): ARST=\in_rst, D=$flatten\gate.$0\div_inf[0:0], Q=\gate.div_inf
+Replacing miter.$flatten\gate.$procdff$971 ($adff): ARST=\in_rst, D=$flatten\gate.$0\add_inf[0:0], Q=\gate.add_inf
+Replacing miter.$flatten\gate.$procdff$974 ($adff): ARST=\in_rst, D=$flatten\gate.$0\sub_inf[0:0], Q=\gate.sub_inf
+Replacing miter.$flatten\gate.$procdff$977 ($adff): ARST=\in_rst, D=$flatten\gate.$0\addsub_inf_invalid[0:0], Q=\gate.addsub_inf_invalid
+Replacing miter.$flatten\gate.$procdff$980 ($adff): ARST=\in_rst, D=$flatten\gate.$0\addsub_inf[0:0], Q=\gate.addsub_inf
+Replacing miter.$flatten\gate.$procdff$983 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_inf_trigger[0:0], Q=\gate.out_inf_trigger
+Replacing miter.$flatten\gate.$procdff$986 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_pos_inf[0:0], Q=\gate.out_pos_inf
+Replacing miter.$flatten\gate.$procdff$989 ($adff): ARST=\in_rst, D=$flatten\gate.$0\out_neg_inf[0:0], Q=\gate.out_neg_inf
+Replacing miter.$flatten\gate.$procdff$992 ($adff): ARST=\in_rst, D=$flatten\gate.$0\round_to_zero[0:0], Q=\gate.round_to_zero
+Replacing miter.$flatten\gate.$procdff$995 ($adff): ARST=\in_rst, D=$flatten\gate.$0\round_to_pos_inf[0:0], Q=\gate.round_to_pos_inf
+Replacing miter.$flatten\gate.$procdff$998 ($adff): ARST=\in_rst, D=$flatten\gate.$0\round_to_neg_inf[0:0], Q=\gate.round_to_neg_inf
+
+8. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Final init constraint equation: { \gold.out_2 \gold.out_1 \gold.out_0 \gold.out_inf \gold.inf_round_down \gold.NaN_output \gold.NaN_output_0 \gold.SNaN_trigger \gold.NaN_out_trigger \gold.enable_trigger \gold.except_trigger \gold.inexact_trigger \gold.overflow_trigger \gold.invalid_trigger \gold.underflow_trigger \gold.div_uf \gold.mul_uf \gold.inf_round_down_trigger \gold.round_to_neg_inf \gold.round_to_pos_inf \gold.round_to_zero \gold.out_neg_inf \gold.out_pos_inf \gold.out_inf_trigger \gold.addsub_inf \gold.addsub_inf_invalid \gold.sub_inf \gold.add_inf \gold.div_inf \gold.mul_inf \gold.mul_0_by_inf \gold.div_by_inf \gold.div_inf_by_inf \gold.div_0_by_0 \gold.div_by_0 \gold.a_NaN \gold.SNaN_input \gold.NaN_input \gold.opb_inf \gold.opa_inf \gold.opb_neg_inf \gold.opa_neg_inf \gold.opb_pos_inf \gold.opa_pos_inf \gold.opb_SNaN \gold.opa_SNaN \gold.opb_QNaN \gold.opa_QNaN \gold.divide \gold.multiply \gold.add \gold.opb_et_zero \gold.opa_et_zero \gold.in_et_zero \gold.subtract \gold.invalid \gold.exception \gold.inexact \gold.overflow \gold.underflow \gold.ex_enable \gold.out $auto$async2sync.cc:234:execute$1200 $auto$async2sync.cc:234:execute$1198 $auto$async2sync.cc:234:execute$1196 $auto$async2sync.cc:234:execute$1194 $auto$async2sync.cc:234:execute$1192 $auto$async2sync.cc:234:execute$1190 $auto$async2sync.cc:234:execute$1188 $auto$async2sync.cc:234:execute$1186 $auto$async2sync.cc:234:execute$1184 $auto$async2sync.cc:234:execute$1182 $auto$async2sync.cc:234:execute$1180 $auto$async2sync.cc:234:execute$1178 $auto$async2sync.cc:234:execute$1176 $auto$async2sync.cc:234:execute$1174 $auto$async2sync.cc:234:execute$1172 $auto$async2sync.cc:234:execute$1170 $auto$async2sync.cc:234:execute$1168 $auto$async2sync.cc:234:execute$1166 $auto$async2sync.cc:234:execute$1164 $auto$async2sync.cc:234:execute$1162 $auto$async2sync.cc:234:execute$1160 $auto$async2sync.cc:234:execute$1158 $auto$async2sync.cc:234:execute$1156 $auto$async2sync.cc:234:execute$1154 $auto$async2sync.cc:234:execute$1152 $auto$async2sync.cc:234:execute$1150 $auto$async2sync.cc:234:execute$1148 $auto$async2sync.cc:234:execute$1146 $auto$async2sync.cc:234:execute$1144 $auto$async2sync.cc:234:execute$1142 $auto$async2sync.cc:234:execute$1140 $auto$async2sync.cc:234:execute$1138 $auto$async2sync.cc:234:execute$1136 $auto$async2sync.cc:234:execute$1134 $auto$async2sync.cc:234:execute$1132 $auto$async2sync.cc:234:execute$1130 $auto$async2sync.cc:234:execute$1128 $auto$async2sync.cc:234:execute$1126 $auto$async2sync.cc:234:execute$1124 $auto$async2sync.cc:234:execute$1122 $auto$async2sync.cc:234:execute$1120 $auto$async2sync.cc:234:execute$1118 $auto$async2sync.cc:234:execute$1116 $auto$async2sync.cc:234:execute$1114 $auto$async2sync.cc:234:execute$1112 $auto$async2sync.cc:234:execute$1110 $auto$async2sync.cc:234:execute$1108 $auto$async2sync.cc:234:execute$1106 $auto$async2sync.cc:234:execute$1104 $auto$async2sync.cc:234:execute$1102 $auto$async2sync.cc:234:execute$1100 $auto$async2sync.cc:234:execute$1098 $auto$async2sync.cc:234:execute$1096 $auto$async2sync.cc:234:execute$1094 $auto$async2sync.cc:234:execute$1092 $auto$async2sync.cc:234:execute$1090 $auto$async2sync.cc:234:execute$1088 $auto$async2sync.cc:234:execute$1086 } = 1120'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 649 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1077 when 1'1.
+
+Solving problem with 240889 variables and 639038 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                       Dec       Hex                                                                 Bin
+  ---- ----------------------------------------- ----------- --------- -------------------------------------------------------------------
+  init $auto$async2sync.cc:234:execute$1086                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1088                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1090                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1092                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1094                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1096                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1098                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1100                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1102                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1104                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1106                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1108               --        --     000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1110               --        --     000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1112               --        --     000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1114               --        --     000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1116               --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1118               --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1120               --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1122                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1124               --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init $auto$async2sync.cc:234:execute$1126                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1128                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1130                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1132                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1134                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1136                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1138                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1140                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1142                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1144                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1146                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1148                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1150                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1152                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1154                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1156                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1158                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1160                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1162                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1164                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1166                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1168                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1170                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1172                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1174                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1176                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1178                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1180                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1182                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1184                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1186                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1188                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1190                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1192                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1194                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1196                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1198                0         0                                                                   0
+  init $auto$async2sync.cc:234:execute$1200                0         0                                                                   0
+  init \gold.NaN_input                                     0         0                                                                   0
+  init \gold.NaN_out_trigger                               0         0                                                                   0
+  init \gold.NaN_output                                   --        --     000000000000000000000000000000000000000000000000000000000000000
+  init \gold.NaN_output_0                                 --        --     000000000000000000000000000000000000000000000000000000000000000
+  init \gold.SNaN_input                                    0         0                                                                   0
+  init \gold.SNaN_trigger                                  0         0                                                                   0
+  init \gold.a_NaN                                         0         0                                                                   0
+  init \gold.add                                           0         0                                                                   0
+  init \gold.add_inf                                       0         0                                                                   0
+  init \gold.addsub_inf                                    0         0                                                                   0
+  init \gold.addsub_inf_invalid                            0         0                                                                   0
+  init \gold.div_0_by_0                                    0         0                                                                   0
+  init \gold.div_by_0                                      0         0                                                                   0
+  init \gold.div_by_inf                                    0         0                                                                   0
+  init \gold.div_inf                                       0         0                                                                   0
+  init \gold.div_inf_by_inf                                0         0                                                                   0
+  init \gold.div_uf                                        0         0                                                                   0
+  init \gold.divide                                        0         0                                                                   0
+  init \gold.enable_trigger                                0         0                                                                   0
+  init \gold.ex_enable                                     0         0                                                                   0
+  init \gold.except_trigger                                0         0                                                                   0
+  init \gold.exception                                     0         0                                                                   0
+  init \gold.in_et_zero                                    0         0                                                                   0
+  init \gold.inexact                                       0         0                                                                   0
+  init \gold.inexact_trigger                               0         0                                                                   0
+  init \gold.inf_round_down                               --        --     000000000000000000000000000000000000000000000000000000000000000
+  init \gold.inf_round_down_trigger                        0         0                                                                   0
+  init \gold.invalid                                       0         0                                                                   0
+  init \gold.invalid_trigger                               0         0                                                                   0
+  init \gold.mul_0_by_inf                                  0         0                                                                   0
+  init \gold.mul_inf                                       0         0                                                                   0
+  init \gold.mul_uf                                        0         0                                                                   0
+  init \gold.multiply                                      0         0                                                                   0
+  init \gold.opa_QNaN                                      0         0                                                                   0
+  init \gold.opa_SNaN                                      0         0                                                                   0
+  init \gold.opa_et_zero                                   0         0                                                                   0
+  init \gold.opa_inf                                       0         0                                                                   0
+  init \gold.opa_neg_inf                                   0         0                                                                   0
+  init \gold.opa_pos_inf                                   0         0                                                                   0
+  init \gold.opb_QNaN                                      0         0                                                                   0
+  init \gold.opb_SNaN                                      0         0                                                                   0
+  init \gold.opb_et_zero                                   0         0                                                                   0
+  init \gold.opb_inf                                       0         0                                                                   0
+  init \gold.opb_neg_inf                                   0         0                                                                   0
+  init \gold.opb_pos_inf                                   0         0                                                                   0
+  init \gold.out                                          --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.out_0                                        --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.out_1                                        --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.out_2                                        --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.out_inf                                      --        --     000000000000000000000000000000000000000000000000000000000000000
+  init \gold.out_inf_trigger                               0         0                                                                   0
+  init \gold.out_neg_inf                                   0         0                                                                   0
+  init \gold.out_pos_inf                                   0         0                                                                   0
+  init \gold.overflow                                      0         0                                                                   0
+  init \gold.overflow_trigger                              0         0                                                                   0
+  init \gold.round_to_neg_inf                              0         0                                                                   0
+  init \gold.round_to_pos_inf                              0         0                                                                   0
+  init \gold.round_to_zero                                 0         0                                                                   0
+  init \gold.sub_inf                                       0         0                                                                   0
+  init \gold.subtract                                      0         0                                                                   0
+  init \gold.underflow                                     0         0                                                                   0
+  init \gold.underflow_trigger                             0         0                                                                   0
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

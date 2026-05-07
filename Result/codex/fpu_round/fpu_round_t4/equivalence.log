@@ -1,0 +1,896 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16 in module fpu_round.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+     1/6: $0\round_out[63:0]
+     2/6: $0\exponent_final[11:0]
+     3/6: $0\sum_final[55:0]
+     4/6: $0\exponent_round[11:0]
+     5/6: $0\sum_round_2[55:0]
+     6/6: $0\sum_round[55:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$43' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$44' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$45' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round_2' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$46' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$47' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$48' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Cleaned up 1 empty switch.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: bfe99ab8ab, CPU: user 0.01s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 35% 2x read_verilog (0 sec), 19% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25 in module fpu_round.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+     1/6: $0\round_out[63:0]
+     2/6: $0\exponent_final[11:0]
+     3/6: $0\sum_final[55:0]
+     4/6: $0\exponent_round[11:0]
+     5/6: $0\sum_round_2[55:0]
+     6/6: $0\sum_round[55:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$44' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$45' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$46' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round_2' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$47' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$48' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+  created $dff cell `$procdff$49' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$25'.
+Cleaned up 1 empty switch.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: fba9d864bf, CPU: user 0.01s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 37% 2x read_verilog (0 sec), 19% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16 in module fpu_round.
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+     1/6: $0\round_out[63:0]
+     2/6: $0\exponent_final[11:0]
+     3/6: $0\sum_final[55:0]
+     4/6: $0\exponent_round[11:0]
+     5/6: $0\sum_round_2[55:0]
+     6/6: $0\sum_round[55:0]
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$43' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$44' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$45' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round_2' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$46' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$47' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+  created $dff cell `$procdff$48' with positive edge clock.
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:38$16'.
+Cleaned up 1 empty switch.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.3. Executing FLATTEN pass (flatten design).
+
+2.4. Executing FUTURE pass.
+
+2.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 1 unused cells and 23 unused wires.
+
+2.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_round...
+Found and reported 0 problems.
+
+2.8. Executing OPT pass (performing simple optimizations).
+
+2.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 32 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Computing hashes of 31 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 1 cells.
+
+2.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_round..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port A of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:50$19: \sum_round -> { 1'0 \sum_round [54:0] }
+      Replacing known input bits on port B of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:50$19: { 1'0 \sum_round [55:1] } -> { 2'01 \sum_round [54:1] }
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_round.
+Performed a total of 0 changes.
+
+2.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 31 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+2.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 0 unused cells and 1 unused wires.
+
+2.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_round..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_round.
+Performed a total of 0 changes.
+
+2.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 31 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+2.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+
+2.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+2.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 53 bits (of 56) from port A of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:49$17 ($add).
+Removed top 1 bits (of 56) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:50$19 ($mux).
+Removed top 31 bits (of 32) from port B of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$20 ($add).
+Removed top 19 bits (of 32) from port Y of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$20 ($add).
+Removed top 20 bits (of 32) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$22 ($mux).
+Removed top 1 bits (of 56) from mux cell fpu_round.$procmux$38 ($mux).
+Removed top 2 bits (of 56) from FF cell fpu_round.$procdff$48 ($dff).
+Removed top 1 bits (of 13) from port Y of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$20 ($add).
+Removed top 2 bits (of 56) from mux cell fpu_round.$procmux$32 ($mux).
+Removed top 2 bits (of 56) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:52$23 ($mux).
+Removed top 2 bits (of 56) from FF cell fpu_round.$procdff$46 ($dff).
+Removed top 1 bits (of 55) from mux cell fpu_round.$procmux$38 ($mux).
+Removed top 1 bits (of 55) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:50$19 ($mux).
+Removed top 2 bits (of 56) from wire fpu_round.$0\sum_final[55:0].
+Removed top 2 bits (of 56) from wire fpu_round.$0\sum_round_2[55:0].
+Removed top 20 bits (of 32) from wire fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$20_Y.
+Removed top 2 bits (of 56) from wire fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:50$19_Y.
+Removed top 20 bits (of 32) from wire fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:51$22_Y.
+Removed top 2 bits (of 56) from wire fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_round/fpu_round.v:52$23_Y.
+Removed top 2 bits (of 56) from wire fpu_round.sum_final.
+Removed top 2 bits (of 56) from wire fpu_round.sum_round_2.
+
+2.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 0 unused cells and 8 unused wires.
+
+2.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.12. Executing OPT pass (performing simple optimizations).
+
+2.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+2.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 31 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+2.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+
+2.12.4. Finished fast OPT passes.
+
+2.13. Printing statistics.
+
+=== fpu_round ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       40 wires
+      872 wire bits
+       22 public wires
+      390 public wire bits
+        9 ports
+      150 port bits
+       31 cells
+        2   $add
+        6   $and
+        6   $dff
+        2   $eq
+        2   $logic_not
+       10   $mux
+        2   $or
+        1   $reduce_or
+
+2.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_round...
+Found and reported 0 problems.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v' to AST representation.
+Generating RTLIL representation for module `\fpu_round'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \fpu_round
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \fpu_round
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81 in module fpu_round.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 0 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+     1/6: $0\round_out[63:0]
+     2/6: $0\exponent_final[11:0]
+     3/6: $0\sum_final[55:0]
+     4/6: $0\exponent_round[11:0]
+     5/6: $0\sum_round_2[55:0]
+     6/6: $0\sum_round[55:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_round.\round_out' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$100' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$101' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$102' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_round_2' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$103' with positive edge clock.
+Creating register for signal `\fpu_round.\exponent_round' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$104' with positive edge clock.
+Creating register for signal `\fpu_round.\sum_final' using process `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+  created $dff cell `$procdff$105' with positive edge clock.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+Removing empty process `fpu_round.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:38$81'.
+Cleaned up 1 empty switch.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 13 unused cells and 38 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_round...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 23 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Computing hashes of 22 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 1 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_round..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port A of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:33$74: \sum_round_next -> { 1'0 \sum_round_next [54:0] }
+      Replacing known input bits on port B of cell $ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:33$74: { 1'0 \sum_round_next [55:1] } -> { 2'01 \sum_round_next [54:1] }
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_round.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 22 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 0 unused cells and 1 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_round..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_round.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 22 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 56) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:33$74 ($mux).
+Removed top 53 bits (of 56) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:31$72 ($mux).
+Removed top 11 bits (of 12) from mux cell fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:34$75 ($mux).
+Removed top 11 bits (of 12) from port B of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:34$76 ($add).
+Removed top 53 bits (of 56) from port B of cell fpu_round.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:31$73 ($add).
+Removed top 53 bits (of 56) from wire fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:31$72_Y.
+Removed top 11 bits (of 12) from wire fpu_round.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_round/fpu_round_t4.v:34$75_Y.
+Removed top 2 bits (of 56) from wire fpu_round.sum_final_next.
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+Removed 0 unused cells and 3 unused wires.
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_round.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_round'.
+Computing hashes of 22 cells of `\fpu_round'.
+Finding duplicate cells in `\fpu_round'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_round..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== fpu_round ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       32 wires
+      550 wire bits
+       22 public wires
+      400 public wire bits
+        9 ports
+      150 port bits
+       22 cells
+        2   $add
+        6   $and
+        2   $dff
+        2   $eq
+        2   $logic_not
+        5   $mux
+        2   $or
+        1   $reduce_or
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_round...
+Found and reported 0 problems.
+
+5. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_fpu_round" and gate cell "gate_fpu_round".
+
+5.1. Executing FLATTEN pass (flatten design).
+
+5.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_fpu_round'.
+Removing unused module `\gold_fpu_round'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.3. Executing FUTURE pass.
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 60 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 55 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 52 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 49 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 48 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 47 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 13 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 47 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 6 unused wires.
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 47 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 53 bits (of 56) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$106.
+Removed top 11 bits (of 12) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$107.
+Removed top 2 bits (of 56) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$52.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$53.
+Removed top 6 bits (of 56) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$54.
+Removed top 2 bits (of 12) from wire miter.gold_exponent_final.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 6 unused wires.
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 47 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       81 wires
+     1644 wire bits
+       56 public wires
+     1015 public wire bits
+        8 ports
+       75 port bits
+       47 cells
+        4   $add
+        6   $and
+        1   $assert
+        8   $dff
+        2   $eq
+        2   $eqx
+        2   $logic_not
+       15   $mux
+        1   $not
+        2   $or
+        1   $reduce_and
+        1   $reduce_or
+        2   $scopeinfo
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+7. Executing ASYNC2SYNC pass.
+
+8. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Final init constraint equation: { \gold.sum_final \gold.exponent_round \gold.sum_round_2 \gold.sum_round \gold.exponent_final \gold.round_out \gate.exponent_final \gate.round_out } = 328'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 47 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$114 when 1'1.
+
+Solving problem with 49691 variables and 131948 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                       Dec       Hex                                                                 Bin
+  ---- ------------------------- ----------- --------- -------------------------------------------------------------------
+  init \gate.exponent_final                0         0                                                        000000000000
+  init \gate.round_out                    --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.exponent_final                0         0                                                        000000000000
+  init \gold.exponent_round                0         0                                                        000000000000
+  init \gold.round_out                    --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \gold.sum_final                    --        --              000000000000000000000000000000000000000000000000000000
+  init \gold.sum_round                    --        --            00000000000000000000000000000000000000000000000000000000
+  init \gold.sum_round_2                  --        --              000000000000000000000000000000000000000000000000000000
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

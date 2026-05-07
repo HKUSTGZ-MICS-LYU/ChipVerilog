@@ -1,0 +1,114 @@
+1. Functional Requirements
+1.1 General result generation
+The module shall decode alu_op and generate exactly one 32-bit result for each operation.
+Supported major result classes from the RTL are:
+- FF1 / find-first-one
+- CUST5 custom operations
+- SHROT shift and rotate operations
+- ADD
+- ADDC (optional, if OR1200_IMPL_ADDC is enabled)
+- SUB
+- XOR
+- OR
+- IMM (pass-through of operand B)
+- MOVHI, including MAC result return when macrc_op is asserted
+- MUL / DIV / DIVU result return via mult_mac_result when multiplier/divider support is enabled
+- CMOV, which returns A when flag=1 and B when flag=0
+- default AND / compare data path fallback
+
+1.2 Addition and carry generation
+The module shall form an unsigned addition a + b and expose:
+- result_sum = lower 32 bits of the sum
+- cy_sum = carry-out bit
+When ADDC is enabled, the module shall also form a + b + carry and expose:
+- result_csum
+- cy_csum
+
+1.3 Basic ALU operations
+The following behavior is required:
+- ADD: result = a + b
+- ADDC: result = a + b + carry
+- SUB: result = a - b
+- XOR: result = a ^ b
+- OR: result = a | b
+- AND: result = a & b
+- IMM: result = b
+- MOVHI:
+  - if macrc_op == 1, return mult_mac_result
+  - else return b shifted left by 16 bits
+- MUL / DIV / DIVU: return mult_mac_result supplied by the external multiply/divide block
+- CMOV: return a if flag is set, else return b
+
+1.4 FF1 behavior
+For opcode OR1200_ALUOP_FF1, the module shall return the position of the first asserted bit scanning from bit 0 upward.
+Encoding used by the RTL:
+- if no bit in a is set, return 0
+- if a[0] is set, return 1
+- if a[1] is set, return 2
+...
+- if a[31] is set, return 32
+
+1.5 Shift/rotate behavior
+The module shall support a secondary shrot_op decode:
+- SLL: logical left shift a << b[4:0]
+- SRL: logical right shift a >> b[4:0]
+- ROR (optional): rotate-right using b[4:0]
+- default path: arithmetic right shift implemented by sign extension of a[31]
+
+1.6 Compare behavior
+The module shall support compare operations through comp_op and produce a boolean result on flagforw via flagcomp.
+The implementation normalizes signed/unsigned comparisons by XORing the sign bit with comp_op[3].
+Two implementation styles exist in the RTL:
+- OR1200_IMPL_ALU_COMP1:
+  compute a_eq_b and a_lt_b, then derive EQ/NE/GT/GE/LT/LE
+- OR1200_IMPL_ALU_COMP2:
+  directly compare normalized comp_a and comp_b
+The module shall support at least:
+- equal
+- not equal
+- greater than
+- greater than or equal
+- less than
+- less than or equal
+
+1.7 Custom instruction behavior
+The module implements example l.cust5 instructions:
+- cust5_op = 0x1: byte move/insert controlled by cust5_limm[1:0]
+- cust5_op = 0x2: set bit in a at index cust5_limm
+- cust5_op = 0x3: clear bit in a at index cust5_limm
+- default: return a unchanged
+A compatible reimplementation shall preserve these example behaviors exactly.
+
+2. Status Flag Behavior
+2.1 Flag forwarding
+flagforw shall be asserted with the compare result for COMP operations.
+If OR1200_ADDITIONAL_FLAG_MODIFIERS is enabled:
+- ADD updates flagforw with zero-detect of result_sum
+- ADDC updates flagforw with zero-detect of result_csum
+- AND updates flagforw with zero-detect of result_and
+Otherwise only COMP writes the flag.
+
+2.2 Flag write-enable
+flag_we shall be asserted exactly for operations that update SR[F].
+In the shipped RTL, this includes:
+- COMP always
+- ADD / ADDC / AND only when OR1200_ADDITIONAL_FLAG_MODIFIERS is enabled
+
+2.3 Carry forwarding
+If OR1200_IMPL_CY is enabled:
+- ADD writes cyforw = cy_sum
+- ADDC writes cyforw = cy_csum
+For all other cases cyforw shall be 0.
+
+2.4 Carry write-enable
+If OR1200_IMPL_CY is enabled:
+- cy_we shall be 1 for ADD and ADDC
+- cy_we shall be 0 otherwise
+
+3. Implementation Notes
+- The module is purely combinational in the supplied RTL.
+- Addition is implemented by forming a 33-bit sum and splitting carry/result.
+- The compare path uses sign normalization with comp_op[3] for signed/unsigned reuse.
+- The shift amount is always b[4:0], limiting shift distance to 0..31.
+- The conditional move uses the current architectural flag input, not flagforw.
+- The multiplier/divider are external; this module only selects their result.

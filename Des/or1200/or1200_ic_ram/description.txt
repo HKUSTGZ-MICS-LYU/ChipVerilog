@@ -1,0 +1,65 @@
+or1200_ic_ram is a wrapper module for the OR1200 instruction cache data RAM. It is used to select the concrete instruction-cache data storage implementation according to different compile-time macros. It provides a unified RAM access interface to the upper-level instruction cache logic, including the address addr, enable signal en, write-enable signal we, write data datain, and read data dataout. The module itself does not implement cache hit, miss, refill, or invalidate control logic, nor does it contain an explicit state machine or local registers. It only connects the access requests from the upper-level logic to the underlying RAM implementation. The actual read/write timing, read latency, RAM contents after reset, output behavior when en is inactive, and data returned during same-address read/write conflicts are all determined by the selected underlying RAM macro or FPGA RAM implementation.
+
+The basic module interface includes clk, rst, addr[10:0], en, we[3:0], datain[31:0], and dataout[31:0]. The clk signal is passed to the underlying RAM as its clock input, and the wrapper itself does not contain sequential logic directly driven by clk. The rst signal is only passed to the underlying or1200_spram_* RAM macro in the generic RAM implementation path. In the OR1200_RAM_MODELS_VIRTEX path and the OR1200_NO_IC path, rst is not used. addr[10:0] is the RAM address input. The port is fixed at 11 bits, which can address up to 2048 32-bit words, but the actual valid address range depends on the depth of the instantiated RAM. datain[31:0] is the 32-bit data written into the RAM, and dataout[31:0] is the 32-bit data read from the RAM.
+
+Although the we port is declared as a 4-bit write-enable input, we[3:0], this module actually uses only we[0] as the write-enable signal for the underlying RAM. we[3:1] are not used in this wrapper. Therefore, based on the connections in this module, it does not implement byte-level byte-enable writes; instead, the write granularity is a 32-bit word. Even if the upper-level logic provides a multi-bit write-enable value, this module only forwards the least significant write-enable bit to the underlying RAM.
+
+When OR1200_NO_IC is defined, the instruction cache is not implemented. In this mode, the module does not instantiate any actual RAM storage, and dataout is directly assigned to all zeros. Therefore, in this mode, addr, en, we, datain, clk, and rst do not affect the value of dataout. If OR1200_BIST is also defined, since there is no actual RAM to test, the BIST serial output mbist_so_o is directly assigned from the BIST serial input mbist_si_i, meaning that the BIST chain is bypassed through this module.
+
+When OR1200_NO_IC is not defined and OR1200_RAM_MODELS_VIRTEX is defined, the module uses an FPGA-specific RAM implementation by instantiating a RAM module named ic_ram_sub. In this path, en is connected to the RAM enable input ena, we[0] is connected to the write-enable input wea, addr is connected to both the write-port address addra and the read-port address addrb, datain is connected to the write-port data input dina, and dataout is driven by the read-port output doutb. Both port A and port B of this RAM use the same clk, so this implementation can be regarded as an FPGA RAM wrapper operating under a single clock, with port A used for writes and port B used for reads. It should be noted that in this path, rst is not connected to ic_ram_sub, so this wrapper does not define the reset behavior of the Virtex RAM. The specific read latency and whether old data or new data is returned during a same-address read/write operation also depend on the implementation of ic_ram_sub.
+
+When neither OR1200_NO_IC nor OR1200_RAM_MODELS_VIRTEX is defined, the module enters the generic RAM implementation path. This path selects a RAM macro of different depth according to the instruction cache capacity configuration macros. If OR1200_IC_1W_512B is defined, or1200_spram_128x32 is instantiated, with a capacity of 128 32-bit words, or 512 bytes. If OR1200_IC_1W_4KB is defined, or1200_spram_1024x32 is instantiated, with a capacity of 1024 32-bit words, or 4 KB. If OR1200_IC_1W_8KB is defined, or1200_spram_2048x32 is instantiated, with a capacity of 2048 32-bit words, or 8 KB.
+
+In the generic RAM path, clk and rst are connected to the clock and reset ports of the underlying RAM, respectively. en is connected to the chip-enable or access-enable input ce, we[0] is connected to the write-enable input we, addr is used as the RAM address input, datain is used as the write-data input, and dataout is driven by the RAM output doq. At the same time, the output-enable input oe of the underlying RAM is tied to 1'b1, which means the output enable is always active. However, whether the RAM performs a valid access is still controlled by ce=en. The behavior of the output when en is inactive, whether reads are synchronous, and the read latency all depend on the specific implementation of the corresponding or1200_spram_* macro.
+
+When OR1200_BIST is defined, the module additionally includes the MBIST test interface, including mbist_si_i, mbist_so_o, and mbist_ctrl_i. In normal RAM implementation paths, these BIST signals are directly connected to the underlying RAM macro, and the underlying RAM is responsible for the specific test-chain and control behavior. In OR1200_NO_IC mode, because no RAM is instantiated, mbist_so_o directly passes through mbist_si_i, effectively bypassing this module in the BIST chain.
+
+Overall, or1200_ic_ram is a technology-selection wrapper for the instruction cache data storage. It selects among a no-cache stub, a Virtex FPGA RAM, and a generic RAM macro according to compile-time macros, while providing a unified 32-bit data RAM interface to the upper-level logic. The key characteristics of this module are: in OR1200_NO_IC mode, dataout is always zero; in Virtex mode, ic_ram_sub is used, with the read and write ports sharing the same clock and address; in generic mode, different-depth or1200_spram_* macros are instantiated according to the cache capacity; only we[0] is used as the actual write-enable signal; rst is only passed to the underlying RAM in the generic RAM path; and BIST signals are connected to the underlying RAM when RAM exists, or bypassed directly when the instruction cache is not implemented. This module is not responsible for the instruction cache control flow and does not guarantee specific RAM timing semantics. All detailed storage behavior is determined by the actual instantiated RAM implementation.
+
+module or1200_ic_ram(
+    // Clock and reset
+    input clk,
+    input rst,
+
+`ifdef OR1200_BIST
+    // RAM BIST
+    input mbist_si_i,
+    output mbist_so_o,
+    input [`OR1200_MBIST_CTRL_WIDTH - 1:0] mbist_ctrl_i,
+`endif
+
+    // Internal i/f
+    input [10:0] addr,
+    input en,
+    input [3:0] we,
+    input [31:0] datain,
+    output [31:0] dataout
+);
+
+Input ports:
+    - clk: Primary clock; sequential state in this module updates on its rising edge.
+    - rst: Reset input that returns local state elements to their defined reset values.
+    - addr[10:0]: Array index/address input.
+    - en: Access enable for the local storage block.
+    - we[3:0]: Write-enable for the local storage block.
+    - datain[31:0]: Write data presented to the local storage block.
+    - mbist_si_i: MBIST serial scan input. Present only when `OR1200_BIST` is enabled.
+    - mbist_ctrl_i[`OR1200_MBIST_CTRL_WIDTH - 1:0]: MBIST control bus. Present only when `OR1200_BIST` is enabled.
+Output port:
+    - dataout[31:0]: Read data returned from the local storage block.
+    - mbist_so_o: MBIST serial scan output. Present only when `OR1200_BIST` is enabled.
+Internal reg/wire signals:
+    wire en_wire: RAM enable signal.
+    wire [0 : 0] we_wire: RAM write-enable signal.
+    wire [10 : 0] addr_wire: RAM address signal.
+    wire [31 : 0] datain_wire: RAM write-data signal.
+
+Processing Flow
+
+The processing flow of or1200_ic_ram is mainly determined by compile-time configuration macros rather than by an internal runtime state machine. The module first selects one of several implementation paths according to the defined macros. If OR1200_NO_IC is defined, no instruction-cache RAM is instantiated, and the module behaves as a stub by driving dataout to zero. If BIST is enabled in this mode, the BIST serial input is directly passed to the BIST serial output.
+
+If the instruction cache is enabled and OR1200_RAM_MODELS_VIRTEX is defined, the module instantiates the FPGA-specific RAM block ic_ram_sub. In this path, the upper-level access signals are simply mapped to the RAM ports: en drives the RAM enable, we[0] drives the write enable, addr is connected to both the write and read addresses, datain is connected to the write-data input, and dataout is driven by the read-data output. Both RAM ports use the same clk.
+
+If neither OR1200_NO_IC nor OR1200_RAM_MODELS_VIRTEX is defined, the module selects a generic single-port RAM macro according to the configured instruction-cache capacity. The selected RAM receives clk, rst, en, we[0], addr, and datain, while its output drives dataout. The output-enable input of the RAM is tied active. In this path, rst is passed to the underlying RAM macro, but the wrapper itself still does not define additional reset behavior.
+
+During normal operation, the upper-level instruction-cache controller is responsible for generating the address, enable, write-enable, and write-data signals. This wrapper only forwards those signals to the selected RAM implementation. When a write access is requested, the effective write-enable is we[0], and the 32-bit value on datain is provided to the RAM at the selected address. For read access, the selected RAM drives dataout with the data associated with addr, subject to the timing and behavior of the underlying RAM implementation. The module does not sequence reads and writes by itself, and it does not interpret the address as a cache tag, index, offset, hit, miss, or refill operation.

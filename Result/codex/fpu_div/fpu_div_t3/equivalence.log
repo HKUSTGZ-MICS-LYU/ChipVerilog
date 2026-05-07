@@ -1,0 +1,2107 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v' to AST representation.
+Generating RTLIL representation for module `\fpu_div'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261.1-317.12 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319.1-375.12 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_div
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_div
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21 in module fpu_div.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 13 redundant assignments.
+Promoted 3 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+     1/1: $0\divisor_shift[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+     1/1: $0\dividend_shift[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+     1/1: $0\enable_reg_2[0:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+     1/8: $0\enable_reg_e[0:0]
+     2/8: $0\enable_reg_d[0:0]
+     3/8: $0\enable_reg_c[0:0]
+     4/8: $0\enable_reg_b[0:0]
+     5/8: $0\enable_reg_a[0:0]
+     6/8: $0\enable_reg[0:0]
+     7/8: $0\count_nonzero_reg_2[0:0]
+     8/8: $0\count_nonzero_reg[0:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+     1/28: $0\remainder_b[107:0]
+     2/28: $0\remainder_shift_term[6:0]
+     3/28: $0\mantissa_1[51:0]
+     4/28: $0\expon_final_5[11:0]
+     5/28: $0\expon_final_4_term[0:0]
+     6/28: $0\expon_final_4_et0[0:0]
+     7/28: $0\expon_final_4[11:0]
+     8/28: $0\expon_final_3[11:0]
+     9/28: $0\expon_uf_term_4[11:0]
+    10/28: $0\expon_uf_gt_maxshift[0:0]
+    11/28: $0\expon_uf_term_3[11:0]
+    12/28: $0\expon_uf_term_2[11:0]
+    13/28: $0\expon_uf_2[0:0]
+    14/28: $0\expon_shift_b[11:0]
+    15/28: $0\expon_shift_a[11:0]
+    16/28: $0\expon_final_2[11:0]
+    17/28: $0\expon_final_1[11:0]
+    18/28: $0\expon_uf_term_1[11:0]
+    19/28: $0\expon_uf_1[0:0]
+    20/28: $0\expon_term[11:0]
+    21/28: $0\divisor_b_shifted[51:0]
+    22/28: $0\divisor_b[51:0]
+    23/28: $0\dividend_a_shifted[51:0]
+    24/28: $0\dividend_a[51:0]
+    25/28: $0\mantissa_b[51:0]
+    26/28: $0\mantissa_a[51:0]
+    27/28: $0\divisor_shift_2[5:0]
+    28/28: $0\dividend_shift_2[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+     1/2: $0\divisor_reg[53:0]
+     2/2: $0\dividend_reg[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+     1/2: $0\remainder_msb[0:0]
+     2/2: $0\remainder[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+     1/4: $2$lookahead\quotient$26[53:0]$33
+     2/4: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1[5:0]$32
+     3/4: $1$lookahead\quotient$26[53:0]$31
+     4/4: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1[5:0]$30
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+     1/2: $0\remainder_out[53:0]
+     2/2: $0\quotient_out[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+     1/1: $0\count_out[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+     1/1: $0\exponent_out[11:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_div.\divisor_shift' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+No latch inferred for signal `\fpu_div.\dividend_shift' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_div.\enable_reg_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+  created $dff cell `$procdff$425' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$426' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$427' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$428' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_c' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$429' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_d' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$430' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_e' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$431' with positive edge clock.
+Creating register for signal `\fpu_div.\count_nonzero_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$432' with positive edge clock.
+Creating register for signal `\fpu_div.\count_nonzero_reg_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$433' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_shift_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$434' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_shift_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$435' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$436' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$437' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$438' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_a_shifted' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$439' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$440' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_b_shifted' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$441' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$442' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$443' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$444' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$445' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$446' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_shift_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$447' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_shift_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$448' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$449' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$450' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_3' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$451' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_gt_maxshift' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$452' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_4' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$453' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_3' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$454' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$455' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4_et0' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$456' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$457' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_5' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$458' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$459' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_shift_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$460' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$461' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+  created $dff cell `$procdff$462' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+  created $dff cell `$procdff$463' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+  created $dff cell `$procdff$464' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_msb' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+  created $dff cell `$procdff$465' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$466' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$467' with positive edge clock.
+Creating register for signal `\fpu_div.$lookahead\quotient$26' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$468' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+  created $dff cell `$procdff$469' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+  created $dff cell `$procdff$470' with positive edge clock.
+Creating register for signal `\fpu_div.\count_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+  created $dff cell `$procdff$471' with positive edge clock.
+Creating register for signal `\fpu_div.\exponent_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+  created $dff cell `$procdff$472' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+Found and cleaned up 3 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+Found and cleaned up 3 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+Cleaned up 19 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: 97dabddb49, CPU: user 0.04s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 33% 2x read_verilog (0 sec), 20% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v' to AST representation.
+Generating RTLIL representation for module `\fpu_div'.
+Successfully finished Verilog frontend.
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1. Analyzing design hierarchy..
+Top module:  \fpu_div
+
+2.2. Analyzing design hierarchy..
+Top module:  \fpu_div
+Removed 0 unused modules.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 52 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290 in module fpu_div.
+Marked 52 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76 in module fpu_div.
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27 in module fpu_div.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 20 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+     1/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$503
+     2/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$502
+     3/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$499
+     4/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$498
+     5/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$495
+     6/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$494
+     7/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$491
+     8/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$490
+     9/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$487
+    10/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$486
+    11/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$483
+    12/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$482
+    13/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$479
+    14/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$478
+    15/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$475
+    16/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$474
+    17/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$471
+    18/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$470
+    19/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$467
+    20/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$466
+    21/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$463
+    22/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$462
+    23/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$459
+    24/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$458
+    25/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$455
+    26/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$454
+    27/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$451
+    28/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$450
+    29/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$447
+    30/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$446
+    31/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$443
+    32/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$442
+    33/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$439
+    34/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$438
+    35/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$435
+    36/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$434
+    37/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$431
+    38/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$430
+    39/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$427
+    40/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$426
+    41/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$423
+    42/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$422
+    43/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$419
+    44/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$418
+    45/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$415
+    46/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$414
+    47/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$411
+    48/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$410
+    49/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$407
+    50/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$406
+    51/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$403
+    52/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$402
+    53/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$399
+    54/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$398
+    55/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$395
+    56/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$394
+    57/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$391
+    58/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$390
+    59/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$387
+    60/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$386
+    61/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$383
+    62/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$382
+    63/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$379
+    64/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$378
+    65/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$375
+    66/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$374
+    67/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$371
+    68/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$370
+    69/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$367
+    70/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$366
+    71/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$363
+    72/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$362
+    73/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$359
+    74/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$358
+    75/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$355
+    76/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$354
+    77/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$351
+    78/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$350
+    79/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$347
+    80/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$346
+    81/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$343
+    82/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$342
+    83/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$339
+    84/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$338
+    85/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$335
+    86/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$334
+    87/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$331
+    88/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$330
+    89/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$327
+    90/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$326
+    91/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$323
+    92/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$322
+    93/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$319
+    94/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$318
+    95/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$315
+    96/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$314
+    97/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$311
+    98/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$310
+    99/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$307
+   100/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$306
+   101/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$303
+   102/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$302
+   103/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found[0:0]$299
+   104/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result[5:0]$298
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+     1/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$289
+     2/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$288
+     3/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$285
+     4/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$284
+     5/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$281
+     6/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$280
+     7/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$277
+     8/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$276
+     9/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$273
+    10/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$272
+    11/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$269
+    12/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$268
+    13/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$265
+    14/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$264
+    15/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$261
+    16/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$260
+    17/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$257
+    18/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$256
+    19/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$253
+    20/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$252
+    21/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$249
+    22/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$248
+    23/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$245
+    24/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$244
+    25/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$241
+    26/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$240
+    27/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$237
+    28/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$236
+    29/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$233
+    30/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$232
+    31/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$229
+    32/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$228
+    33/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$225
+    34/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$224
+    35/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$221
+    36/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$220
+    37/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$217
+    38/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$216
+    39/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$213
+    40/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$212
+    41/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$209
+    42/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$208
+    43/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$205
+    44/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$204
+    45/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$201
+    46/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$200
+    47/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$197
+    48/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$196
+    49/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$193
+    50/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$192
+    51/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$189
+    52/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$188
+    53/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$185
+    54/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$184
+    55/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$181
+    56/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$180
+    57/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$177
+    58/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$176
+    59/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$173
+    60/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$172
+    61/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$169
+    62/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$168
+    63/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$165
+    64/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$164
+    65/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$161
+    66/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$160
+    67/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$157
+    68/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$156
+    69/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$153
+    70/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$152
+    71/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$149
+    72/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$148
+    73/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$145
+    74/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$144
+    75/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$141
+    76/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$140
+    77/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$137
+    78/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$136
+    79/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$133
+    80/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$132
+    81/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$129
+    82/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$128
+    83/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$125
+    84/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$124
+    85/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$121
+    86/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$120
+    87/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$117
+    88/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$116
+    89/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$113
+    90/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$112
+    91/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$109
+    92/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$108
+    93/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$105
+    94/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$104
+    95/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$101
+    96/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$100
+    97/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$97
+    98/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$96
+    99/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$93
+   100/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$92
+   101/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$89
+   102/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$88
+   103/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found[0:0]$85
+   104/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result[5:0]$84
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+     1/18: $5$lookahead\quotient_reg$34[54:0]$75
+     2/18: $4$lookahead\quotient_reg$34[54:0]$48
+     3/18: $3$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$4[6:0]$46
+     4/18: $3$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$5[6:0]$47
+     5/18: $3$lookahead\quotient_reg$34[54:0]$45
+     6/18: $2$lookahead\quotient_reg$34[54:0]$44
+     7/18: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$5[6:0]$43
+     8/18: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$4[6:0]$42
+     9/18: $1$lookahead\quotient_reg$34[54:0]$41
+    10/18: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$5[6:0]$40
+    11/18: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$4[6:0]$39
+    12/18: $0\exponent_work[13:0]
+    13/18: $0\divisor_reg[108:0]
+    14/18: $0\dividend_reg[108:0]
+    15/18: $0\count[6:0]
+    16/18: $0\state[1:0]
+    17/18: $0\mantissa_7[55:0]
+    18/18: $0\exponent_out[11:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+     1/2: $1\exponent_norm[13:0]
+     2/2: $1\quotient_norm[54:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$3.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.value' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.i' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$7.found' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$2.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.value' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.i' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$6.found' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+No latch inferred for signal `\fpu_div.\quotient_norm' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+No latch inferred for signal `\fpu_div.\exponent_norm' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+No latch inferred for signal `\fpu_div.\mantissa_bits' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+No latch inferred for signal `\fpu_div.\guard_like_bit' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+No latch inferred for signal `\fpu_div.\sticky_bit' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+No latch inferred for signal `\fpu_div.\leading_bit_indicator' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_div.\exponent_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1315' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_7' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1316' with positive edge clock.
+Creating register for signal `\fpu_div.\state' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1317' with positive edge clock.
+Creating register for signal `\fpu_div.\count' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1318' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1319' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1320' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1321' with positive edge clock.
+Creating register for signal `\fpu_div.\exponent_work' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1322' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$4' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1323' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$5' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1324' with positive edge clock.
+Creating register for signal `\fpu_div.$lookahead\quotient_reg$34' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+  created $dff cell `$procdff$1325' with positive edge clock.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 52 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$290'.
+Found and cleaned up 52 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$76'.
+Found and cleaned up 8 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$35'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$27'.
+Cleaned up 113 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4. Executing JSON backend.
+
+End of script. Logfile hash: aaf625fcef, CPU: user 0.06s system 0.00s, MEM: 39.64 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 44% 2x read_verilog (0 sec), 21% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v' to AST representation.
+Generating RTLIL representation for module `\fpu_div'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261.1-317.12 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319.1-375.12 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \fpu_div
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \fpu_div
+Removed 0 unused modules.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25 in module fpu_div.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21 in module fpu_div.
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 13 redundant assignments.
+Promoted 3 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+     1/1: $0\divisor_shift[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+     1/1: $0\dividend_shift[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+     1/1: $0\enable_reg_2[0:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+     1/8: $0\enable_reg_e[0:0]
+     2/8: $0\enable_reg_d[0:0]
+     3/8: $0\enable_reg_c[0:0]
+     4/8: $0\enable_reg_b[0:0]
+     5/8: $0\enable_reg_a[0:0]
+     6/8: $0\enable_reg[0:0]
+     7/8: $0\count_nonzero_reg_2[0:0]
+     8/8: $0\count_nonzero_reg[0:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+     1/28: $0\remainder_b[107:0]
+     2/28: $0\remainder_shift_term[6:0]
+     3/28: $0\mantissa_1[51:0]
+     4/28: $0\expon_final_5[11:0]
+     5/28: $0\expon_final_4_term[0:0]
+     6/28: $0\expon_final_4_et0[0:0]
+     7/28: $0\expon_final_4[11:0]
+     8/28: $0\expon_final_3[11:0]
+     9/28: $0\expon_uf_term_4[11:0]
+    10/28: $0\expon_uf_gt_maxshift[0:0]
+    11/28: $0\expon_uf_term_3[11:0]
+    12/28: $0\expon_uf_term_2[11:0]
+    13/28: $0\expon_uf_2[0:0]
+    14/28: $0\expon_shift_b[11:0]
+    15/28: $0\expon_shift_a[11:0]
+    16/28: $0\expon_final_2[11:0]
+    17/28: $0\expon_final_1[11:0]
+    18/28: $0\expon_uf_term_1[11:0]
+    19/28: $0\expon_uf_1[0:0]
+    20/28: $0\expon_term[11:0]
+    21/28: $0\divisor_b_shifted[51:0]
+    22/28: $0\divisor_b[51:0]
+    23/28: $0\dividend_a_shifted[51:0]
+    24/28: $0\dividend_a[51:0]
+    25/28: $0\mantissa_b[51:0]
+    26/28: $0\mantissa_a[51:0]
+    27/28: $0\divisor_shift_2[5:0]
+    28/28: $0\dividend_shift_2[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+     1/2: $0\divisor_reg[53:0]
+     2/2: $0\dividend_reg[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+     1/2: $0\remainder_msb[0:0]
+     2/2: $0\remainder[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+     1/4: $2$lookahead\quotient$26[53:0]$33
+     2/4: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1[5:0]$32
+     3/4: $1$lookahead\quotient$26[53:0]$31
+     4/4: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1[5:0]$30
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+     1/2: $0\remainder_out[53:0]
+     2/2: $0\quotient_out[53:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+     1/1: $0\count_out[5:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+     1/1: $0\exponent_out[11:0]
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_div.\divisor_shift' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+No latch inferred for signal `\fpu_div.\dividend_shift' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_div.\enable_reg_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+  created $dff cell `$procdff$425' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$426' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$427' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$428' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_c' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$429' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_d' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$430' with positive edge clock.
+Creating register for signal `\fpu_div.\enable_reg_e' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$431' with positive edge clock.
+Creating register for signal `\fpu_div.\count_nonzero_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$432' with positive edge clock.
+Creating register for signal `\fpu_div.\count_nonzero_reg_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+  created $dff cell `$procdff$433' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_shift_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$434' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_shift_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$435' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$436' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$437' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$438' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_a_shifted' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$439' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$440' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_b_shifted' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$441' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$442' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$443' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$444' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$445' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$446' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_shift_a' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$447' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_shift_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$448' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$449' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_2' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$450' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_3' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$451' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_gt_maxshift' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$452' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_uf_term_4' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$453' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_3' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$454' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$455' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4_et0' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$456' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_4_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$457' with positive edge clock.
+Creating register for signal `\fpu_div.\expon_final_5' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$458' with positive edge clock.
+Creating register for signal `\fpu_div.\mantissa_1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$459' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_shift_term' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$460' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_b' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+  created $dff cell `$procdff$461' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+  created $dff cell `$procdff$462' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+  created $dff cell `$procdff$463' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+  created $dff cell `$procdff$464' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_msb' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+  created $dff cell `$procdff$465' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$466' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$1' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$467' with positive edge clock.
+Creating register for signal `\fpu_div.$lookahead\quotient$26' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+  created $dff cell `$procdff$468' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+  created $dff cell `$procdff$469' with positive edge clock.
+Creating register for signal `\fpu_div.\remainder_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+  created $dff cell `$procdff$470' with positive edge clock.
+Creating register for signal `\fpu_div.\count_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+  created $dff cell `$procdff$471' with positive edge clock.
+Creating register for signal `\fpu_div.\exponent_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+  created $dff cell `$procdff$472' with positive edge clock.
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:319$88'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:261$87'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:252$86'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:228$85'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:164$54'.
+Found and cleaned up 3 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:148$48'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:136$43'.
+Found and cleaned up 2 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:128$27'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:115$25'.
+Found and cleaned up 3 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:105$23'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:97$21'.
+Cleaned up 19 empty switches.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.3. Executing FLATTEN pass (flatten design).
+
+2.4. Executing FUTURE pass.
+
+2.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 6 unused cells and 171 unused wires.
+
+2.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_div...
+Found and reported 0 problems.
+
+2.8. Executing OPT pass (performing simple optimizations).
+
+2.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 298 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 294 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 4 cells.
+
+2.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_div..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$394.
+Removed 1 multiplexer ports.
+
+2.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_div.
+Performed a total of 0 changes.
+
+2.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 293 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 0 cells.
+
+2.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 0 unused cells and 5 unused wires.
+
+2.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_div..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+2.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_div.
+Performed a total of 0 changes.
+
+2.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 293 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 0 cells.
+
+2.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+
+2.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+2.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 54) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:46$7 ($mux).
+Removed top 1 bits (of 54) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:50$8 ($mux).
+Removed top 11 bits (of 12) from port B of cell fpu_div.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:82$12 ($eq).
+Removed top 31 bits (of 32) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:112$24 ($sub).
+Removed top 26 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:112$24 ($sub).
+Converting cell fpu_div.$neg$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$34 ($neg) from signed to unsigned.
+Removed top 1 bits (of 7) from port A of cell fpu_div.$neg$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:133$34 ($neg).
+Removed top 31 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:144$47 ($mux).
+Removed top 1 bits (of 54) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:160$51 ($sub).
+Removed top 1 bits (of 54) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:160$51 ($sub).
+Removed top 1 bits (of 54) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:160$51 ($sub).
+Removed top 1 bits (of 12) from port A of cell fpu_div.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:197$55 ($add).
+Removed top 22 bits (of 32) from port B of cell fpu_div.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:197$55 ($add).
+Removed top 20 bits (of 32) from port Y of cell fpu_div.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:197$55 ($add).
+Removed top 1 bits (of 12) from port A of cell fpu_div.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:198$56 ($gt).
+Removed top 1 bits (of 12) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$57 ($sub).
+Removed top 19 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$57 ($sub).
+Removed top 20 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$58 ($mux).
+Removed top 1 bits (of 12) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:200$59 ($sub).
+Removed top 20 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:201$61 ($mux).
+Removed top 26 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:202$63 ($mux).
+Removed top 26 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:203$65 ($mux).
+Removed top 19 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:205$67 ($sub).
+Removed top 20 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:205$68 ($mux).
+Removed top 26 bits (of 32) from port B of cell fpu_div.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:207$70 ($gt).
+Removed top 20 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:208$72 ($mux).
+Removed top 19 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:209$73 ($sub).
+Removed top 20 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:209$74 ($mux).
+Removed top 31 bits (of 32) from mux cell fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:212$77 ($mux).
+Removed top 26 bits (of 32) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:220$80 ($sub).
+Removed top 25 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:220$80 ($sub).
+Removed top 5 bits (of 12) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:220$80 ($sub).
+Removed top 51 bits (of 52) from port B of cell fpu_div.$procmux$91_CMP0 ($eq).
+Removed top 50 bits (of 51) from port B of cell fpu_div.$procmux$92_CMP0 ($eq).
+Removed top 49 bits (of 50) from port B of cell fpu_div.$procmux$93_CMP0 ($eq).
+Removed top 48 bits (of 49) from port B of cell fpu_div.$procmux$94_CMP0 ($eq).
+Removed top 47 bits (of 48) from port B of cell fpu_div.$procmux$95_CMP0 ($eq).
+Removed top 46 bits (of 47) from port B of cell fpu_div.$procmux$96_CMP0 ($eq).
+Removed top 45 bits (of 46) from port B of cell fpu_div.$procmux$97_CMP0 ($eq).
+Removed top 44 bits (of 45) from port B of cell fpu_div.$procmux$98_CMP0 ($eq).
+Removed top 43 bits (of 44) from port B of cell fpu_div.$procmux$99_CMP0 ($eq).
+Removed top 42 bits (of 43) from port B of cell fpu_div.$procmux$100_CMP0 ($eq).
+Removed top 41 bits (of 42) from port B of cell fpu_div.$procmux$101_CMP0 ($eq).
+Removed top 40 bits (of 41) from port B of cell fpu_div.$procmux$102_CMP0 ($eq).
+Removed top 39 bits (of 40) from port B of cell fpu_div.$procmux$103_CMP0 ($eq).
+Removed top 38 bits (of 39) from port B of cell fpu_div.$procmux$104_CMP0 ($eq).
+Removed top 37 bits (of 38) from port B of cell fpu_div.$procmux$105_CMP0 ($eq).
+Removed top 36 bits (of 37) from port B of cell fpu_div.$procmux$106_CMP0 ($eq).
+Removed top 35 bits (of 36) from port B of cell fpu_div.$procmux$107_CMP0 ($eq).
+Removed top 34 bits (of 35) from port B of cell fpu_div.$procmux$108_CMP0 ($eq).
+Removed top 33 bits (of 34) from port B of cell fpu_div.$procmux$109_CMP0 ($eq).
+Removed top 32 bits (of 33) from port B of cell fpu_div.$procmux$110_CMP0 ($eq).
+Removed top 31 bits (of 32) from port B of cell fpu_div.$procmux$111_CMP0 ($eq).
+Removed top 30 bits (of 31) from port B of cell fpu_div.$procmux$112_CMP0 ($eq).
+Removed top 29 bits (of 30) from port B of cell fpu_div.$procmux$113_CMP0 ($eq).
+Removed top 28 bits (of 29) from port B of cell fpu_div.$procmux$114_CMP0 ($eq).
+Removed top 27 bits (of 28) from port B of cell fpu_div.$procmux$115_CMP0 ($eq).
+Removed top 26 bits (of 27) from port B of cell fpu_div.$procmux$116_CMP0 ($eq).
+Removed top 25 bits (of 26) from port B of cell fpu_div.$procmux$117_CMP0 ($eq).
+Removed top 24 bits (of 25) from port B of cell fpu_div.$procmux$118_CMP0 ($eq).
+Removed top 23 bits (of 24) from port B of cell fpu_div.$procmux$119_CMP0 ($eq).
+Removed top 22 bits (of 23) from port B of cell fpu_div.$procmux$120_CMP0 ($eq).
+Removed top 21 bits (of 22) from port B of cell fpu_div.$procmux$121_CMP0 ($eq).
+Removed top 20 bits (of 21) from port B of cell fpu_div.$procmux$122_CMP0 ($eq).
+Removed top 19 bits (of 20) from port B of cell fpu_div.$procmux$123_CMP0 ($eq).
+Removed top 18 bits (of 19) from port B of cell fpu_div.$procmux$124_CMP0 ($eq).
+Removed top 17 bits (of 18) from port B of cell fpu_div.$procmux$125_CMP0 ($eq).
+Removed top 16 bits (of 17) from port B of cell fpu_div.$procmux$126_CMP0 ($eq).
+Removed top 15 bits (of 16) from port B of cell fpu_div.$procmux$127_CMP0 ($eq).
+Removed top 14 bits (of 15) from port B of cell fpu_div.$procmux$128_CMP0 ($eq).
+Removed top 13 bits (of 14) from port B of cell fpu_div.$procmux$129_CMP0 ($eq).
+Removed top 12 bits (of 13) from port B of cell fpu_div.$procmux$130_CMP0 ($eq).
+Removed top 11 bits (of 12) from port B of cell fpu_div.$procmux$131_CMP0 ($eq).
+Removed top 10 bits (of 11) from port B of cell fpu_div.$procmux$132_CMP0 ($eq).
+Removed top 9 bits (of 10) from port B of cell fpu_div.$procmux$133_CMP0 ($eq).
+Removed top 8 bits (of 9) from port B of cell fpu_div.$procmux$134_CMP0 ($eq).
+Removed top 7 bits (of 8) from port B of cell fpu_div.$procmux$135_CMP0 ($eq).
+Removed top 6 bits (of 7) from port B of cell fpu_div.$procmux$136_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell fpu_div.$procmux$137_CMP0 ($eq).
+Removed top 4 bits (of 5) from port B of cell fpu_div.$procmux$138_CMP0 ($eq).
+Removed top 3 bits (of 4) from port B of cell fpu_div.$procmux$139_CMP0 ($eq).
+Removed top 2 bits (of 3) from port B of cell fpu_div.$procmux$140_CMP0 ($eq).
+Removed top 1 bits (of 2) from port B of cell fpu_div.$procmux$141_CMP0 ($eq).
+Removed top 51 bits (of 52) from port B of cell fpu_div.$procmux$145_CMP0 ($eq).
+Removed top 50 bits (of 51) from port B of cell fpu_div.$procmux$146_CMP0 ($eq).
+Removed top 49 bits (of 50) from port B of cell fpu_div.$procmux$147_CMP0 ($eq).
+Removed top 48 bits (of 49) from port B of cell fpu_div.$procmux$148_CMP0 ($eq).
+Removed top 47 bits (of 48) from port B of cell fpu_div.$procmux$149_CMP0 ($eq).
+Removed top 46 bits (of 47) from port B of cell fpu_div.$procmux$150_CMP0 ($eq).
+Removed top 45 bits (of 46) from port B of cell fpu_div.$procmux$151_CMP0 ($eq).
+Removed top 44 bits (of 45) from port B of cell fpu_div.$procmux$152_CMP0 ($eq).
+Removed top 43 bits (of 44) from port B of cell fpu_div.$procmux$153_CMP0 ($eq).
+Removed top 42 bits (of 43) from port B of cell fpu_div.$procmux$154_CMP0 ($eq).
+Removed top 41 bits (of 42) from port B of cell fpu_div.$procmux$155_CMP0 ($eq).
+Removed top 40 bits (of 41) from port B of cell fpu_div.$procmux$156_CMP0 ($eq).
+Removed top 39 bits (of 40) from port B of cell fpu_div.$procmux$157_CMP0 ($eq).
+Removed top 38 bits (of 39) from port B of cell fpu_div.$procmux$158_CMP0 ($eq).
+Removed top 37 bits (of 38) from port B of cell fpu_div.$procmux$159_CMP0 ($eq).
+Removed top 36 bits (of 37) from port B of cell fpu_div.$procmux$160_CMP0 ($eq).
+Removed top 35 bits (of 36) from port B of cell fpu_div.$procmux$161_CMP0 ($eq).
+Removed top 34 bits (of 35) from port B of cell fpu_div.$procmux$162_CMP0 ($eq).
+Removed top 33 bits (of 34) from port B of cell fpu_div.$procmux$163_CMP0 ($eq).
+Removed top 32 bits (of 33) from port B of cell fpu_div.$procmux$164_CMP0 ($eq).
+Removed top 31 bits (of 32) from port B of cell fpu_div.$procmux$165_CMP0 ($eq).
+Removed top 30 bits (of 31) from port B of cell fpu_div.$procmux$166_CMP0 ($eq).
+Removed top 29 bits (of 30) from port B of cell fpu_div.$procmux$167_CMP0 ($eq).
+Removed top 28 bits (of 29) from port B of cell fpu_div.$procmux$168_CMP0 ($eq).
+Removed top 27 bits (of 28) from port B of cell fpu_div.$procmux$169_CMP0 ($eq).
+Removed top 26 bits (of 27) from port B of cell fpu_div.$procmux$170_CMP0 ($eq).
+Removed top 25 bits (of 26) from port B of cell fpu_div.$procmux$171_CMP0 ($eq).
+Removed top 24 bits (of 25) from port B of cell fpu_div.$procmux$172_CMP0 ($eq).
+Removed top 23 bits (of 24) from port B of cell fpu_div.$procmux$173_CMP0 ($eq).
+Removed top 22 bits (of 23) from port B of cell fpu_div.$procmux$174_CMP0 ($eq).
+Removed top 21 bits (of 22) from port B of cell fpu_div.$procmux$175_CMP0 ($eq).
+Removed top 20 bits (of 21) from port B of cell fpu_div.$procmux$176_CMP0 ($eq).
+Removed top 19 bits (of 20) from port B of cell fpu_div.$procmux$177_CMP0 ($eq).
+Removed top 18 bits (of 19) from port B of cell fpu_div.$procmux$178_CMP0 ($eq).
+Removed top 17 bits (of 18) from port B of cell fpu_div.$procmux$179_CMP0 ($eq).
+Removed top 16 bits (of 17) from port B of cell fpu_div.$procmux$180_CMP0 ($eq).
+Removed top 15 bits (of 16) from port B of cell fpu_div.$procmux$181_CMP0 ($eq).
+Removed top 14 bits (of 15) from port B of cell fpu_div.$procmux$182_CMP0 ($eq).
+Removed top 13 bits (of 14) from port B of cell fpu_div.$procmux$183_CMP0 ($eq).
+Removed top 12 bits (of 13) from port B of cell fpu_div.$procmux$184_CMP0 ($eq).
+Removed top 11 bits (of 12) from port B of cell fpu_div.$procmux$185_CMP0 ($eq).
+Removed top 10 bits (of 11) from port B of cell fpu_div.$procmux$186_CMP0 ($eq).
+Removed top 9 bits (of 10) from port B of cell fpu_div.$procmux$187_CMP0 ($eq).
+Removed top 8 bits (of 9) from port B of cell fpu_div.$procmux$188_CMP0 ($eq).
+Removed top 7 bits (of 8) from port B of cell fpu_div.$procmux$189_CMP0 ($eq).
+Removed top 6 bits (of 7) from port B of cell fpu_div.$procmux$190_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell fpu_div.$procmux$191_CMP0 ($eq).
+Removed top 4 bits (of 5) from port B of cell fpu_div.$procmux$192_CMP0 ($eq).
+Removed top 3 bits (of 4) from port B of cell fpu_div.$procmux$193_CMP0 ($eq).
+Removed top 2 bits (of 3) from port B of cell fpu_div.$procmux$194_CMP0 ($eq).
+Removed top 1 bits (of 2) from port B of cell fpu_div.$procmux$195_CMP0 ($eq).
+Removed top 1 bits (of 54) from FF cell fpu_div.$procdff$470 ($dff).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$57 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:205$67 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:209$73 ($sub).
+Removed top 1 bits (of 54) from mux cell fpu_div.$procmux$409 ($mux).
+Removed top 1 bits (of 54) from wire fpu_div.$0\remainder_out[53:0].
+Removed top 20 bits (of 32) from wire fpu_div.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:197$55_Y.
+Removed top 26 bits (of 32) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:112$24_Y.
+Removed top 1 bits (of 54) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:160$51_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$57_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:205$67_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:209$73_Y.
+Removed top 25 bits (of 32) from wire fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:220$80_Y.
+Removed top 31 bits (of 32) from wire fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:144$47_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:199$58_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:201$61_Y.
+Removed top 26 bits (of 32) from wire fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:202$63_Y.
+Removed top 20 bits (of 32) from wire fpu_div.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:205$68_Y.
+Removed top 1 bits (of 54) from wire fpu_div.dividend_1.
+Removed top 16 bits (of 52) from wire fpu_div.dividend_a_shifted.
+Removed top 1 bits (of 54) from wire fpu_div.divisor_1.
+Removed top 24 bits (of 52) from wire fpu_div.divisor_b_shifted.
+Removed top 1 bits (of 54) from wire fpu_div.remainder_out.
+
+2.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 0 unused cells and 19 unused wires.
+
+2.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.12. Executing OPT pass (performing simple optimizations).
+
+2.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+2.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 293 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 0 cells.
+
+2.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+
+2.12.4. Finished fast OPT passes.
+
+2.13. Printing statistics.
+
+=== fpu_div ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      313 wires
+     5336 wire bits
+       82 public wires
+     2125 public wire bits
+        8 ports
+      200 port bits
+      293 cells
+        3   $add
+        2   $and
+       46   $dff
+      103   $eq
+        4   $gt
+        7   $logic_not
+      103   $mux
+        1   $neg
+        1   $not
+        1   $or
+        2   $pmux
+        5   $reduce_or
+        2   $shift
+        3   $shl
+        1   $shr
+        8   $sub
+        1   $xor
+
+2.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_div...
+Found and reported 0 problems.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v' to AST representation.
+Generating RTLIL representation for module `\fpu_div'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \fpu_div
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \fpu_div
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 52 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780 in module fpu_div.
+Marked 52 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566 in module fpu_div.
+Marked 8 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525 in module fpu_div.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517 in module fpu_div.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 20 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+     1/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$992
+     2/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$993
+     3/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$988
+     4/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$989
+     5/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$984
+     6/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$985
+     7/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$980
+     8/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$981
+     9/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$976
+    10/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$977
+    11/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$972
+    12/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$973
+    13/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$968
+    14/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$969
+    15/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$964
+    16/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$965
+    17/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$960
+    18/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$961
+    19/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$956
+    20/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$957
+    21/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$952
+    22/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$953
+    23/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$948
+    24/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$949
+    25/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$944
+    26/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$945
+    27/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$940
+    28/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$941
+    29/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$936
+    30/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$937
+    31/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$932
+    32/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$933
+    33/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$928
+    34/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$929
+    35/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$924
+    36/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$925
+    37/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$920
+    38/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$921
+    39/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$916
+    40/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$917
+    41/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$912
+    42/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$913
+    43/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$908
+    44/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$909
+    45/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$904
+    46/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$905
+    47/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$900
+    48/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$901
+    49/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$896
+    50/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$897
+    51/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$892
+    52/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$893
+    53/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$888
+    54/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$889
+    55/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$884
+    56/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$885
+    57/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$880
+    58/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$881
+    59/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$876
+    60/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$877
+    61/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$872
+    62/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$873
+    63/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$868
+    64/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$869
+    65/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$864
+    66/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$865
+    67/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$860
+    68/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$861
+    69/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$856
+    70/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$857
+    71/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$852
+    72/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$853
+    73/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$848
+    74/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$849
+    75/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$844
+    76/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$845
+    77/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$840
+    78/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$841
+    79/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$836
+    80/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$837
+    81/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$832
+    82/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$833
+    83/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$828
+    84/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$829
+    85/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$824
+    86/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$825
+    87/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$820
+    88/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$821
+    89/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$816
+    90/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$817
+    91/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$812
+    92/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$813
+    93/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$808
+    94/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$809
+    95/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$804
+    96/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$805
+    97/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$800
+    98/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$801
+    99/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$796
+   100/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$797
+   101/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$792
+   102/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$793
+   103/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found[0:0]$788
+   104/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result[5:0]$789
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+     1/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$778
+     2/104: $52\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$779
+     3/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$774
+     4/104: $51\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$775
+     5/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$770
+     6/104: $50\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$771
+     7/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$766
+     8/104: $49\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$767
+     9/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$762
+    10/104: $48\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$763
+    11/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$758
+    12/104: $47\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$759
+    13/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$754
+    14/104: $46\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$755
+    15/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$750
+    16/104: $45\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$751
+    17/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$746
+    18/104: $44\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$747
+    19/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$742
+    20/104: $43\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$743
+    21/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$738
+    22/104: $42\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$739
+    23/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$734
+    24/104: $41\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$735
+    25/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$730
+    26/104: $40\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$731
+    27/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$726
+    28/104: $39\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$727
+    29/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$722
+    30/104: $38\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$723
+    31/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$718
+    32/104: $37\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$719
+    33/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$714
+    34/104: $36\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$715
+    35/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$710
+    36/104: $35\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$711
+    37/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$706
+    38/104: $34\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$707
+    39/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$702
+    40/104: $33\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$703
+    41/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$698
+    42/104: $32\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$699
+    43/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$694
+    44/104: $31\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$695
+    45/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$690
+    46/104: $30\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$691
+    47/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$686
+    48/104: $29\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$687
+    49/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$682
+    50/104: $28\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$683
+    51/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$678
+    52/104: $27\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$679
+    53/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$674
+    54/104: $26\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$675
+    55/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$670
+    56/104: $25\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$671
+    57/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$666
+    58/104: $24\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$667
+    59/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$662
+    60/104: $23\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$663
+    61/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$658
+    62/104: $22\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$659
+    63/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$654
+    64/104: $21\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$655
+    65/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$650
+    66/104: $20\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$651
+    67/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$646
+    68/104: $19\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$647
+    69/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$642
+    70/104: $18\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$643
+    71/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$638
+    72/104: $17\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$639
+    73/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$634
+    74/104: $16\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$635
+    75/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$630
+    76/104: $15\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$631
+    77/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$626
+    78/104: $14\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$627
+    79/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$622
+    80/104: $13\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$623
+    81/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$618
+    82/104: $12\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$619
+    83/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$614
+    84/104: $11\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$615
+    85/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$610
+    86/104: $10\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$611
+    87/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$606
+    88/104: $9\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$607
+    89/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$602
+    90/104: $8\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$603
+    91/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$598
+    92/104: $7\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$599
+    93/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$594
+    94/104: $6\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$595
+    95/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$590
+    96/104: $5\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$591
+    97/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$586
+    98/104: $4\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$587
+    99/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$582
+   100/104: $3\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$583
+   101/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$578
+   102/104: $2\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$579
+   103/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found[0:0]$574
+   104/104: $1\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result[5:0]$575
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+     1/18: $5$lookahead\quotient_reg$524[54:0]$565
+     2/18: $4$lookahead\quotient_reg$524[54:0]$536
+     3/18: $3$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$494[6:0]$538
+     4/18: $3$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$495[6:0]$537
+     5/18: $3$lookahead\quotient_reg$524[54:0]$535
+     6/18: $2$lookahead\quotient_reg$524[54:0]$532
+     7/18: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$494[6:0]$534
+     8/18: $2$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$495[6:0]$533
+     9/18: $1$lookahead\quotient_reg$524[54:0]$529
+    10/18: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$494[6:0]$531
+    11/18: $1$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$495[6:0]$530
+    12/18: $0\state[1:0]
+    13/18: $0\count[6:0]
+    14/18: $0\exponent_work[13:0]
+    15/18: $0\divisor_reg[108:0]
+    16/18: $0\dividend_reg[108:0]
+    17/18: $0\exponent_out[11:0]
+    18/18: $0\mantissa_7[55:0]
+Creating decoders for process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+     1/2: $1\exponent_norm[13:0]
+     2/2: $1\quotient_norm[54:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.found' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.i' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.value' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$497.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$493.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.found' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.i' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.value' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$496.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+No latch inferred for signal `\fpu_div.\lzc52$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$492.$result' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+No latch inferred for signal `\fpu_div.\leading_bit_indicator' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+No latch inferred for signal `\fpu_div.\sticky_bit' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+No latch inferred for signal `\fpu_div.\guard_like_bit' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+No latch inferred for signal `\fpu_div.\mantissa_bits' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+No latch inferred for signal `\fpu_div.\exponent_norm' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+No latch inferred for signal `\fpu_div.\quotient_norm' from process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\fpu_div.\mantissa_7' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1805' with positive edge clock.
+Creating register for signal `\fpu_div.\exponent_out' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1806' with positive edge clock.
+Creating register for signal `\fpu_div.\dividend_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1807' with positive edge clock.
+Creating register for signal `\fpu_div.\divisor_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1808' with positive edge clock.
+Creating register for signal `\fpu_div.\exponent_work' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1809' with positive edge clock.
+Creating register for signal `\fpu_div.\quotient_reg' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1810' with positive edge clock.
+Creating register for signal `\fpu_div.\count' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1811' with positive edge clock.
+Creating register for signal `\fpu_div.\state' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1812' with positive edge clock.
+Creating register for signal `\fpu_div.$lookahead\quotient_reg$524' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1813' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:234$495' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1814' with positive edge clock.
+Creating register for signal `\fpu_div.$bitselwrite$pos$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$494' using process `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+  created $dff cell `$procdff$1815' with positive edge clock.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 52 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:84$780'.
+Found and cleaned up 52 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:83$566'.
+Found and cleaned up 8 empty switches in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:193$525'.
+Found and cleaned up 1 empty switch in `\fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+Removing empty process `fpu_div.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:168$517'.
+Cleaned up 113 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 22 unused cells and 546 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_div...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 530 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 507 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 504 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 503 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 502 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 28 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_div..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$1803: \quotient_reg -> { 1'1 \quotient_reg [53:0] }
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1622.
+    dead port 1/2 on $mux $procmux$1625.
+    dead port 2/2 on $mux $procmux$1632.
+    dead port 1/2 on $mux $procmux$1635.
+    dead port 2/2 on $mux $procmux$1663.
+    dead port 1/2 on $mux $procmux$1666.
+    dead port 1/2 on $mux $procmux$1674.
+Removed 7 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_div.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 495 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 490 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 5 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 0 unused cells and 40 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_div..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_div.
+    New ctrl vector for $pmux cell $procmux$1669: { $procmux$1633_CMP $auto$opt_reduce.cc:137:opt_pmux$1817 }
+    New ctrl vector for $pmux cell $procmux$1720: { $procmux$1633_CMP $auto$opt_reduce.cc:137:opt_pmux$1819 }
+    New ctrl vector for $pmux cell $procmux$1737: $auto$opt_reduce.cc:137:opt_pmux$1821
+    New ctrl vector for $pmux cell $procmux$1750: $auto$opt_reduce.cc:137:opt_pmux$1823
+    New ctrl vector for $pmux cell $procmux$1763: { $procmux$1633_CMP $auto$opt_reduce.cc:137:opt_pmux$1825 }
+  Optimizing cells in module \fpu_div.
+Performed a total of 5 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 495 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Computing hashes of 491 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 4 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 0 unused cells and 4 unused wires.
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.8.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \fpu_div..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \fpu_div.
+Performed a total of 0 changes.
+
+4.8.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 491 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 0 cells.
+
+4.8.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+
+4.8.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.8.20. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 30 bits (of 32) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:266$563 ($sub).
+Removed top 17 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:266$563 ($sub).
+Removed top 8 bits (of 14) from port B of cell fpu_div.$ge$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:252$557 ($ge).
+Removed top 31 bits (of 32) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:252$556 ($sub).
+Removed top 17 bits (of 32) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:252$556 ($sub).
+Removed top 13 bits (of 14) from port B of cell fpu_div.$le$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:251$555 ($le).
+Removed top 6 bits (of 7) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:240$554 ($sub).
+Converting cell fpu_div.$neg$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$539 ($neg) from signed to unsigned.
+Removed top 1 bits (of 8) from port A of cell fpu_div.$neg$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:231$539 ($neg).
+Removed top 13 bits (of 14) from port B of cell fpu_div.$gt$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:187$523 ($gt).
+Removed top 12 bits (of 14) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:177$520 ($sub).
+Removed top 1 bits (of 109) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:152$514 ($sub).
+Removed top 1 bits (of 109) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:152$514 ($sub).
+Removed top 1 bits (of 109) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:152$514 ($sub).
+Removed top 3 bits (of 14) from port B of cell fpu_div.$add$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:114$512 ($add).
+Converting cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:114$511 ($sub) from unsigned to signed.
+Removed top 1 bits (of 14) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:114$511 ($sub).
+Removed top 1 bits (of 14) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:114$511 ($sub).
+Removed top 1 bits (of 13) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub).
+Removed top 2 bits (of 13) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub).
+Converting cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub) from signed to unsigned.
+Removed top 1 bits (of 12) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub).
+Removed top 1 bits (of 11) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:110$509 ($sub).
+Converting cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:109$508 ($sub) from unsigned to signed.
+Removed top 2 bits (of 13) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:109$508 ($sub).
+Removed top 6 bits (of 13) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:109$508 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:109$508 ($sub).
+Removed top 1 bits (of 13) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub).
+Removed top 2 bits (of 13) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub).
+Converting cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub) from signed to unsigned.
+Removed top 1 bits (of 12) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub).
+Removed top 1 bits (of 11) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:106$506 ($sub).
+Converting cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:105$505 ($sub) from unsigned to signed.
+Removed top 2 bits (of 13) from port A of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:105$505 ($sub).
+Removed top 6 bits (of 13) from port B of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:105$505 ($sub).
+Removed top 1 bits (of 13) from port Y of cell fpu_div.$sub$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:105$505 ($sub).
+Removed top 1 bits (of 53) from port A of cell fpu_div.$shl$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:91$503 ($shl).
+Removed top 1 bits (of 53) from port A of cell fpu_div.$shl$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/fpu_div/fpu_div_t3.v:87$501 ($shl).
+Removed top 1 bits (of 2) from port B of cell fpu_div.$procmux$1633_CMP0 ($eq).
+Removed top 1 bits (of 2) from mux cell fpu_div.$procmux$1701 ($mux).
+Removed top 2 bits (of 56) from mux cell fpu_div.$procmux$1790 ($mux).
+Removed top 1 bits (of 56) from mux cell fpu_div.$procmux$1792 ($mux).
+Removed top 1 bits (of 2) from wire fpu_div.$procmux$1701_Y.
+Removed top 2 bits (of 56) from wire fpu_div.$procmux$1790_Y.
+Removed top 1 bits (of 56) from wire fpu_div.$procmux$1792_Y.
+Removed top 1 bits (of 109) from wire fpu_div.div_sub.
+Removed top 36 bits (of 109) from wire fpu_div.divisor_reg.
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+Removed 0 unused cells and 4 unused wires.
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module fpu_div.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\fpu_div'.
+Computing hashes of 491 cells of `\fpu_div'.
+Finding duplicate cells in `\fpu_div'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \fpu_div..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== fpu_div ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      513 wires
+     4376 wire bits
+       45 public wires
+     1369 public wire bits
+        8 ports
+      200 port bits
+      491 cells
+        1   $add
+        1   $and
+        8   $dff
+        2   $eq
+        2   $ge
+        1   $gt
+        1   $le
+      102   $logic_and
+      106   $logic_not
+      238   $mux
+        1   $neg
+        1   $not
+        4   $or
+        4   $pmux
+        3   $reduce_or
+        2   $shift
+        2   $shl
+        1   $shr
+       10   $sub
+        1   $xor
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module fpu_div...
+Found and reported 0 problems.
+
+5. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_fpu_div" and gate cell "gate_fpu_div".
+
+5.1. Executing FLATTEN pass (flatten design).
+
+5.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_fpu_div'.
+Removing unused module `\gold_fpu_div'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.3. Executing FUTURE pass.
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 792 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 791 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 1 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 791 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+    New input vector for $reduce_and cell $auto$miter.cc:263:create_miter_equiv$1837: { $auto$miter.cc:241:create_miter_equiv$1832 $auto$miter.cc:241:create_miter_equiv$1834 }
+  Optimizing cells in module \miter.
+Performed a total of 1 changes.
+
+6.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 790 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 1 unused cells and 5 unused wires.
+
+6.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+6.7.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+6.7.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 789 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.7.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.7.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.7.20. Finished fast OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 56) from port A of cell miter.$auto$miter.cc:233:create_miter_equiv$1833 ($eqx).
+Removed top 1 bits (of 2) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1826.
+Removed top 2 bits (of 56) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1827.
+Removed top 1 bits (of 56) from wire miter.$flatten\gate.$auto$wreduce.cc:514:run$1828.
+Removed top 26 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$475.
+Removed top 2 bits (of 54) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$476.
+Removed top 24 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$477.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$478.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$479.
+Removed top 25 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$480.
+Removed top 31 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$481.
+Removed top 20 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$482.
+Removed top 27 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$483.
+Removed top 29 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$484.
+Removed top 21 bits (of 32) from wire miter.$flatten\gold.$auto$wreduce.cc:514:run$485.
+Removed top 26 bits (of 32) from wire miter.$flatten\gold.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:203$65_Y.
+Removed top 23 bits (of 32) from wire miter.$flatten\gold.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:208$72_Y.
+Removed top 23 bits (of 32) from wire miter.$flatten\gold.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:209$74_Y.
+Removed top 2 bits (of 12) from wire miter.$flatten\gold.$ternary$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/double_fpu/fpu_div/fpu_div.v:213$79_Y.
+Removed top 1 bits (of 56) from wire miter.gold_mantissa_7.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 19 unused wires.
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 789 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      837 wires
+     9980 wire bits
+      135 public wires
+     3759 public wire bits
+        6 ports
+      132 port bits
+      789 cells
+        4   $add
+        3   $and
+        1   $assert
+       54   $dff
+      105   $eq
+        2   $eqx
+        2   $ge
+        5   $gt
+        1   $le
+      102   $logic_and
+      113   $logic_not
+      341   $mux
+        2   $neg
+        3   $not
+        5   $or
+        6   $pmux
+        1   $reduce_and
+        8   $reduce_or
+        2   $scopeinfo
+        4   $shift
+        5   $shl
+        2   $shr
+       18   $sub
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+7. Executing ASYNC2SYNC pass.
+
+8. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+9. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Final init constraint equation: { \gold.exponent_out \gold.count_out \gold.remainder_out \gold.quotient_out \gold.quotient \gold.remainder_msb \gold.remainder \gold.divisor_reg \gold.dividend_reg \gold.remainder_b \gold.remainder_shift_term \gold.mantissa_1 \gold.expon_final_5 \gold.expon_final_4_term \gold.expon_final_4_et0 \gold.expon_final_4 \gold.expon_final_3 \gold.expon_uf_term_4 \gold.expon_uf_gt_maxshift \gold.expon_uf_term_3 \gold.expon_uf_term_2 \gold.expon_uf_2 \gold.expon_shift_b \gold.expon_shift_a \gold.expon_final_2 \gold.expon_final_1 \gold.expon_uf_term_1 \gold.expon_uf_1 \gold.expon_term \gold.divisor_denorm [52:29] \gold.divisor_b_shifted \gold.divisor_b \gold.dividend_denorm [52:37] \gold.dividend_a_shifted \gold.dividend_a \gold.mantissa_b \gold.mantissa_a \gold.divisor_shift_2 \gold.dividend_shift_2 \gold.count_nonzero_reg_2 \gold.count_nonzero_reg \gold.enable_reg_e \gold.enable_reg_d \gold.enable_reg_c \gold.enable_reg_b \gold.enable_reg_a \gold.enable_reg \gold.enable_reg_2 \gate.state \gate.count \gate.quotient_reg \gate.exponent_work $flatten\gate.$auto$wreduce.cc:514:run$1830 [108:73] \gate.divisor_reg \gate.dividend_reg \gate.exponent_out \gate.mantissa_7 } = 1355'00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 789 cells to SAT database.
+Import proof for assert: $auto$miter.cc:268:create_miter_equiv$1838 when 1'1.
+
+Solving problem with 469671 variables and 1304216 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                                       Dec       Hex                                                                                                              Bin
+  ---- --------------------------------------------------------- ----------- --------- ----------------------------------------------------------------------------------------------------------------
+  init $flatten\gate.$auto$wreduce.cc:514:run$1830 [108:73]               --        --                                                                             000000000000000000000000000000000000
+  init \gate.count                                                         0         0                                                                                                          0000000
+  init \gate.dividend_reg                                                 --        --    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gate.divisor_reg                                                  --        --                                        0000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gate.exponent_out                                                  0         0                                                                                                     000000000000
+  init \gate.exponent_work                                                 0         0                                                                                                   00000000000000
+  init \gate.mantissa_7                                                   --        --                                                         00000000000000000000000000000000000000000000000000000000
+  init \gate.quotient_reg                                                 --        --                                                          0000000000000000000000000000000000000000000000000000000
+  init \gate.state                                                         0         0                                                                                                               00
+  init \gold.count_nonzero_reg                                             0         0                                                                                                                0
+  init \gold.count_nonzero_reg_2                                           0         0                                                                                                                0
+  init \gold.count_out                                                     0         0                                                                                                           000000
+  init \gold.dividend_a                                                   --        --                                                             0000000000000000000000000000000000000000000000000000
+  init \gold.dividend_a_shifted                                           --        --                                                                             000000000000000000000000000000000000
+  init \gold.dividend_denorm [52:37]                                       0         0                                                                                                 0000000000000000
+  init \gold.dividend_reg                                                 --        --                                                           000000000000000000000000000000000000000000000000000000
+  init \gold.dividend_shift_2                                              0         0                                                                                                           000000
+  init \gold.divisor_b                                                    --        --                                                             0000000000000000000000000000000000000000000000000000
+  init \gold.divisor_b_shifted                                             0         0                                                                                     0000000000000000000000000000
+  init \gold.divisor_denorm [52:29]                                        0         0                                                                                         000000000000000000000000
+  init \gold.divisor_reg                                                  --        --                                                           000000000000000000000000000000000000000000000000000000
+  init \gold.divisor_shift_2                                               0         0                                                                                                           000000
+  init \gold.enable_reg                                                    0         0                                                                                                                0
+  init \gold.enable_reg_2                                                  0         0                                                                                                                0
+  init \gold.enable_reg_a                                                  0         0                                                                                                                0
+  init \gold.enable_reg_b                                                  0         0                                                                                                                0
+  init \gold.enable_reg_c                                                  0         0                                                                                                                0
+  init \gold.enable_reg_d                                                  0         0                                                                                                                0
+  init \gold.enable_reg_e                                                  0         0                                                                                                                0
+  init \gold.expon_final_1                                                 0         0                                                                                                     000000000000
+  init \gold.expon_final_2                                                 0         0                                                                                                     000000000000
+  init \gold.expon_final_3                                                 0         0                                                                                                     000000000000
+  init \gold.expon_final_4                                                 0         0                                                                                                     000000000000
+  init \gold.expon_final_4_et0                                             0         0                                                                                                                0
+  init \gold.expon_final_4_term                                            0         0                                                                                                                0
+  init \gold.expon_final_5                                                 0         0                                                                                                     000000000000
+  init \gold.expon_shift_a                                                 0         0                                                                                                     000000000000
+  init \gold.expon_shift_b                                                 0         0                                                                                                     000000000000
+  init \gold.expon_term                                                    0         0                                                                                                     000000000000
+  init \gold.expon_uf_1                                                    0         0                                                                                                                0
+  init \gold.expon_uf_2                                                    0         0                                                                                                                0
+  init \gold.expon_uf_gt_maxshift                                          0         0                                                                                                                0
+  init \gold.expon_uf_term_1                                               0         0                                                                                                     000000000000
+  init \gold.expon_uf_term_2                                               0         0                                                                                                     000000000000
+  init \gold.expon_uf_term_3                                               0         0                                                                                                     000000000000
+  init \gold.expon_uf_term_4                                               0         0                                                                                                     000000000000
+  init \gold.exponent_out                                                  0         0                                                                                                     000000000000
+  init \gold.mantissa_1                                                   --        --                                                             0000000000000000000000000000000000000000000000000000
+  init \gold.mantissa_a                                                   --        --                                                             0000000000000000000000000000000000000000000000000000
+  init \gold.mantissa_b                                                   --        --                                                             0000000000000000000000000000000000000000000000000000
+  init \gold.quotient                                                     --        --                                                           000000000000000000000000000000000000000000000000000000
+  init \gold.quotient_out                                                 --        --                                                           000000000000000000000000000000000000000000000000000000
+  init \gold.remainder                                                    --        --                                                           000000000000000000000000000000000000000000000000000000
+  init \gold.remainder_b                                                  --        --     000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  init \gold.remainder_msb                                                 0         0                                                                                                                0
+  init \gold.remainder_out                                                --        --                                                            00000000000000000000000000000000000000000000000000000
+  init \gold.remainder_shift_term                                          0         0                                                                                                          0000000
+
+--- stderr ---
+ERROR: Called with -verify and proof did fail!
+exit_code=1

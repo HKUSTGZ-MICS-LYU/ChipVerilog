@@ -1,0 +1,1629 @@
+=== reference_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_ctrl'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150.1-156.16 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161.1-169.16 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210.1-256.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261.1-299.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304.1-312.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73 in module or1200_ctrl.
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18 in module or1200_ctrl.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 6 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 3 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+     1/1: $0\sig_trap[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+     1/1: $0\sig_syscall[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+     1/1: $0\comp_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+     1/1: $0\lsu_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+     1/1: $0\branch_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+     1/1: $0\pre_branch_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+     1/1: $0\rfwb_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+     1/1: $0\shrot_op[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+     1/1: $0\mac_op[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+     1/1: $0\alu_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+     1/1: $0\except_illegal[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+     1/1: $0\sel_imm[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+     1/1: $0\wb_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+     1/1: $0\ex_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+     1/1: $0\id_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+     1/1: $0\wb_rfaddrw[4:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+     1/1: $0\rf_addrw[4:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+     1/1: $1\lsu_addrofs[31:11]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+     1/1: $1\imm_signextend[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+     1/1: $1\multicycle[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+     1/1: $0\spr_addrimm[15:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+     1/1: $0\ex_macrc_op[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+     1/3: $3\sel_b[1:0]
+     2/3: $2\sel_b[1:0]
+     3/3: $1\sel_b[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+     1/2: $2\sel_a[1:0]
+     2/2: $1\sel_a[1:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ctrl.\lsu_addrofs' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+No latch inferred for signal `\or1200_ctrl.\imm_signextend' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+No latch inferred for signal `\or1200_ctrl.\multicycle' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+No latch inferred for signal `\or1200_ctrl.\sel_b' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+No latch inferred for signal `\or1200_ctrl.\sel_a' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ctrl.\sig_trap' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+  created $adff cell `$procdff$306' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_syscall' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+  created $adff cell `$procdff$309' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\comp_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+  created $adff cell `$procdff$312' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\lsu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+  created $adff cell `$procdff$315' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+  created $adff cell `$procdff$318' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\pre_branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+  created $adff cell `$procdff$321' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rfwb_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+  created $adff cell `$procdff$324' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\shrot_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+  created $adff cell `$procdff$327' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\mac_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+  created $adff cell `$procdff$330' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\alu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+  created $adff cell `$procdff$333' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\except_illegal' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+  created $adff cell `$procdff$336' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sel_imm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+  created $adff cell `$procdff$339' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+  created $adff cell `$procdff$342' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+  created $adff cell `$procdff$345' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\id_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+  created $adff cell `$procdff$348' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_rfaddrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+  created $adff cell `$procdff$351' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rf_addrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+  created $adff cell `$procdff$354' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\spr_addrimm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+  created $adff cell `$procdff$357' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_macrc_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+  created $adff cell `$procdff$360' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+Cleaned up 53 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+6. Executing JSON backend.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: c35cd98528, CPU: user 0.03s system 0.00s, MEM: 40.85 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 64% 4x read_verilog (0 sec), 15% 2x write_json (0 sec), ...
+exit_code=0
+
+=== candidate_precheck ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ctrl'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+
+4.2. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+Removed 0 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100 in module or1200_ctrl.
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82 in module or1200_ctrl.
+Marked 5 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62 in module or1200_ctrl.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 41 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 3 switches.
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+     1/1: $1\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$25.$result[0:0]$180
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$169'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$162'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+     1/1: $1\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$22.$result[3:0]$161
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+     1/5: $3\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$20.$result[1:0]$156
+     2/5: $2\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$20.$result[1:0]$154
+     3/5: $1\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$20.$result[1:0]$148
+     4/5: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$21.insn[31:0]$150
+     5/5: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$21.$result[0:0]$149
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+     1/2: $2\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$19.$result[3:0]$141
+     2/2: $1\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$19.$result[3:0]$140
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+     1/4: $2\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$17.$result[2:0]$135
+     2/4: $1\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$17.$result[2:0]$129
+     3/4: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$18.insn[31:0]$131
+     4/4: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$18.$result[0:0]$130
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+     1/1: $1\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$16.$result[4:0]$122
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$107'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+     1/1: $1\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$14.$result[0:0]$106
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+     1/2: $0\wb_rfaddrw[4:0]
+     2/2: $0\wb_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+     1/22: $4\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.insn[31:0]$93
+     2/22: $4\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.$result[0:0]$92
+     3/22: $3\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.insn[31:0]$91
+     4/22: $3\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.$result[0:0]$90
+     5/22: $2\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.insn[31:0]$88
+     6/22: $2\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.$result[0:0]$87
+     7/22: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.insn[31:0]$86
+     8/22: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.$result[0:0]$85
+     9/22: $0\except_illegal[0:0]
+    10/22: $0\ex_macrc_op[0:0]
+    11/22: $0\sig_trap[0:0]
+    12/22: $0\sig_syscall[0:0]
+    13/22: $0\spr_addrimm[15:0]
+    14/22: $0\lsu_op[3:0]
+    15/22: $0\rfwb_op[2:0]
+    16/22: $0\rf_addrw[4:0]
+    17/22: $0\comp_op[3:0]
+    18/22: $0\shrot_op[1:0]
+    19/22: $0\mac_op[1:0]
+    20/22: $0\alu_op[3:0]
+    21/22: $0\branch_op[2:0]
+    22/22: $0\ex_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+     1/17: $4\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.$result[0:0]$81
+     2/17: $4\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.$result[2:0]$80
+     3/17: $3\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.$result[0:0]$78
+     4/17: $3\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.insn[31:0]$79
+     5/17: $3\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.$result[2:0]$76
+     6/17: $3\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.insn[31:0]$77
+     7/17: $2\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.insn[31:0]$74
+     8/17: $2\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.$result[0:0]$73
+     9/17: $2\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.insn[31:0]$72
+    10/17: $2\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.$result[2:0]$71
+    11/17: $1\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.insn[31:0]$70
+    12/17: $1\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.$result[0:0]$69
+    13/17: $1\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.insn[31:0]$68
+    14/17: $1\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.$result[2:0]$67
+    15/17: $0\sel_imm[0:0]
+    16/17: $0\pre_branch_op[2:0]
+    17/17: $0\id_insn[31:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$10.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$25.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$25.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$9.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$169'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$24.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$169'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$24.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$169'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$8.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$162'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$23.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$162'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$23.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$162'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$7.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$22.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$22.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$6.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$20.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$20.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$21.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$21.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$5.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$19.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$19.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$4.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$17.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$17.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$18.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$18.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$3.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$16.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$16.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$16.pre_br' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$2.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$107'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$15.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$107'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$15.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$107'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$1.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$14.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$14.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ctrl.\wb_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+  created $adff cell `$procdff$525' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_rfaddrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+  created $adff cell `$procdff$528' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$531' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$534' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\alu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$537' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\mac_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$540' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\shrot_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$543' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\comp_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$546' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rf_addrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$549' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rfwb_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$552' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\lsu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$555' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\spr_addrimm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$558' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_syscall' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$561' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_trap' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$564' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_macrc_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$567' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\except_illegal' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$570' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$573' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$13.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+  created $adff cell `$procdff$576' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\id_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$579' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\pre_branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$582' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sel_imm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$585' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$588' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$11.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$591' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$594' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$12.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+  created $adff cell `$procdff$597' with positive edge clock and positive level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$176'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$169'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$162'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$157'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$142'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$136'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$123'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$114'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$107'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$102'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$100'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$82'.
+Found and cleaned up 4 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$62'.
+Cleaned up 20 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+6. Executing JSON backend.
+
+End of script. Logfile hash: a77ab4ab9b, CPU: user 0.03s system 0.00s, MEM: 40.85 MB peak
+Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+Time spent: 54% 4x read_verilog (0 sec), 17% 2x write_json (0 sec), ...
+exit_code=0
+
+=== equivalence_proof ===
+$ /hpc/home/connect.ytan910/miniforge3/bin/yosys -s /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys
+--- stdout ---
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, g++ 14.3.0-16 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/yosys_1770212898249/work=/usr/local/src/conda/yosys-0.62 -fdebug-prefix-map=/hpc/home/connect.ytan910/miniforge3=/usr/local/src/conda-prefix -fPIC -O3)
+
+-- Executing script file `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5/work/script.ys' --
+
+1. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v' to AST representation.
+Warning: Encountered `parallel_case' comment! Such legacy hot comments are supported by Yosys, but are not part of any formal language specification. Using the Verilog `parallel_case' attribute or the SystemVerilog `unique' or `priority' keywords is recommended!
+Generating RTLIL representation for module `\or1200_ctrl'.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150.1-156.16 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161.1-169.16 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210.1-256.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261.1-299.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Note: Assuming pure combinatorial block at /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304.1-312.4 in
+compliance with IEC 62142(E):2005 / IEEE Std. 1364.1(E):2002. Recommending
+use of @* instead of @(...) for better match of synthesis and simulation.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+Removed 0 unused modules.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73 in module or1200_ctrl.
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18 in module or1200_ctrl.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 6 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 3 switches.
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+     1/1: $0\sig_trap[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+     1/1: $0\sig_syscall[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+     1/1: $0\comp_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+     1/1: $0\lsu_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+     1/1: $0\branch_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+     1/1: $0\pre_branch_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+     1/1: $0\rfwb_op[2:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+     1/1: $0\shrot_op[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+     1/1: $0\mac_op[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+     1/1: $0\alu_op[3:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+     1/1: $0\except_illegal[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+     1/1: $0\sel_imm[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+     1/1: $0\wb_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+     1/1: $0\ex_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+     1/1: $0\id_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+     1/1: $0\wb_rfaddrw[4:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+     1/1: $0\rf_addrw[4:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+     1/1: $1\lsu_addrofs[31:11]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+     1/1: $1\imm_signextend[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+     1/1: $1\multicycle[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+     1/1: $0\spr_addrimm[15:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+     1/1: $0\ex_macrc_op[0:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+     1/3: $3\sel_b[1:0]
+     2/3: $2\sel_b[1:0]
+     3/3: $1\sel_b[1:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+     1/2: $2\sel_a[1:0]
+     2/2: $1\sel_a[1:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ctrl.\lsu_addrofs' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+No latch inferred for signal `\or1200_ctrl.\imm_signextend' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+No latch inferred for signal `\or1200_ctrl.\multicycle' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+No latch inferred for signal `\or1200_ctrl.\sel_b' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+No latch inferred for signal `\or1200_ctrl.\sel_a' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ctrl.\sig_trap' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+  created $adff cell `$procdff$306' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_syscall' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+  created $adff cell `$procdff$309' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\comp_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+  created $adff cell `$procdff$312' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\lsu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+  created $adff cell `$procdff$315' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+  created $adff cell `$procdff$318' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\pre_branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+  created $adff cell `$procdff$321' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rfwb_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+  created $adff cell `$procdff$324' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\shrot_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+  created $adff cell `$procdff$327' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\mac_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+  created $adff cell `$procdff$330' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\alu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+  created $adff cell `$procdff$333' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\except_illegal' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+  created $adff cell `$procdff$336' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sel_imm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+  created $adff cell `$procdff$339' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+  created $adff cell `$procdff$342' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+  created $adff cell `$procdff$345' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\id_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+  created $adff cell `$procdff$348' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_rfaddrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+  created $adff cell `$procdff$351' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rf_addrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+  created $adff cell `$procdff$354' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\spr_addrimm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+  created $adff cell `$procdff$357' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_macrc_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+  created $adff cell `$procdff$360' with positive edge clock and positive level reset.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:914$106'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:895$100'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:883$95'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:832$90'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:821$85'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:774$83'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:678$78'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:665$73'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:633$68'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:535$63'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:472$58'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:393$56'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:380$54'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:362$49'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:344$47'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:334$45'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:317$41'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:304$40'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:261$39'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:210$38'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:190$33'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:175$28'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:161$23'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:150$18'.
+Cleaned up 53 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.3. Executing FLATTEN pass (flatten design).
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+Removed 19 unused cells and 127 unused wires.
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ctrl...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 193 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Computing hashes of 170 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Computing hashes of 157 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Computing hashes of 145 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 48 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$281.
+    dead port 1/2 on $mux $procmux$284.
+    dead port 1/2 on $mux $procmux$290.
+    dead port 1/2 on $mux $procmux$299.
+Removed 4 multiplexer ports.
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ctrl.
+    New ctrl vector for $pmux cell $procmux$161: { $auto$opt_reduce.cc:137:opt_pmux$364 $auto$opt_reduce.cc:137:opt_pmux$362 $procmux$164_CMP $procmux$163_CMP $procmux$162_CMP }
+    New ctrl vector for $pmux cell $procmux$196: { $auto$opt_reduce.cc:137:opt_pmux$368 $eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:131$13_Y $procmux$207_CMP $procmux$206_CMP $procmux$205_CMP $procmux$204_CMP $procmux$203_CMP $procmux$202_CMP $procmux$201_CMP $procmux$200_CMP $procmux$198_CMP $auto$opt_reduce.cc:137:opt_pmux$366 }
+    New ctrl vector for $pmux cell $procmux$254: $auto$opt_reduce.cc:137:opt_pmux$370
+  Optimizing cells in module \or1200_ctrl.
+Performed a total of 3 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 146 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+Removed 0 unused cells and 52 unused wires.
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ctrl.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 146 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 26 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$116 ($auto$proc_rom.cc:155:do_switch$114).
+Removed top 26 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$120 ($auto$proc_rom.cc:155:do_switch$118).
+Removed top 26 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$124 ($auto$proc_rom.cc:155:do_switch$122).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:114$7 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:115$9 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:131$13 ($eq).
+Removed top 2 bits (of 9) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:907$105 ($eq).
+Removed top 2 bits (of 9) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_ctrl/or1200_ctrl.v:926$111 ($eq).
+Removed top 2 bits (of 6) from port B of cell or1200_ctrl.$procmux$162_CMP0 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$procmux$163_CMP0 ($eq).
+Removed top 4 bits (of 6) from port B of cell or1200_ctrl.$procmux$164_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$165_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$166_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell or1200_ctrl.$procmux$167_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$189_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell or1200_ctrl.$procmux$209_CMP0 ($eq).
+Removed top 1 bits (of 3) from port B of cell or1200_ctrl.$procmux$244_CMP0 ($eq).
+Removed top 1 bits (of 3) from port B of cell or1200_ctrl.$procmux$244_CMP1 ($eq).
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 143 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Printing statistics.
+
+=== or1200_ctrl ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      158 wires
+      731 wire bits
+       48 public wires
+      323 public wire bits
+       42 ports
+      280 port bits
+      143 cells
+       19   $adff
+        6   $and
+       44   $eq
+        4   $logic_and
+        4   $logic_not
+        3   $mem_v2
+       47   $mux
+        4   $or
+        4   $pmux
+        8   $reduce_or
+
+4.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ctrl...
+Found and reported 0 problems.
+
+5. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/timescale.v' to AST representation.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Des/or1200/or1200_defines.v' to AST representation.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v
+Parsing SystemVerilog input from `/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v' to AST representation.
+Generating RTLIL representation for module `\or1200_ctrl'.
+Successfully finished Verilog frontend.
+
+8. Executing PREP pass.
+
+8.1. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1.1. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+
+8.1.2. Analyzing design hierarchy..
+Top module:  \or1200_ctrl
+Removed 0 unused modules.
+
+8.2. Executing PROC pass (convert processes to netlists).
+
+8.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527 in module or1200_ctrl.
+Marked 3 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484 in module or1200_ctrl.
+Marked 1 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472 in module or1200_ctrl.
+Marked 2 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470 in module or1200_ctrl.
+Marked 4 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452 in module or1200_ctrl.
+Marked 5 switch rules as full_case in process $proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432 in module or1200_ctrl.
+Removed a total of 0 dead cases.
+
+8.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 41 assignments to connections.
+
+8.2.4. Executing PROC_INIT pass (extract init attributes).
+
+8.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+Found async reset \rst in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+
+8.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 3 switches.
+
+8.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+     1/1: $1\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$395.$result[0:0]$550
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$539'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$532'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+     1/1: $1\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$392.$result[3:0]$531
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+     1/5: $3\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$390.$result[1:0]$526
+     2/5: $2\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$390.$result[1:0]$524
+     3/5: $1\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$390.$result[1:0]$520
+     4/5: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$391.$result[0:0]$519
+     5/5: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$391.insn[31:0]$518
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+     1/2: $2\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$389.$result[3:0]$511
+     2/2: $1\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$389.$result[3:0]$510
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+     1/4: $2\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$387.$result[2:0]$505
+     2/4: $1\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$387.$result[2:0]$501
+     3/4: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$388.$result[0:0]$500
+     4/4: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$388.insn[31:0]$499
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+     1/1: $1\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$386.$result[4:0]$492
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$477'.
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+     1/1: $1\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$384.$result[0:0]$476
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+     1/2: $0\wb_rfaddrw[4:0]
+     2/2: $0\wb_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+     1/22: $4\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.$result[0:0]$463
+     2/22: $4\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.insn[31:0]$462
+     3/22: $3\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.$result[0:0]$461
+     4/22: $3\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.insn[31:0]$460
+     5/22: $2\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.$result[0:0]$458
+     6/22: $2\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.insn[31:0]$457
+     7/22: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.$result[0:0]$456
+     8/22: $1\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.insn[31:0]$455
+     9/22: $0\except_illegal[0:0]
+    10/22: $0\ex_macrc_op[0:0]
+    11/22: $0\sig_trap[0:0]
+    12/22: $0\sig_syscall[0:0]
+    13/22: $0\spr_addrimm[15:0]
+    14/22: $0\comp_op[3:0]
+    15/22: $0\lsu_op[3:0]
+    16/22: $0\rfwb_op[2:0]
+    17/22: $0\shrot_op[1:0]
+    18/22: $0\mac_op[1:0]
+    19/22: $0\alu_op[3:0]
+    20/22: $0\rf_addrw[4:0]
+    21/22: $0\branch_op[2:0]
+    22/22: $0\ex_insn[31:0]
+Creating decoders for process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+     1/17: $4\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.$result[0:0]$451
+     2/17: $4\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.$result[2:0]$450
+     3/17: $3\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.$result[0:0]$447
+     4/17: $3\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.insn[31:0]$446
+     5/17: $3\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.$result[2:0]$449
+     6/17: $3\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.insn[31:0]$448
+     7/17: $2\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.$result[2:0]$444
+     8/17: $2\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.insn[31:0]$443
+     9/17: $2\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.$result[0:0]$442
+    10/17: $2\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.insn[31:0]$441
+    11/17: $1\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.$result[2:0]$440
+    12/17: $1\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.insn[31:0]$439
+    13/17: $1\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.$result[0:0]$438
+    14/17: $1\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.insn[31:0]$437
+    15/17: $0\sel_imm[0:0]
+    16/17: $0\id_insn[31:0]
+    17/17: $0\pre_branch_op[2:0]
+
+8.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$395.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$395.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+No latch inferred for signal `\or1200_ctrl.\is_illegal$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$380.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$394.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$539'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$394.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$539'.
+No latch inferred for signal `\or1200_ctrl.\is_trap$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$379.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$539'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$393.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$532'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$393.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$532'.
+No latch inferred for signal `\or1200_ctrl.\is_syscall$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$378.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$532'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$392.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$392.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+No latch inferred for signal `\or1200_ctrl.\decode_lsu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$377.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$391.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:207$391.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$390.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$390.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+No latch inferred for signal `\or1200_ctrl.\decode_mac_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$376.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$389.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$389.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+No latch inferred for signal `\or1200_ctrl.\decode_alu_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$375.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$388.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:306$388.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$387.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$387.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+No latch inferred for signal `\or1200_ctrl.\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$374.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$386.pre_br' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$386.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$386.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+No latch inferred for signal `\or1200_ctrl.\decode_rf_addrw_fn$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$373.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$385.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$477'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$385.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$477'.
+No latch inferred for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$372.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$477'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$384.insn' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$384.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+No latch inferred for signal `\or1200_ctrl.\decode_imm_signextend$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$371.$result' from process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+
+8.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\or1200_ctrl.\wb_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+  created $adff cell `$procdff$895' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\wb_rfaddrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+  created $adff cell `$procdff$898' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$901' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$904' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rf_addrw' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$907' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\alu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$910' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\mac_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$913' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\shrot_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$916' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\rfwb_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$919' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\lsu_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$922' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\comp_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$925' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\spr_addrimm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$928' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_syscall' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$931' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sig_trap' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$934' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\ex_macrc_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$937' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\except_illegal' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$940' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$943' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\is_macrc$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:515$383.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+  created $adff cell `$procdff$946' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\pre_branch_op' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$949' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\id_insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$952' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\sel_imm' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$955' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$958' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_sel_imm$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:451$382.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$961' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.insn' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$964' with positive edge clock and positive level reset.
+Creating register for signal `\or1200_ctrl.\decode_pre_branch$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:450$381.$result' using process `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+  created $adff cell `$procdff$967' with positive edge clock and positive level reset.
+
+8.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+8.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:428$546'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:427$539'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:426$532'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:425$527'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:424$512'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:423$506'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$493'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:421$484'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:416$477'.
+Found and cleaned up 1 empty switch in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:407$472'.
+Found and cleaned up 2 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:521$470'.
+Found and cleaned up 3 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:456$452'.
+Found and cleaned up 4 empty switches in `\or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+Removing empty process `or1200_ctrl.$proc$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:439$432'.
+Cleaned up 20 empty switches.
+
+8.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.3. Executing FLATTEN pass (flatten design).
+
+8.4. Executing FUTURE pass.
+
+8.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+Removed 41 unused cells and 287 unused wires.
+
+8.7. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ctrl...
+Found and reported 0 problems.
+
+8.8. Executing OPT pass (performing simple optimizations).
+
+8.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 234 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Computing hashes of 186 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Computing hashes of 183 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 51 cells.
+
+8.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$580.
+    dead port 2/2 on $mux $procmux$582.
+    dead port 2/2 on $mux $procmux$588.
+    dead port 2/2 on $mux $procmux$602.
+    dead port 2/2 on $mux $procmux$623.
+    dead port 1/2 on $mux $procmux$819.
+    dead port 1/2 on $mux $procmux$822.
+    dead port 1/2 on $mux $procmux$834.
+    dead port 1/2 on $mux $procmux$837.
+Removed 9 multiplexer ports.
+
+8.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ctrl.
+    New ctrl vector for $pmux cell $procmux$826: { $procmux$833_CMP $procmux$831_CMP $auto$opt_reduce.cc:137:opt_pmux$969 $procmux$829_CMP $procmux$828_CMP $procmux$827_CMP }
+  Optimizing cells in module \or1200_ctrl.
+Performed a total of 1 changes.
+
+8.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 175 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+8.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+Removed 0 unused cells and 33 unused wires.
+
+8.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \or1200_ctrl..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+8.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \or1200_ctrl.
+Performed a total of 0 changes.
+
+8.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 175 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+8.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+
+8.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+8.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 26 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$554 ($auto$proc_rom.cc:155:do_switch$552).
+Removed top 28 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$558 ($auto$proc_rom.cc:155:do_switch$556).
+Removed top 26 address bits (of 32) from memory init port or1200_ctrl.$auto$mem.cc:351:emit$562 ($auto$proc_rom.cc:155:do_switch$560).
+Removed top 2 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:329$536 ($eq).
+Removed top 1 bits (of 2) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:209$525 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:406$398 ($eq).
+Removed top 1 bits (of 3) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:321$490 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:405$396 ($eq).
+Removed top 1 bits (of 3) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:321$489 ($eq).
+Removed top 2 bits (of 3) from port B of cell or1200_ctrl.$eq$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:336$544 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$593_CMP0 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$procmux$618_CMP0 ($eq).
+Removed top 2 bits (of 3) from mux cell or1200_ctrl.$procmux$621 ($mux).
+Removed top 5 bits (of 6) from port B of cell or1200_ctrl.$procmux$632_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$632_CMP1 ($eq).
+Removed top 2 bits (of 6) from port B of cell or1200_ctrl.$procmux$827_CMP0 ($eq).
+Removed top 4 bits (of 6) from port B of cell or1200_ctrl.$procmux$828_CMP0 ($eq).
+Removed top 3 bits (of 6) from port B of cell or1200_ctrl.$procmux$829_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$830_CMP0 ($eq).
+Removed top 1 bits (of 6) from port B of cell or1200_ctrl.$procmux$831_CMP0 ($eq).
+Removed top 5 bits (of 6) from port B of cell or1200_ctrl.$procmux$832_CMP0 ($eq).
+Removed top 2 bits (of 3) from wire or1200_ctrl.$2\decode_rfwb_op$func$/hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex/or1200_ctrl/or1200_ctrl_t5.v:422$387.$result[2:0]$505.
+
+8.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+Removed 0 unused cells and 1 unused wires.
+
+8.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+8.12. Executing OPT pass (performing simple optimizations).
+
+8.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module or1200_ctrl.
+
+8.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\or1200_ctrl'.
+Computing hashes of 172 cells of `\or1200_ctrl'.
+Finding duplicate cells in `\or1200_ctrl'.
+Removed a total of 0 cells.
+
+8.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \or1200_ctrl..
+
+8.12.4. Finished fast OPT passes.
+
+8.13. Printing statistics.
+
+=== or1200_ctrl ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      209 wires
+     1266 wire bits
+       82 public wires
+      772 public wire bits
+       42 ports
+      280 port bits
+      172 cells
+       19   $adff
+       50   $eq
+       11   $logic_and
+        3   $logic_not
+        5   $logic_or
+        3   $mem_v2
+       66   $mux
+        1   $or
+        5   $pmux
+        2   $reduce_bool
+        7   $reduce_or
+
+8.14. Executing CHECK pass (checking for obvious problems).
+Checking module or1200_ctrl...
+Found and reported 0 problems.
+
+9. Executing MITER pass (creating miter circuit).
+Creating miter cell "miter" with gold cell "gold_or1200_ctrl" and gate cell "gate_or1200_ctrl".
+
+9.1. Executing FLATTEN pass (flatten design).
+
+9.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+Removed 0 unused cells and 1 unused wires.
+
+10. Executing PREP pass.
+
+10.1. Executing HIERARCHY pass (managing design hierarchy).
+
+10.1.1. Analyzing design hierarchy..
+Top module:  \miter
+
+10.1.2. Analyzing design hierarchy..
+Top module:  \miter
+Removing unused module `\gate_or1200_ctrl'.
+Removing unused module `\gold_or1200_ctrl'.
+Removed 2 unused modules.
+Module miter directly or indirectly contains formal properties -> setting "keep" attribute.
+
+10.2. Executing PROC pass (convert processes to netlists).
+
+10.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+10.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+10.2.4. Executing PROC_INIT pass (extract init attributes).
+
+10.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+10.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+10.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+10.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+10.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+10.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+10.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.3. Executing FUTURE pass.
+
+10.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 4 unused wires.
+
+10.6. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+10.7. Executing OPT pass (performing simple optimizations).
+
+10.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 347 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Computing hashes of 340 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 7 cells.
+
+10.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+    New input vector for $reduce_and cell $auto$miter.cc:263:create_miter_equiv$1035: { $auto$miter.cc:241:create_miter_equiv$972 $auto$miter.cc:241:create_miter_equiv$974 $auto$miter.cc:241:create_miter_equiv$976 $auto$miter.cc:241:create_miter_equiv$978 $auto$miter.cc:241:create_miter_equiv$980 $auto$miter.cc:241:create_miter_equiv$982 $auto$miter.cc:241:create_miter_equiv$984 $auto$miter.cc:241:create_miter_equiv$986 $auto$miter.cc:241:create_miter_equiv$988 $auto$miter.cc:241:create_miter_equiv$990 $auto$miter.cc:241:create_miter_equiv$994 $auto$miter.cc:241:create_miter_equiv$996 $auto$miter.cc:241:create_miter_equiv$998 $auto$miter.cc:241:create_miter_equiv$1000 $auto$miter.cc:241:create_miter_equiv$1002 $auto$miter.cc:241:create_miter_equiv$1004 $auto$miter.cc:241:create_miter_equiv$1010 $auto$miter.cc:241:create_miter_equiv$1016 $auto$miter.cc:241:create_miter_equiv$1018 $auto$miter.cc:241:create_miter_equiv$1020 $auto$miter.cc:241:create_miter_equiv$1022 $auto$miter.cc:241:create_miter_equiv$1024 $auto$miter.cc:241:create_miter_equiv$1026 $auto$miter.cc:241:create_miter_equiv$1028 $auto$miter.cc:241:create_miter_equiv$1030 $auto$miter.cc:241:create_miter_equiv$1032 $auto$miter.cc:241:create_miter_equiv$1034 }
+  Optimizing cells in module \miter.
+Performed a total of 1 changes.
+
+10.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 340 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+Removed 0 unused cells and 7 unused wires.
+
+10.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+10.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \miter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+
+10.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \miter.
+Performed a total of 0 changes.
+
+10.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 340 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+10.8. Executing WREDUCE pass (reducing word size of cells).
+
+10.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+10.11. Executing OPT pass (performing simple optimizations).
+
+10.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module miter.
+
+10.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\miter'.
+Computing hashes of 340 cells of `\miter'.
+Finding duplicate cells in `\miter'.
+Removed a total of 0 cells.
+
+10.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \miter..
+
+10.11.4. Finished fast OPT passes.
+
+10.12. Printing statistics.
+
+=== miter ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      463 wires
+     2538 wire bits
+      205 public wires
+     1615 public wire bits
+       11 ports
+       42 port bits
+      340 cells
+       38   $adff
+        6   $and
+        1   $assert
+       88   $eq
+       27   $eqx
+       15   $logic_and
+        6   $logic_not
+        5   $logic_or
+        6   $mem_v2
+      113   $mux
+        1   $not
+        5   $or
+        9   $pmux
+        1   $reduce_and
+        2   $reduce_bool
+       15   $reduce_or
+        2   $scopeinfo
+
+10.13. Executing CHECK pass (checking for obvious problems).
+Checking module miter...
+Found and reported 0 problems.
+
+11. Executing ASYNC2SYNC pass.
+Replacing miter.$flatten\gate.$procdff$895 ($adff): ARST=\in_rst, D=$flatten\gate.$0\wb_insn[31:0], Q=\gate.wb_insn
+Replacing miter.$flatten\gate.$procdff$898 ($adff): ARST=\in_rst, D=$flatten\gate.$0\wb_rfaddrw[4:0], Q=\gate.wb_rfaddrw
+Replacing miter.$flatten\gate.$procdff$901 ($adff): ARST=\in_rst, D=$flatten\gate.$0\ex_insn[31:0], Q=\gate.ex_insn
+Replacing miter.$flatten\gate.$procdff$904 ($adff): ARST=\in_rst, D=$flatten\gate.$0\branch_op[2:0], Q=\gate.branch_op
+Replacing miter.$flatten\gate.$procdff$907 ($adff): ARST=\in_rst, D=$flatten\gate.$0\rf_addrw[4:0], Q=\gate.rf_addrw
+Replacing miter.$flatten\gate.$procdff$910 ($adff): ARST=\in_rst, D=$flatten\gate.$0\alu_op[3:0], Q=\gate.alu_op
+Replacing miter.$flatten\gate.$procdff$913 ($adff): ARST=\in_rst, D=$flatten\gate.$0\mac_op[1:0], Q=\gate.mac_op
+Replacing miter.$flatten\gate.$procdff$916 ($adff): ARST=\in_rst, D=$flatten\gate.$0\shrot_op[1:0], Q=\gate.shrot_op
+Replacing miter.$flatten\gate.$procdff$919 ($adff): ARST=\in_rst, D=$flatten\gate.$0\rfwb_op[2:0], Q=\gate.rfwb_op
+Replacing miter.$flatten\gate.$procdff$922 ($adff): ARST=\in_rst, D=$flatten\gate.$0\lsu_op[3:0], Q=\gate.lsu_op
+Replacing miter.$flatten\gate.$procdff$925 ($adff): ARST=\in_rst, D=$flatten\gate.$0\comp_op[3:0], Q=\gate.comp_op
+Replacing miter.$flatten\gate.$procdff$928 ($adff): ARST=\in_rst, D=$flatten\gate.$0\spr_addrimm[15:0], Q=\gate.spr_addrimm
+Replacing miter.$flatten\gate.$procdff$931 ($adff): ARST=\in_rst, D=$flatten\gate.$0\sig_syscall[0:0], Q=\gate.sig_syscall
+Replacing miter.$flatten\gate.$procdff$934 ($adff): ARST=\in_rst, D=$flatten\gate.$0\sig_trap[0:0], Q=\gate.sig_trap
+Replacing miter.$flatten\gate.$procdff$937 ($adff): ARST=\in_rst, D=$flatten\gate.$0\ex_macrc_op[0:0], Q=\gate.ex_macrc_op
+Replacing miter.$flatten\gate.$procdff$940 ($adff): ARST=\in_rst, D=$flatten\gate.$0\except_illegal[0:0], Q=\gate.except_illegal
+Replacing miter.$flatten\gate.$procdff$949 ($adff): ARST=\in_rst, D=$flatten\gate.$0\pre_branch_op[2:0], Q=\gate.pre_branch_op
+Replacing miter.$flatten\gate.$procdff$952 ($adff): ARST=\in_rst, D=$flatten\gate.$0\id_insn[31:0], Q=\gate.id_insn
+Replacing miter.$flatten\gate.$procdff$955 ($adff): ARST=\in_rst, D=$flatten\gate.$0\sel_imm[0:0], Q=\gate.sel_imm
+Replacing miter.$flatten\gold.$procdff$306 ($adff): ARST=\in_rst, D=$flatten\gold.$0\sig_trap[0:0], Q=\gold.sig_trap
+Replacing miter.$flatten\gold.$procdff$309 ($adff): ARST=\in_rst, D=$flatten\gold.$0\sig_syscall[0:0], Q=\gold.sig_syscall
+Replacing miter.$flatten\gold.$procdff$312 ($adff): ARST=\in_rst, D=$flatten\gold.$0\comp_op[3:0], Q=\gold.comp_op
+Replacing miter.$flatten\gold.$procdff$315 ($adff): ARST=\in_rst, D=$flatten\gold.$0\lsu_op[3:0], Q=\gold.lsu_op
+Replacing miter.$flatten\gold.$procdff$318 ($adff): ARST=\in_rst, D=$flatten\gold.$0\branch_op[2:0], Q=\gold.branch_op
+Replacing miter.$flatten\gold.$procdff$321 ($adff): ARST=\in_rst, D=$flatten\gold.$0\pre_branch_op[2:0], Q=\gold.pre_branch_op
+Replacing miter.$flatten\gold.$procdff$324 ($adff): ARST=\in_rst, D=$flatten\gold.$0\rfwb_op[2:0], Q=\gold.rfwb_op
+Replacing miter.$flatten\gold.$procdff$327 ($adff): ARST=\in_rst, D=$flatten\gold.$0\shrot_op[1:0], Q=\gold.shrot_op
+Replacing miter.$flatten\gold.$procdff$330 ($adff): ARST=\in_rst, D=$flatten\gold.$0\mac_op[1:0], Q=\gold.mac_op
+Replacing miter.$flatten\gold.$procdff$333 ($adff): ARST=\in_rst, D=$flatten\gold.$0\alu_op[3:0], Q=\gold.alu_op
+Replacing miter.$flatten\gold.$procdff$336 ($adff): ARST=\in_rst, D=$flatten\gold.$0\except_illegal[0:0], Q=\gold.except_illegal
+Replacing miter.$flatten\gold.$procdff$339 ($adff): ARST=\in_rst, D=$flatten\gold.$0\sel_imm[0:0], Q=\gold.sel_imm
+Replacing miter.$flatten\gold.$procdff$342 ($adff): ARST=\in_rst, D=$flatten\gold.$0\wb_insn[31:0], Q=\gold.wb_insn
+Replacing miter.$flatten\gold.$procdff$345 ($adff): ARST=\in_rst, D=$flatten\gold.$0\ex_insn[31:0], Q=\gold.ex_insn
+Replacing miter.$flatten\gold.$procdff$348 ($adff): ARST=\in_rst, D=$flatten\gold.$0\id_insn[31:0], Q=\gold.id_insn
+Replacing miter.$flatten\gold.$procdff$351 ($adff): ARST=\in_rst, D=$flatten\gold.$0\wb_rfaddrw[4:0], Q=\gold.wb_rfaddrw
+Replacing miter.$flatten\gold.$procdff$354 ($adff): ARST=\in_rst, D=$flatten\gold.$0\rf_addrw[4:0], Q=\gold.rf_addrw
+Replacing miter.$flatten\gold.$procdff$357 ($adff): ARST=\in_rst, D=$flatten\gold.$0\spr_addrimm[15:0], Q=\gold.spr_addrimm
+Replacing miter.$flatten\gold.$procdff$360 ($adff): ARST=\in_rst, D=$flatten\gold.$0\ex_macrc_op[0:0], Q=\gold.ex_macrc_op
+
+12. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+13. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+--- stderr ---
+ERROR: Failed to import cell $flatten\gate.$auto$proc_rom.cc:155:do_switch$552 (type $mem_v2) to SAT database.
+exit_code=1
