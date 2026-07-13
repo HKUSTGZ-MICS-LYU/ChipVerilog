@@ -6,7 +6,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 SRC_ROOT_DEFAULT="${SCRIPT_DIR}/Description"
 TMP_ROOT_DEFAULT="${SCRIPT_DIR}/.codex_batch_work"
 LOG_ROOT_DEFAULT="${SCRIPT_DIR}/.codex_batch_logs"
-OUT_ROOT_DEFAULT="${SCRIPT_DIR}/Generated_Verilog_codex"
+OUT_ROOT_DEFAULT="${SCRIPT_DIR}/Result/codex"
 CODEX_BIN_DEFAULT="${CODEX_BIN:-codex}"
 SYSTEM_PROMPT_DEFAULT="Please act as a professional verilog designer."
 MODEL_DEFAULT="gpt-5.4"
@@ -57,9 +57,9 @@ Notes:
       Description/b.txt
       Description/c.txt
   - Output files are written into separate folders under OUT_ROOT as:
-      Generated_Verilog_codex/a/a_t1.v
-      Generated_Verilog_codex/b/b_t1.v
-      Generated_Verilog_codex/c/c_t1.v
+      Result/codex/a/a_t1.v
+      Result/codex/b/b_t1.v
+      Result/codex/c/c_t1.v
   - Each txt file is embedded directly into the prompt passed to Codex.
   - The script explicitly forces `gpt-5.4` with reasoning effort `high`
     unless you override them with --model or --effort.
@@ -71,10 +71,10 @@ Notes:
 Examples:
   ./run_codex_batch_txt.sh
   ./run_codex_batch_txt.sh --module fpu_add_description
-  ./run_codex_batch_txt.sh --out-root /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex
+  ./run_codex_batch_txt.sh --out-root Result/codex
   ./run_codex_batch_txt.sh --force
   ./run_codex_batch_txt.sh --fail-fast
-  ./run_codex_batch_txt.sh --out-root /hpc/home/connect.ytan910/code/LLM/ChipVerilogSuite/Result/codex --suffix t14
+  ./run_codex_batch_txt.sh --out-root Result/codex --suffix t14
 USAGE
 }
 
@@ -151,7 +151,8 @@ terminal_exec() {
       "${terminal}" --new-tab --title "${title}" -e bash -lc "${command_line}" &
       ;;
     xfce4-terminal|mate-terminal)
-      "${terminal}" --title="${title}" --command "bash -lc '${command_line}'" &
+      # -x passes the remaining arguments as the command; avoids nested-quote breakage.
+      "${terminal}" --title="${title}" -x bash -lc "${command_line}" &
       ;;
     xterm)
       "${terminal}" -T "${title}" -e bash -lc "${command_line}" &
@@ -337,6 +338,13 @@ module_output_path() {
   printf '%s\n' "${output_dir}/${output_name}"
 }
 
+module_status_path() {
+  local module_name=$1
+  local safe_name
+  safe_name=$(safe_module_name "${module_name}")
+  printf '%s\n' "${LOG_ROOT}/${safe_name}_${OUTPUT_SUFFIX}.status"
+}
+
 run_module() {
   local txt_file=$1
   local module_name=$2
@@ -466,8 +474,17 @@ PROMPT_EOF
 }
 
 if [[ ${INTERNAL_RUN} -eq 1 ]]; then
-  run_module "${INTERNAL_TX_FILE}" "${INTERNAL_MODULE_NAME}"
-  status=$?
+  # `if` guards run_module against set -e so a failure still reaches the status
+  # write and the keep-open prompt (previously the terminal closed instantly on
+  # failure, exactly when you wanted to read the error).
+  if run_module "${INTERNAL_TX_FILE}" "${INTERNAL_MODULE_NAME}"; then
+    status=0
+  else
+    status=$?
+  fi
+  # GUI terminal clients detach from the emulator process, so the parent cannot
+  # observe our exit code; publish it through a status file instead.
+  printf '%s\n' "${status}" > "$(module_status_path "${INTERNAL_MODULE_NAME}")"
   if [[ ${KEEP_TERMINAL_OPEN} -eq 1 ]]; then
     echo
     read -r -p "Module finished with status ${status}. Press Enter to close this terminal..." _unused || true
@@ -482,6 +499,8 @@ failure_count=0
 skipped_count=0
 failed_modules=()
 skipped_modules=()
+bg_pids=()
+bg_modules=()
 
 if [[ ${USE_TERMINAL} -eq 1 ]]; then
   TERMINAL_BIN_RESOLVED=$(find_terminal) || {
@@ -536,13 +555,43 @@ while IFS= read -r -d '' txt_file; do
       self_args+=(--keep-terminal-open)
     fi
 
+    status_path=$(module_status_path "${module_name}")
+    rm -f "${status_path}"
+
     terminal_exec \
       "${TERMINAL_BIN_RESOLVED}" \
       "codex-${module_name}" \
       "${self_args[@]}"
 
     if [[ ${SEQUENTIAL} -eq 1 ]]; then
-      if wait; then
+      # GUI terminal clients detach immediately, so `wait` would return at once
+      # (and a bare `wait` always succeeds). The internal run publishes its exit
+      # code through the status file; poll for it to actually serialize modules.
+      until [[ -f "${status_path}" ]]; do
+        sleep 2
+      done
+      module_status=$(<"${status_path}")
+      if [[ "${module_status}" == "0" ]]; then
+        success_count=$((success_count + 1))
+      else
+        failure_count=$((failure_count + 1))
+        failed_modules+=("${module_name}")
+        echo "module failed: ${module_name} (status ${module_status})" >&2
+        if [[ ${FAIL_FAST} -eq 1 ]]; then
+          break
+        fi
+      fi
+      if [[ ${SLEEP_SECONDS} -gt 0 ]]; then
+        sleep "${SLEEP_SECONDS}"
+      fi
+    fi
+  else
+    if [[ ${SEQUENTIAL} -eq 0 ]]; then
+      run_module "${txt_file}" "${module_name}" &
+      bg_pids+=($!)
+      bg_modules+=("${module_name}")
+    else
+      if run_module "${txt_file}" "${module_name}"; then
         success_count=$((success_count + 1))
       else
         failure_count=$((failure_count + 1))
@@ -556,20 +605,6 @@ while IFS= read -r -d '' txt_file; do
         sleep "${SLEEP_SECONDS}"
       fi
     fi
-  else
-    if run_module "${txt_file}" "${module_name}"; then
-      success_count=$((success_count + 1))
-    else
-      failure_count=$((failure_count + 1))
-      failed_modules+=("${module_name}")
-      echo "module failed: ${module_name}" >&2
-      if [[ ${FAIL_FAST} -eq 1 ]]; then
-        break
-      fi
-    fi
-    if [[ ${SLEEP_SECONDS} -gt 0 ]]; then
-      sleep "${SLEEP_SECONDS}"
-    fi
   fi
 done < <(find "${SRC_ROOT}" -mindepth 1 -maxdepth 1 -type f -name '*.txt' -print0 | sort -z)
 
@@ -578,8 +613,21 @@ if [[ ${module_count} -eq 0 ]]; then
   exit 1
 fi
 
+if [[ ${USE_TERMINAL} -eq 0 && ${SEQUENTIAL} -eq 0 && ${#bg_pids[@]} -gt 0 ]]; then
+  for i in "${!bg_pids[@]}"; do
+    if wait "${bg_pids[$i]}"; then
+      success_count=$((success_count + 1))
+    else
+      failure_count=$((failure_count + 1))
+      failed_modules+=("${bg_modules[$i]}")
+      echo "module failed: ${bg_modules[$i]}" >&2
+    fi
+  done
+fi
+
 if [[ ${USE_TERMINAL} -eq 1 && ${SEQUENTIAL} -eq 0 ]]; then
-  echo "Launched ${module_count} txt/module terminal(s). Logs: ${LOG_ROOT}"
+  echo "Launched ${module_count} txt/module terminal(s); results NOT aggregated." \
+       "Check ${LOG_ROOT}/*.status for per-module exit codes. Logs: ${LOG_ROOT}"
 else
   echo "Processed ${module_count} txt/module(s): attempted=${attempted_count}, skipped=${skipped_count}, success=${success_count}, failed=${failure_count}. Logs: ${LOG_ROOT}"
 fi

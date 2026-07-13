@@ -130,19 +130,50 @@ python3 tools/formal_equivalence.py suite
 
 Default outputs:
 
-- Per-module reports: `reports/function_result/formal_equivalence_suite/<module>.json`
-- Per-module CSV: `reports/function_result/formal_equivalence_suite/<module>.csv`
+- Per-module reports: `reports/function_result/formal_equivalence_suite/<model>/<module>.json`
+- Per-module CSV: `reports/function_result/formal_equivalence_suite/<model>/<module>.csv`
 - Suite summary JSON: `reports/formal_equivalence_suite_summary.json`
 - Suite summary CSV: `reports/formal_equivalence_suite_summary.csv`
 
+Per-module reports are written into a per-model subdirectory so that one model's
+run never overwrites another model's audit trail. Runs filtered with `--model`
+do NOT rewrite the global `reports/compile_suite/` and `reports/syntax_result/`
+CSVs (those always describe a full all-model sweep).
+
+### `tools/recompute_corrected_summary.py`
+
+Reclassifies the shipped `reports/formal_equivalence_suite_detailed.csv` without
+re-running any verification: drops the unmeasurable `verilog_cordic_core` family,
+restricts to the 62-task intersection shared by all models, separates
+self-checking from print-only testbench passes, splits full vs bounded
+equivalence proofs, and reclassifies solver timeouts as inconclusive. Outputs go
+to `reports/corrected/`.
+
 ## Output Interpretation
 
-- `compile_pass` means the candidate passed the compile gate.
-- `simulation_pass` means the candidate passed available simulation checks.
-- `equivalence_pass` means the candidate passed formal equivalence when that flow was applicable.
-- `function_pass` in the summaries is the main pass count used by the suite-level rollup.
+- `compile_pass`: the candidate passed the iverilog compile gate (which also
+  requires the top module to carry the reference name).
+- `simulation_pass`: the candidate passed a **self-checking** testbench. Modules
+  whose testbench is print-only (no fail/error/mismatch strings, e.g.
+  `mips_16/register_file`, `mips_16/IF_stage`, `mips_16/mips_16_core_top`,
+  `or1200/or1200_top`) cannot conclude via simulation; they fall through to the
+  formal flow and the sim outcome is recorded in `reason` only.
+- `equivalence_pass`: total formal passes, split into
+  `equivalence_pass_full` (unbounded combinational SAT proof or temporal
+  induction via `equiv_induct`) and `equivalence_pass_bounded`
+  (`sat -seq <depth> -set-init-zero`, a bounded check from an all-zero initial
+  state — NOT a full proof; depth defaults to 16, see `--depth`).
+- `function_pass`: rows with status `pass` from either flow; the main rollup.
+- Statuses `equivalence_timeout` and `equivalence_error` mark inconclusive
+  formal runs (solver timeout / yosys tooling error). They are deliberately NOT
+  counted as `function_fail`: a timeout proves nothing about the candidate.
+- `generated_stub_modules` in detail rows lists submodules that were replaced by
+  auto-generated stubs; an equivalence pass with stubs only covers the logic
+  outside the stubbed cones.
 
 ## Notes
 
 - `generate_deepseek_results.py` writes into `Result/deepseek/` by default, but the verifier works for any `Result/<model>/` layout such as `codex`, `claude`, or `deepseek`.
 - `formal_equivalence.py verify` expects a directory under `Result/<model>/<module>/` so it can infer the model name automatically.
+- The Src leaf `double_fpu/des/verilog/fpu_double` maps to the result/Des name `fpu` (the directory was renamed after the Des/Result trees were built).
+- Known comparability caveats of the shipped (2026-05-07) reports: `Result/claude` and `Result/codex` lack `fpu_addsub_pipeline` and `fpu_mul_pipeline` (deepseek has 64 tasks, the others 62), and the `verilog_cordic_core` references do not elaborate under yosys, so that family has no functional verdicts. Use `reports/corrected/` for cross-model comparisons.

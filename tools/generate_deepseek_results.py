@@ -22,11 +22,20 @@ Do not include markdown fences, explanations, TODOs, or placeholders."""
 CODE_BLOCK_RE = re.compile(r"```(?:verilog|systemverilog)?\s*(.*?)```", re.IGNORECASE | re.DOTALL)
 VERILOG_START_RE = re.compile(r"^\s*(?:`timescale|`include|`define|module\b|/\*|//)", re.MULTILINE)
 
+# Src leaf directories that were renamed after the Des/Result trees were built.
+# Without this map a rerun would generate into Result/deepseek/fpu_double/, which
+# the verifier cannot map into Des and silently skips.
+RESULT_NAME_OVERRIDES = {"fpu_double": "fpu"}
+
+# HTTP statuses that will not succeed on retry.
+NON_RETRYABLE_HTTP = {400, 401, 403, 404, 422}
+
 
 @dataclass(frozen=True)
 class GenerationTask:
     description_file: Path
     module_name: str
+    top_name: str
     output_dir: Path
     log_dir: Path
     attempt_indices: tuple[int, ...]
@@ -45,8 +54,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", default="deepseek-v4-pro")
     parser.add_argument(
         "--api-key",
-        default=os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY"),
-        help="Defaults to DEEPSEEK_API_KEY, then OPENAI_API_KEY.",
+        default=os.environ.get("DEEPSEEK_API_KEY"),
+        help="Defaults to DEEPSEEK_API_KEY. (OPENAI_API_KEY is deliberately NOT used: "
+        "sending another provider's credential to api.deepseek.com would disclose it.)",
     )
     parser.add_argument(
         "--thinking",
@@ -111,7 +121,7 @@ def validate_api_key(api_key: str) -> None:
 
 def detect_module_name(description_file: Path, src_root: Path, codex_root: Path) -> str:
     relative_parts = description_file.relative_to(src_root).parts
-    leaf_name = description_file.parent.name
+    leaf_name = RESULT_NAME_OVERRIDES.get(description_file.parent.name, description_file.parent.name)
 
     candidates = [leaf_name]
     if relative_parts and relative_parts[0] == "mips_16":
@@ -121,6 +131,13 @@ def detect_module_name(description_file: Path, src_root: Path, codex_root: Path)
         if (codex_root / candidate).is_dir():
             return candidate
     return candidates[0]
+
+
+def detect_top_name(description_file: Path) -> str:
+    """The module name the candidate must declare: the Des reference top, which is
+    the leaf directory name (mips_16 result dirs add a mips_ prefix, but the RTL
+    top keeps the bare name, e.g. Result mips_alu -> module alu)."""
+    return RESULT_NAME_OVERRIDES.get(description_file.parent.name, description_file.parent.name)
 
 
 def build_attempt_indices(samples: int) -> tuple[int, ...]:
@@ -145,16 +162,24 @@ def discover_tasks(
             GenerationTask(
                 description_file=description_file,
                 module_name=module_name,
+                top_name=detect_top_name(description_file),
                 output_dir=output_root / module_name,
                 log_dir=log_root / module_name,
                 attempt_indices=attempt_indices,
             )
         )
+    if module_filter:
+        unknown = sorted(module_filter - {task.module_name for task in tasks})
+        if unknown:
+            raise SystemExit(
+                f"--modules names not found in Src: {', '.join(unknown)} "
+                "(valid names are result module names, e.g. cordic, or1200_alu, mips_alu)"
+            )
     return tasks
 
 
-def build_user_prompt(module_name: str, description: str) -> str:
-    return f"""Generate a Verilog implementation for the module "{module_name}".
+def build_user_prompt(top_name: str, description: str) -> str:
+    return f"""Generate a Verilog implementation for the module "{top_name}".
 
 Requirements:
 - Return only Verilog source code.
@@ -192,7 +217,10 @@ def extract_message_content(response_payload: dict) -> str:
                 "DeepSeek returned reasoning_content but no final message.content. "
                 "Re-run with --thinking disabled or inspect the saved response log."
             )
-        return content
+        raise RuntimeError(
+            f"DeepSeek returned empty message.content (finish_reason={finish_reason!r}). "
+            "Refusing to write an empty candidate file; inspect the saved response log."
+        )
     if isinstance(content, list):
         fragments = []
         for part in content:
@@ -278,6 +306,8 @@ def call_deepseek_api(
         except error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             last_error = ApiRequestError(f"HTTP {exc.code}: {detail}")
+            if exc.code in NON_RETRYABLE_HTTP:
+                raise last_error from exc
         except Exception as exc:  # noqa: BLE001
             last_error = ApiRequestError(str(exc))
 
@@ -312,7 +342,7 @@ def write_text_file(path: Path, content: str) -> None:
 
 def generate_one_file(task: GenerationTask, output_file: Path, args: argparse.Namespace) -> None:
     description = task.description_file.read_text(encoding="utf-8")
-    prompt = build_user_prompt(task.module_name, description)
+    prompt = build_user_prompt(task.top_name, description)
     request_payload = build_request_payload(
         model=args.model,
         prompt=prompt,
@@ -367,6 +397,11 @@ def generate_one_file(task: GenerationTask, output_file: Path, args: argparse.Na
     write_text_file(raw_content_log, raw_text if raw_text.endswith("\n") else raw_text + "\n")
 
     normalized_text = normalize_verilog(raw_text)
+    if not normalized_text.strip():
+        raise RuntimeError(
+            "normalized candidate is empty after fence stripping; refusing to write "
+            f"an empty {output_file.name} (see {raw_content_log})"
+        )
     write_text_file(normalized_log, normalized_text)
     output_file.write_text(normalized_text, encoding="utf-8")
 

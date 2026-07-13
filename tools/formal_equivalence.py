@@ -38,6 +38,8 @@ STATUS_VALUES = [
     "reference_fail",
     "elaboration_fail",
     "interface_fail",
+    "equivalence_timeout",
+    "equivalence_error",
 ]
 DETAIL_FIELDS = [
     "model",
@@ -54,6 +56,7 @@ DETAIL_FIELDS = [
     "proof_type",
     "tb_file",
     "tb_top",
+    "tb_self_checking",
     "artifact_dir",
     "reason",
     "reference_precheck",
@@ -65,6 +68,7 @@ DETAIL_FIELDS = [
     "interface_reason",
     "interface_aliases_applied",
     "counterexample_summary",
+    "generated_stub_modules",
     "compile_gate_status",
     "compile_gate_exit_code",
     "compile_gate_warning_count",
@@ -87,7 +91,16 @@ COMPILE_FIELDS = [
     "warning_excerpt",
     "error_excerpt",
 ]
-SUMMARY_FIELDS = ["model", "module_dir", "compile_pass", "simulation_pass", "equivalence_pass"]
+SUMMARY_FIELDS = [
+    "model",
+    "module_dir",
+    "compile_pass",
+    "function_pass",
+    "simulation_pass",
+    "equivalence_pass",
+    "equivalence_pass_full",
+    "equivalence_pass_bounded",
+]
 REPORT_FAMILY_NAMES = {"cordic_core": "verilog_cordic_core"}
 PREFIX_PRIORITY = {"timescale.v": 0}
 VERILOG_SUFFIXES = {".v", ".sv", ".vh", ".inc"}
@@ -160,9 +173,14 @@ INSTANCE_BODY_RE = re.compile(
     r"(?ms)([A-Za-z_][A-Za-z0-9_$]*)\s*(?:#\s*\([^;]*?\))?\s+([A-Za-z_][A-Za-z0-9_$]*)\s*\((.*?)\)\s*;"
 )
 SIM_FAIL_RE = re.compile(r"(FAIL|ERROR|MISMATCH)", re.IGNORECASE)
+NEGATED_FAIL_RE = re.compile(
+    r"\b(?:no|0|zero)\s+(?:errors?|failures?|mismatch(?:es)?)\b"
+    r"|\b(?:errors?|failures?|mismatch(?:es)?)\s*[:=]\s*0\b",
+    re.IGNORECASE,
+)
+STRING_LITERAL_RE = re.compile(r'"((?:[^"\\]|\\.)*)"')
+SELF_CHECK_TOKEN_RE = re.compile(r"fail|error|mismatch|wrong|incorrect", re.IGNORECASE)
 EVENT_RE = re.compile(r"\b(?:posedge|negedge)\b")
-PORT_BLOCK_RE = re.compile(r"\b(input|output|inout)\b(.*?);", re.IGNORECASE | re.DOTALL)
-TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_$]*")
 DECL_BLOCK_RE = re.compile(r"(?m)^\s*(input|output|inout|wire|reg|logic)\b(.*?);", re.DOTALL)
 NUMBER_RE = re.compile(r"^\d+$")
 
@@ -194,6 +212,7 @@ class TestbenchInfo:
     path: Path
     top: str
     includes_reference: bool
+    self_checking: bool = False
 
 
 @dataclass
@@ -240,6 +259,8 @@ class CandidateResult:
     interface_reason: str = ""
     interface_aliases_applied: list[str] = field(default_factory=list)
     counterexample_summary: str = ""
+    generated_stub_modules: list[str] = field(default_factory=list)
+    tb_self_checking: bool = False
     compile_gate_status: str = "fail"
     compile_gate_exit_code: int = 1
     compile_gate_warning_count: int = 0
@@ -252,6 +273,7 @@ class CandidateResult:
         row = asdict(self)
         row["reason_bucket"] = self.reason_bucket or self.status
         row["interface_aliases_applied"] = json.dumps(self.interface_aliases_applied)
+        row["generated_stub_modules"] = json.dumps(self.generated_stub_modules)
         return row
 
     def syntax_row(self) -> dict[str, object]:
@@ -410,12 +432,15 @@ def pass_metrics(rows: Sequence[CandidateResult]) -> dict[str, int]:
     compile_pass = sum(1 for row in rows if row.status != "compile_fail")
     function_pass = sum(1 for row in rows if row.status == "pass")
     simulation_pass = sum(1 for row in rows if row.flow == "simulation_tb" and row.status == "pass")
-    equivalence_pass = sum(1 for row in rows if row.flow == "equivalence" and row.status == "pass")
+    equivalence_pass_rows = [row for row in rows if row.flow == "equivalence" and row.status == "pass"]
+    equivalence_pass_bounded = sum(1 for row in equivalence_pass_rows if row.proof_type == "bounded_seq")
     return {
         "compile_pass": compile_pass,
         "function_pass": function_pass,
         "simulation_pass": simulation_pass,
-        "equivalence_pass": equivalence_pass,
+        "equivalence_pass": len(equivalence_pass_rows),
+        "equivalence_pass_full": len(equivalence_pass_rows) - equivalence_pass_bounded,
+        "equivalence_pass_bounded": equivalence_pass_bounded,
     }
 
 
@@ -535,6 +560,23 @@ def attempt_from_name(filename: str) -> str:
 
 def warning_count(text: str) -> int:
     return len(re.findall(r"warning:", text, flags=re.IGNORECASE))
+
+
+def sim_failure_lines(text: str) -> list[str]:
+    """Output lines that indicate functional failure, ignoring negated forms like '0 errors'."""
+    lines = []
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if line and SIM_FAIL_RE.search(line) and not NEGATED_FAIL_RE.search(line):
+            lines.append(line)
+    return lines
+
+
+def tb_is_self_checking(tb_file: Path) -> bool:
+    """A testbench counts as self-checking iff some display/format string can express
+    a fail verdict; a print-only bench cannot produce a trustworthy pass."""
+    text = strip_comments(read_text(tb_file))
+    return any(SELF_CHECK_TOKEN_RE.search(literal) for literal in STRING_LITERAL_RE.findall(text))
 
 
 def summarize_lines(text: str, patterns: Sequence[str], limit: int = 8) -> str:
@@ -694,7 +736,13 @@ def classify_module_dir(des_module_dir: Path, reference_file: Path) -> tuple[Tes
     tb_top = select_tb_top(tb_path)
     includes_reference = reference_basename in include_targets(tb_path)
     same_dir_support = [path for path in extras if path != tb_path]
-    return TestbenchInfo(path=tb_path, top=tb_top, includes_reference=includes_reference), same_dir_support
+    tb_info = TestbenchInfo(
+        path=tb_path,
+        top=tb_top,
+        includes_reference=includes_reference,
+        self_checking=tb_is_self_checking(tb_path),
+    )
+    return tb_info, same_dir_support
 
 
 def select_tb_top(tb_file: Path) -> str:
@@ -748,18 +796,15 @@ def select_support_file(
     return ranked[0][4]
 
 
-def resolve_support_files(
-    family_cache: FamilyCache,
-    reference_file: Path,
-    candidate_file: Path,
-    same_dir_support: Sequence[Path],
-) -> list[Path]:
-    defined_modules = set(module_names_in_file(reference_file))
-    defined_modules.update(module_names_in_file(candidate_file))
+def resolve_support_files_for(family_cache: FamilyCache, primary_files: Sequence[Path]) -> list[Path]:
+    """Resolve Des support files for ONE design (gold or gate) independently, so a
+    candidate's internal module names can never poison the reference build."""
+    defined_modules: set[str] = set()
+    for path in primary_files:
+        defined_modules.update(module_names_in_file(path))
     selected: list[Path] = []
-    source_files = [reference_file, candidate_file]
     pending_modules: set[str] = set()
-    for path in source_files:
+    for path in primary_files:
         for name in instance_module_names(path):
             if name in defined_modules or name in PRIMITIVE_MODULE_NAMES:
                 continue
@@ -783,8 +828,8 @@ def resolve_support_files(
             if nested_name in defined_modules or nested_name in PRIMITIVE_MODULE_NAMES:
                 continue
             pending_modules.add(nested_name)
-    selected = [path for path in stable_path_list(selected) if path != reference_file]
-    return selected
+    primary_resolved = {path.resolve() for path in primary_files}
+    return [path for path in stable_path_list(selected) if path.resolve() not in primary_resolved]
 
 
 def unresolved_instance_modules(source_files: Sequence[Path]) -> list[str]:
@@ -991,22 +1036,28 @@ def render_stub_module(spec: StubModuleSpec) -> str:
     return render_zero_stub(spec)
 
 
-def generate_missing_support_file(unresolved_modules: Sequence[str], source_files: Sequence[Path], artifact_dir: Path) -> Path | None:
+def generate_missing_support_file(
+    unresolved_modules: Sequence[str],
+    source_files: Sequence[Path],
+    artifact_dir: Path,
+    filename: str = "_generated_support.v",
+) -> tuple[Path | None, list[str]]:
     if not unresolved_modules:
-        return None
+        return None, []
     specs = build_stub_specs(unresolved_modules, source_files)
     if not specs:
-        return None
-    stub_path = artifact_dir / "_generated_support.v"
+        return None, []
+    stub_path = artifact_dir / filename
     modules = [render_stub_module(specs[name]) for name in sorted(specs)]
     write_text(stub_path, "\n\n".join(modules) + "\n")
-    return stub_path
+    return stub_path, sorted(specs)
 
 
 def include_dirs_for(candidate_file: Path, ctx: ModuleContext, workdir: Path | None = None) -> list[Path]:
-    dirs = [ctx.family_root, ctx.des_module_dir]
-    if workdir is not None:
-        dirs.append(workdir)
+    # workdir must come FIRST: staged candidate copies have to shadow the reference
+    # source for testbenches that `include the DUT file, independent of the tool's
+    # cwd-based include search order.
+    dirs = ([workdir] if workdir is not None else []) + [ctx.family_root, ctx.des_module_dir]
     return stable_path_list(dirs)
 
 
@@ -1021,7 +1072,16 @@ def stage_assets(des_module_dir: Path, workdir: Path) -> None:
 
 def clear_artifact_dir(artifact_dir: Path) -> None:
     ensure_dir(artifact_dir)
-    for name in ["compile.log", "sim.log", "equivalence.log", "result.json", "_generated_support.v", "candidate_check.out"]:
+    for name in [
+        "compile.log",
+        "sim.log",
+        "equivalence.log",
+        "result.json",
+        "_generated_support.v",
+        "_generated_support_gold.v",
+        "_generated_support_gate.v",
+        "candidate_check.out",
+    ]:
         path = artifact_dir / name
         if path.exists():
             path.unlink()
@@ -1031,7 +1091,7 @@ def clear_artifact_dir(artifact_dir: Path) -> None:
 
 
 def cleanup_transient_artifacts(artifact_dir: Path) -> None:
-    for name in ["_generated_support.v", "candidate_check.out"]:
+    for name in ["_generated_support.v", "_generated_support_gold.v", "_generated_support_gate.v", "candidate_check.out"]:
         path = artifact_dir / name
         if path.exists():
             path.unlink()
@@ -1153,6 +1213,32 @@ def detect_proof_type(paths: Sequence[Path]) -> str:
     return "strict_comb"
 
 
+def read_verilog_command(files: Sequence[Path], include_dirs: Sequence[Path]) -> str:
+    parts = ["read_verilog", "-sv"]
+    for include_dir in include_dirs:
+        parts.append(f"-I{include_dir}")
+    parts.extend(str(path) for path in files)
+    return " ".join(shlex_quote(part) for part in parts)
+
+
+def staged_design_lines(
+    files: Sequence[Path],
+    include_dirs: Sequence[Path],
+    top: str,
+    stash_name: str,
+    extra_prep: Sequence[str] = (),
+) -> list[str]:
+    lines = [
+        "design -reset",
+        "design -reset-vlog",
+        read_verilog_command(files, include_dirs),
+        f"prep -top {shlex_quote(top)} -flatten",
+    ]
+    lines.extend(extra_prep)
+    lines.append(f"design -stash {shlex_quote(stash_name)}")
+    return lines
+
+
 def equivalence_script(
     reference_files: Sequence[Path],
     candidate_files: Sequence[Path],
@@ -1161,25 +1247,9 @@ def equivalence_script(
     proof_type: str,
     depth: int,
 ) -> str:
-    def read_cmd(files: Sequence[Path]) -> str:
-        parts = ["read_verilog", "-sv"]
-        for include_dir in include_dirs:
-            parts.append(f"-I{include_dir}")
-        parts.extend(str(path) for path in files)
-        return " ".join(shlex_quote(part) for part in parts)
-
-    def staged_design(files: Sequence[Path], stash_name: str) -> list[str]:
-        return [
-            "design -reset",
-            "design -reset-vlog",
-            read_cmd(files),
-            f"prep -top {shlex_quote(top)} -flatten",
-            f"design -stash {shlex_quote(stash_name)}",
-        ]
-
     lines = ["# auto-generated"]
-    lines.extend(staged_design(reference_files, "gold"))
-    lines.extend(staged_design(candidate_files, "gate"))
+    lines.extend(staged_design_lines(reference_files, include_dirs, top, "gold"))
+    lines.extend(staged_design_lines(candidate_files, include_dirs, top, "gate"))
     lines.append("design -reset")
     lines.append(f"design -copy-from gold -as {shlex_quote('gold_' + top)} {shlex_quote(top)}")
     lines.append(f"design -copy-from gate -as {shlex_quote('gate_' + top)} {shlex_quote(top)}")
@@ -1193,6 +1263,38 @@ def equivalence_script(
     else:
         lines.append("sat -verify -prove-asserts")
     return "\n".join(lines) + "\n"
+
+
+def equivalence_induction_script(
+    reference_files: Sequence[Path],
+    candidate_files: Sequence[Path],
+    include_dirs: Sequence[Path],
+    top: str,
+    depth: int,
+) -> str:
+    extra_prep = ["memory_map", "async2sync"]
+    lines = ["# auto-generated (temporal induction attempt)"]
+    lines.extend(staged_design_lines(reference_files, include_dirs, top, "gold", extra_prep))
+    lines.extend(staged_design_lines(candidate_files, include_dirs, top, "gate", extra_prep))
+    lines.append("design -reset")
+    lines.append(f"design -copy-from gold -as {shlex_quote('gold_' + top)} {shlex_quote(top)}")
+    lines.append(f"design -copy-from gate -as {shlex_quote('gate_' + top)} {shlex_quote(top)}")
+    lines.append(f"equiv_make {shlex_quote('gold_' + top)} {shlex_quote('gate_' + top)} equiv")
+    lines.append("hierarchy -top equiv")
+    lines.append("clean")
+    lines.append(f"equiv_simple -seq {depth}")
+    lines.append(f"equiv_induct -seq {depth}")
+    lines.append("equiv_status -assert")
+    return "\n".join(lines) + "\n"
+
+
+def extract_counterexample(output: str, limit: int = 12) -> str:
+    lines = output.splitlines()
+    for index, line in enumerate(lines):
+        if re.search(r"model found|proof did fail", line, re.IGNORECASE):
+            excerpt = [entry.strip() for entry in lines[index : index + limit] if entry.strip()]
+            return " | ".join(excerpt)
+    return ""
 
 
 def build_module_context(
@@ -1267,6 +1369,7 @@ def build_result(
         proof_type=proof_type,
         tb_file=str(ctx.tb_info.path) if ctx.tb_info else "",
         tb_top=ctx.tb_info.top if ctx.tb_info else "",
+        tb_self_checking=ctx.tb_info.self_checking if ctx.tb_info else False,
         artifact_dir=str(artifact_dir),
         reason=reason,
         compile_gate_status="pass" if compile_gate.passed else "fail",
@@ -1383,8 +1486,9 @@ def run_simulation_flow(
         result.reason_bucket = "simulation_runtime_fail"
         result.simulation_exit_code = run_result.exit_code
         return SimulationFlowResult(final_result=result)
-    if SIM_FAIL_RE.search(combined):
-        reason = summarize_lines(combined, [r"fail", r"error", r"mismatch"], limit=8) or "simulation output reported failure"
+    failure_lines = sim_failure_lines(combined)
+    if failure_lines:
+        reason = " | ".join(failure_lines[:8])
         if plain_verilog_fallback_used:
             reason = f"plain Verilog tb compile fallback used; {reason}"
         result = build_result(
@@ -1425,13 +1529,14 @@ def run_equivalence_flow(
     candidate_file: Path,
     artifact_dir: Path,
     compile_gate: CompileGateResult,
-    support_files: Sequence[Path],
+    ref_support: Sequence[Path],
+    cand_support: Sequence[Path],
 ) -> CandidateResult:
     workdir = artifact_dir / "work"
     ensure_dir(workdir)
     include_dirs = include_dirs_for(candidate_file, ctx, workdir)
-    reference_files = [*ctx.prefix_files, ctx.reference_file, *support_files]
-    candidate_files = [*ctx.prefix_files, candidate_file, *support_files]
+    reference_files = [*ctx.prefix_files, ctx.reference_file, *ref_support]
+    candidate_files = [*ctx.prefix_files, candidate_file, *cand_support]
     reference_json = workdir / "reference.json"
     candidate_json = workdir / "candidate.json"
     log_chunks: list[str] = []
@@ -1512,27 +1617,67 @@ def run_equivalence_flow(
         result.reason_bucket = "interface_fail"
         return result
 
-    proof_type = detect_proof_type([ctx.reference_file, candidate_file, *support_files])
-    eq_result = run_yosys_script(
-        ctx.yosys,
-        equivalence_script(reference_files, candidate_files, include_dirs, ctx.reference_top, proof_type, ctx.depth),
-        workdir,
-        ctx.timeout,
-    )
-    log_chunks.append(command_log(eq_result, "equivalence_proof"))
+    proof_type = detect_proof_type([ctx.reference_file, candidate_file, *ref_support, *cand_support])
+    induction_used = False
+    eq_result: CommandResult | None = None
+    if proof_type == "bounded_seq":
+        induction_script = equivalence_induction_script(
+            reference_files, candidate_files, include_dirs, ctx.reference_top, ctx.depth
+        )
+        log_chunks.append(f"=== induction script ===\n{induction_script}")
+        induction_result = run_yosys_script(ctx.yosys, induction_script, workdir, ctx.timeout)
+        log_chunks.append(command_log(induction_result, "equivalence_induction"))
+        if induction_result.exit_code == 0 and not induction_result.timed_out:
+            induction_used = True
+            eq_result = induction_result
+    if eq_result is None:
+        proof_script = equivalence_script(
+            reference_files, candidate_files, include_dirs, ctx.reference_top, proof_type, ctx.depth
+        )
+        log_chunks.append(f"=== proof script ===\n{proof_script}")
+        eq_result = run_yosys_script(ctx.yosys, proof_script, workdir, ctx.timeout)
+        log_chunks.append(command_log(eq_result, "equivalence_proof"))
     write_text(artifact_dir / "equivalence.log", "\n".join(log_chunks))
-    status = "pass" if eq_result.exit_code == 0 else "function_fail"
-    reason = "equivalence passed" if status == "pass" else (
-        summarize_lines(eq_result.combined_output, [r"fail", r"error", r"assert", r"proof"], limit=8)
-        or "equivalence proof failed"
-    )
+
+    output = eq_result.combined_output
+    counterexample = ""
+    if induction_used:
+        status = "pass"
+        result_proof_type = "induction"
+        formal_status = "equivalent"
+        reason = f"equivalence proven by temporal induction (k={ctx.depth})"
+    elif eq_result.timed_out:
+        status = "equivalence_timeout"
+        result_proof_type = proof_type
+        formal_status = "unknown"
+        reason = f"yosys equivalence check timed out after {ctx.timeout}s; result inconclusive"
+    elif eq_result.exit_code == 0:
+        status = "pass"
+        result_proof_type = proof_type
+        if proof_type == "bounded_seq":
+            formal_status = "equivalent_bounded"
+            reason = f"equivalence passed (bounded, k={ctx.depth}, zero-initialized state)"
+        else:
+            formal_status = "equivalent"
+            reason = "equivalence passed (combinational, unbounded)"
+    elif re.search(r"proof did fail|model found", output, re.IGNORECASE):
+        status = "function_fail"
+        result_proof_type = proof_type
+        formal_status = "not_equivalent"
+        counterexample = extract_counterexample(output)
+        reason = summarize_lines(output, [r"fail", r"assert", r"proof"], limit=8) or "equivalence proof failed"
+    else:
+        status = "equivalence_error"
+        result_proof_type = proof_type
+        formal_status = "unknown"
+        reason = summarize_lines(output, [r"error"], limit=8) or "yosys equivalence flow errored"
     result = build_result(
         ctx,
         candidate_file,
         artifact_dir,
         status=status,
         flow="equivalence",
-        proof_type=proof_type,
+        proof_type=result_proof_type,
         reason=reason,
         candidate_top=detect_candidate_top(candidate_file, ctx.reference_top),
         compile_gate=compile_gate,
@@ -1540,9 +1685,10 @@ def run_equivalence_flow(
     result.reference_precheck = "pass"
     result.candidate_precheck = "pass"
     result.interface_status = "compatible"
-    result.formal_status = "equivalent" if status == "pass" else "not_equivalent"
+    result.formal_status = formal_status
     result.interface_reason = "ports matched"
     result.interface_reason_kind = "strict_port_match"
+    result.counterexample_summary = counterexample
     result.reason_bucket = result.status
     result.equivalence_exit_code = eq_result.exit_code
     return result
@@ -1556,35 +1702,52 @@ def verify_candidate(candidate_file: Path, reference: Path, module_name: str, ct
     artifact_dir = module_ctx.artifacts_root / candidate_file.stem
     clear_artifact_dir(artifact_dir)
     family_cache = family_cache_for(module_ctx.family_root, family_caches)
-    support_files = resolve_support_files(family_cache, reference, candidate_file, module_ctx.same_dir_support)
-    source_files = [reference, candidate_file, *support_files]
-    unresolved = unresolved_instance_modules(source_files)
-    generated_support = generate_missing_support_file(unresolved, source_files, artifact_dir)
-    if generated_support is not None:
-        support_files = [*support_files, generated_support]
-    compile_gate = run_candidate_compile_gate(candidate_file, module_ctx, support_files, artifact_dir)
-    if not compile_gate.passed:
-        result = compile_fail_result(module_ctx, candidate_file, artifact_dir, compile_gate)
+    ref_support = resolve_support_files_for(family_cache, [reference])
+    cand_support = resolve_support_files_for(family_cache, [candidate_file])
+    ref_stub, ref_stub_names = generate_missing_support_file(
+        unresolved_instance_modules([reference, *ref_support]),
+        [reference, *ref_support],
+        artifact_dir,
+        "_generated_support_gold.v",
+    )
+    if ref_stub is not None:
+        ref_support = [*ref_support, ref_stub]
+    cand_stub, cand_stub_names = generate_missing_support_file(
+        unresolved_instance_modules([candidate_file, *cand_support]),
+        [candidate_file, *cand_support],
+        artifact_dir,
+        "_generated_support_gate.v",
+    )
+    if cand_stub is not None:
+        cand_support = [*cand_support, cand_stub]
+    stub_names = sorted(set(ref_stub_names) | set(cand_stub_names))
+
+    def finalize(result: CandidateResult) -> CandidateResult:
+        result.generated_stub_modules = stub_names
         write_json(artifact_dir / "result.json", result.to_row())
         cleanup_transient_artifacts(artifact_dir)
         return result
+
+    compile_gate = run_candidate_compile_gate(candidate_file, module_ctx, cand_support, artifact_dir)
+    if not compile_gate.passed:
+        return finalize(compile_fail_result(module_ctx, candidate_file, artifact_dir, compile_gate))
     if module_ctx.tb_info is not None:
-        sim_result = run_simulation_flow(module_ctx, candidate_file, artifact_dir, compile_gate, support_files)
-        if sim_result.final_result is not None:
-            result = sim_result.final_result
-            write_json(artifact_dir / "result.json", result.to_row())
-            cleanup_transient_artifacts(artifact_dir)
-            return result
-        result = run_equivalence_flow(module_ctx, candidate_file, artifact_dir, compile_gate, support_files)
+        sim_result = run_simulation_flow(module_ctx, candidate_file, artifact_dir, compile_gate, cand_support)
+        sim_final = sim_result.final_result
+        if sim_final is not None and (module_ctx.tb_info.self_checking or sim_final.status == "simulation_runtime_fail"):
+            # A print-only tb cannot issue a functional verdict; only self-checking
+            # benches (or hard runtime failures) are allowed to conclude here.
+            return finalize(sim_final)
+        result = run_equivalence_flow(module_ctx, candidate_file, artifact_dir, compile_gate, ref_support, cand_support)
         if sim_result.tb_compile_failed:
             result.reason = f"tb compile failed; fell back to formal: {sim_result.tb_compile_reason}; {result.reason}"
-        write_json(artifact_dir / "result.json", result.to_row())
-        cleanup_transient_artifacts(artifact_dir)
-        return result
-    result = run_equivalence_flow(module_ctx, candidate_file, artifact_dir, compile_gate, support_files)
-    write_json(artifact_dir / "result.json", result.to_row())
-    cleanup_transient_artifacts(artifact_dir)
-    return result
+        elif sim_final is not None:
+            result.reason = (
+                f"print-only tb simulation completed (status={sim_final.status}, not a functional verdict); {result.reason}"
+            )
+            result.simulation_exit_code = sim_final.simulation_exit_code
+        return finalize(result)
+    return finalize(run_equivalence_flow(module_ctx, candidate_file, artifact_dir, compile_gate, ref_support, cand_support))
 
 
 def module_rows_to_json(
@@ -1593,10 +1756,9 @@ def module_rows_to_json(
     report_json: Path,
     report_csv: Path,
 ) -> None:
+    metrics = pass_metrics(rows)
     simulation_candidates = sum(1 for row in rows if row.flow == "simulation_tb")
     equivalence_candidates = sum(1 for row in rows if row.flow == "equivalence")
-    simulation_pass = sum(1 for row in rows if row.flow == "simulation_tb" and row.status == "pass")
-    equivalence_pass = sum(1 for row in rows if row.flow == "equivalence" and row.status == "pass")
     json_payload = {
         "module_dir": ctx.module_dir_name,
         "family": ctx.report_family_name,
@@ -1605,11 +1767,14 @@ def module_rows_to_json(
         "reference_top": ctx.reference_top,
         "tb_file": str(ctx.tb_info.path) if ctx.tb_info else "",
         "tb_top": ctx.tb_info.top if ctx.tb_info else "",
+        "tb_self_checking": ctx.tb_info.self_checking if ctx.tb_info else False,
         "result_count": len(rows),
         "simulation_candidate_count": simulation_candidates,
         "equivalence_candidate_count": equivalence_candidates,
-        "simulation_pass_count": simulation_pass,
-        "equivalence_pass_count": equivalence_pass,
+        "simulation_pass_count": metrics["simulation_pass"],
+        "equivalence_pass_count": metrics["equivalence_pass"],
+        "equivalence_pass_full_count": metrics["equivalence_pass_full"],
+        "equivalence_pass_bounded_count": metrics["equivalence_pass_bounded"],
         "counts": dict(Counter(row.status for row in rows)),
         "results": [row.to_row() for row in rows],
     }
@@ -1624,8 +1789,11 @@ def module_summary_row(module_ctx: ModuleContext, rows: Sequence[CandidateResult
         "model": module_ctx.model,
         "module_dir": module_ctx.module_dir_name,
         "compile_pass": metrics["compile_pass"],
+        "function_pass": metrics["function_pass"],
         "simulation_pass": metrics["simulation_pass"],
         "equivalence_pass": metrics["equivalence_pass"],
+        "equivalence_pass_full": metrics["equivalence_pass_full"],
+        "equivalence_pass_bounded": metrics["equivalence_pass_bounded"],
     }
     for status in STATUS_VALUES:
         summary[status] = counts.get(status, 0)
@@ -1637,7 +1805,12 @@ def aggregate_status(rows: Sequence[CandidateResult], attr: str) -> dict[str, di
     for row in rows:
         key = getattr(row, attr)
         buckets[key][row.status] += 1
-    return {key: dict(counter) for key, counter in sorted(buckets.items())}
+
+    def sort_key(item: tuple[str, Counter[str]]) -> tuple[int, object]:
+        key = str(item[0])
+        return (0, int(key)) if key.isdigit() else (1, key)
+
+    return {key: dict(counter) for key, counter in sorted(buckets.items(), key=sort_key)}
 
 
 def write_suite_reports(
@@ -1647,6 +1820,8 @@ def write_suite_reports(
     summary_json: Path,
     summary_csv: Path,
     result_root: Path,
+    include_global_csvs: bool = True,
+    skipped_modules: Sequence[dict[str, str]] = (),
 ) -> None:
     detailed_csv = derive_detailed_csv_path(summary_csv)
     detailed_summary_json = derive_detailed_summary_json_path(summary_json)
@@ -1661,6 +1836,7 @@ def write_suite_reports(
         "module_count": len(module_summaries),
         "candidate_count": len(all_rows),
         "overall_status_counts": dict(overall_status_counts),
+        "skipped_modules": list(skipped_modules),
         "module_summaries": list(module_summaries),
     }
     write_json(summary_json, payload)
@@ -1673,6 +1849,9 @@ def write_suite_reports(
         "observed_candidates": sorted(row.candidate_file for row in all_rows),
     }
     write_json(detailed_summary_json, detailed_payload)
+    if not include_global_csvs:
+        # Filtered runs (e.g. --model) must not clobber the all-model compile/syntax CSVs.
+        return
     compile_rows = [row.syntax_row() for row in all_rows]
     write_csv(DEFAULT_COMPILE_CSV, compile_rows, COMPILE_FIELDS)
     write_csv(DEFAULT_SYNTAX_DETAIL_CSV, compile_rows, COMPILE_FIELDS)
@@ -1730,8 +1909,11 @@ def run_module(
         for candidate_file in candidate_files
     ]
     if report_dir is not None:
-        report_json = report_json or (report_dir / f"{module_ctx.module_dir_name}.json")
-        report_csv = report_csv or (report_dir / f"{module_ctx.module_dir_name}.csv")
+        # Per-model subdirectory: without it, each model's run overwrites the
+        # previous model's per-module reports.
+        model_report_dir = report_dir / module_ctx.model
+        report_json = report_json or (model_report_dir / f"{module_ctx.module_dir_name}.json")
+        report_csv = report_csv or (model_report_dir / f"{module_ctx.module_dir_name}.csv")
     if report_json is not None and report_csv is not None:
         module_rows_to_json(module_ctx, rows, report_json, report_csv)
     return rows
@@ -1812,6 +1994,11 @@ def run_check_command(args: argparse.Namespace) -> int:
     family_caches: dict[Path, FamilyCache] = {}
     all_rows: list[CandidateResult] = []
     candidate_dirs = discover_candidate_module_dirs(candidates_root, module_dir_name)
+    if not candidate_dirs:
+        raise ValueError(
+            f"no candidate module directories found under {candidates_root} for module '{module_dir_name}'"
+            " (note: mips_16 result dirs use a 'mips_' prefix, e.g. mips_alu)"
+        )
     for candidate_dir in candidate_dirs:
         result_root = DEFAULT_RESULT_ROOT if DEFAULT_RESULT_ROOT in candidate_dir.parents else candidate_dir.parent.parent
         model = candidate_dir.parent.name
@@ -1872,6 +2059,7 @@ def run_suite_command(args: argparse.Namespace) -> int:
     family_caches: dict[Path, FamilyCache] = {}
     all_rows: list[CandidateResult] = []
     module_summaries: list[dict[str, object]] = []
+    skipped_modules: list[dict[str, str]] = []
     module_entries = iter_suite_module_dirs(result_root, args.model)
     ensure_parent(log_file)
     log_file.write_text("")
@@ -1886,12 +2074,22 @@ def run_suite_command(args: argparse.Namespace) -> int:
             module_ctx = build_module_context(module_dir, result_root, model, args.iverilog, args.vvp, args.yosys, args.depth, args.timeout)
         except Exception as exc:
             emit_progress(f"[{index}/{len(module_entries)}] skip {module_dir}: {exc}", log_file=log_file, stream=sys.stderr)
+            skipped_modules.append({"model": model, "module_dir": module_dir.name, "error": str(exc)})
             continue
-        rows = run_module(module_ctx, family_caches, report_dir=report_dir)
+        try:
+            rows = run_module(module_ctx, family_caches, report_dir=report_dir)
+        except Exception as exc:
+            emit_progress(
+                f"[{index}/{len(module_entries)}] error {model}/{module_ctx.module_dir_name}: {exc}",
+                log_file=log_file,
+                stream=sys.stderr,
+            )
+            skipped_modules.append({"model": model, "module_dir": module_ctx.module_dir_name, "error": str(exc)})
+            continue
         all_rows.extend(rows)
         summary = module_summary_row(module_ctx, rows)
-        summary["report_json"] = str(report_dir / f"{module_ctx.module_dir_name}.json")
-        summary["report_csv"] = str(report_dir / f"{module_ctx.module_dir_name}.csv")
+        summary["report_json"] = str(report_dir / model / f"{module_ctx.module_dir_name}.json")
+        summary["report_csv"] = str(report_dir / model / f"{module_ctx.module_dir_name}.csv")
         module_summaries.append(summary)
         elapsed = time.monotonic() - module_start
         module_metrics = pass_metrics(rows)
@@ -1905,9 +2103,29 @@ def run_suite_command(args: argparse.Namespace) -> int:
             f"compile_pass={overall_metrics['compile_pass']} function_pass={overall_metrics['function_pass']}",
             log_file=log_file,
         )
-    write_suite_reports(all_rows, module_summaries, report_dir, summary_json, summary_csv, result_root)
+    include_global_csvs = args.model is None
+    write_suite_reports(
+        all_rows,
+        module_summaries,
+        report_dir,
+        summary_json,
+        summary_csv,
+        result_root,
+        include_global_csvs=include_global_csvs,
+        skipped_modules=skipped_modules,
+    )
+    if not include_global_csvs:
+        emit_progress(
+            "filtered run (--model): global compile/syntax CSVs left untouched",
+            log_file=log_file,
+        )
     total_elapsed = time.monotonic() - start_time
-    final_summary = {"modules": len(module_summaries), "rows": len(all_rows), **pass_metrics(all_rows)}
+    final_summary = {
+        "modules": len(module_summaries),
+        "rows": len(all_rows),
+        "skipped_modules": len(skipped_modules),
+        **pass_metrics(all_rows),
+    }
     emit_progress(
         f"suite complete in {total_elapsed:.1f}s | modules={final_summary['modules']} rows={final_summary['rows']} "
         f"| compile_pass={final_summary['compile_pass']} function_pass={final_summary['function_pass']}",
@@ -1953,8 +2171,8 @@ def add_tool_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--iverilog", default=DEFAULT_IVERILOG)
     parser.add_argument("--vvp", default=DEFAULT_VVP)
     parser.add_argument("--yosys", default=DEFAULT_YOSYS)
-    parser.add_argument("--depth", type=int, default=8)
-    parser.add_argument("--timeout", type=int, default=120)
+    parser.add_argument("--depth", type=int, default=16, help="bounded-check / induction depth in cycles")
+    parser.add_argument("--timeout", type=int, default=120, help="per-subprocess timeout in seconds")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
