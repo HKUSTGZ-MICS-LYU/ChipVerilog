@@ -1,4 +1,4 @@
-# ChipVerilogSuite
+# ChipVerilog
 
 ChipVerilogSuite is a Verilog RTL benchmark and workflow repository for RTL generation, functional checking, and equivalence-oriented evaluation. It bundles reference RTL, aligned textual specifications, generated candidate implementations, and Python tools for candidate generation and verification.
 
