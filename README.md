@@ -2,6 +2,14 @@
 
 ChipVerilogSuite is a Verilog RTL benchmark and workflow repository for RTL generation, functional checking, and equivalence-oriented evaluation. It bundles reference RTL, aligned textual specifications, generated candidate implementations, and Python tools for candidate generation and verification.
 
+## Paper and Artifact
+
+- **Paper:** [ChipVerilog: A Large-Scale OpenCores-Derived Benchmark for
+  LLM-Based Verilog RTL Generation](https://arxiv.org/abs/2607.13079)
+- **Evaluated artifact:** [Zenodo DOI
+  10.5281/zenodo.21583114](https://doi.org/10.5281/zenodo.21583114)
+
+
 The current tree contains 64 design tasks across 5 families:
 
 | Family | Tasks | Notes |
