@@ -186,10 +186,3 @@ to `reports/corrected/`.
 - The Src leaf `double_fpu/des/verilog/fpu_double` maps to the result/Des name `fpu` (the directory was renamed after the Des/Result trees were built).
 - Known comparability caveats of the shipped (2026-05-07) reports: `Result/claude` and `Result/codex` lack `fpu_addsub_pipeline` and `fpu_mul_pipeline` (deepseek has 64 tasks, the others 62), and the `verilog_cordic_core` references do not elaborate under yosys, so that family has no functional verdicts. Use `reports/corrected/` for cross-model comparisons.
 
-## Citation
-
-​```text
-Yan Tan, Jiping Du, Xiangchen Meng, and Yangdi Lyu. “ChipVerilog: A
-Large-Scale OpenCores-Derived Benchmark for LLM-Based Verilog RTL Generation.”
-arXiv:2607.13079, 2026.
-​```
