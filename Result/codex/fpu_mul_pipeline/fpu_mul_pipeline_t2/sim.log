@@ -1,0 +1,19 @@
+=== tb_compile_sv2012 ===
+$ /Users/yan/.local/bin/iverilog -g2012 -I /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t2/work -I /Users/yan/research/ChipVerilogSuite/Des/double_fpu -I /Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_mul_pipeline -s fpu_mul_tb -o /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t2/work/simv /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t2.v /Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_mul_pipeline/fpu_mul_pipeline_TB.v
+exit_code=0
+
+=== simulation_run ===
+$ /Users/yan/.local/bin/vvp -n /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t2/work/simv
+--- stdout ---
+              220000ps Error! out is incorrect 40207851eb851eb8
+              230000ps Error! out is incorrect c01c1ed20296b335
+              240000ps Error! out is incorrect 40585318fc504817
+              250000ps Error! out is incorrect 8ca006df93027d8d
+              260000ps Error! out is incorrect 4090b7f8d4fdf3b6
+              270000ps Error! out is incorrect fff0000000000000
+              280000ps Error! out is incorrect 4080000000000000
+              290000ps Error! out is incorrect 4018f5c28f5c28f6
+              300000ps Error! out is incorrect 4135f8f000000000
+              310000ps Answer is correct 4135f8f000000000
+/Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_mul_pipeline/fpu_mul_pipeline_TB.v:155: $finish called at 600000 (1ps)
+exit_code=0

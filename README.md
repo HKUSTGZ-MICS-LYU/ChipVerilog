@@ -150,12 +150,28 @@ CSVs (those always describe a full all-model sweep).
 
 ### `tools/recompute_corrected_summary.py`
 
-Reclassifies the shipped `reports/formal_equivalence_suite_detailed.csv` without
-re-running any verification: drops the unmeasurable `verilog_cordic_core` family,
-restricts to the 62-task intersection shared by all models, separates
-self-checking from print-only testbench passes, splits full vs bounded
-equivalence proofs, and reclassifies solver timeouts as inconclusive. Outputs go
-to `reports/corrected/`.
+Provides an additional diagnostic view of the earlier aggregate CSV report,
+including separate full and bounded equivalence counts. Outputs go to
+`reports/corrected/`. Paper-table reproduction uses the candidate-level AE
+entry point described below.
+
+## Artifact Evaluation
+
+The current artifact contains 64 tasks and five cached candidate verdicts per
+task for each evaluated model. Reproduce the aggregate table with:
+
+```bash
+python3 artifact_evaluation/reproduce_metrics.py
+```
+
+Run the compact verification workflow with:
+
+```bash
+bash artifact_evaluation/smoke_test.sh
+```
+
+See `artifact_evaluation/README.md` for expected output and
+`artifact_evaluation/METRIC_DEFINITION.md` for the exact metric definition.
 
 ## Output Interpretation
 
@@ -184,5 +200,12 @@ to `reports/corrected/`.
 - `generate_deepseek_results.py` writes into `Result/deepseek/` by default, but the verifier works for any `Result/<model>/` layout such as `codex`, `claude`, or `deepseek`.
 - `formal_equivalence.py verify` expects a directory under `Result/<model>/<module>/` so it can infer the model name automatically.
 - The Src leaf `double_fpu/des/verilog/fpu_double` maps to the result/Des name `fpu` (the directory was renamed after the Des/Result trees were built).
-- Known comparability caveats of the shipped (2026-05-07) reports: `Result/claude` and `Result/codex` lack `fpu_addsub_pipeline` and `fpu_mul_pipeline` (deepseek has 64 tasks, the others 62), and the `verilog_cordic_core` references do not elaborate under yosys, so that family has no functional verdicts. Use `reports/corrected/` for cross-model comparisons.
+- Aggregate artifact-evaluation metrics are computed from the 64-task
+  candidate-level verdicts under `Result/`; the earlier CSV summaries under
+  `reports/` remain available as audit records.
 
+## License
+
+Our code is released under the repository-level LICENSE. Third-party RTL
+components retain their original licenses. See THIRD_PARTY_LICENSES.md for
+provenance and licensing details.

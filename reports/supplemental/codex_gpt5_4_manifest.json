@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "notice": "These supplemental files were generated on 2026-08-15. Three add/sub candidates were subsequently manually post-processed and promoted into Result/codex. Per-candidate post-processing flags are recorded below.",
+  "generation": {
+    "model": "gpt-5.4",
+    "reasoning_effort": "high",
+    "samples_per_task": 5,
+    "generated_on": "2026-08-15",
+    "provenance": "regenerated_supplemental_candidate",
+    "primary_dataset_provenance": "supplemental_data_with_three_manually_postprocessed_candidates",
+    "postprocessed_on": "2026-08-15",
+    "postprocessed_candidates": [
+      "fpu_addsub_pipeline_t2.v",
+      "fpu_addsub_pipeline_t3.v",
+      "fpu_addsub_pipeline_t4.v"
+    ],
+    "modules": [
+      "fpu_addsub_pipeline",
+      "fpu_mul_pipeline"
+    ],
+    "provider": "OpenAI",
+    "client": "Codex CLI 0.147.0-alpha.6.5",
+    "wrapper": "run_codex_batch_txt.sh",
+    "independent_samples": true,
+    "iterative_feedback": false
+  },
+  "postprocessing": {
+    "applied": true,
+    "used_test_feedback": true,
+    "performed_on": "2026-08-15",
+    "candidate_count": 3,
+    "candidates": [
+      "fpu_addsub_pipeline_t2.v",
+      "fpu_addsub_pipeline_t3.v",
+      "fpu_addsub_pipeline_t4.v"
+    ],
+    "description": "Three syntax/latency corrections applied to add/sub candidates."
+  },
+  "verification": {
+    "tool": "tools/formal_equivalence.py",
+    "iverilog": "12.0 (stable)",
+    "functional_criterion": "artifact_evaluation/METRIC_DEFINITION.md"
+  },
+  "candidate_count": 10,
+  "status_counts": {
+    "function_fail": 9,
+    "pass": 1
+  },
+  "modules": [
+    {
+      "module_dir": "fpu_addsub_pipeline",
+      "candidates": 5,
+      "compile_pass": 5,
+      "functional_pass": 1,
+      "functional_status_counts": {
+        "function_fail": 4,
+        "pass": 1
+      }
+    },
+    {
+      "module_dir": "fpu_mul_pipeline",
+      "candidates": 5,
+      "compile_pass": 5,
+      "functional_pass": 0,
+      "functional_status_counts": {
+        "function_fail": 5
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t1.v",
+      "sha256": "244aa4c58bbb881121730ce0112a60e875380820b965b29047d2a2dffe853239",
+      "module_dir": "fpu_addsub_pipeline",
+      "attempt": 1,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t2.v",
+      "sha256": "40969446a0a1f1437ebbbd6ba66675ed78b0202fd2fddfc86d141d3c4e1965a0",
+      "module_dir": "fpu_addsub_pipeline",
+      "attempt": 2,
+      "postprocessed": true
+    },
+    {
+      "path": "Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t3.v",
+      "sha256": "455647eb89f5b83b827e31215ab2e13bda121449de71888ad0c8dc4ca108b584",
+      "module_dir": "fpu_addsub_pipeline",
+      "attempt": 3,
+      "postprocessed": true
+    },
+    {
+      "path": "Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t4.v",
+      "sha256": "746220b0927e2de548b6075cb4d707df81c2291075ba6f2600ccd87e6e3edd11",
+      "module_dir": "fpu_addsub_pipeline",
+      "attempt": 4,
+      "postprocessed": true
+    },
+    {
+      "path": "Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t5.v",
+      "sha256": "b2330a06a2d5e87095a268a6fb45469827c76fd9a17a6502e4f0ab994b522be6",
+      "module_dir": "fpu_addsub_pipeline",
+      "attempt": 5,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t1.v",
+      "sha256": "6624dbadb6ac405d47f97a98aaf677be234436a26de9b93722fe56eb7f824dec",
+      "module_dir": "fpu_mul_pipeline",
+      "attempt": 1,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t2.v",
+      "sha256": "88a62dce798abb156eba58fac1d798f427efaeda92034ad5ad99df55099ce154",
+      "module_dir": "fpu_mul_pipeline",
+      "attempt": 2,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t3.v",
+      "sha256": "a48c92400be91594a1b52bb202432c7d0964330fd795cfa08728304c86d03d8c",
+      "module_dir": "fpu_mul_pipeline",
+      "attempt": 3,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t4.v",
+      "sha256": "e7bd64e6e46437ab1036709cac1ae7d16b0e27940851622c5e3f0d44cc2295e8",
+      "module_dir": "fpu_mul_pipeline",
+      "attempt": 4,
+      "postprocessed": false
+    },
+    {
+      "path": "Result/codex/fpu_mul_pipeline/fpu_mul_pipeline_t5.v",
+      "sha256": "87d2b615da56425ffaedb755d2bb961c47082f5c8c3d00107c190aa5568cf481",
+      "module_dir": "fpu_mul_pipeline",
+      "attempt": 5,
+      "postprocessed": false
+    }
+  ]
+}
