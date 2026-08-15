@@ -10,7 +10,6 @@ trap 'rm -rf -- "${SMOKE_ROOT}"' EXIT
 cd "${REPO_ROOT}"
 
 required_files=(
-  Artifact_Access.md
   LICENSE
   THIRD_PARTY_LICENSES.md
   artifact_evaluation/Artifact_Access.md
