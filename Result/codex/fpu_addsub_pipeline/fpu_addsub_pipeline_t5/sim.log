@@ -1,0 +1,25 @@
+=== tb_compile_sv2012 ===
+$ /Users/yan/.local/bin/iverilog -g2012 -I /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t5/work -I /Users/yan/research/ChipVerilogSuite/Des/double_fpu -I /Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_addsub_pipeline -s fpu_addsub_tb -o /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t5/work/simv /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t5.v /Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_addsub_pipeline/fpu_addsub_pipeline_TB.v
+exit_code=0
+
+=== simulation_run ===
+$ /Users/yan/.local/bin/vvp -n /Users/yan/research/ChipVerilogSuite/Result/codex/fpu_addsub_pipeline/fpu_addsub_pipeline_t5/work/simv
+--- stdout ---
+              250000ps Error! out is incorrect 40b4f20000000001
+              260000ps Error! out is incorrect 4017333333333333
+              270000ps Error! out is incorrect 4024410624dd2f1a
+              280000ps Error! out is incorrect 4766d0a6f5b29023
+              290000ps Error! out is incorrect c0d41ac83a16a05b
+              300000ps Error! out is incorrect 401312a560418937
+              310000ps Error! out is incorrect 401fcf5c28f5c290
+              320000ps Error! out is incorrect 4037e9a2e7f6f4bf
+              330000ps Error! out is incorrect 4058ceb851eb851e
+              340000ps Error! out is incorrect 42100014c87980f5
+              350000ps Error! out is incorrect befc1a11f9fd8780
+              360000ps Error! out is incorrect 7ff0000000000000
+              370000ps Error! out is incorrect c155930340000000
+              380000ps Error! out is incorrect c155930330dab9f6
+              390000ps Error! out is incorrect c155930330dab9f6
+              400000ps Answer is correct c155930330dab9f6
+/Users/yan/research/ChipVerilogSuite/Des/double_fpu/fpu_addsub_pipeline/fpu_addsub_pipeline_TB.v:239: $finish called at 790000 (1ps)
+exit_code=0

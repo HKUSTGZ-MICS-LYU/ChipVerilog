@@ -18,13 +18,15 @@ usage() {
 Usage:
   ./run_codex_batch_txt.sh [options]
 
-Generate one Verilog file for each .txt file directly under Description.
+Generate one Verilog file for each .txt file directly under the source root.
 Each .txt file is processed in a fresh Codex invocation with an isolated
 workspace. The full text of each .txt file is embedded directly into the
 Codex prompt.
 
 Options:
-  --src-root PATH         Directory containing per-module .txt files
+  --src-root PATH         Directory containing per-module .txt files. A file
+                          named description.txt uses its parent directory as
+                          the module name.
   --tmp-root PATH         Temporary root for isolated Codex workspaces
   --log-root PATH         Root directory for per-module logs
   --out-root PATH         Root directory for generated Verilog output folders
@@ -52,10 +54,12 @@ Environment:
 
 Notes:
   - Run `codex login` before using this script.
-  - Input layout should be:
+  - Supported input layouts are:
       Description/a.txt
       Description/b.txt
       Description/c.txt
+    or a single benchmark task directory such as:
+      Des/double_fpu/fpu_addsub_pipeline/description.txt
   - Output files are written into separate folders under OUT_ROOT as:
       Result/codex/a/a_t1.v
       Result/codex/b/b_t1.v
@@ -365,9 +369,9 @@ run_module() {
   output_dir=$(module_output_dir "${module_name}")
   output_path=$(module_output_path "${module_name}")
   workspace=$(mktemp -d "${TMP_ROOT}/${safe_module_name}_XXXXXX")
-  log_path="${LOG_ROOT}/${safe_module_name}.log"
+  log_path="${LOG_ROOT}/${safe_module_name}_${OUTPUT_SUFFIX}.log"
   response_path="${workspace}/codex_last_message.txt"
-  raw_log_path="${LOG_ROOT}/${safe_module_name}.codex_raw.log"
+  raw_log_path="${LOG_ROOT}/${safe_module_name}_${OUTPUT_SUFFIX}.codex_raw.log"
   description_content=$(<"${txt_file}")
 
   prompt=$(cat <<PROMPT_EOF
@@ -512,6 +516,9 @@ fi
 while IFS= read -r -d '' txt_file; do
   txt_base=$(basename "${txt_file}")
   raw_module_name="${txt_base%.txt}"
+  if [[ "${raw_module_name}" == "description" ]]; then
+    raw_module_name=$(basename -- "$(dirname -- "${txt_file}")")
+  fi
   module_name=$(normalize_module_name "${raw_module_name}")
   output_path=$(module_output_path "${module_name}")
 

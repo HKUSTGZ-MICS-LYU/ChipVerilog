@@ -176,7 +176,7 @@ begin
 		exponent_2_0 <= exponent_gt_expoffset ? exponent_1 : exponent;
 		exponent_2_1 <= exponent_2_0;
 		exponent_2 <= exponent_2_1; 
-		exponent_is_infinity <= (exponent_3 > 2046 & exponent_gt_prodshift;
+		exponent_is_infinity <= (exponent_3 > 2046) & exponent_gt_prodshift;
 		exponent_3 <= exponent_2 - product_shift;
 		exponent_gt_prodshift <= exponent_2 >= product_shift;
 		exponent_4 <= exponent_gt_prodshift ? exponent_3 : exponent;
