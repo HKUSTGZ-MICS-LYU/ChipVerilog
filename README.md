@@ -30,7 +30,7 @@ The current tree contains 64 design tasks across 5 families:
 | `reports/` | Aggregated compile, syntax, and equivalence summaries |
 | `logs/` | Suite-level logs |
 | `tools/` | Python automation scripts |
-| `run_codex_batch_txt.sh` | Shell helper for a separate Codex text-to-Verilog workflow |
+| `run_codex_batch_txt.sh` | Configurable API helper for GPT-5.4 text-to-Verilog generation |
 
 Common naming conventions:
 
@@ -58,7 +58,10 @@ Required executables:
 
 For DeepSeek generation you also need:
 
-- `DEEPSEEK_API_KEY` in the environment, or `OPENAI_API_KEY` as fallback
+- `DEEPSEEK_API_KEY` in the environment
+
+For `run_codex_batch_txt.sh`, install `curl` and `jq`. This generation script
+uses Bash and standard Unix tools and does not require Python.
 
 All three verification executables can be overridden with CLI flags:
 
@@ -69,7 +72,52 @@ python3 tools/formal_equivalence.py suite \
   --yosys /path/to/yosys
 ```
 
-## Python Tools
+## Generation and Verification Tools
+
+### `run_codex_batch_txt.sh`
+
+This helper runs locally and calls an OpenAI-compatible
+[Chat Completions API](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create).
+It does not invoke the Codex CLI.
+
+API endpoint and credential examples are commented out at the top of the
+script. Set `CODEX_API_BASE` (including any `/v1` prefix, without
+`/chat/completions`) and `CODEX_API_KEY` in your shell for a real run. No endpoint
+or credential is bundled. The model defaults to `gpt-5.4`; override it with
+`CODEX_MODEL` or `--model` to match the ID accepted by your endpoint.
+
+```bash
+# Preview all 64 tasks / 320 candidates; no API configuration is needed.
+bash run_codex_batch_txt.sh --dry-run
+
+# Preview selected tasks.
+bash run_codex_batch_txt.sh --dry-run --modules cordic mips_alu fpu
+
+# After setting your API environment variables, generate into a separate tree.
+bash run_codex_batch_txt.sh \
+  --output-root .codex_batch_work/Result/codex \
+  --modules cordic --samples 5
+```
+
+The helper discovers `Src/**/des/**/description.txt`. Its system prompt and
+user-prompt template are defined directly in the shell script and match those
+in `tools/generate_deepseek_results.py`. Each of the five samples is a separate
+request with the same system/user messages and no conversation history,
+reference RTL, or validation feedback. `temperature`, `max_completion_tokens`,
+and `reasoning_effort` are omitted unless explicitly supplied using their CLI
+flags; endpoint defaults apply to omitted parameters. Parameter support depends
+on the endpoint and model. Use `--help` for all options.
+
+By default, candidates are written to
+`Result/codex/<module>/<module>_tN.v`. Existing nonempty files are skipped unless
+`--overwrite` is supplied. Request payloads, raw responses, raw assistant text,
+normalized Verilog, and generation errors are saved under
+`.codex_batch_logs/<module>/`; the configured API base URL and Authorization
+header are excluded from request logs.
+Post-processing joins all Verilog/SystemVerilog/unlabelled Markdown code blocks
+when present and ensures a trailing newline. No functional repair, validation,
+or candidate selection is performed by this helper. Only HTTP/network failures
+are retried; empty or invalid responses are recorded as failed samples.
 
 ### `tools/generate_deepseek_results.py`
 
